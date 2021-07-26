@@ -1,0 +1,49 @@
+#mapid { height: 180px;}
+
+.info {
+    padding: 6px 8px;
+    font: 8px/10px Arial, Helvetica, sans-serif;
+    background: white;
+    background: rgba(255,255,255,0.8);
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    border-radius: 5px;
+}
+.info h4 {
+    margin: 0 0 5px;
+    color: #777;
+}
+
+#resultado {
+    padding: 6px 8px;
+    font: 8px/10px Arial, Helvetica, sans-serif;
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    border-radius: 5px;
+    height: 50%;
+}
+
+.contenedor h1 {
+	font-size: 38px;
+	font-weight: 600;
+	color: #000;
+}
+
+.contenedor hr {
+	background: #ff9d00;
+	width: 20%;
+	height: 5px;
+	border: none;
+	margin: 20px 0;
+	border-radius: 50px;
+}
+
+
+.contenedor::-webkit-scrollbar {
+	width: 7px;
+}
+
+.contenedor::-webkit-scrollbar-thumb {
+	background: #8ca4f5;
+	border-radius: 5px;
+}
+
+

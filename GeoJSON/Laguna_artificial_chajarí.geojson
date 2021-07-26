@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "Laguna_artificial_chajarí",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "osm_id": null, "osm_way_id": "453183271", "name": "Laguna Artifical", "type": null, "aeroway": null, "amenity": null, "admin_level": null, "barrier": null, "boundary": null, "building": null, "craft": null, "geological": null, "historic": null, "land_area": null, "landuse": null, "leisure": null, "man_made": null, "military": null, "natural": "water", "office": null, "place": null, "shop": null, "sport": null, "tourism": null, "other_tags": "\"water\"=>\"lake\"" }, "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ [ -58.0149276, -30.742848 ], [ -58.0149606, -30.7428685 ], [ -58.0149511, -30.7430225 ], [ -58.0149437, -30.743145 ], [ -58.0149696, -30.7432762 ], [ -58.0149579, -30.7433602 ], [ -58.0149183, -30.7434356 ], [ -58.0148656, -30.7434657 ], [ -58.0148141, -30.7434744 ], [ -58.0147721, -30.7434735 ], [ -58.0147467, -30.7434729 ], [ -58.0146937, -30.7434563 ], [ -58.0147035, -30.7433881 ], [ -58.0147084, -30.7433232 ], [ -58.0146422, -30.7432129 ], [ -58.0146578, -30.7431011 ], [ -58.0146888, -30.7430556 ], [ -58.0147662, -30.742989 ], [ -58.0147301, -30.7429205 ], [ -58.0147514, -30.7428546 ], [ -58.0148383, -30.7428431 ], [ -58.0149276, -30.742848 ] ] ] ] } }
+]
+}

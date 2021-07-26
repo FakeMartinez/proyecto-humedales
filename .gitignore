@@ -1,0 +1,6 @@
+js/node_modules
+js/static
+node_modules
+package-lock.json
+package.json
+desktop.ini

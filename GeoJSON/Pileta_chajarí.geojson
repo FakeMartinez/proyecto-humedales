@@ -1,0 +1,9 @@
+{
+"type": "FeatureCollection",
+"name": "Pileta_chajarí",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "osm_id": null, "osm_way_id": "498072042", "name": null, "type": null, "aeroway": null, "amenity": null, "admin_level": null, "barrier": null, "boundary": null, "building": null, "craft": null, "geological": null, "historic": null, "land_area": null, "landuse": null, "leisure": null, "man_made": null, "military": null, "natural": "water", "office": null, "place": null, "shop": null, "sport": null, "tourism": null, "other_tags": "\"water\"=>\"pond\"" }, "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ [ -57.9613975, -30.7448838 ], [ -57.9614895, -30.7448838 ], [ -57.9619991, -30.7453279 ], [ -57.9619991, -30.7454313 ], [ -57.960633, -30.7466298 ], [ -57.9605056, -30.7465994 ], [ -57.960003, -30.746131 ], [ -57.9600313, -30.7460579 ], [ -57.9613975, -30.7448838 ] ] ] ] } },
+{ "type": "Feature", "properties": { "osm_id": null, "osm_way_id": "498072043", "name": null, "type": null, "aeroway": null, "amenity": null, "admin_level": null, "barrier": null, "boundary": null, "building": null, "craft": null, "geological": null, "historic": null, "land_area": null, "landuse": null, "leisure": null, "man_made": null, "military": null, "natural": "water", "office": null, "place": null, "shop": null, "sport": null, "tourism": null, "other_tags": "\"water\"=>\"pond\"" }, "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ [ -57.9591111, -30.74315 ], [ -57.9592173, -30.7431622 ], [ -57.9610719, -30.7448047 ], [ -57.9610931, -30.7449203 ], [ -57.9600738, -30.7458024 ], [ -57.9598968, -30.7457416 ], [ -57.9581414, -30.7441842 ], [ -57.9581273, -30.7440382 ], [ -57.9591111, -30.74315 ] ] ] ] } }
+]
+}
