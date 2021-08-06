@@ -40,11 +40,11 @@ while($row = mysqli_fetch_array($q_id_comp)) {
   $id_complejo = ($row['id_complejo']);
 };
 
-$query1 = "UPDATE humedal SET id_cuenca ='$id_cuenca' , id_complejo = '$id_complejo' , nombre = '$add_nom', largo = '$add_largo', ancho = '$add_ancho', coorx = '$add_latitud', coory = '$add_longitud'
-where id_humedal = '$add_id'";
+$query1 = "UPDATE humedal SET id_cuenca ='$id_cuenca' , id_complejo = '$id_complejo' , nombre = '$add_nom', largo = '$add_largo', ancho = '$add_ancho', coorx = '$add_latitud', coory = '$add_longitud',
+ fuente = '$add_fuente', tiempo ='$add_tiempo' , diversidad_vegetal = '$add_diversidad_vegetal', regimen_hidrologico = '$add_regimen_hidrologico', calidad_agua = '$add_calidad_agua', carac_inclusion = '$add_carac', observaciones = '$add_obs' where id_humedal = '$add_id'";
 
-  $query2 = "UPDATE carac_humedal SET fuente = '$add_fuente', tiempo ='$add_tiempo' , diversidad_vegetal = '$add_diversidad_vegetal', regimen_hidrologico = '$add_regimen_hidrologico', calidad_agua = '$add_calidad_agua', carac_inclusion = '$add_carac', observaciones = '$add_obs'
-  where id_humedal = '$add_id'";
+  /*$query2 = "UPDATE carac_humedal SET fuente = '$add_fuente', tiempo ='$add_tiempo' , diversidad_vegetal = '$add_diversidad_vegetal', regimen_hidrologico = '$add_regimen_hidrologico', calidad_agua = '$add_calidad_agua', carac_inclusion = '$add_carac', observaciones = '$add_obs'
+  where id_humedal = '$add_id'";*/
 
 $result = mysqli_query($connect, $query1);
 
@@ -52,11 +52,11 @@ $result = mysqli_query($connect, $query1);
     die('Query Error'.mysqli_error($connect));
   }
   
-  $result2 = mysqli_query($connect, $query2);
+ /* $result2 = mysqli_query($connect, $query2);
 
   if (!$result2) {
     die('Query Error'.mysqli_error($connect));
-  }
+  }*/
 
 ///////////////////////////////////////////////
 $a = array();

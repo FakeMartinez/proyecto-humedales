@@ -71,8 +71,8 @@ function tabla(){
           var LamMarker = L.marker([single.coorx, single.coory],{icon:MarkerStyle, id: single.id_humedal, nombre: single.nombre, 
             largo:single.largo, ancho:single.ancho, lat:single.coorx, lng:single.coory, cuenca:single.nombre_cuenca,
             complejo: single.nombre_complejo, fuente:single.fuente, tiempo:single.tiempo, div_veg:single.diversidad_vegetal,
-            reg_hidro:single.regimen_hidrologico, agua:single.calidad_agua, presion:single.tipo_presion, inclusion:single.carac_inclusion,
-            obs:single.observaciones, fauna:single.nom_coloquial_fauna, flora:single.nom_coloquial_flora});
+            reg_hidro:single.regimen_hidrologico, agua:single.calidad_agua, presion:single.presion, inclusion:single.carac_inclusion,
+            obs:single.observaciones, fauna:single.fauna, flora:single.flora, img:single.img});
             //------------------------------------------------------------------------------------
             marker.push(LamMarker); //Guarda el marcador creado en el Array
             marker[key].on('click', onClick); //Crea un Evento onClick para marcador
@@ -93,6 +93,7 @@ function tabla(){
  function onClick(e) {
    var i = this.options; //Guarda los datos del elemento clickeado
    e.target.setIcon(MarkerActive); //Agrega el marcador activo
+   console.log(eventBackup);
 
    if (eventBackup == undefined) { //Si no hay un backup del evento (si aun no se le dio click)
      eventBackup = e; //Guarda el evento reciente
@@ -102,7 +103,7 @@ function tabla(){
       eventBackup.target.setIcon(MarkerStyle); //Agrega el marcador por defecto
       eventBackup = e; //Guarda el evento reciente
       capa(i); //Ejecuta la funcion capa 
-      $('#info').hide();
+      //$('#info').hide();
     }
   };
 
@@ -147,6 +148,93 @@ function capa(data){ //obtiene como parametro la informacion
     +'<p class="lead">Flora: ' + data.flora + '</p>' + '<p class="lead">Fauna: ' + data.fauna + '</p>'+'</div>';
     this._div.innerHTML = cont;
 */
+$("#h_name").html(data.nombre);
+$("#h_lat").html("Latitud: "+ data.lat);
+$("#h_lng").html("Longitud: "+ data.lng);
+$("#h_cuenca").html("Cuenca: " + data.cuenca);
+$("#h_complejo").html("Complejo: "+ data.complejo);
+$("#h_fuente").html("Fuente: " + data.fuente);
+$("#h_tiempo").html("Tiempo: " + data.tiempo);
+$("#h_div").html("Diversidad Vegetal: " + data.div_veg);
+$("#h_reg").html("Regimen Hidrologico: " + data.reg_hidro);
+$("#h_agua").html("Calidad del agua: " + data.agua);
+$("#h_inclusion").html(data.inclusion);
+$("#h_obs").html(data.obs);
+
+$("#h_presion").html("Presion: "+ data.presion[0].tipo_presion);
+for (var key=1; key< data.presion.length; key++){
+  $("#h_presion").append(", "+ data.presion[key].tipo_presion);
+};
+
+$("#list_fauna").html("");
+
+for (var key=0; key < data.fauna.length; key++){
+$("#list_fauna").append(
+
+`
+  <div class="accordion-item-fauna">
+              <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="d-block user-select-none" width="100%" height="200" aria-label="Placeholder: Image cap" focusable="false" role="img" preserveAspectRatio="xMidYMid slice" viewBox="0 0 318 180" style="font-size:1.125rem;text-anchor:middle">
+                    <rect width="100%" height="100%" fill="#868e96"></rect>
+                    <text x="50%" y="50%" fill="#dee2e6" dy=".3em">Image cap</text>
+                  </svg>
+                  <div class="card-body">
+                    <p class="card-text">`+data.fauna[key].nom_coloquial_fauna+`</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+`
+);
+
+};
+
+$("#list_flora").html("");
+for (var key=0; key < data.flora.length; key++){
+$("#list_flora").append(
+
+`
+  <div class="accordion-item-fauna">
+              <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="d-block user-select-none" width="100%" height="200" aria-label="Placeholder: Image cap" focusable="false" role="img" preserveAspectRatio="xMidYMid slice" viewBox="0 0 318 180" style="font-size:1.125rem;text-anchor:middle">
+                    <rect width="100%" height="100%" fill="#868e96"></rect>
+                    <text x="50%" y="50%" fill="#dee2e6" dy=".3em">Image cap</text>
+                  </svg>
+                  <div class="card-body">
+                    <p class="card-text">`+data.flora[key].nom_coloquial_flora+`</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+`
+);
+};
+$("#list_img").html("");
+for (var key=0; key < data.img.length; key++){
+  console.log(data.img[key]);
+$("#list_img").append(
+
+`
+  <div class="accordion-item-img">
+              <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="d-block user-select-none" width="100%" height="200" aria-label="Placeholder: Image cap" focusable="false" role="img" preserveAspectRatio="xMidYMid slice" viewBox="0 0 318 180" style="font-size:1.125rem;text-anchor:middle">
+                    <rect width="100%" height="100%" fill="#868e96"></rect>
+                    <text x="50%" y="50%" fill="#dee2e6" dy=".3em">Image cap</text>
+                  </svg>
+                  <div class="card-body">
+                    <p class="card-text">`+data.img[key]+`</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+`
+);
+
+};
+
 $('#info').show();
 $('#myMap').css({'width': '70%'});
 };
@@ -193,7 +281,7 @@ function validarTipo(id){ //Pasa como parametro la caracteristica del humedal
   } else { //SINO
     $.ajax({
       data:{id:id}, //Ejecuta la consulta dependiendo de la caracteristica que tomó 
-      url:   'php/consulta2.php',
+      url:   'php/consulta.php',
       type:  'GET',
       success:function(resp){
         var availableTags = JSON.parse(resp);
@@ -202,8 +290,8 @@ function validarTipo(id){ //Pasa como parametro la caracteristica del humedal
           var LamMarker = L.marker([single.coorx, single.coory],{icon:MarkerStyle, id: single.id_humedal, nombre: single.nombre, 
             largo:single.largo, ancho:single.ancho, lat:single.coorx, lng:single.coory, cuenca:single.nombre_cuenca,
             complejo: single.nombre_complejo, fuente:single.fuente, tiempo:single.tiempo, div_veg:single.diversidad_vegetal,
-            reg_hidro:single.regimen_hidrologico, agua:single.calidad_agua, presion:single.presion_humedal, inclusion:single.carac_inclusion,
-            obs:single.observaciones, fauna:single.fauna, flora:single.flora});
+            reg_hidro:single.regimen_hidrologico, agua:single.calidad_agua, presion:single.presion, inclusion:single.carac_inclusion,
+            obs:single.observaciones, fauna:single.fauna, flora:single.flora,img:single.img});
             marker.push(LamMarker);
             marker[key].on('click', onClick);
             myMap.addLayer(marker[key]);
@@ -215,6 +303,8 @@ function validarTipo(id){ //Pasa como parametro la caracteristica del humedal
        
 // funcion que cierra la capa flotante
 $(document).on('click','#closeBtn', function(){ 
+  $('#info').hide();
+  $('#myMap').css({'width': '100%'});
   info.remove(myMap);
   eventBackup.target.setIcon(MarkerStyle);
 });
@@ -306,7 +396,7 @@ $('#sub_img').on('click', function(){
      limpiarMapaDefault(); //Ejecuta la funcion de limpiar el mapa por defecto
      limpiarMapaBackup(); //Ejecuta la funcion de limpiar el mapa con el backup de los marcadores
      $.ajax({
-       url: 'php/consulta3.php',
+       url: 'php/consulta.php',
        data: {search},
        type: 'POST',
        success: function (response) {
@@ -325,8 +415,8 @@ $('#sub_img').on('click', function(){
                     var LamMarker = L.marker([single.coorx, single.coory],{icon:MarkerStyle, id: single.id_humedal, nombre: single.nombre, 
                       largo:single.largo, ancho:single.ancho, lat:single.coorx, lng:single.coory, cuenca:single.nombre_cuenca,
                       complejo: single.nombre_complejo, fuente:single.fuente, tiempo:single.tiempo, div_veg:single.diversidad_vegetal,
-                      reg_hidro:single.regimen_hidrologico, agua:single.calidad_agua, presion:single.presion_humedal, inclusion:single.carac_inclusion,
-                      obs:single.observaciones, fauna:single.fauna, flora:single.flora});
+                      reg_hidro:single.regimen_hidrologico, agua:single.calidad_agua, presion:single.presion, inclusion:single.carac_inclusion,
+                      obs:single.observaciones, fauna:single.fauna, flora:single.flora,img:single.img});
                       marker.push(LamMarker);
                       marker[key].on('click', onClick);
                       myMap.addLayer(marker[key]);

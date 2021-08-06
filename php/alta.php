@@ -104,11 +104,13 @@ while($row = mysqli_fetch_array($q_id_comp)) {
 
 ///////////////////////////////
 
-  $query1 = "INSERT into humedal (id_humedal, id_cuenca, id_complejo, nombre, largo, ancho, coorx, coory) VALUES 
-  ('$add_id', '$id_cuenca', '$id_complejo', '$add_nom', '$add_largo', '$add_ancho', '$add_latitud','$add_longitud')";
+  $query1 = "INSERT into humedal (id_humedal, id_cuenca, id_complejo, nombre, largo, ancho, coorx, coory, 
+  fuente, tiempo, diversidad_vegetal, regimen_hidrologico, calidad_agua, carac_inclusion, observaciones) VALUES 
+  ('$add_id', '$id_cuenca', '$id_complejo', '$add_nom', '$add_largo', '$add_ancho', '$add_latitud','$add_longitud',
+   '$add_fuente', '$add_tiempo', '$add_diversidad_vegetal', '$add_regimen_hidrologico', '$add_calidad_agua', '$add_carac', '$add_obs')";
 
-  $query2 = "INSERT into carac_humedal (id_humedal, fuente, tiempo, diversidad_vegetal, regimen_hidrologico, calidad_agua, carac_inclusion, observaciones) VALUES 
-  ('$add_id', '$add_fuente', '$add_tiempo', '$add_diversidad_vegetal', '$add_regimen_hidrologico', '$add_calidad_agua', '$add_carac', '$add_obs')";
+ /* $query2 = "INSERT into carac_humedal (id_humedal, fuente, tiempo, diversidad_vegetal, regimen_hidrologico, calidad_agua, carac_inclusion, observaciones) VALUES 
+  ('$add_id', '$add_fuente', '$add_tiempo', '$add_diversidad_vegetal', '$add_regimen_hidrologico', '$add_calidad_agua', '$add_carac', '$add_obs')";*/
 
   $result = mysqli_query($connect, $query1);
 
@@ -116,11 +118,11 @@ while($row = mysqli_fetch_array($q_id_comp)) {
     die('Query Error'.mysqli_error($connect));
   }
   
-  $result2 = mysqli_query($connect, $query2);
+  /*$result2 = mysqli_query($connect, $query2);
 
   if (!$result2) {
     die('Query Error'.mysqli_error($connect));
-  }
+  }*/
 
   ///////////////////////////////////////////////
     $a = array();
