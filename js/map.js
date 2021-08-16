@@ -175,10 +175,7 @@ $("#list_fauna").append(
   <div class="accordion-item-fauna">
               <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                 <div class="accordion-body">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="d-block user-select-none" width="100%" height="200" aria-label="Placeholder: Image cap" focusable="false" role="img" preserveAspectRatio="xMidYMid slice" viewBox="0 0 318 180" style="font-size:1.125rem;text-anchor:middle">
-                    <rect width="100%" height="100%" fill="#868e96"></rect>
-                    <text x="50%" y="50%" fill="#dee2e6" dy=".3em">Image cap</text>
-                  </svg>
+                <img src="`+data.fauna[key].img_fauna+`">
                   <div class="card-body">
                     <p class="card-text">`+data.fauna[key].nom_coloquial_fauna+`</p>
                   </div>
@@ -198,10 +195,7 @@ $("#list_flora").append(
   <div class="accordion-item-fauna">
               <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                 <div class="accordion-body">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="d-block user-select-none" width="100%" height="200" aria-label="Placeholder: Image cap" focusable="false" role="img" preserveAspectRatio="xMidYMid slice" viewBox="0 0 318 180" style="font-size:1.125rem;text-anchor:middle">
-                    <rect width="100%" height="100%" fill="#868e96"></rect>
-                    <text x="50%" y="50%" fill="#dee2e6" dy=".3em">Image cap</text>
-                  </svg>
+                <img src="`+data.flora[key].img_flora+`">
                   <div class="card-body">
                     <p class="card-text">`+data.flora[key].nom_coloquial_flora+`</p>
                   </div>
@@ -220,12 +214,9 @@ $("#list_img").append(
   <div class="accordion-item-img">
               <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                 <div class="accordion-body">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="d-block user-select-none" width="100%" height="200" aria-label="Placeholder: Image cap" focusable="false" role="img" preserveAspectRatio="xMidYMid slice" viewBox="0 0 318 180" style="font-size:1.125rem;text-anchor:middle">
-                    <rect width="100%" height="100%" fill="#868e96"></rect>
-                    <text x="50%" y="50%" fill="#dee2e6" dy=".3em">Image cap</text>
-                  </svg>
+                <img src="`+data.img[key].img_humedal+`">
                   <div class="card-body">
-                    <p class="card-text">`+data.img[key]+`</p>
+                    <p class="card-text">`+data.img[key].nom_img+`</p>
                   </div>
                 </div>
               </div>

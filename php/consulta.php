@@ -6,7 +6,7 @@ require('conexion.php');
 $id = $_GET["id"];
 $name = $_POST["search"];
 
-$con_ant = "SELECT humedal.*, cuenca.*,complejo.*, presion.*, presion_humedal.*, fauna_humedal.id_fauna, fauna.*,flora_humedal.id_flora, flora.*,img_humedal FROM humedal JOIN cuenca ON humedal.id_cuenca=cuenca.id_cuenca JOIN complejo ON humedal.id_complejo=complejo.id_complejo JOIN presion_humedal ON humedal.id_humedal=presion_humedal.id_humedal JOIN presion ON presion_humedal.id_presion=presion.id_presion JOIN fauna_humedal ON humedal.id_humedal=fauna_humedal.id_humedal JOIN 
+$con_ant = "SELECT humedal.*, cuenca.*,complejo.*, presion.*, presion_humedal.*, fauna_humedal.id_fauna, fauna.*,flora_humedal.id_flora, flora.*,img_humedal.img_humedal,img_humedal.nom_img,img_humedal.desc_img FROM humedal JOIN cuenca ON humedal.id_cuenca=cuenca.id_cuenca JOIN complejo ON humedal.id_complejo=complejo.id_complejo JOIN presion_humedal ON humedal.id_humedal=presion_humedal.id_humedal JOIN presion ON presion_humedal.id_presion=presion.id_presion JOIN fauna_humedal ON humedal.id_humedal=fauna_humedal.id_humedal JOIN 
 fauna ON fauna_humedal.id_fauna=fauna.id_fauna JOIN flora_humedal ON humedal.id_humedal=flora_humedal.id_humedal JOIN flora ON flora_humedal.id_flora=flora.id_flora LEFT JOIN img_humedal ON img_humedal.id_humedal=humedal.id_humedal GROUP BY humedal.id_humedal, presion_humedal.id_presion, fauna_humedal.id_fauna, flora_humedal.id_flora, img_humedal";
 
 /*$con_completa = "SELECT humedal.*, presion.*, complejo.*, cuenca.*,presion_humedal.* ,fauna_humedal.id_fauna, fauna.*,flora_humedal.id_flora, flora.*,img_humedal.* FROM humedal JOIN cuenca ON humedal.id_cuenca=cuenca.id_cuenca JOIN complejo ON humedal.id_complejo=complejo.id_complejo  JOIN presion_humedal ON humedal.id_humedal=presion_humedal.id_humedal JOIN presion ON presion_humedal.id_presion=presion.id_presion JOIN fauna_humedal ON humedal.id_humedal=fauna_humedal.id_humedal JOIN 
@@ -132,13 +132,19 @@ if ($ad3!=false){
 
   $ad4=true;
   foreach ($json[$c]['img'] as $i){
-    if ($i == $row['img_humedal']){
+    if ($i['img_humedal'] == $row['img_humedal']){
       $ad4=false;
   }
 };
 
 if ($ad4!=false){
-  $json[$c]['img'][$x4] = ($row['img_humedal']);
+  $json[$c]['img'][$x4] = array(
+    'img_humedal' => $row['img_humedal'],
+    'nom_img' => $row['nom_img'],
+    'desc_img' => $row['desc_img']
+  );
+  
+  //($row['img_humedal']);
 
     $x4=$x4+1;
   };
