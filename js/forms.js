@@ -190,18 +190,18 @@ $(function(){
 
   //////////////////Form presion/////////////////////
   $('#form-presion').submit(e => {
-    e.preventDefault();
-    const postData = {
-      tipo_presion: $('#tipo_presion').val(),
-      obs_presion: $('#obs_presion').val(),
+    e.preventDefault();                         //para que es preventDefault();
+    const postData = {                          //const crea una variable llamada postData
+      tipo_presion: $('#tipo_presion').val(),   //Parametro tipo_presion de la variable postData, toma el valor del objeto con id tipo_presion
+      obs_presion: $('#obs_presion').val(),     //Parametro obs_presion de la variable postData, toma el valor del objeto con id  obs_presion
     };
     //console.log(postData);
-    $.post('php/sub_forms.php', postData, (response) => {
-      console.log(response);
+    $.post('php/sub_forms.php', postData, (response) => {  //post llama al archivo php llamada sub_forms.php    ¿response es el valor que devuelve?
+      console.log(response);                               // ¿que es el parametro response? que es console.log?
       //$('#form_add').trigger('reset');
       e.preventDefault();
-      carga_form_alta_p();
-      $('#form_presion_add').hide();
+      carga_form_alta_p();    //definido en linea *357
+      $('#form_presion_add').hide();    //oculta eñ formulario add presion
     });
   });
   

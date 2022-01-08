@@ -48,14 +48,13 @@ if(isset($_POST['id_complejo'])) {
 
 /////////////////Tipo de Presion///////////////////
 
-  if(isset($_POST['tipo_presion'])) {
-    $add_tipo= $_POST['tipo_presion'];
-  $add_obs = $_POST['obs_presion'];
+  if(isset($_POST['tipo_presion'])) {   //$_POST es la variable pasada al llamar el documento desde forms.js (¿$_POST es universal?)
+    $add_tipo= $_POST['tipo_presion'];  // agrega el valor de $_POST.tipo_presion a $add_tipo
+    $add_obs = $_POST['obs_presion'];   // agrega el valor de $_POST.obs_presion a $add_obs
 
-  $query3 = "INSERT into presion (tipo_presion, obs_presion) VALUES ('$add_tipo','$add_obs')";
-
-  act($connect,$query3);
-};
+    $query3 = "INSERT into presion (tipo_presion, obs_presion) VALUES ('$add_tipo','$add_obs')";  //crea la insercion en SQL de la nueva informacion en la tabla presiones
+    act($connect,$query3);  // ¿act() ejecuta la consulta de $query3 en la base de datos $connect? act(base de datos, consulta)
+  };
 
 
 
