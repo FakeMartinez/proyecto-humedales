@@ -305,211 +305,229 @@
 
         <!-- ID Humedal -->
         <div class="form-group">
-         <input type="text" id="ID_humedal" placeholder="ID" class="form-control"> 
+         <input type="text" id="ID_humedal" placeholder="Código Humedal" class="form-control"> 
          </div>
 
         <!-- Nombre -->
         <div class="form-group">
          <input type="text" id="nombre" placeholder="Nombre" class="form-control"> 
          </div>
+         
+         <!-- Fecha relevamiento -->
+        <div class="form-group">
+          <input type="text" id="fecha_rel" placeholder="Fecha de relevamiento" class="form-control"> 
+          </div>  
 
          <!-- cuenca -->
         <div class="form-group">
-      <label for="cuenca_label" class="form-label mt-4">Cuenca:</label>
-      <select class="form-select" id="sel_cuenca">
-      <option>Seleccione Cuenca...</option>
-      </select>
-      <button type="button" class="btn btn-success" id="btn_cuenca_add">Añadir Nueva Cuenca</button>
-      </div>
+         <label for="cuenca_label" class="form-label mt-4">Cuenca:</label>
+         <select class="form-select" id="sel_cuenca">
+          <option>Seleccione Cuenca...</option>
+         </select>
+         <button type="button" class="btn btn-success" id="btn_cuenca_add">Añadir Nueva Cuenca</button>
+        </div>
 
-      <!-- complejo -->
-      <div class="form-group">
-      <label for="complejo_label" class="form-label mt-4">Complejo:</label>
-      <select class="form-select" id="sel_complejo">
-      <option>Seleccione Complejo...</option>
-      </select>
-      <button type="button" class="btn btn-success" id="btn_complejo_add">Añadir Nuevo Complejo</button>
-      </div>
+       <!-- complejo -->
+        <div class="form-group">
+         <label for="complejo_label" class="form-label mt-4">Complejo:</label>
+         <select class="form-select" id="sel_complejo">
+          <option>Seleccione Complejo...</option>
+         </select>
+         <button type="button" class="btn btn-success" id="btn_complejo_add">Añadir Nuevo Complejo</button>
+        </div>
       <!--Latiud-->
-                <div class="form-group">
-                  <input type="text" id="lat" placeholder="Latitud" class="form-control">
-                </div>
+        <div class="form-group">
+          <input type="text" id="lat" placeholder="Latitud" class="form-control">
+        </div>
       <!-- Longitud -->
-                <div class="form-group">
-                  <input type="text" id="lng" placeholder="Longitud" class="form-control">
-                </div>
+        <div class="form-group">
+            <input type="text" id="lng" placeholder="Longitud" class="form-control">
+        </div>
       <!-- Ancho -->
-                <div class="form-group">
-                  <input type="text" id="ancho" placeholder="Ancho" class="form-control">
-                </div>
+        <div class="form-group">
+            <input type="text" id="ancho" placeholder="Ancho" class="form-control">
+        </div>
       <!-- Largo -->
-                <div class="form-group">
-                  <input type="text" id="largo" placeholder="Largo" class="form-control">
-                </div>
-      <!-- Caracteristicas -->
-                <div class="form-group">
-                  <textarea id="carac" cols="30" rows="10" class="form-control" placeholder="Caracteristicas"></textarea>
-                </div>
-      <!-- Observaciones -->
-      <div class="form-group">
-                  <textarea id="obs" cols="30" rows="10" class="form-control" placeholder="Observaciones"></textarea>
-                </div>
-
+        <div class="form-group">
+             <input type="text" id="largo" placeholder="Largo" class="form-control">
+        </div>
       <!-- Fuente -->
         <legend class="mt-4">Fuente</legend>
         <div class="form-check">
-        <label class="form-check-label">
+          <label class="form-check-label">
           <input type="radio" class="form-check-input" name="optionsFuente" id="fuente_op1" value="Artificial">
-           Artificial
-        </label>
-          
-          </div>
-
-        <div class="form-check">
-        <label class="form-check-label">
-          <input type="radio" class="form-check-input" name="optionsFuente" id="fuente_op2" value="Natural">
-           Natural
-        </label>
+          Artificial
+          </label>
         </div>
-        
+        <div class="form-check">
+          <label class="form-check-label">
+          <input type="radio" class="form-check-input" name="optionsFuente" id="fuente_op2" value="Natural">
+          Natural
+          </label>
+        </div> 
         <legend class="mt-4">Tiempo</legend>
         <div class="form-check">
-        <label class="form-check-label">
+          <label class="form-check-label">
           <input type="radio" class="form-check-input" name="optionsTiempo" id="tiempo_op1" value="Permanente" checked="">
           Permanente
           </label>
-          </div>
+        </div>
         <div class="form-check">
-        <label class="form-check-label">
+          <label class="form-check-label">
           <input type="radio" class="form-check-input" name="optionsTiempo" id="tiempo_op2" value="Temporal" checked="">
           Temporal
         </label>
-      </div>
+        </div>          
+      <!-- Calidad del agua -->
+       <legend class="mt-4">Calidad del Agua</legend>
+       <div class="form-check">
+         <label class="form-check-label">
+         <input type="radio" class="form-check-input" name="optionsAgua" id="agua_op1" value="Conservado" checked="">
+         Conservado
+         </label>
+        </div>
+        <div class="form-check">
+         <label class="form-check-label">
+         <input type="radio" class="form-check-input" name="optionsAgua" id="agua_op2" value="Alterado" checked="">
+          Alterado
+        </label>
+        </div>
+        <div class="form-check">
+          <label class="form-check-label">
+          <input type="radio" class="form-check-input" name="optionsAgua" id="agua_op3" value="Muy Alterado" checked="">
+          Muy Alterado
+          </label>
+        </div>
+      <!-- Conductividad -->
+        <div class="form-group">
+          <input type="text" id="Conductividad" placeholder="Conductividad" class="form-control">
+        </div>
+      <!-- pH -->
+        <div class="form-group">
+            <input type="text" id="pH" placeholder="pH" class="form-control">
+        </div>              
+      <!-- O2 disuelto -->
+         <div class="form-group">
+           <input type="text" id="O2disuelto" placeholder="02 disuelto" class="form-control">
+          </div>
+      <!-- Turbidez -->
+          <div class="form-group">
+            <input type="text" id="Turbidez" placeholder="Turbidez" class="form-control">
+          </div>        
+      <!-- Color -->
+          <div class="form-group">
+            <input type="text" id="Color" placeholder="Color" class="form-control">
+          </div>               
+      <!-- Temperatura -->
+          <div class="form-group">
+             <input type="text" id="Temperatura" placeholder="Temperatura" class="form-control">
+          </div>             
+     <!-- Regimen Hidrologico -->
+          <legend class="mt-4">Regimen Hidrologico</legend>
+          <div class="form-check">
+            <label class="form-check-label">
+            <input type="radio" class="form-check-input" name="optionsReg" id="reg_op1" value="Conservado" checked="">
+            Conservado
+            </label>
+          </div>
+          <div class="form-check">
+            <label class="form-check-label">
+            <input type="radio" class="form-check-input" name="optionsReg" id="reg_op2" value="Alterado" checked="">
+            Alterado
+            </label>
+          </div>
 
-  <!-- Diversidad Vegetal -->
+          <div class="form-check">
+            <label class="form-check-label">
+            <input type="radio" class="form-check-input" name="optionsReg" id="reg_op3" value="Muy Alterado" checked="">
+            Muy Alterado
+            </label>
+          </div>
+
+ 
+
+      <!-- Presion -->
+          <div class="form-group" id="input_presion">
+           <button type="button" class="btn btn-success" id="btn_presion_hum">+</button>
+            <button type="button" class="btn btn-success" id="btn_presion_add">Añadir Nueva Presion</button>
+            <label for="presion_label" class="form-label mt-4">Presión del terreno:</label>
+
+          <div class="from-group"> <!-- Parte que se agrega-->
+          <select class="form-select 0" id="sel_presion">
+          <option>Tipo de presion...</option>
+          <option>Complejo 2</option>
+          <option>Complejo 3</option>
+          <option>Complejo 4</option>
+          <option>Complejo 5</option>
+          </select>
+          </div>
+          </div>           
+
+      <!-- Diversidad Vegetal -->
         <legend class="mt-4">Diversidad Vegetal</legend>
         <div class="form-check">
-        <label class="form-check-label">
+         <label class="form-check-label">
           <input type="radio" class="form-check-input" name="optionsDV" id="dv_op1" value="Conservado" checked="">
           Conservado
           </label>
-          </div>
+        </div>
 
         <div class="form-check">
-        <label class="form-check-label">
+          <label class="form-check-label">
           <input type="radio" class="form-check-input" name="optionsDV" id="dv_op2" value="Alterado" checked="">
           Alterado
-        </label>
-      </div>
+         </label>
+        </div>
 
-      <div class="form-check">
-        <label class="form-check-label">
+        <div class="form-check">
+         <label class="form-check-label">
           <input type="radio" class="form-check-input" name="optionsDV" id="dv_op3" value="Muy Alterado" checked="">
           Muy Alterado
-        </label>
-      </div>
+         </label>
+       </div>
 
-    <!-- Regimen Hidrologico -->
-        <legend class="mt-4">Regimen Hidrologico</legend>
-        <div class="form-check">
-        <label class="form-check-label">
-          <input type="radio" class="form-check-input" name="optionsReg" id="reg_op1" value="Conservado" checked="">
-          Conservado
-          </label>
-          </div>
-
-        <div class="form-check">
-        <label class="form-check-label">
-          <input type="radio" class="form-check-input" name="optionsReg" id="reg_op2" value="Alterado" checked="">
-          Alterado
-        </label>
-      </div>
-
-      <div class="form-check">
-        <label class="form-check-label">
-          <input type="radio" class="form-check-input" name="optionsReg" id="reg_op3" value="Muy Alterado" checked="">
-          Muy Alterado
-        </label>
-      </div>
-
-    <!-- Calidad del agua -->
-        <legend class="mt-4">Calidad del Agua</legend>
-        <div class="form-check">
-        <label class="form-check-label">
-          <input type="radio" class="form-check-input" name="optionsAgua" id="agua_op1" value="Conservado" checked="">
-          Conservado
-          </label>
-          </div>
-
-        <div class="form-check">
-        <label class="form-check-label">
-          <input type="radio" class="form-check-input" name="optionsAgua" id="agua_op2" value="Alterado" checked="">
-          Alterado
-        </label>
-      </div>
-
-      <div class="form-check">
-        <label class="form-check-label">
-          <input type="radio" class="form-check-input" name="optionsAgua" id="agua_op3" value="Muy Alterado" checked="">
-          Muy Alterado
-        </label>
-      </div>
-
-<!-- Presion -->
-      <div class="form-group" id="input_presion">
-      <button type="button" class="btn btn-success" id="btn_presion_hum">+</button>
-      <button type="button" class="btn btn-success" id="btn_presion_add">Añadir Nueva Presion</button>
-      <label for="presion_label" class="form-label mt-4">Presión del terreno:</label>
-
-      <div class="from-group"> <!-- Parte que se agrega-->
-      <select class="form-select 0" id="sel_presion">
-      <option>Tipo de presion...</option>
-      <option>Complejo 2</option>
-      <option>Complejo 3</option>
-      <option>Complejo 4</option>
-      <option>Complejo 5</option>
-      </select>
-      </div>
-
-      
-      </div>
-<!-- Fauna -->
+    
+    <!-- Fauna -->
       <div class="form-group" id="input_fauna">
-      <button type="button" class="btn btn-success" id="btn_fauna_hum">+</button>
-      <button type="button" class="btn btn-success" id="btn_fauna_add">Añadir Nueva Fauna</button>
-      <label for="fauna_label" class="form-label mt-4">Fauna:</label>
+        <button type="button" class="btn btn-success" id="btn_fauna_hum">+</button>
+        <button type="button" class="btn btn-success" id="btn_fauna_add">Añadir Nueva Fauna</button>
+       <label for="fauna_label" class="form-label mt-4">Fauna:</label>
 
       <div class="from-group"> <!-- Parte que se agrega-->
-      <select class="form-select 0" id="sel_fauna">
-      <option>Seleccione Fauna...</option>
-      <option>Complejo 2</option>
-      <option>Complejo 3</option>
-      <option>Complejo 4</option>
-      <option>Complejo 5</option>
-      </select>
+        <select class="form-select 0" id="sel_fauna">
+       <option>Seleccione Fauna...</option>
+       <option>Complejo 2</option>
+       <option>Complejo 3</option>
+       <option>Complejo 4</option>
+       <option>Complejo 5</option>
+       </select>
       </div>
 
       </div>
 <!-- Flora -->
       <div class="form-group" id="input_flora">
-      <button type="button" class="btn btn-success" id="btn_flora_hum">+</button>
-      <button type="button" class="btn btn-success" id="btn_flora_add">Añadir Nueva Flora</button>
-      <label for="flora_label" class="form-label mt-4">Flora:</label>
-      <div class="from-group"> <!-- Parte que se agrega-->
-      <select class="form-select 0" id="sel_flora">
-      <option>Seleccione Flora...</option>
-      <option>Complejo 2</option>
-      <option>Complejo 3</option>
-      <option>Complejo 4</option>
-      <option>Complejo 5</option>
-      </select>
+        <button type="button" class="btn btn-success" id="btn_flora_hum">+</button>
+       <button type="button" class="btn btn-success" id="btn_flora_add">Añadir Nueva Flora</button>
+        <label for="flora_label" class="form-label mt-4">Flora:</label>
+     <div class="from-group"> <!-- Parte que se agrega-->
+        <select class="form-select 0" id="sel_flora">
+        <option>Seleccione Flora...</option>
+        <option>Complejo 2</option>
+        <option>Complejo 3</option>
+        <option>Complejo 4</option>
+        <option>Complejo 5</option>
+        </select>
       </div>
 
 
       </div>
+
+    <!-- Observaciones -->
+      <div class="form-group">
+        <textarea id="obs" cols="30" rows="10" class="form-control" placeholder="Observaciones"></textarea>
+      </div>
+
       </fieldset> <!--  -->
-
-
       <div class="modal-footer">
                 <input type="hidden" id="form_alta_id">
                 <button type="submit" class="btn btn-primary btn-block text-center">
