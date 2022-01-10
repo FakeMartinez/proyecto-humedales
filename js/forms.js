@@ -154,7 +154,6 @@ $(function(){
           id_cuenca:$('#id_cuenca').val(),
           nombre_cuenca: $('#nom_cuenca').val(),
           sup_cuenca: $('#sup_cuenca').val(),
-          ext_cuenca: $('#ext_cuenca').val(),
           tipo_cuenca:$('#tipo_cuenca').val(),
         };
         //console.log(postData);
@@ -188,7 +187,7 @@ $(function(){
   
   ////////////////////////////////////////////////
 
-  //////////////////Form presion/////////////////////
+  //////////////////Form presion///////////////////// | 🗸 FUNCIONA 🗸 |
   $('#form-presion').submit(e => {
     e.preventDefault();                         //para que es preventDefault();
     const postData = {                          //const crea una variable llamada postData

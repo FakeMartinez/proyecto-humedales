@@ -15,17 +15,16 @@
 /////////////////Cuenca/////////////////////////
 
 if(isset($_POST['id_cuenca'])) {
-    $add_id = $_POST['id_cuenca'];
+  $add_id = $_POST['id_cuenca'];
   $add_nom = $_POST['nombre_cuenca'];
   $add_sup = $_POST['sup_cuenca'];
-  $add_exp = $_POST['ext_cuenca'];
   $add_tipo = $_POST['tipo_cuenca'];
 
-  $query1 = "INSERT into cuenca (id_cuenca, nombre_cuenca, sup_cuenca, ext_cuenca, tipo_cuenca) VALUES ( 
-    '$add_id', '$add_nom' , '$add_sup', '$add_exp', '$add_tipo')";
+  $query1 = "INSERT into cuenca (Id_cuenca, Nombre, Superficie, Tipo) VALUES ( 
+    '$add_id', '$add_nom' , '$add_sup', '$add_tipo')";
   
   act($connect,$query1);
-
+    //El ID de las cuencas no sería autonumérico?
 };
 
 
@@ -34,11 +33,13 @@ if(isset($_POST['id_cuenca'])) {
 /////////////////Complejo////////////////////////
 
 if(isset($_POST['id_complejo'])) {
-    $add_id = $_POST['id_complejo'];
+  $add_id = $_POST['id_complejo'];
   $add_nom = $_POST['nombre_complejo'];
   $add_prop = $_POST['prop_complejo'];
 
-  $query2 = "INSERT into complejo (id_complejo, nombre_complejo, prop_complejo) VALUES ('$add_id','$add_nom','$add_prop')";
+  $query2 = "INSERT into complejo (Id_complejo, Nombre) VALUES ('$add_id','$add_nom')";
+
+  //El propietario tendría que ser un desplegable para seleccionarlo? y en ese caso, tendría que haber la posibilidad de crear una nueva persona que sea propietario?
 
   act($connect,$query2);
 };
@@ -46,7 +47,7 @@ if(isset($_POST['id_complejo'])) {
 
   
 
-/////////////////Tipo de Presion///////////////////
+/////////////////Tipo de Presion///////////////////  | 🗸 FUNCIONA 🗸 |
 
   if(isset($_POST['tipo_presion'])) {   //$_POST es la variable pasada al llamar el documento desde forms.js (¿$_POST es universal?)
     $add_tipo= $_POST['tipo_presion'];  // agrega el valor de $_POST.tipo_presion a $add_tipo
@@ -66,11 +67,15 @@ if(isset($_POST['nom_cq_fauna'])) {
     $add_carac= $_POST['carac_fauna'];
     $add_img = $_POST['img_fauna'];
 
-    $query4 = "INSERT into fauna (nom_coloquial_fauna, nom_cientifico_fauna,carac_fauna,img_fauna) VALUES 
+    $query4 = "INSERT into fauna (Nombre coloquial, Nombre científico, Descripción) VALUES 
     ('$add_nomcq','$add_nomci','$add_carac','$add_img')";
-
-
+    $query4_2 = "INSERT into imagen (PATH) VALUES  ('$add_img') ";  //Preparacion para cargar la imagen
+   
     act($connect,$query4);
+    act($connect,$query4_2);  //Para cargar la imagen
+
+    //$query4_3 = "INSERT into fotográfica (id_imagen, id_fauna) values ('IDDEIMAGEN', 'IDDEFAUNA')";
+    //act($connect,$query4_3);
 };
 
 
@@ -82,10 +87,14 @@ if(isset($_POST['nom_cq_flora'])) {
     $add_carac= $_POST['carac_flora'];
     $add_img = $_POST['img_flora'];
     
-    $query5 = "INSERT into flora (nom_coloquial_flora, nom_cientifico_flora,carac_flora,img_flora) VALUES 
-    ('$add_nomcq','$add_nomci','$add_carac','$add_img')";
-    
+    $query5 = "INSERT into flora (Nombre coloquial, Nombre científico, Descripcion) VALUES 
+    ('$add_nomcq','$add_nomci','$add_carac')";
+    $query5_2 = "INSERT into imagen (PATH) VALUES  ('$add_img') ";  //Preparacion para cargar la imagen
     act($connect,$query5);
+    act($connect,$query5_2); //Para cargar la imagen
+
+
+    //faltaría la union en la tabla fotográfica
 };
 
 //////////////////////////////////////////////////
