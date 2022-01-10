@@ -5,8 +5,8 @@
   $q_cuenca = mysqli_query($connect,"SELECT Nombre FROM cuenca");
   $q_comp = mysqli_query($connect,"SELECT Nombre FROM complejo");
   // $q_presion = mysqli_query($connect,"SELECT tipo_presion FROM presion");
-  $q_fauna = mysqli_query($connect,"SELECT Nombre coloquial FROM fauna");
-  $q_flora =  mysqli_query($connect,"SELECT Nombre coloquial FROM flora");
+  $q_fauna = mysqli_query($connect,"SELECT Nombre_coloquial FROM fauna");
+  $q_flora =  mysqli_query($connect,"SELECT Nombre_coloquial FROM flora");
 
   $json1 = array();
   $json2 = array();
@@ -34,13 +34,13 @@
 */
     while($row = mysqli_fetch_array($q_fauna)) {
       array_push($json4, [
-        'nom_fauna' => $row['Nombre coloquial']
+        'nom_fauna' => $row['Nombre_coloquial']
       ]);
     };
 
     while($row = mysqli_fetch_array($q_flora)) {
       array_push($json5, [
-        'nom_flora' => $row['Nombre coloquial']
+        'nom_flora' => $row['Nombre_coloquial']
       ]);
     };
 
@@ -112,9 +112,9 @@ while($row = mysqli_fetch_array($q_id_comp)) {
 
 ///////////////////////////////
 
-  $query1 = "INSERT into humedal (Id_humedal, fecha_rel,Id_cuenca, Id_complejo, Nombre, Conductividad , Ancho , O2 disuelto , Calidad de H2O , Diversidad Vegetal , Observaciones , 
-Regimen hidrológico , turbidez , Largo , ph , Color , Fuente  , Tiempo , Temperatura H2O) VALUES 
-  ('$add_id','$add_fecha', '$id_cuenca', '$id_complejo', '$add_nom',' $add_conductividad ','$add_ancho','$add_o2disuelto ','$add_calidad_agua', '$add_diversidad_vegetal', '$add_obs',
+  $query1 = "INSERT into humedal (Id_humedal, fecha_rel,Id_cuenca, Id_complejo, Nombre, Conductividad , Ancho , O2_disuelto , Calidad_de_H2O , Diversidad_Vegetal , Observaciones , 
+Regimen_hidrológico , turbidez , Largo , ph , Color , Fuente  , Tiempo , Temperatura_H2O) VALUES 
+  ('$add_id','$add_fecha', 5, 2, '$add_nom',' $add_conductividad ','$add_ancho','$add_o2disuelto ','$add_calidad_agua', '$add_diversidad_vegetal', '$add_obs',
   '$add_regimen_hidrologico','$add_turbidez','$add_largo', '$add_pH' , ' $add_color' ,'$add_fuente', '$add_tiempo',  '$add_temperatrura'   )";
 
     
@@ -136,7 +136,7 @@ Regimen hidrológico , turbidez , Largo , ph , Color , Fuente  , Tiempo , Temper
   }*/
 
   ///////////////////////////////////////////////
-  /*  $a = array();
+   /* $a = array();
    while ($cont_pre >= 0) {
     $presion = $_POST["presion{$cont_pre}"];
     $q_id = mysqli_query($connect,"SELECT id_presion FROM presion where tipo_presion = '$presion'");
@@ -163,10 +163,10 @@ Regimen hidrológico , turbidez , Largo , ph , Color , Fuente  , Tiempo , Temper
   //////////////////////////////////////////////
 
     ///////////////////////////////////////////////
-    $b = array();
+  /*  $b = array();
   while ($cont_fau >= 0) {
     $fauna = $_POST["fauna{$cont_fau}"];
-    $q_id = mysqli_query($connect,"SELECT Id_fauna FROM fauna WHERE Nombre coloquial= '$fauna'");
+    $q_id = mysqli_query($connect,"SELECT Id_fauna FROM fauna WHERE Nombre_coloquial= '$fauna'");
 
     if (!$q_id) {
       die('Query Error'.mysqli_error($connect));
@@ -193,7 +193,7 @@ Regimen hidrológico , turbidez , Largo , ph , Color , Fuente  , Tiempo , Temper
       $c = array();
       while ($cont_flo >= 0) {
         $flora = $_POST["flora{$cont_flo}"];
-        $q_id = mysqli_query($connect,"SELECT Id_flora FROM flora WHERE Nombre coloquial = '$flora'");
+        $q_id = mysqli_query($connect,"SELECT Id_flora FROM flora WHERE Nombre_coloquial = '$flora'");
     
         if (!$q_id) {
           die('Query Error'.mysqli_error($connect));
@@ -215,9 +215,10 @@ Regimen hidrológico , turbidez , Largo , ph , Color , Fuente  , Tiempo , Temper
       }
     
   //////////////////////////////////////////////
-
+*/
 }
 
 
 
 ?>
+
