@@ -96,7 +96,7 @@ if(isset($_POST['nom_cq_flora'])) {
     act($connect,$query5);
     act($connect,$query5_2); //Para cargar la imagen
 
-    $ID_Imag = mysqli_query($connect,"SELECT Id_imagen FROM imagen WHERE PATH= '$add_img'");
+    $ID_Imag= mysqli_query($connect,"SELECT Id_imagen FROM imagen WHERE PATH= '$add_img'");
     
     $query5_3  = "INSERT into fotográfica (id_imagen, id_flora) VALUES ('$ID_Imag','$add_ID')";
     act($connect,$query5_3)
