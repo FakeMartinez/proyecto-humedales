@@ -317,7 +317,7 @@
         <div class="form-group">
       <label for="cuenca_label" class="form-label mt-4">Cuenca:</label>
       <select class="form-select" id="sel_cuenca">
-      <option>Seleccione Cuenca...</option>
+        <option>Seleccione Cuenca...</option>
       </select>
       <button type="button" class="btn btn-success" id="btn_cuenca_add">Añadir Nueva Cuenca</button>
       </div>
@@ -457,19 +457,19 @@
 
 <!-- Presion -->
       <div class="form-group" id="input_presion">
-      <button type="button" class="btn btn-success" id="btn_presion_hum">+</button>
-      <button type="button" class="btn btn-success" id="btn_presion_add">Añadir Nueva Presion</button>
-      
-      <label for="presion_label" class="form-label mt-4">Presión del terreno:</label>
+        <button type="button" class="btn btn-success" id="btn_presion_hum">+</button>
+        <button type="button" class="btn btn-success" id="btn_presion_add">Añadir Nueva Presion</button>
+        
+        <label for="presion_label" class="form-label mt-4">Presión del terreno:</label>
 
-      <div class="from-group"> <!-- Parte que se agrega-->
-        <select class="form-select 0" id="sel_presion">
-          <option>Tipo de presion...</option>
-          <option>Complejo 2</option>
-          <option>Complejo 3</option>
-          <option>Complejo 4</option>
-          <option>Complejo 5</option>
-        </select>
+        <div class="from-group"> <!-- Parte que se agrega-->
+          <select class="form-select 0" id="sel_presion">
+            <option>Tipo de presion...</option>
+            <option>Complejo 2</option>
+            <option>Complejo 3</option>
+            <option>Complejo 4</option>
+            <option>Complejo 5</option>
+          </select>
         </div>
 
       
@@ -602,9 +602,11 @@
         <div class="form-group">
          <input type="text" id="nom_comp" placeholder="Nombre" class="form-control"> 
          </div>
-        <!-- Superficie -->
+        <!-- Propietario -->
         <div class="form-group">
-         <input type="text" id="prop_comp" placeholder="Propietario" class="form-control"> 
+          <select class="form-select" id="sel_propietario">
+            <option>Seleccione Propietario...</option>
+          </select>
         </div>
         </fieldset>
         <div class="modal-footer">
@@ -639,6 +641,9 @@
         <form id="form-presion">
         
         <!-- Tipo Presion -->
+        <div class="form-group">
+          <input type="text" id="Id_presion" placeholder="ID" class="form-control"> 
+          </div>
         <div class="form-group">
          <input type="text" id="tipo_presion" placeholder="Tipo de Presión" class="form-control"> 
          </div>
@@ -679,6 +684,12 @@
         <fieldset> <!-- Formulario -->
         <form id="form-fauna">
         
+
+        <!-- Nombre ID -->
+        <div class="form-group">
+          <input type="text" id="ID_fauna" placeholder="ID" class="form-control"> 
+          </div>
+
         <!-- Nombre coloquial -->
         <div class="form-group">
          <input type="text" id="nom_colquial_fauna" placeholder="Nombre Coloquial" class="form-control"> 
@@ -724,26 +735,34 @@
       <div class="modal-body">
         <div class="row p-4">
 
+      
+
         <fieldset> <!-- Formulario -->
-        <form id="form-flora">
-        
-        <!-- Nombre coloquial -->
-        <div class="form-group">
-         <input type="text" id="nom_colquial_flora" placeholder="Nombre Coloquial" class="form-control"> 
-         </div>
-        <!-- Nombre cientifico -->
-        <div class="form-group">
-         <input type="text" id="nom_ctfico_flora" placeholder="Nombre Cientifico" class="form-control"> 
-        </div>
-         <!-- Caracteristicas -->
-         <div class="form-group">
-         <textarea id="carac_flora" cols="30" rows="10" class="form-control" placeholder="Caracteristicas"></textarea>
-         </div>
-         <!-- Imagen -->
-         <div class="form-group">
-      <label for="formFile" class="form-label mt-4">Cargar Imagen</label>
-      <input class="form-control" type="file" id="img_flora">
-      </div>
+          <form id="form-flora">
+          
+          <!-- Nombre ID -->
+          <div class="form-group">
+            <input type="text" id="ID_flora" placeholder="ID" class="form-control"> 
+          </div>
+
+          <!-- Nombre coloquial -->
+          <div class="form-group">
+          <input type="text" id="nom_colquial_flora" placeholder="Nombre Coloquial" class="form-control"> 
+          </div>
+          <!-- Nombre cientifico -->
+          <div class="form-group">
+          <input type="text" id="nom_ctfico_flora" placeholder="Nombre Cientifico" class="form-control"> 
+          </div>
+          <!-- Caracteristicas -->
+          <div class="form-group">
+            <textarea id="carac_flora" cols="30" rows="10" class="form-control" placeholder="Caracteristicas"></textarea>
+          </div>
+          <!-- Imagen -->
+          <div class="form-group">
+            <label for="formFile" class="form-label mt-4">Cargar Imagen</label>
+            <input class="form-control" type="file" id="img_flora">
+          </div>
+
         </fieldset>
         <div class="modal-footer">
                 <input type="hidden" id="form_flora_id">

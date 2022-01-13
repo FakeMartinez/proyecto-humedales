@@ -192,7 +192,8 @@ $(function(){
     e.preventDefault();                         //para que es preventDefault();
     const postData = {                          //const crea una variable llamada postData
       tipo_presion: $('#tipo_presion').val(),   //Parametro tipo_presion de la variable postData, toma el valor del objeto con id tipo_presion
-      obs_presion: $('#obs_presion').val(),     //Parametro obs_presion de la variable postData, toma el valor del objeto con id  obs_presion
+      obs_presion: $('#obs_presion').val(), 
+      ID_presion: $('#Id_presion').val()    //Parametro obs_presion de la variable postData, toma el valor del objeto con id  obs_presion
     };
     //console.log(postData);
     $.post('php/sub_forms.php', postData, (response) => {  //post llama al archivo php llamada sub_forms.php    ¿response es el valor que devuelve?
@@ -210,6 +211,7 @@ $(function(){
   $('#form-fauna').submit(e => {
     e.preventDefault();
     const postData = {
+      id_fauna: $('#ID_fauna').val(),
       nom_cq_fauna: $('#nom_colquial_fauna').val(),
       nom_cf_fauna: $('#nom_ctfico_fauna').val(),
       carac_fauna: $('#carac_fauna').val(),
@@ -232,6 +234,7 @@ $(function(){
   $('#form-flora').submit(e => {
     e.preventDefault();
     const postData = {
+      id_flora: $('#ID_flora').val(),
       nom_cq_flora: $('#nom_colquial_flora').val(),
       nom_cf_flora: $('#nom_ctfico_flora').val(),
       carac_flora: $('#carac_flora').val(),

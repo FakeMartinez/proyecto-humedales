@@ -2,11 +2,11 @@
 
   require('conexion.php');
 
-  $q_cuenca = mysqli_query($connect,"SELECT nombre_cuenca FROM cuenca");
-  $q_comp = mysqli_query($connect,"SELECT nombre_complejo FROM complejo");
-  $q_presion = mysqli_query($connect,"SELECT tipo_presion FROM presion");
-  $q_fauna = mysqli_query($connect,"SELECT nom_coloquial_fauna FROM fauna");
-  $q_flora =  mysqli_query($connect,"SELECT nom_coloquial_flora FROM flora");
+  $q_cuenca = mysqli_query($connect,"SELECT Nombre FROM cuenca");
+  $q_comp = mysqli_query($connect,"SELECT Nombre FROM complejo");
+  $q_presion = mysqli_query($connect,"SELECT Tipo FROM presiones");
+  $q_fauna = mysqli_query($connect,"SELECT NombreColoquial FROM fauna");
+  $q_flora =  mysqli_query($connect,"SELECT NombreColoquial FROM flora");
 
   $json1 = array();
   $json2 = array();
@@ -16,50 +16,50 @@
 
   while($row = mysqli_fetch_array($q_cuenca)) {
     array_push($json1, [
-      'nombre_cuenca' => $row['nombre_cuenca']
+      'nombre_cuenca' => $row['Nombre']
     ]);
   };
 
-    while($row = mysqli_fetch_array($q_comp)) {
-      array_push($json2, [
-        'nombre_complejo' => $row['nombre_complejo']
-      ]);
-    };
+  while($row = mysqli_fetch_array($q_comp)) {
+    array_push($json2, [
+      'nombre_complejo' => $row['Nombre']
+    ]);
+  };
 
-    while($row = mysqli_fetch_array($q_presion)) {
-      array_push($json3, [
-        'tipo_presion' => $row['tipo_presion']
-      ]);
-    };
+  while($row = mysqli_fetch_array($q_presion)) {
+    array_push($json3, [
+      'tipo_presion' => $row['Tipo']
+    ]);
+  };
 
-    while($row = mysqli_fetch_array($q_fauna)) {
-      array_push($json4, [
-        'nom_fauna' => $row['nom_coloquial_fauna']
-      ]);
-    };
+  while($row = mysqli_fetch_array($q_fauna)) {
+    array_push($json4, [
+      'nom_fauna' => $row['NombreColoquial']
+    ]);
+  };
 
-    while($row = mysqli_fetch_array($q_flora)) {
-      array_push($json5, [
-        'nom_flora' => $row['nom_coloquial_flora']
-      ]);
-    };
+  while($row = mysqli_fetch_array($q_flora)) {
+    array_push($json5, [
+      'nom_flora' => $row['NombreColoquial']
+    ]);
+  };
 
-    //echo($json);
+  //echo($json);
   
 
-    $jsons = [
-      "cuencas"=> $json1,
-      "complejos"=> $json2,
-      "presiones"=> $json3,
-      "faunas"=>$json4,
-      "floras"=>$json5
-    ];
+  $jsons = [
+    "cuencas"=> $json1,
+    "complejos"=> $json2,
+    "presiones"=> $json3,
+    "faunas"=>$json4,
+    "floras"=>$json5
+  ];
 
-    //array_push($jsons, $json1, $json2);
+  //array_push($jsons, $json1, $json2);
 
-    $jsonstring = json_encode($jsons);
+  $jsonstring = json_encode($jsons);
 
-    echo $jsonstring;
+  echo $jsonstring;
 
 
 

@@ -171,8 +171,8 @@ INSERT INTO `cuenca` (`Id_cuenca`, `Nombre`, `Superficie`, `Tipo`) VALUES
 
 CREATE TABLE `fauna` (
   `Id_fauna` int(20) NOT NULL,
-  `Nombre coloquial` varchar(20) NOT NULL,
-  `Nombre científico` varchar(20) NOT NULL,
+  `NombreColoquial` varchar(20) NOT NULL,
+  `NombreCientífico` varchar(20) NOT NULL,
   `Descripción` varchar(500) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -195,8 +195,8 @@ INSERT INTO `fauna` (`Id_fauna`, `Nombre coloquial`, `Nombre científico`, `Desc
 
 CREATE TABLE `flora` (
   `Id_flora` int(20) NOT NULL,
-  `Nombre coloquial` varchar(20) NOT NULL,
-  `Nombre científico` varchar(20) NOT NULL,
+  `NombreColoquial` varchar(20) NOT NULL,
+  `NombreCientífico` varchar(20) NOT NULL,
   `Descripcion` varchar(500) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -217,7 +217,7 @@ INSERT INTO `flora` (`Id_flora`, `Nombre coloquial`, `Nombre científico`, `Desc
 --
 
 CREATE TABLE `fotográfica` (
-  `Id_fotografia` int(11) NOT NULL,
+  `Id_fotografia` int(11)  NOT NULL AUTO_INCREMENT,
   `descripción` varchar(200) NOT NULL,
   `id_imagen` int(11) NOT NULL,
   `zona de captura` int(11) NOT NULL,
