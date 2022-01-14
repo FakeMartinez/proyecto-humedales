@@ -1,6 +1,7 @@
 var x_pre = 0;
 var x_fau = 0;
 var x_flo = 0;
+var x_prop = 0;
 var update = false;
 
 $(function(){
@@ -10,6 +11,7 @@ $(function(){
     carga_form_alta_p();
     carga_form_alta_fa();
     carga_form_alta_fl();
+    carga_form_alta_propie();
 
     //Cerrar Formulario Alta
     $('#close_btn_add').on('click', function(){
@@ -364,7 +366,7 @@ $('#btn_add').on('click', function(){
           if(!response.error) {
             //console.log(response);
             let datos = JSON.parse(response);
-            console.log(datos);
+            //console.log(datos);
             let template3 = '';
             datos['presiones'].forEach(dato => {
               template3 += `
@@ -420,6 +422,27 @@ $('#btn_add').on('click', function(){
             });
           };
   
+          function carga_form_alta_propie(){
+           
+            $.ajax({
+              url: 'php/alta.php',
+              type: 'GET',
+              success: function (response) {
+                  if(!response.error) {
+                    //console.log(response);
+                    let datos = JSON.parse(response);
+                    //console.log(datos);
+                    let template6 = '';
+                    datos['propietarios'].forEach(template6 += `<option>${nom_prop}</option>` );  
+                    //console.log(template6);    
+                    alert(template6);
+                    $('#sel_propietario').html(template6);
+                    }
+                    
+                  }
+                });
+              };
+              
       ////////////////////////////////
   
       function carga_form_alta_cu(){
@@ -451,15 +474,11 @@ $('#btn_add').on('click', function(){
               type: 'GET',
               success: function (response) {
                   if(!response.error) {
-                    //console.log(response);
+                  //  console.log(response);
                     let datos = JSON.parse(response);
-                    //console.log(datos);
+                  //  console.log(datos);
                     let template2 = '';
-                    datos['complejos'].forEach(dato => {
-                      template2 += `
-                      <option>${dato.nombre_complejo}</option>
-                            ` });
-                    
+                    datos['complejos'].forEach(dato => {template2 += `<option>${dato.nombre_complejo}</option>` });                    
                     $('#sel_complejo').html(template2);
                     
                     }

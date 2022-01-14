@@ -92,14 +92,14 @@ if(isset($_POST['nom_cq_flora'])) {
 
     $query5 = "INSERT into flora (Id_flora, NombreColoquial, NombreCientífico, Descripcion) VALUES 
     ('$add_ID', '$add_nomcq','$add_nomci','$add_carac')";
-    $query5_2 = "INSERT into imagen (PATH) VALUES  ('$add_img') ";  //Preparacion para cargar la imagen
+    //$query5_2 = "INSERT into imagen (PATH) VALUES  ('$add_img') ";  //Preparacion para cargar la imagen
     act($connect,$query5);
-    act($connect,$query5_2); //Para cargar la imagen
+    //act($connect,$query5_2); //Para cargar la imagen
 
-    $ID_Imag= mysqli_query($connect,"SELECT Id_imagen FROM imagen WHERE PATH= '$add_img'");
+    //$ID_Imag= mysqli_query($connect,"SELECT Id_imagen FROM imagen WHERE PATH= '$add_img'");
     
-    $query5_3  = "INSERT into fotográfica (id_imagen, id_flora) VALUES ('$ID_Imag','$add_ID')";
-    act($connect,$query5_3)
+    //$query5_3  = "INSERT into fotográfica (id_imagen, id_flora) VALUES ('$ID_Imag','$add_ID')";
+    //act($connect,$query5_3);
 
     //faltaría la union en la tabla fotográfica
 };

@@ -7,12 +7,14 @@
   $q_presion = mysqli_query($connect,"SELECT Tipo FROM presiones");
   $q_fauna = mysqli_query($connect,"SELECT NombreColoquial FROM fauna");
   $q_flora =  mysqli_query($connect,"SELECT NombreColoquial FROM flora");
+  $q_propie = mysqli_query($connect,"SELECT Nombre FROM propietario, persona WHERE persona.Id_persona = propietario.Id_persona");
 
   $json1 = array();
   $json2 = array();
   $json3 = array();
   $json4 = array();
   $json5 = array();
+  $json6 = array();
 
   while($row = mysqli_fetch_array($q_cuenca)) {
     array_push($json1, [
@@ -44,6 +46,12 @@
     ]);
   };
 
+  
+  while($row = mysqli_fetch_array($q_propie)) {
+    array_push($json6, [
+      'nom_prop' => $row['Nombre']
+    ]);
+  };
   //echo($json);
   
 
@@ -52,7 +60,8 @@
     "complejos"=> $json2,
     "presiones"=> $json3,
     "faunas"=>$json4,
-    "floras"=>$json5
+    "floras"=>$json5,
+    "propietarios"=>$json6
   ];
 
   //array_push($jsons, $json1, $json2);
