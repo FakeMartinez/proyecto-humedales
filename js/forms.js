@@ -433,9 +433,8 @@ $('#btn_add').on('click', function(){
                     let datos = JSON.parse(response);
                     //console.log(datos);
                     let template6 = '';
-                    datos['propietarios'].forEach(template6 += `<option>${nom_prop}</option>` );  
+                    datos['propietarios'].forEach(dato => {template6 += `<option>${dato.nom_prop}</option>` });  
                     //console.log(template6);    
-                    alert(template6);
                     $('#sel_propietario').html(template6);
                     }
                     
