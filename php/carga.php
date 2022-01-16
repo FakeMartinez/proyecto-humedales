@@ -1,4 +1,4 @@
-<?php<?php
+<?php
 error_reporting(0);
 require('conexion.php');
 
@@ -33,8 +33,8 @@ if(isset($_POST['nombre'])) {
   //---------------------
   
 //Falta consulta id_cuenca y id_complejo!!!! (Proximamente ID_humedal incremental)
-$q_id_cue = mysqli_query($connect,"SELECT Id_cuenca FROM cuenca where Nombre = '$add_cuenca'");
-$q_id_comp = mysqli_query($connect,"SELECT Id_complejo FROM complejo where  Nombre = '$add_complejo'");
+$q_id_cue = mysqli_query($connect,"SELECT Id_cuenca FROM cuenca where Nombre_cuenca = '$add_cuenca'");
+$q_id_comp = mysqli_query($connect,"SELECT Id_complejo FROM complejo where  Nombre_complejo = '$add_complejo'");
 
 $id_cuenca = array();
 $id_complejo = array();
@@ -66,22 +66,22 @@ $result = mysqli_query($connect, $query1);
   }*/
 
 ///////////////////////////////////////////////
-/* $a = array();
-$del1 = mysqli_query($connect,"DELETE from presion_humedal where id_humedal = '$add_id'");
+ $a = array();
+$del1 = mysqli_query($connect,"DELETE from contiene_presiones where Id_humedal = '$add_id'");
 while ($cont_pre >= 0) {
-  $presion = $_POST["presion{$cont_pre}"];
-  $q_id = mysqli_query($connect,"SELECT id_presion FROM presion where tipo_presion = '$presion'");
+  $presion = $_POST["presiones{$cont_pre}"];
+  $q_id = mysqli_query($connect,"SELECT Id_presiones FROM presiones where Tipo_presiones = '$presion'");
 
   if (!$q_id) {
     die('Query Error'.mysqli_error($connect));
   }
 
   while($row = mysqli_fetch_array($q_id)) {
-    $a = ($row['id_presion']);
+    $a = ($row['Id_presiones']);
   };
 
   //echo ("???".$a."???");
-  $qp = mysqli_query($connect,"INSERT into presion_humedal (id_humedal, id_presion) VALUES ('$add_id','$a')");
+  $qp = mysqli_query($connect,"INSERT into contiene_presiones (Id_humedal, Id_presiones) VALUES ('$add_id','$a')");
   
 
   if (!$qp) {
@@ -89,27 +89,27 @@ while ($cont_pre >= 0) {
   }else{
   $cont_pre = $cont_pre-1;
   }
-} */
+} 
 
 //////////////////////////////////////////////
 
   ///////////////////////////////////////////////
   $b = array();
-  $del2 = mysqli_query($connect,"DELETE from fauna where id_humedal = '$add_id'");
+  $del2 = mysqli_query($connect,"DELETE from contiene_fauna where Id_humedal = '$add_id'");
 while ($cont_fau >= 0) {
   $fauna = $_POST["fauna{$cont_fau}"];
-  $q_id = mysqli_query($connect,"SELECT Id_fauna FROM fauna WHERE Nombre coloquial = '$fauna'");
+  $q_id = mysqli_query($connect,"SELECT Id_fauna FROM fauna WHERE Nombre_coloquial = '$fauna'");
 
   if (!$q_id) {
     die('Query Error'.mysqli_error($connect));
   }
 
   while($row = mysqli_fetch_array($q_id)) {
-    $b = ($row['id_fauna']);
+    $b = ($row['Id_fauna']);
   };
 
   //echo ("???".$b."???");
-  $qp = mysqli_query($connect,"INSERT into fauna (Id_humedal, Id_fauna) VALUES ('$add_id','$b')");
+  $qp = mysqli_query($connect,"INSERT into contiene_fauna (Id_humedal, Id_fauna) VALUES ('$add_id','$b')");
   
 
   if (!$qp) {
@@ -123,10 +123,10 @@ while ($cont_fau >= 0) {
 
 ///////////////////////////////////////////////
     $c = array();
-    $del3 = mysqli_query($connect,"DELETE from flora where Id_humedal = '$add_id'");
+    $del3 = mysqli_query($connect,"DELETE from contiene_flora where Id_humedal = '$add_id'");
     while ($cont_flo >= 0) {
       $flora = $_POST["flora{$cont_flo}"];
-      $q_id = mysqli_query($connect,"SELECT Id_flora FROM flora WHERE Nombre coloquial = '$flora'");
+      $q_id = mysqli_query($connect,"SELECT Id_flora FROM flora WHERE Nombre_coloquial = '$flora'");
   
       if (!$q_id) {
         die('Query Error'.mysqli_error($connect));
@@ -137,7 +137,7 @@ while ($cont_fau >= 0) {
       };
   
       //echo ("???".$c."???");
-      $qp = mysqli_query($connect,"INSERT into flora (Id_humedal, Id_flora) VALUES ('$add_id','$c')");
+      $qp = mysqli_query($connect,"INSERT into contiene_flora (Id_humedal, Id_flora) VALUES ('$add_id','$c')");
       
   
       if (!$qp) {
