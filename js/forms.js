@@ -69,8 +69,6 @@ $(function(){
           nombre: $('#nombre').val(),
           cuenca: $('#sel_cuenca').val(),
           complejo: $('#sel_complejo').val(),
-          latitud:$('#lat').val(),
-          longitud:$('#lng').val(),
           ancho:$('#ancho').val(),
           largo:$('#largo').val(),
           carac:$('#carac').val(),
@@ -88,7 +86,7 @@ $(function(){
         };
         while(x_pre>=0){
           console.log('sel_presion.form-select '.concat(x_pre.toString()));
-          Object.defineProperty(postData, 'presion'+ x_pre.toString(),{
+          Object.defineProperty(postData, 'presiones'+ x_pre.toString(),{
             value:$('#sel_presion.form-select.'.concat(x_pre.toString())).val(),
             writable: true,
             enumerable: true,
@@ -143,6 +141,8 @@ $(function(){
           
         });
       }
+
+    
   
       });
   ////////////////////////////////////////////////////////////////
@@ -343,8 +343,6 @@ $('#btn_add').on('click', function(){
   
     $('#ID_humedal').val('');
     $('#nombre').val('');
-    $('#lat').val('');
-    $('#lng').val('');
     $('#ancho').val('');
     $('#largo').val('');
     $('#carac').val('');
@@ -366,7 +364,7 @@ $('#btn_add').on('click', function(){
             let template3 = '';
             datos['presiones'].forEach(dato => {
               template3 += `
-              <option>${dato.tipo_presion}</option>
+              <option>${dato.Tipo_pre}</option>
                      ` });       
             $('#sel_presion.form-select.'+ x_pre.toString()).html(template3);
             }
@@ -432,7 +430,7 @@ $('#btn_add').on('click', function(){
                 let template1 = '';
                 datos['cuencas'].forEach(dato => {
                   template1 += `
-                  <option>${dato.nombre_cuenca}</option>
+                  <option>${dato.Nombre_cuenca}</option>
                      ` });
                 
                 $('#sel_cuenca').html(template1);
@@ -455,7 +453,7 @@ $('#btn_add').on('click', function(){
                     let template2 = '';
                     datos['complejos'].forEach(dato => {
                       template2 += `
-                      <option>${dato.nombre_complejo}</option>
+                      <option>${dato.Nombre_comp}</option>
                             ` });
                     
                     $('#sel_complejo').html(template2);
