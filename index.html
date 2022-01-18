@@ -321,7 +321,7 @@
 
          <!-- cuenca -->
         <div class="form-group">
-         <label for="cuenca_label" class="form-label mt-4">Cuenca:</label>
+          <legend class="mt-4">Cuenca:</legend>
          <select class="form-select" id="sel_cuenca">
           <option>Seleccione Cuenca...</option>
          </select>
@@ -330,7 +330,7 @@
 
        <!-- complejo -->
         <div class="form-group">
-         <label for="complejo_label" class="form-label mt-4">Complejo:</label>
+          <legend class="mt-4">Complejo:</legend>
          <select class="form-select" id="sel_complejo">
           <option>Seleccione Complejo...</option>
          </select>
@@ -515,6 +515,25 @@
 
 
       </div>
+
+
+    
+      <!-- Miembro -->
+      <div class="form-group" id="input_miembro">
+        <button type="button" class="btn btn-success" id="btn_miembro_hum">+</button>
+         <button type="button" class="btn btn-success" id="btn_miembro_add">Añadir otro miembro</button>
+         <label for="miembro_label" class="form-label mt-4">Personas que intervinieron en el relevamiento:</label>
+
+       <div class="from-group"> <!-- Parte que se agrega-->
+       <select class="form-select 0" id="sel_miembro">
+       <option>Miembro ...</option>
+       <option>Miembro 2</option>
+       <option>Miembro 3</option>
+       <option>Miembro 4</option>
+       <option>Miembro 5</option>
+       </select>
+       </div>
+       </div>   
 
     <!-- Observaciones -->
       <div class="form-group">
@@ -844,3 +863,4 @@
 </body>
 
 </html>
+
