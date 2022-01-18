@@ -6,18 +6,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
-    integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
-    crossorigin="" />
-    <link rel="stylesheet" href="css/stylemap.css">
-    <link rel="stylesheet" href="css/bootstrap.css">
-    <link rel="stylesheet" href="css/wbootstrap.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ==" crossorigin="" />
+   
+  <link rel="stylesheet" href="css/stylemap.css">
+  <link rel="stylesheet" href="css/bootstrap.css">
+  <link rel="stylesheet" href="css/wbootstrap.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css" integrity="sha512-f0tzWhCwVFS3WeYaofoLWkTP62ObhewQ1EZn65oSYDZUg1+CyywGKkWzm8BxaJj5HGKI72PnMH9jYyIFz+GH7g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 </head>
 
 <body>
-
-
-
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <a class="navbar-brand" href="#">Humedal App</a>
@@ -285,6 +283,7 @@
    <script src="js/data_geojson.js"></script> 
    <script src="js/forms.js"></script>
 
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js" integrity="sha512-AIOTidJAcHBH2G/oZv9viEGXRqDNmfdPVPYOYKGy3fti0xIplnlgMHUGfuNRzC6FkzIo0iIxgFnr9RikFxK+sw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 
 <!---------------Formulario Alta--------------------------->
@@ -306,45 +305,45 @@
         <!-- ID Humedal -->
         <div class="form-group">
          <input type="text" id="ID_humedal" placeholder="Código Humedal" class="form-control"> 
-         </div>
+        </div>
 
         <!-- Nombre -->
         <div class="form-group">
          <input type="text" id="nombre" placeholder="Nombre" class="form-control"> 
-         </div>
+        </div>
          
          <!-- Fecha relevamiento -->
-         <legend class="mt-4">Fecha de relevamiento</legend>
-        <div class="form-group">
-          <input type="text" id="fecha_rel" placeholder="dd/mm/yyyy" class="form-control"> 
-          </div>  
+        <legend class="mt-4">Fecha de relevamiento</legend>
+        <input type="text" id="fecha_rel"/>
 
          <!-- cuenca -->
         <div class="form-group">
           <legend class="mt-4">Cuenca:</legend>
-         <select class="form-select" id="sel_cuenca">
+          <select class="form-select" id="sel_cuenca">
           <option>Seleccione Cuenca...</option>
-         </select>
-         <button type="button" class="btn btn-success" id="btn_cuenca_add">Añadir Nueva Cuenca</button>
+          </select>
+          <button type="button" class="btn btn-success" id="btn_cuenca_add">Añadir Nueva Cuenca</button>
         </div>
 
        <!-- complejo -->
         <div class="form-group">
           <legend class="mt-4">Complejo:</legend>
-         <select class="form-select" id="sel_complejo">
+          <select class="form-select" id="sel_complejo">
           <option>Seleccione Complejo...</option>
-         </select>
-         <button type="button" class="btn btn-success" id="btn_complejo_add">Añadir Nuevo Complejo</button>
+          </select>
+          <button type="button" class="btn btn-success" id="btn_complejo_add">Añadir Nuevo Complejo</button>
         </div>
       
       <!-- Ancho -->
         <div class="form-group">
             <input type="text" id="ancho" placeholder="Ancho" class="form-control">
         </div>
+
       <!-- Largo -->
         <div class="form-group">
              <input type="text" id="largo" placeholder="Largo" class="form-control">
         </div>
+
       <!-- Fuente -->
         <legend class="mt-4">Fuente</legend>
         <div class="form-check">
@@ -372,6 +371,7 @@
           Temporal
         </label>
         </div>          
+
       <!-- Calidad del agua -->
        <legend class="mt-4">Calidad del Agua</legend>
        <div class="form-check">
@@ -392,30 +392,37 @@
           Muy Alterado
           </label>
         </div>
+
       <!-- Conductividad -->
         <div class="form-group">
           <input type="text" id="Conductividad" placeholder="Conductividad" class="form-control">
         </div>
+
       <!-- pH -->
         <div class="form-group">
             <input type="text" id="pH" placeholder="pH" class="form-control">
         </div>              
+
       <!-- O2 disuelto -->
          <div class="form-group">
            <input type="text" id="O2disuelto" placeholder="02 disuelto" class="form-control">
           </div>
+
       <!-- Turbidez -->
           <div class="form-group">
             <input type="text" id="Turbidez" placeholder="Turbidez" class="form-control">
           </div>        
+
       <!-- Color -->
           <div class="form-group">
             <input type="text" id="Color" placeholder="Color" class="form-control">
-          </div>               
+          </div>         
+
       <!-- Temperatura -->
           <div class="form-group">
              <input type="text" id="Temperatura" placeholder="Temperatura" class="form-control">
-          </div>             
+          </div>        
+
      <!-- Regimen Hidrologico -->
           <legend class="mt-4">Regimen Hidrologico</legend>
           <div class="form-check">
@@ -438,23 +445,21 @@
             </label>
           </div>
 
- 
-
       <!-- Presion -->
           <div class="form-group" id="input_presion">
            <button type="button" class="btn btn-success" id="btn_presion_hum">+</button>
             <button type="button" class="btn btn-success" id="btn_presion_add">Añadir Nueva Presion</button>
             <label for="presion_label" class="form-label mt-4">Presión del terreno:</label>
 
-          <div class="from-group"> <!-- Parte que se agrega-->
-          <select class="form-select 0" id="sel_presion">
-          <option>Tipo de presion...</option>
-          <option>Complejo 2</option>
-          <option>Complejo 3</option>
-          <option>Complejo 4</option>
-          <option>Complejo 5</option>
-          </select>
-          </div>
+            <div class="from-group"> <!-- Parte que se agrega-->
+            <select class="form-select 0" id="sel_presion">
+              <option>Tipo de presion...</option>
+              <option>Complejo 2</option>
+              <option>Complejo 3</option>
+              <option>Complejo 4</option>
+              <option>Complejo 5</option>
+            </select>
+            </div>
           </div>           
 
       <!-- Diversidad Vegetal -->
@@ -485,54 +490,54 @@
       <div class="form-group" id="input_fauna">
         <button type="button" class="btn btn-success" id="btn_fauna_hum">+</button>
         <button type="button" class="btn btn-success" id="btn_fauna_add">Añadir Nueva Fauna</button>
-       <label for="fauna_label" class="form-label mt-4">Fauna:</label>
+       <label for="fauna_label" class="form-label mt-4"></label>
+       
+        <div class="from-group"> <!-- Parte que se agrega-->
+          <select class="form-select 0" id="sel_fauna">
+            <option>Seleccione Fauna...</option>
+            <option>Complejo 2</option>
+            <option>Complejo 3</option>
+            <option>Complejo 4</option>
+            <option>Complejo 5</option>
+        </select>
+        </div>
 
-      <div class="from-group"> <!-- Parte que se agrega-->
-        <select class="form-select 0" id="sel_fauna">
-       <option>Seleccione Fauna...</option>
-       <option>Complejo 2</option>
-       <option>Complejo 3</option>
-       <option>Complejo 4</option>
-       <option>Complejo 5</option>
-       </select>
       </div>
 
-      </div>
-<!-- Flora -->
+    <!-- Flora -->
       <div class="form-group" id="input_flora">
         <button type="button" class="btn btn-success" id="btn_flora_hum">+</button>
-       <button type="button" class="btn btn-success" id="btn_flora_add">Añadir Nueva Flora</button>
+         <button type="button" class="btn btn-success" id="btn_flora_add">Añadir Nueva Flora</button>
         <label for="flora_label" class="form-label mt-4">Flora:</label>
-     <div class="from-group"> <!-- Parte que se agrega-->
-        <select class="form-select 0" id="sel_flora">
-        <option>Seleccione Flora...</option>
-        <option>Complejo 2</option>
-        <option>Complejo 3</option>
-        <option>Complejo 4</option>
-        <option>Complejo 5</option>
-        </select>
-      </div>
+        <div class="from-group"> <!-- Parte que se agrega-->
+            <select class="form-select 0" id="sel_flora">
+              <option>Seleccione Flora...</option>
+              <option>Complejo 2</option>
+              <option>Complejo 3</option>
+              <option>Complejo 4</option>
+              <option>Complejo 5</option>
+            </select>
+          </div>
 
 
       </div>
 
 
-    
       <!-- Miembro -->
       <div class="form-group" id="input_miembro">
         <button type="button" class="btn btn-success" id="btn_miembro_hum">+</button>
          <button type="button" class="btn btn-success" id="btn_miembro_add">Añadir otro miembro</button>
          <label for="miembro_label" class="form-label mt-4">Personas que intervinieron en el relevamiento:</label>
 
-       <div class="from-group"> <!-- Parte que se agrega-->
-       <select class="form-select 0" id="sel_miembro">
-       <option>Miembro ...</option>
-       <option>Miembro 2</option>
-       <option>Miembro 3</option>
-       <option>Miembro 4</option>
-       <option>Miembro 5</option>
-       </select>
-       </div>
+        <div class="from-group"> <!-- Parte que se agrega-->
+          <select class="form-select 0" id="sel_miembro">
+            <option>Miembro ...</option>
+            <option>Miembro 2</option>
+            <option>Miembro 3</option>
+            <option>Miembro 4</option>
+            <option>Miembro 5</option>
+          </select>
+        </div>
        </div>   
 
     <!-- Observaciones -->
@@ -541,13 +546,11 @@
       </div>
 
       </fieldset> <!--  -->
-      <div class="modal-footer">
-                <input type="hidden" id="form_alta_id">
-                <button type="submit" class="btn btn-primary btn-block text-center">
-                  Guardar datos
-                </button>
-                </form> <!-- Fin del formulario -->
-                </div>      
+        <div class="modal-footer">
+          <input type="hidden" id="form_alta_id">
+          <button type="submit" class="btn btn-primary btn-block text-center">Guardar datos</button>
+          </form> <!-- Fin del formulario -->
+        </div>      
       </div>
    </div>
   </div>
@@ -857,10 +860,17 @@
 </div>
 <!------------------------------------------------------------------------------------>
  
- <!-- <table id="resultado" class="table"><?php //include('consulta.php');?></div>-->
 
+  <script>
+    $('#fecha_rel').datetimepicker({
+      inline:true,
+      ownerDocument: document,
+      contentWindow: window,
+      timepicker:false
+    });
+   
+    </script>
 
 </body>
 
 </html>
-
