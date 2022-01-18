@@ -7,12 +7,15 @@
   $q_pre = mysqli_query($connect,"SELECT Tipo_presiones FROM presiones");
   $q_fauna = mysqli_query($connect,"SELECT Nombre_coloquial FROM fauna");
   $q_flora =  mysqli_query($connect,"SELECT Nombre_coloquial FROM flora");
+  $q_pers =  mysqli_query($connect,"SELECT Nombre_persona FROM persona");
 
   $json1 = array();
   $json2 = array();
   $json3 = array();
   $json4 = array();
   $json5 = array();
+  $json6 = array();
+
 
   while($row = mysqli_fetch_array($q_cuenca)) {
     array_push($json1, [
@@ -28,7 +31,7 @@
 
     while($row = mysqli_fetch_array($q_pre)) {
       array_push($json3, [
-        'tipo_presiones' => $row['Tipo_presiones']
+        'tipo_presion' => $row['Tipo_presiones']
       ]);
     };
 
@@ -44,6 +47,12 @@
       ]);
     };
 
+
+    while($row = mysqli_fetch_array($q_pers)) {
+      array_push($json6, [
+        'nom_pers' => $row['Nombre_persona']
+      ]);
+    };
     //echo($json);
   
 
@@ -52,7 +61,8 @@
       "complejos"=> $json2,
       "presiones"=> $json3,
       "faunas"=>$json4,
-      "floras"=>$json5
+      "floras"=>$json5,
+      "persona"=>$json6
     ];
 
     //array_push($jsons, $json1, $json2);
@@ -70,8 +80,6 @@
       $add_fecha = $_POST['fecha'];
       $add_cuenca = $_POST['cuenca'];
       $add_complejo = $_POST['complejo'];
-      $add_latitud = $_POST['latitud'];
-      $add_longitud = $_POST['longitud'];
       $add_ancho = $_POST['ancho'];
       $add_largo = $_POST['largo'];
       $add_fuente = $_POST['fuente'];
@@ -85,13 +93,14 @@
       $add_temperatrura =  $_POST['temperatura'];
       $add_regimen_hidrologico = $_POST['regimen_hidrologico'];
       $add_diversidad_vegetal =  $_POST['diversidad_vegetal'];
-      $add_observaciones = $_POST['obs'];
+      $add_obs = $_POST['obs'];
       
      
       //---------------------
       $cont_pre = $_POST['cont_pre'];
       $cont_fau = $_POST['cont_fau'];
       $cont_flo = $_POST['cont_flo'];
+      $cont_pers = $_POST['cont_pers'];
       //---------------------
   
 //Falta consulta id_cuenca y id_complejo!!!! (Proximamente ID_humedal incremental)
@@ -215,8 +224,38 @@ Regimen_hidrológico , turbidez , Largo , ph , Color , Fuente  , Tiempo , Temper
       }
     
   //////////////////////////////////////////////
+  ///////////////////////////////////////////////
+  $d = array();
+  while ($cont_pers >= 0) {
+   $persona = $_POST["persona{$cont_pers}"];
+   
+   $q_id = mysqli_query($connect,"SELECT Id_persona FROM persona where Nombre_persona = '$persona'");
+   
+
+   if (!$q_id) {
+    die('Query Error'.mysqli_error($connect));
+  }
+
+  while($row = mysqli_fetch_array($q_id)) {
+    $d = ($row['Id_persona']);
+  };
+ 
+  $q_id_miembro = mysqli_query($connect,"SELECT Id_miembro FROM miembro where Id_persona = $d");
+
+   $qp = mysqli_query($connect,"INSERT into investiga (Id_humedal, Id_miembro) VALUES ('$add_id','$q_id_miembro')");
+   
+
+   if (!$qp) {
+     die('Query Error'.mysqli_error($connect));
+   }else{
+   $cont_pers = $cont_pers-1;
+   }
+ }
 
 }
+
+  
+
 
 
 
