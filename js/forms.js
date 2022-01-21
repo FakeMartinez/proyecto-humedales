@@ -1,6 +1,7 @@
 var x_pre = 0;
 var x_fau = 0;
 var x_flo = 0;
+var x_pers = 0 ;
 var update = false;
 
 $(function(){
@@ -10,6 +11,7 @@ $(function(){
     carga_form_alta_p();
     carga_form_alta_fa();
     carga_form_alta_fl();
+    carga_form_alta_pers();
 
     //Cerrar Formulario Alta
     $('#close_btn_add').on('click', function(){
@@ -60,30 +62,57 @@ $(function(){
         $('#form_flora_add').hide();
       });
 
+       //Añadir Persona
+       $('#btn_miembro_add').on('click', function(){
+        $('#form_miembro_add').show();
+      });
+      //Cerrar Formulario Persona
+      $('#close_btn_miembro_add').on('click', function(){
+        $('#form_miembro_add').hide();
+      });
+
   //////////////////////Formulario Alta////////////////////////
-      $('#form_add').submit(e => {
+  
+     
+
+
+  $('#form_add').submit(e => {
         //e.preventDefault();
         var postData = {
           
-          id:$('#ID_humedal').val(),
-          nombre: $('#nombre').val(),
+          id:$('#ID_humedal').val(),  
+          nombre: $('#nombre').val().trim(),  // trim remueve el espacio en blanco de la cadena
+          fecha: $('#fecha_rel').val(),
           cuenca: $('#sel_cuenca').val(),
           complejo: $('#sel_complejo').val(),
           ancho:$('#ancho').val(),
           largo:$('#largo').val(),
-          carac:$('#carac').val(),
+          conductividad:$('#Conductividad').val(),
+          pH:$('#pH').val(),
+          o2disuelto:$('#O2disuelto').val(),
+          turbidez:$('#Turbidez').val(),
+          color:$('#Color').val(),
+          temperatura:$('#Temperatura').val(),
           obs:$('#obs').val(),
           fuente:$('input:radio[name=optionsFuente]:checked').val(),
           tiempo:$('input:radio[name=optionsTiempo]:checked').val(),
           diversidad_vegetal:$('input:radio[name=optionsDV]:checked').val(),
           regimen_hidrologico:$('input:radio[name=optionsReg]:checked').val(),
           calidad_agua:$('input:radio[name=optionsAgua]:checked').val(),
+
           cont_pre: x_pre,
           cont_fau: x_fau,
-          cont_flo: x_flo
+          cont_flo: x_flo,
+          cont_pers: x_pers
           //
           //
-        };
+        }
+        
+  
+      
+
+
+
         while(x_pre>=0){
           console.log('sel_presion.form-select '.concat(x_pre.toString()));
           Object.defineProperty(postData, 'presiones'+ x_pre.toString(),{
@@ -120,7 +149,16 @@ $(function(){
           x_flo = x_flo-1;
         }
   
-  
+        while(x_pers>=0){
+          console.log('sel_miembro.form-select '.concat(x_pers.toString()));
+          Object.defineProperty(postData, 'persona'+ x_pers.toString(),{
+            value:$('#sel_miembro.form-select.'.concat(x_pers.toString())).val(),
+            writable: true,
+            enumerable: true,
+            configurable: true
+          }); 
+          x_pers = x_pers-1;
+        }
   
         
         //e.preventDefault();
@@ -138,11 +176,13 @@ $(function(){
         $.post('php/alta.php', postData, (response) => {
           console.log(response);
           //$('#form_add').trigger('reset');
-          
+           e.preventDefault();
         });
       }
 
     
+
+  
   
       });
   ////////////////////////////////////////////////////////////////
@@ -331,27 +371,57 @@ $('#btn_presion_hum').on('click', function(){
   });
   
   });
-  //-----------------------------------------------------------------------
-
+  //-----------------------------Persona------------------------------------------
+  $('#btn_miembro_hum').on('click', function(){
+    x_pers = x_pers+1;
+    var add = '';
+    add += `
+    <div class="form-group">
+    <select class="form-select `+ x_pers.toString() +`" id="sel_miembro">
+    <option>Miembro</option>
+    </select>
+    <button type="button" class="btn btn-danger" id="btn_miembro_dhum">-</button>
+    </div>
+    `;
   
+  $('#btn_miembro_dhum').remove();
+  $('#input_miembro').append(add);
+  
+  
+  carga_form_alta_pers();
+  
+  
+  $('#btn_miembro_dhum').on('click', function(){
+    $('#sel_miembro.form-select.'+ x_pers.toString()).remove();
+    x_pers = x_pers-1;
+  });
+  
+  });
+  //-----------------------------------------------------------------------
 });
 
 $('#btn_add').on('click', function(){
     $('#form_add').show();
     $('#t_form.modal-title').html('Alta Humedal');
     $('#form_modal').css({'background':'#DEFEAE'});
-  
     $('#ID_humedal').val('');
     $('#nombre').val('');
     $('#ancho').val('');
     $('#largo').val('');
-    $('#carac').val('');
+    $('#Conductividad').val('');
+    $('#pH').val('');
+    $('#o2disuelto').val('');
+    $('#Turbidez').val('');
+    $('#Color').val('');
+    $('#Temperatura').val('');
     $('#obs').val('');
-    update = false;
-    
+    update = false; 
+
+   
   });
-  
-  //Carga de los select de Presion,Fauna,Flora
+ 
+
+  //Carga de los select de Presion,Fauna,Flora, cuenca , complejo , miembro
   function carga_form_alta_p(){
     $.ajax({
       url: 'php/alta.php',
@@ -364,7 +434,7 @@ $('#btn_add').on('click', function(){
             let template3 = '';
             datos['presiones'].forEach(dato => {
               template3 += `
-              <option>${dato.Tipo_pre}</option>
+              <option>${dato.tipo_presion}</option>
                      ` });       
             $('#sel_presion.form-select.'+ x_pre.toString()).html(template3);
             }
@@ -430,7 +500,7 @@ $('#btn_add').on('click', function(){
                 let template1 = '';
                 datos['cuencas'].forEach(dato => {
                   template1 += `
-                  <option>${dato.Nombre_cuenca}</option>
+                  <option>${dato.nombre_cuenca}</option>
                      ` });
                 
                 $('#sel_cuenca').html(template1);
@@ -453,7 +523,7 @@ $('#btn_add').on('click', function(){
                     let template2 = '';
                     datos['complejos'].forEach(dato => {
                       template2 += `
-                      <option>${dato.Nombre_comp}</option>
+                      <option>${dato.nombre_complejo}</option>
                             ` });
                     
                     $('#sel_complejo').html(template2);
@@ -464,5 +534,27 @@ $('#btn_add').on('click', function(){
                 });
               };
 
-  
+              function carga_form_alta_pers(){
+                $.ajax({
+                  url: 'php/alta.php',
+                  type: 'GET',
+                  success: function (response) {
+                      if(!response.error) {
+                        //console.log(response);
+                        let datos = JSON.parse(response);
+                        console.log(datos);
+                        let template3 = '';
+                        datos['persona'].forEach(dato => {
+                          template3 += `
+                          <option>${dato.nom_pers}</option>
+                                 ` });       
+                        $('#sel_miembro.form-select.'+ x_pers.toString()).html(template3);
+                        }
+                        
+                      }
+                    });
+                  };
+
+
+
 
