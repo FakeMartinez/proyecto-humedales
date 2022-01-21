@@ -23,13 +23,14 @@ if(isset($_POST['nombre'])) {
   $add_temperatrura =  $_POST['temperatura'];
   $add_regimen_hidrologico = $_POST['regimen_hidrologico'];
   $add_diversidad_vegetal =  $_POST['diversidad_vegetal'];
-  $add_observaciones = $_POST['obs'];
+  $add_obs = $_POST['obs'];
   
  
   //---------------------
   $cont_pre = $_POST['cont_pre'];
   $cont_fau = $_POST['cont_fau'];
   $cont_flo = $_POST['cont_flo'];
+  $cont_pers = $_POST['cont_pers'];
   //---------------------
   
 //Falta consulta id_cuenca y id_complejo!!!! (Proximamente ID_humedal incremental)
@@ -47,8 +48,8 @@ while($row = mysqli_fetch_array($q_id_comp)) {
   $id_complejo = ($row['Id_complejo']);
 };
 
-$query1 = "UPDATE humedal SET Id_cuenca ='$id_cuenca' , Id_complejo = '$id_complejo' , Nombre = '$add_nom', Largo = '$add_largo', Ancho = '$add_ancho', Fuente = '$add_fuente', Tiempo ='$add_tiempo' , Diversidad vegetal = '$add_diversidad_vegetal', Regimen hidrológico = '$add_regimen_hidrologico', Calidad de H2O = '$add_calidad_agua', observaciones = '$add_obs',
-fecha_rel='$add_fecha' , Conductividad=' $add_conductividad ' , O2 disuelto='$add_o2disuelto ' , Turbidez='$add_turbidez' , pH='$add_pH' ,  Color=' $add_color' , Temperatura H2O='$add_temperatrura'  where id_humedal = '$add_id'";
+$query1 = "UPDATE humedal SET Id_cuenca ='$id_cuenca' , Id_complejo = '$id_complejo' , Nombre = '$add_nom', Largo = '$add_largo', Ancho = '$add_ancho', Fuente = '$add_fuente', Tiempo ='$add_tiempo' , Diversidad_vegetal = '$add_diversidad_vegetal', Regimen_hidrológico = '$add_regimen_hidrologico', Calidad_de_H2O = '$add_calidad_agua', observaciones = '$add_obs',
+fecha_rel='$add_fecha' , Conductividad=' $add_conductividad ' , O2 disuelto='$add_o2disuelto ' , Turbidez='$add_turbidez' , pH='$add_pH' ,  Color=' $add_color' , Temperatura_H2O='$add_temperatrura'  where Id_humedal = '$add_id'";
 
   /*$query2 = "UPDATE carac_humedal SET fuente = '$add_fuente', tiempo ='$add_tiempo' , diversidad_vegetal = '$add_diversidad_vegetal', regimen_hidrologico = '$add_regimen_hidrologico', calidad_agua = '$add_calidad_agua', carac_inclusion = '$add_carac', observaciones = '$add_obs'
   where id_humedal = '$add_id'";*/
@@ -90,6 +91,7 @@ while ($cont_pre >= 0) {
   $cont_pre = $cont_pre-1;
   }
 } 
+
 
 //////////////////////////////////////////////
 
@@ -148,6 +150,33 @@ while ($cont_fau >= 0) {
     }
   
 //////////////////////////////////////////////
+
+$d = array();
+$del4 = mysqli_query($connect,"DELETE from investiga where Id_humedal = '$add_id'");
+
+while ($cont_pers >= 0) {
+  $persona = $_POST["persona{$cont_pers}"];
+  $q_id = mysqli_query($connect,"SELECT Id_persona FROM persona where Nombre_persona = '$persona'");
+  if (!$q_id) {
+    die('Query Error'.mysqli_error($connect));
+  }
+
+  while($row = mysqli_fetch_array($q_id)) {
+    $d = ($row['Id_persona']);
+  };
+  
+  $q_id_miembro = mysqli_query($connect,"SELECT Id_miembro FROM miembro where Id_persona = '$d'");
+  //echo ("???".$a."???");
+  $qp = mysqli_query($connect,"INSERT into investiga (Id_humedal, Id_miembro) VALUES ('$add_id','$q_id_miembro')");
+  
+
+  if (!$qp) {
+    die('Query Error'.mysqli_error($connect));
+  }else{
+  $cont_pers = $cont_pers-1;
+  }
+} 
+
 
 }
 

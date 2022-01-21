@@ -7,7 +7,7 @@
   $q_pre = mysqli_query($connect,"SELECT Tipo_presiones FROM presiones");
   $q_fauna = mysqli_query($connect,"SELECT Nombre_coloquial FROM fauna");
   $q_flora =  mysqli_query($connect,"SELECT Nombre_coloquial FROM flora");
-  $q_pers =  mysqli_query($connect,"SELECT Nombre_persona FROM persona");
+  $q_pers =  mysqli_query($connect,"SELECT Nombre_persona FROM persona join miembro on persona.Id_persona = miembro.Id_persona");    // solo los miembros del proyecto de la tabla persona
 
   $json1 = array();
   $json2 = array();
@@ -104,7 +104,6 @@
       //---------------------
   
 //Falta consulta id_cuenca y id_complejo!!!! (Proximamente ID_humedal incremental)
-//Falta consulta id_cuenca y id_complejo!!!! (Proximamente ID_humedal incremental)
 $q_id_cue = mysqli_query($connect,"SELECT Id_cuenca FROM cuenca where Nombre_cuenca = '$add_cuenca'");
 $q_id_comp = mysqli_query($connect,"SELECT Id_complejo FROM complejo where  Nombre_complejo = '$add_complejo'");
 
@@ -120,8 +119,9 @@ while($row = mysqli_fetch_array($q_id_comp)) {
 };
 
 ///////////////////////////////
+echo($add_fecha);
 
-  $query1 = "INSERT into humedal (Id_humedal, fecha_rel,Id_cuenca, Id_complejo, Nombre, Conductividad , Ancho , O2_disuelto , Calidad_de_H2O , Diversidad_Vegetal , Observaciones , 
+  $query1 = "INSERT into humedal ( Id_humedal,fecha_rel,Id_cuenca, Id_complejo, Nombre, Conductividad , Ancho , O2_disuelto , Calidad_de_H2O , Diversidad_Vegetal , Observaciones , 
 Regimen_hidrológico , turbidez , Largo , ph , Color , Fuente  , Tiempo , Temperatura_H2O) VALUES 
   ('$add_id','$add_fecha','$id_cuenca' ,'$id_complejo ' , '$add_nom',' $add_conductividad ','$add_ancho','$add_o2disuelto ','$add_calidad_agua', '$add_diversidad_vegetal', '$add_obs',
   '$add_regimen_hidrologico','$add_turbidez','$add_largo', '$add_pH' , ' $add_color' ,'$add_fuente', '$add_tiempo',  '$add_temperatrura'   )";
@@ -226,6 +226,7 @@ Regimen_hidrológico , turbidez , Largo , ph , Color , Fuente  , Tiempo , Temper
   //////////////////////////////////////////////
   ///////////////////////////////////////////////
   $d = array();
+  $e = array();
   while ($cont_pers >= 0) {
    $persona = $_POST["persona{$cont_pers}"];
    
@@ -242,7 +243,15 @@ Regimen_hidrológico , turbidez , Largo , ph , Color , Fuente  , Tiempo , Temper
  
   $q_id_miembro = mysqli_query($connect,"SELECT Id_miembro FROM miembro where Id_persona = $d");
 
-   $qp = mysqli_query($connect,"INSERT into investiga (Id_humedal, Id_miembro) VALUES ('$add_id','$q_id_miembro')");
+
+   if (!$q_id_miembro) {
+    die('Query Error'.mysqli_error($connect));
+  }
+
+  while($row = mysqli_fetch_array($q_id_miembro)) {
+    $e = ($row['Id_miembro']);
+  };
+   $qp = mysqli_query($connect,"INSERT into investiga (Id_humedal, Id_miembro) VALUES ('$add_id','$e')");
    
 
    if (!$qp) {
