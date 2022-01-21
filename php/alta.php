@@ -127,8 +127,6 @@ Regimen_hidrológico , turbidez , Largo , ph , Color , Fuente  , Tiempo , Temper
   '$add_regimen_hidrologico','$add_turbidez','$add_largo', '$add_pH' , ' $add_color' ,'$add_fuente', '$add_tiempo',  '$add_temperatrura'   )";
 
     
-
-
  /* $query2 = "INSERT into carac_humedal (id_humedal, fuente, tiempo, diversidad_vegetal, regimen_hidrologico, calidad_agua, carac_inclusion, observaciones) VALUES 
   ('$add_id', '$add_fuente', '$add_tiempo', '$add_diversidad_vegetal', '$add_regimen_hidrologico', '$add_calidad_agua', '$add_carac', '$add_obs')";*/
 
@@ -159,9 +157,9 @@ Regimen_hidrológico , turbidez , Largo , ph , Color , Fuente  , Tiempo , Temper
     };
 
     //echo ("???".$a."???");
-    $qp = mysqli_query($connect,"INSERT into contiene_presiones(Id_humedal, Id_presiones) VALUES ('$add_id','$a')");
+    $qp = mysqli_query($connect,"INSERT into contiene_presiones(Id_humedal, fecha_rel, Id_presiones  ) VALUES ('$add_id',1978-01-01,'$a')");
     
-
+  
     if (!$qp) {
       die('Query Error'.mysqli_error($connect));
     }else{
@@ -261,7 +259,7 @@ Regimen_hidrológico , turbidez , Largo , ph , Color , Fuente  , Tiempo , Temper
    }
  }
 
-}
+   }
 
   
 
