@@ -3,7 +3,22 @@ var x_fau = 0;
 var x_flo = 0;
 var x_prop = 0;
 var update = false;
+var DireccionesFA = new Array();
+var DireccionesFL = new Array();
+var DireccionesHU = new Array();
+var BtFau = false;
+var BtFlo = false;
+var BtHum = false;
+/*
+$(function eliminar(e){
+  var Nume = e.id;
+  Nume.replace('B','');
+  Nume.replace('I','');
+  console.log(Nume);
+  
+});
 
+*/
 $(function(){
     
     carga_form_alta_cu();
@@ -12,6 +27,10 @@ $(function(){
     carga_form_alta_fa();
     carga_form_alta_fl();
     carga_form_alta_propie();
+
+    $('#img_flora').on("change", (e) => {
+      console.log(e);
+      });
 
     //Cerrar Formulario Alta
     $('#close_btn_add').on('click', function(){
@@ -61,12 +80,37 @@ $(function(){
       $('#close_btn_flora_add').on('click', function(){
         $('#form_flora_add').hide();
       });
-
+      //agregar imagen fauna
+      $('#btn_imagen_add').on('click', function(){
+        $('#form_imagen_add').show();
+        BtFau = true;
+        BtFlo = false;
+        BtHum = false;
+      });
+      //Cerrar Formulario imagen
+      $('#close_btn_imagen_add').on('click', function(){
+        $('#form_imagen_add').hide();
+      });
+      //agregar imagen flora
+      $('#btn_imagen_addFl').on('click', function(){
+        $('#form_imagen_add').show();
+        BtFau = false;
+        BtFlo = true;
+        BtHum = false;
+      });
+      $('#btn_imagen_addHu').on('click', function(){
+        $('#form_imagen_add').show();
+        BtFau = false;
+        BtFlo = false;
+        BtHum = true;
+      });
+      
+     
+    
   //////////////////////Formulario Alta////////////////////////
       $('#form_add').submit(e => {
-        //e.preventDefault();
+        e.preventDefault();
         var postData = {
-          
           id:$('#ID_humedal').val(),
           nombre: $('#nombre').val(),
           cuenca: $('#sel_cuenca').val(),
@@ -82,12 +126,14 @@ $(function(){
           diversidad_vegetal:$('input:radio[name=optionsDV]:checked').val(),
           regimen_hidrologico:$('input:radio[name=optionsReg]:checked').val(),
           calidad_agua:$('input:radio[name=optionsAgua]:checked').val(),
+          Dir : DireccionesHU.slice(),
           cont_pre: x_pre,
           cont_fau: x_fau,
           cont_flo: x_flo
           //
           //
         };
+        
         while(x_pre>=0){
           console.log('sel_presion.form-select '.concat(x_pre.toString()));
           Object.defineProperty(postData, 'presion'+ x_pre.toString(),{
@@ -165,6 +211,11 @@ $(function(){
           e.preventDefault();
           carga_form_alta_cu();
           $('#form_cuenca_add').hide();
+          $('#id_cuenca').val('');
+          $('#nom_cuenca').val('');
+          $('#sup_cuenca').val('');
+          $('#tipo_cuenca').val('');
+          
         });
       });
   ////////////////////////////////////////////////
@@ -184,6 +235,9 @@ $(function(){
       e.preventDefault();
       carga_form_alta_co();
       $('#form_complejo_add').hide();
+      $('#id_complejo').val('');
+      $('#nom_comp').val('');
+      $('#prop_comp').val('');
     });
   });
   
@@ -204,6 +258,10 @@ $(function(){
       e.preventDefault();
       carga_form_alta_p();    //definido en linea *357
       $('#form_presion_add').hide();    //oculta eñ formulario add presion
+      $('#tipo_presion').val('');
+      $('#obs_presion').val('');
+      $('#Id_presion').val('');
+        
     });
   });
   
@@ -217,21 +275,94 @@ $(function(){
       nom_cq_fauna: $('#nom_colquial_fauna').val(),
       nom_cf_fauna: $('#nom_ctfico_fauna').val(),
       carac_fauna: $('#carac_fauna').val(),
-      img_fauna: $('#img_fauna').val(),
+      //img_fauna: $('#img_fauna').val(),
+      Dir: DireccionesFA.slice()   
   
     };
-    //console.log(postData);
+    //DireccionesFA.forEach(dir =>{postData.Dir += dir});
+    console.log(postData);
     $.post('php/sub_forms.php', postData, (response) => {
       console.log(response);
       //$('#form_add').trigger('reset');
       e.preventDefault();
       carga_form_alta_fa();
       $('#form_fauna_add').hide();
+      $('#ID_fauna').val('');
+      $('#nom_colquial_fauna').val('');
+      $('#nom_ctfico_fauna').val('');
+      $('#carac_fauna').val('');
+      $('#ContenedorImgFau').empty();
+      DireccionesFA.splice(0, DireccionesFA.length);
+      console.log(DireccionesFA);
     });
   });
   
   ////////////////////////////////////////////////
+
+   
   
+//////////////////Form imagen/////////////////////
+$('#form-imagen').submit(e => {
+  e.preventDefault();
+  var formData = new FormData();
+  var files = $('#Newimg')[0].files[0];
+  formData.append('file',files);
+ 
+  $.ajax({
+    url: 'php/CargaImagenes.php',
+    type: 'post',
+    data: formData,
+    contentType: false,
+    processData: false,
+    success: function(response) {
+      console.log(response);
+      let templateD = '';
+      if (BtFau){
+        DireccionesFA.push(response);
+        console.log(DireccionesFA);
+        DireccionesFA.forEach(function (Dire, Indi, Vect){
+        templateD += `<div class=pI id='CI${Indi}'><button class=pI2 id='BI${Indi}' onclick="eliminar()">X</button><img src='images/${Dire}' style="width:200px;height:200px;"></img></div>`;
+       
+        })
+        $('#ContenedorImgFau').html(templateD);
+      }else
+      if (BtFlo){
+        DireccionesFL.push(response);
+        console.log(DireccionesFL);
+        DireccionesFL.forEach(function (Dire, Indi, Vect){
+          templateD += `<div class=pI id='CI${Indi}'><button class=pI2 id='BI${Indi}' onclick="eliminar()">X</button><img src='images/${Dire}' style="width:200px;height:200px;"></img></div>`;
+          
+        })
+        $('#ContenedorImgFlor').html(templateD);
+        
+        }else{
+          if (BtHum){
+            DireccionesHU.push(response);
+            console.log("direccionesHU");
+            console.log(DireccionesHU);
+            DireccionesHU.forEach(function (Dire, Indi, Vect){
+              templateD += `<div class=pI id='CI${Indi}'><button class=pI2 id='BI${Indi}' onclick="eliminar()">X</button><img src='images/${Dire}' style="width:200px;height:200px;"></img></div>`;
+              
+            })
+            $('#ContenedorImgHu').html(templateD);
+          }
+        }
+
+
+     
+      //Direcciones.forEach(dir => {templateD += `<div class=pI><button class=pI2>X</button><img src='images/${dir}' style="width:200px;height:200px;"></img></div>`});
+     
+      console.log(templateD);
+      
+      
+      
+      //$('#form_add').trigger('reset');
+      e.preventDefault();
+      $('#form_imagen_add').hide();
+    }
+})});
+
+
   //////////////////Form flora/////////////////////
   $('#form-flora').submit(e => {
     e.preventDefault();
@@ -240,16 +371,25 @@ $(function(){
       nom_cq_flora: $('#nom_colquial_flora').val(),
       nom_cf_flora: $('#nom_ctfico_flora').val(),
       carac_flora: $('#carac_flora').val(),
-      img_flora: $('#img_flora').val(),
-  
+     // img_flora: $('#img_flora').val(),
+      Dir: DireccionesFL.slice()   
     };
-    //console.log(postData);
+    //console.log(img_flora);
+    //console.log("antes de llamar al php");
     $.post('php/sub_forms.php', postData, (response) => {
-      console.log(response);
+      //console.log("despues de llamar al php");
+      //console.log(response);
       //$('#form_add').trigger('reset');
       e.preventDefault();
       carga_form_alta_fl();
       $('#form_flora_add').hide();
+      $('#ID_flora').val('');
+      $('#nom_colquial_flora').val('');
+      $('#nom_ctfico_flora').val('');
+      $('#carac_flora').val('');
+      $('#ContenedorImgFlor').empty();
+      DireccionesFL.splice(0, DireccionesFL.length);
+      console.log(DireccionesFL);
     });
   });
 
@@ -423,7 +563,6 @@ $('#btn_add').on('click', function(){
           };
   
           function carga_form_alta_propie(){
-           
             $.ajax({
               url: 'php/alta.php',
               type: 'GET',
@@ -436,8 +575,7 @@ $('#btn_add').on('click', function(){
                     datos['propietarios'].forEach(dato => {template6 += `<option>${dato.nom_prop}</option>` });  
                     //console.log(template6);    
                     $('#sel_propietario').html(template6);
-                    }
-                    
+                    }                    
                   }
                 });
               };

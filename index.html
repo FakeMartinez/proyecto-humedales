@@ -10,8 +10,19 @@
     integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
     crossorigin="" />
     <link rel="stylesheet" href="css/stylemap.css">
-    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap.css?v=<?php echo time(); ?">
     <link rel="stylesheet" href="css/wbootstrap.css">
+
+  <!--al vincular un documento css y jss se pone ?v=<?php echo time(); ? para indicarle una version al archivo y que se actualice siempre al ejecutarlo en el navegador-->
+
+    <!--Para no guardar caché y que los documentos que se cargan se carguen actualizados siempre-->
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Last-Modified" content="0">
+    <meta http-equiv="Cache-Control" content="no-cache, mustrevalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    
+    
+
 </head>
 
 <body>
@@ -283,7 +294,7 @@
    <script src="js/export.js" async></script>
    <script src="js/map.js"></script> 
    <script src="js/data_geojson.js"></script> 
-   <script src="js/forms.js"></script>
+   <script src="js/forms.js?v=<?php echo time(); ?"></script>
 
 
 
@@ -505,10 +516,13 @@
           <option>Complejo 5</option>
         </select>
       </div>
-
-
       </div>
-      </fieldset> <!--  -->
+<!-- Imgaen del humedal -->
+      <label for="formFile" class="form-label mt-4">Imagen</label> <br>
+      <button type="button" class="btn btn-success" id="btn_imagen_addHu">Cargar Imagen</button>
+      <div id="ContenedorImgHu"></div>
+      
+    </fieldset> <!--  -->
 
 
       <div class="modal-footer">
@@ -703,11 +717,14 @@
          <textarea id="carac_fauna" cols="30" rows="10" class="form-control" placeholder="Caracteristicas"></textarea>
          </div>
          <!-- Imagen -->
-         <div class="form-group">
-      <label for="formFile" class="form-label mt-4">Cargar Imagen</label>
-      <input class="form-control" type="file" id="img_fauna">
-      </div>
-        </fieldset>
+          <label for="formFile" class="form-label mt-4">Imagen</label> <br>
+          <button type="button" class="btn btn-success" id="btn_imagen_add">Cargar Imagen</button>
+          <div id="ContenedorImgFau"></div>
+<!--    <div class="form-group">
+          <label for="formFile" class="form-label mt-4">Cargar Imagen</label>
+          <input class="form-control" type="file" id="img_fauna">
+     </div>
+-->        </fieldset>
         <div class="modal-footer">
                 <input type="hidden" id="form_fauna_id">
                 <button type="submit" class="btn btn-primary btn-block text-center">
@@ -720,6 +737,7 @@
   </div>
 </div>
 </div>
+
 <!------------------------------------------------------------------------->
 <!-------------------------Formulario Flora------------------------------->
 <div class="modal" role="document" id="form_flora_add" style="background: rgba(0,0,0,0.8);">
@@ -738,7 +756,7 @@
       
 
         <fieldset> <!-- Formulario -->
-          <form id="form-flora">
+          <form id="form-flora" enctype="multipart/form-data">
           
           <!-- Nombre ID -->
           <div class="form-group">
@@ -758,11 +776,15 @@
             <textarea id="carac_flora" cols="30" rows="10" class="form-control" placeholder="Caracteristicas"></textarea>
           </div>
           <!-- Imagen -->
+          <label for="formFile" class="form-label mt-4">Imagen</label> <br>
+          <button type="button" class="btn btn-success" id="btn_imagen_addFl">Cargar Imagen</button>
+          <div id="ContenedorImgFlor"></div>
+        <!--  
           <div class="form-group">
             <label for="formFile" class="form-label mt-4">Cargar Imagen</label>
             <input class="form-control" type="file" id="img_flora">
           </div>
-
+        -->
         </fieldset>
         <div class="modal-footer">
                 <input type="hidden" id="form_flora_id">
@@ -776,6 +798,55 @@
   </div>
 </div>
 </div>
+
+
+<!------------------------------------------------------------------------->
+<!-----------------------Formulario de Imagenes---------------------------->
+<div class="modal" role="document" id="form_imagen_add" style="background: rgba(0,0,0,0.8);">
+  <div class="modal-dialog modal-lg">
+     <div class="modal-content">
+       <div class="modal-header">
+         <h5 class="modal-title">Cargar Imagen</h5>
+         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close_btn_imagen_add">
+           <span aria-hidden="true"></span>
+         </button>
+       </div>
+ 
+       <div class="modal-body">
+         <div class="row p-4"> 
+           
+        <fieldset> <!-- Formulario -->
+          <form id="form-imagen" enctype="multipart/form-data">
+           <!-- Imagen -->
+           <div class="form-group">
+             <label for="formFile" class="form-label mt-4">Cargar Imagen</label>
+             <input class="form-control" type="file" id="Newimg">
+           </div>
+ 
+         </fieldset>
+         <div class="modal-footer">
+                 <input type="hidden" id="form_imagen_id">
+                 <button type="submit" class="btn btn-primary btn-block text-center">
+                   Guardar imagen
+                 </button>
+           </form>
+         </div>
+       </div>
+     </div>
+   </div>
+ </div>
+ </div>
+
+
+<!---
+<script>
+  var InputIMG= document.getElementById("img_flora");
+  InputIMG.addEventListener("change",(e) =>
+ {
+   console.log(e.target.value);
+ } )
+</script>
+----->
 <!------------------------------------------------------------------------->
 
 <!------------Mensaje Eliminar---------------------------------------------->

@@ -10,6 +10,8 @@
       }
        
       echo "Task Added Successfully";  
+     
+      
 };
 
 /////////////////Cuenca/////////////////////////
@@ -66,17 +68,41 @@ if(isset($_POST['nom_cq_fauna'])) {
     $add_nomcq= $_POST['nom_cq_fauna'];
     $add_nomci= $_POST['nom_cf_fauna'];
     $add_carac= $_POST['carac_fauna'];
-    //$add_img = $_POST['img_fauna'];
+    $add_img = $_POST['Dir'];
 
     $query4 = "INSERT into fauna (Id_fauna, NombreColoquial, NombreCientífico, Descripción) VALUES 
     ('$add_ID' , '$add_nomcq','$add_nomci','$add_carac')";
-    //$query4_2 = "INSERT into imagen (PATH) VALUES  ('$add_img') ";  //Preparacion para cargar la imagen
-   
-    act($connect,$query4);
-    //act($connect,$query4_2);  //Para cargar la imagen
 
-    //$query4_3 = "INSERT into fotográfica (id_imagen, id_fauna) values ('IDDEIMAGEN', 'IDDEFAUNA')";
-    //act($connect,$query4_3);
+    act($connect,$query4);
+
+    //mostrar el contenido del array
+    /*
+    foreach ($add_img as $valor){
+      echo" $valor";
+    }
+    */
+    
+    foreach ($add_img as $valor){
+    //  echo" entra al foreach ";
+      $query4_2 = "INSERT into imagen (PATH) VALUES  ('$valor') "; //Preparacion para cargar la imagen
+      act($connect,$query4_2);  //Para cargar la imagen
+      
+      
+    //  echo" images/$valor";
+      $query4_31 = "SELECT Id_imagen FROM imagen WHERE PATH = '$valor'";
+      $ID_Imag = act($connect,$query4_31);
+      // mysqli_query($connect,"SELECT Id_imagen FROM imagen WHERE PATH = 'images/$valor'");
+    //  echo"$ID_Imag";
+
+      $query4_3 = "INSERT into fotográfica (Id_fotografia, id_imagen, id_fauna) values (0, '$ID_Imag', '$add_ID')";
+      act($connect,$query4_3);
+    }
+     
+   
+    
+    
+
+    
 };
 
 
@@ -85,16 +111,33 @@ if(isset($_POST['nom_cq_fauna'])) {
 if(isset($_POST['nom_cq_flora'])) {
     $add_ID= $_POST['id_flora'];
     $add_nomcq= $_POST['nom_cq_flora'];
-    $add_nomci= $_POST['nom_cq_flora'];
+    $add_nomci= $_POST['nom_cf_flora'];
     $add_carac= $_POST['carac_flora'];
-    $add_img = $_POST['img_flora'];
-
-
+    //$add_img = $_FILES['img_flora'];
+    $add_img = $_POST['Dir'];   
+    
     $query5 = "INSERT into flora (Id_flora, NombreColoquial, NombreCientífico, Descripcion) VALUES 
-    ('$add_ID', '$add_nomcq','$add_nomci','$add_carac')";
-    //$query5_2 = "INSERT into imagen (PATH) VALUES  ('$add_img') ";  //Preparacion para cargar la imagen
+    ('$add_ID', '$add_nomcq','$add_nomci','$add_carac')"; // inserte flora
     act($connect,$query5);
-    //act($connect,$query5_2); //Para cargar la imagen
+
+    foreach ($add_img as $valor){
+      //  echo" entra al foreach ";
+      $query5_2 = "INSERT into imagen (PATH) VALUES  ('$add_img') ";  //Preparacion para cargar la imagen
+       act($connect,$query5_2); //Para cargar la imagen
+        
+        
+      //  echo" images/$valor";
+        $query5_31 = "SELECT Id_imagen FROM imagen WHERE PATH = '$valor'";
+        $ID_Imag = act($connect,$query5_31);
+        // mysqli_query($connect,"SELECT Id_imagen FROM imagen WHERE PATH = 'images/$valor'");
+      //  echo"$ID_Imag";
+  
+        $query5_3 = "INSERT into fotográfica (id_imagen, id_fauna) values ('$ID_Imag', '$add_ID')";
+        act($connect,$query5_3);
+      }
+   
+   
+   
 
     //$ID_Imag= mysqli_query($connect,"SELECT Id_imagen FROM imagen WHERE PATH= '$add_img'");
     

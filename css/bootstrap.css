@@ -10181,3 +10181,34 @@ th {
 .card-title, .card-header {
   color: inherit;
 }
+
+
+
+.pI {
+  border: 5px solid black;
+  width: 215px;
+  height: 213px;
+  padding: 2px;
+
+  margin: center;
+  position: relative;
+  
+}
+.pI .pI2{
+  margin: auto;
+  text-align: center;
+  padding: 0px;
+  color: #4bbf73;
+  text-shadow: #5ee78e 0px 0px 10px;
+  font-size: 40px;
+  position: absolute;
+  right: 0px;
+  background-color: transparent;
+  width: 40px;
+  height: 40px;
+  border: 0px;
+}
+.pI .pI2:active{
+  color: #bd2a2a;
+  text-shadow: #5ee78e 0px 0px 10px;
+}

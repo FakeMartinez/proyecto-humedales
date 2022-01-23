@@ -180,7 +180,7 @@ CREATE TABLE `fauna` (
 -- Dumping data for table `fauna`
 --
 
-INSERT INTO `fauna` (`Id_fauna`, `Nombre coloquial`, `Nombre científico`, `Descripción`) VALUES
+INSERT INTO `fauna` (`Id_fauna`, `NombreColoquial`, `NombreCientífico`, `Descripción`) VALUES
 (7, 'Tero', 'Vanellus Chilensis', 'Su aspecto es el de un ave pequeña, de colores poco llamativos pero muy elegante y estilizada, coronado por un pequeño y fino copete.'),
 (8, 'Pato', 'Anatinae', 'Pato es el nombre común para ciertas aves de la familia Anatidae, principalmente de la subfamilia Anatinae y dentro de ella del género Anas. No son un grupo monofilético, ya que no se incluyen los cisnes ni los gansos.'),
 (9, 'Carpincho', 'Hydrochoerus', 'Tiene un cuerpo pesado en forma de barril y una cabeza pequeña, con un pelaje pardo rojizo en la parte superior del cuerpo que se vuelve pardo amarillo en la parte inferior suele encontrarse pelaje con puntos o petequias en el lomo.'),
@@ -204,7 +204,7 @@ CREATE TABLE `flora` (
 -- Dumping data for table `flora`
 --
 
-INSERT INTO `flora` (`Id_flora`, `Nombre coloquial`, `Nombre científico`, `Descripcion`) VALUES
+INSERT INTO `flora` (`Id_flora`, `NombreColoquial`, `NombreCientífico`, `Descripcion`) VALUES
 (1, 'Algas', 'NaturaLista', 'clorofíceas'),
 (2, 'Helecho', 'Polypodiophyta', ''),
 (3, 'Lirios Acuaticos', 'Eichhornia crassipes', 'El jacinto de agua, lirio acuático, flor de bora, buchón de agua, camalote, aguapey, lechuguín​ tarope, tarulla o reyna, es una planta acuática de la familia de las Pontederiaceae.  Tiene bulbos con aire que le permiten flotar y da flores moradas.'),
@@ -217,7 +217,7 @@ INSERT INTO `flora` (`Id_flora`, `Nombre coloquial`, `Nombre científico`, `Desc
 --
 
 CREATE TABLE `fotográfica` (
-  `Id_fotografia` int(11)  NOT NULL AUTO_INCREMENT,
+  `Id_fotografia` int(11)  NOT NULL,
   `descripción` varchar(200) NOT NULL,
   `id_imagen` int(11) NOT NULL,
   `zona de captura` int(11) NOT NULL,
@@ -585,7 +585,7 @@ ALTER TABLE `flora`
 -- Indexes for table `fotográfica`
 --
 ALTER TABLE `fotográfica`
-  ADD PRIMARY KEY (`Id_fotografia`),
+  ADD PRIMARY KEY (`Id_fotografia`) AUTO_INCREMENT,
   ADD KEY `id_imagen` (`id_imagen`,`id_flora`,`id_fauna`),
   ADD KEY `id_flora` (`id_flora`),
   ADD KEY `id_fauna` (`id_fauna`);

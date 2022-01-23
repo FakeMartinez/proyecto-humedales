@@ -3,7 +3,7 @@ error_reporting(0);
 require('conexion.php');
 
 if(isset($_POST['nombre'])) {
-    $add_id = $_POST['id'];
+  $add_id = $_POST['id'];
   $add_nom = $_POST['nombre'];
   $add_cuenca = $_POST['cuenca'];
   $add_complejo = $_POST['complejo'];
@@ -18,6 +18,7 @@ if(isset($_POST['nombre'])) {
   $add_diversidad_vegetal =  $_POST['diversidad_vegetal'];
   $add_regimen_hidrologico = $_POST['regimen_hidrologico'];
   $add_calidad_agua = $_POST['calidad_agua'];
+  $Dir_img = $_POST['Dir'];
 
   //---------------------
   $cont_pre = $_POST['cont_pre'];
@@ -141,6 +142,10 @@ while ($cont_fau >= 0) {
     }
   
 //////////////////////////////////////////////
+// Carga de las imagenes
+  foreach ($Dir_img as $valor){
+    mysqli_query($connect,"INSERT into imagen (Id_humedal,PATH) VALUES ('$add_id','$valor')") //Para cargar la imagen
+  }
 
 }
 
