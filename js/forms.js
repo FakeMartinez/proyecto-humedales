@@ -9,16 +9,8 @@ var DireccionesHU = new Array();
 var BtFau = false;
 var BtFlo = false;
 var BtHum = false;
-/*
-$(function eliminar(e){
-  var Nume = e.id;
-  Nume.replace('B','');
-  Nume.replace('I','');
-  console.log(Nume);
-  
-});
 
-*/
+
 $(function(){
     
     carga_form_alta_cu();
@@ -270,6 +262,13 @@ $(function(){
   //////////////////Form fauna/////////////////////
   $('#form-fauna').submit(e => {
     e.preventDefault();
+    DireccionesFA.forEach(function (Dire, Indi, Vect){
+      if(Dire==""){
+        console.log("Elimina" + DireccionesFA[Indi]);
+        DireccionesFA.splice(Indi,1);
+        console.log("eliminado"+ DireccionesFA[Indi]);
+      };
+    });
     const postData = {
       id_fauna: $('#ID_fauna').val(),
       nom_cq_fauna: $('#nom_colquial_fauna').val(),
@@ -299,7 +298,16 @@ $(function(){
   
   ////////////////////////////////////////////////
 
-   
+   /*
+  $('#BI0 .pI2').on('click', function(e){
+    //var Nume = e.id;
+    //Nume.replace('B','');
+    //Nume.replace('I','');
+    console.log(e);
+  
+  });
+
+*/
   
 //////////////////Form imagen/////////////////////
 $('#form-imagen').submit(e => {
@@ -315,36 +323,72 @@ $('#form-imagen').submit(e => {
     contentType: false,
     processData: false,
     success: function(response) {
-      console.log(response);
+     // console.log(response);
       let templateD = '';
       if (BtFau){
         DireccionesFA.push(response);
-        console.log(DireccionesFA);
+      //  console.log(DireccionesFA);
         DireccionesFA.forEach(function (Dire, Indi, Vect){
-        templateD += `<div class=pI id='CI${Indi}'><button class=pI2 id='BI${Indi}' onclick="eliminar()">X</button><img src='images/${Dire}' style="width:200px;height:200px;"></img></div>`;
-       
+          if (Dire!="")
+          {
+            templateD += `<div class=pI id='CIFa${Indi}'><button type="button" class='pI2' id='BIFa${Indi}'>X</button><img src='images/${Dire}' style="width:200px;height:200px;"></img></div>`;
+          }
         })
         $('#ContenedorImgFau').html(templateD);
+        DireccionesFA.forEach(function (Dire, Indi, Vect){
+          $('#BIFa' + Indi.toString()).on('click',function(e){
+         //  console.log("imagen" + Indi);
+          // DireccionesHU.splice(Indi,1);
+          DireccionesFA[Indi] = "";
+           $('#CIFa' + Indi.toString()).remove();
+        //   console.log(DireccionesFA);
+          });
+           
+         })
+        
       }else
       if (BtFlo){
         DireccionesFL.push(response);
-        console.log(DireccionesFL);
+      ////  console.log(DireccionesFL);
         DireccionesFL.forEach(function (Dire, Indi, Vect){
-          templateD += `<div class=pI id='CI${Indi}'><button class=pI2 id='BI${Indi}' onclick="eliminar()">X</button><img src='images/${Dire}' style="width:200px;height:200px;"></img></div>`;
-          
+          if (Dire!="")
+          {
+            templateD += `<div class=pI id='CIFl${Indi}'><button type="button" class='pI2' id='BIFl${Indi}' >X</button><img src='images/${Dire}' style="width:200px;height:200px;"></img></div>`;
+          }
         })
         $('#ContenedorImgFlor').html(templateD);
-        
+        DireccionesFL.forEach(function (Dire, Indi, Vect){
+          $('#BIFl' + Indi.toString()).on('click',function(e){
+          // console.log("imagen" + Indi);
+          // DireccionesHU.splice(Indi,1);
+          DireccionesFL[Indi] = "";
+           $('#CIFl' + Indi.toString()).remove();
+          //// console.log(DireccionesFL);
+          });
+           
+         })
         }else{
           if (BtHum){
             DireccionesHU.push(response);
-            console.log("direccionesHU");
-            console.log(DireccionesHU);
+        //    console.log("direccionesHU");
+           // console.log(DireccionesHU);
             DireccionesHU.forEach(function (Dire, Indi, Vect){
-              templateD += `<div class=pI id='CI${Indi}'><button class=pI2 id='BI${Indi}' onclick="eliminar()">X</button><img src='images/${Dire}' style="width:200px;height:200px;"></img></div>`;
-              
+              if (Dire!="")
+              {
+              templateD += `<div class=pI id='CIH${Indi}'><button type="button" class='pI2' id='BIH${Indi}'>X</button><img src='images/${Dire}' style="width:200px;height:200px;"></img></div>`;
+              }
             })
             $('#ContenedorImgHu').html(templateD);
+            DireccionesHU.forEach(function (Dire, Indi, Vect){
+             $('#BIH' + Indi.toString()).on('click',function(e){
+              //console.log("imagen" + Indi);
+             // DireccionesHU.splice(Indi,1);
+             DireccionesHU[Indi] = "";
+              $('#CIH' + Indi.toString()).remove();
+              //console.log(DireccionesHU);
+             });
+              
+            })
           }
         }
 
@@ -366,6 +410,14 @@ $('#form-imagen').submit(e => {
   //////////////////Form flora/////////////////////
   $('#form-flora').submit(e => {
     e.preventDefault();
+    DireccionesFL.forEach(function (Dire, Indi, Vect){
+      if(Dire==""){
+        console.log("Elimina" + DireccionesFL[Indi]);
+        DireccionesFL.splice(Indi,1);
+        console.log("eliminado"+ DireccionesFL[Indi]);
+      };
+    });
+    console.log(DireccionesFL);
     const postData = {
       id_flora: $('#ID_flora').val(),
       nom_cq_flora: $('#nom_colquial_flora').val(),
@@ -374,7 +426,7 @@ $('#form-imagen').submit(e => {
      // img_flora: $('#img_flora').val(),
       Dir: DireccionesFL.slice()   
     };
-    //console.log(img_flora);
+    console.log(postData);
     //console.log("antes de llamar al php");
     $.post('php/sub_forms.php', postData, (response) => {
       //console.log("despues de llamar al php");
@@ -389,7 +441,7 @@ $('#form-imagen').submit(e => {
       $('#carac_flora').val('');
       $('#ContenedorImgFlor').empty();
       DireccionesFL.splice(0, DireccionesFL.length);
-      console.log(DireccionesFL);
+     // console.log(DireccionesFL);
     });
   });
 
@@ -476,7 +528,7 @@ $('#btn_presion_hum').on('click', function(){
   
   });
   //-----------------------------------------------------------------------
-
+  
   
 });
 
@@ -624,5 +676,4 @@ $('#btn_add').on('click', function(){
                 });
               };
 
-  
 

@@ -122,7 +122,7 @@ if(isset($_POST['nom_cq_flora'])) {
 
     foreach ($add_img as $valor){
       //  echo" entra al foreach ";
-      $query5_2 = "INSERT into imagen (PATH) VALUES  ('$add_img') ";  //Preparacion para cargar la imagen
+      $query5_2 = "INSERT into imagen (PATH) VALUES  ('$valor') ";  //Preparacion para cargar la imagen
        act($connect,$query5_2); //Para cargar la imagen
         
         
