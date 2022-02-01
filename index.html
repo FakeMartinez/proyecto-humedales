@@ -7,12 +7,10 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ==" crossorigin="" />
-   
   <link rel="stylesheet" href="css/stylemap.css">
   <link rel="stylesheet" href="css/bootstrap.css">
   <link rel="stylesheet" href="css/wbootstrap.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css" integrity="sha512-f0tzWhCwVFS3WeYaofoLWkTP62ObhewQ1EZn65oSYDZUg1+CyywGKkWzm8BxaJj5HGKI72PnMH9jYyIFz+GH7g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
 </head>
 
 <body>
@@ -26,6 +24,7 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <button type="button" class="btn btn-success" id="btn_add">+</button>
       <button type="button" class="btn btn-warning" id="btn_img_xy">Obtener Coordenadas</button>
+     <button type="button" class="btn btn-warning" id="btn_modif">Modificar</button>
           <a class="nav-link dropdown-toggle" id="tools" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Herramientas</a>
           <div class="dropdown-menu" id="tools_op">
             <a class="dropdown-item" href="https://facu52da.users.earthengine.app/view/humedales">Imagenes Satelitales</a>
@@ -305,16 +304,18 @@
         <!-- ID Humedal -->
         <div class="form-group">
          <input type="text" id="ID_humedal" placeholder="Código Humedal" class="form-control"> 
-        </div>
+        </div> 
 
         <!-- Nombre -->
         <div class="form-group">
-         <input type="text" id="nombre" placeholder="Nombre" class="form-control"> 
+         <input type="text" id="nombre" name="nombre" placeholder="Nombre"   class="form-control"> 
         </div>
          
          <!-- Fecha relevamiento -->
         <legend class="mt-4">Fecha de relevamiento</legend>
-        <input type="text" id="fecha_rel"/>
+       
+        <input type="text" name="fecha" id="fecha_rel" value="">
+        
 
          <!-- cuenca -->
         <div class="form-group">
@@ -544,12 +545,14 @@
       <div class="form-group">
         <textarea id="obs" cols="30" rows="10" class="form-control" placeholder="Observaciones"></textarea>
       </div>
+      
 
       </fieldset> <!--  -->
         <div class="modal-footer">
           <input type="hidden" id="form_alta_id">
-          <button type="submit" class="btn btn-primary btn-block text-center">Guardar datos</button>
+          <button type="submit" class="btn btn-primary btn-block text-center" id="bEnviar">Guardar datos</button>
           </form> <!-- Fin del formulario -->
+          <div  id='error'></div>
         </div>      
       </div>
    </div>
@@ -859,14 +862,68 @@
 </div>
 </div>
 <!------------------------------------------------------------------------------------>
+<!-------------------------------------MODIFICAR------------------------------------------->
+
+ <div class="modal" role="document" id="form_modif" style="background: rgba(0,0,0,0.8);">
+  <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="t_form">Modificar</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close_btn_modif">
+            <span aria-hidden="true"></span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row p-4">
+  
+          <fieldset> <!-- Formulario -->
+          <form id="task-formodif">
+            <div id="contenedor">
+              <div>
+                <button type="button" class="btn btn-success btn-block" id="btn_mcomplejo">Complejo</button>
+                <button type="button" class="btn btn-success btn-block" id="btn_mcuenca">Cuenca</button>
+                <button type="button" class="btn btn-success btn-block" id="btn_mfauna">Fauna</button>
+                <button type="button" class="btn btn-success btn-block" id="btn_mflora">Flora</button>
+                <button type="button" class="btn btn-success btn-block" id="btn_mpresiones">Propietario</button>
+              </div>
+              <div>
+                <table id="myTable" class="table table-dark">
+                   <tr>
+                    </tr>
+                    <tr>
+                    </tr>
+                    </table>
+             
+
+              </div>
+            </div>
+        </fieldset> <!--  -->
+          <div class="modal-footer">
+            <input type="hidden" id="form_modif_id">
+            <button type="submit" class="btn btn-primary btn-block text-center" id="bEnviar">Guardar</button>
+            </form> <!-- Fin del formulario -->
+          </div>      
+        </div>
+     </div>
+    </div>
+   </div>
+  </div>
+  
+
+    
+       
  
+ 
+        
+          
+
+  
+  <!------------------------------------------------------------------------->
 
   <script>
     $('#fecha_rel').datetimepicker({
-      inline:true,
-      ownerDocument: document,
-      contentWindow: window,
-      timepicker:false
+      inline:true,        
+      timepicker:false,   //hora desactivada
     });
    
     </script>
