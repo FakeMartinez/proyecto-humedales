@@ -3,6 +3,8 @@ var x_fau = 0;
 var x_flo = 0;
 var x_pers = 0 ;
 var update = false;
+var validar_dat;
+
 
 $(function(){
     
@@ -12,7 +14,7 @@ $(function(){
     carga_form_alta_fa();
     carga_form_alta_fl();
     carga_form_alta_pers();
-
+   // modif_comp();
     //Cerrar Formulario Alta
     $('#close_btn_add').on('click', function(){
         $('#form_add').hide();
@@ -71,17 +73,27 @@ $(function(){
         $('#form_miembro_add').hide();
       });
 
+      
+       //Añadir modif
+       $('#close_btn_modif').on('click', function(){
+        $('#form_modif').hide();
+      });
+
+ 
+
+ 
+
+
   //////////////////////Formulario Alta////////////////////////
   
-     
-
-
+    
   $('#form_add').submit(e => {
-        //e.preventDefault();
+        e.preventDefault();
+        //validar_dat.addEventListener("input", validacion); 
         var postData = {
           
           id:$('#ID_humedal').val(),  
-          nombre: $('#nombre').val().trim(),  // trim remueve el espacio en blanco de la cadena
+          nombre: $('#nombre').val(),  
           fecha: $('#fecha_rel').val(),
           cuenca: $('#sel_cuenca').val(),
           complejo: $('#sel_complejo').val(),
@@ -107,11 +119,7 @@ $(function(){
           //
           //
         }
-        
-  
-      
-
-
+              
 
         while(x_pre>=0){
           console.log('sel_presion.form-select '.concat(x_pre.toString()));
@@ -161,27 +169,30 @@ $(function(){
         }
   
         
-        //e.preventDefault();
+        e.preventDefault();
         console.log(update);
         
   
         if (update != false){
         $.post('php/carga.php', postData, (response) => {
           console.log(response);
-          //e.preventDefault();
+          e.preventDefault();
           //$('#form_add').trigger('reset');
           
         });
       }else{
+        if(validacion(postData) == true){          //comprueba los campos 
+          
         $.post('php/alta.php', postData, (response) => {
-          console.log(response);
+          console.log(postData);
           //$('#form_add').trigger('reset');
            e.preventDefault();
+        
         });
       }
-
-    
-
+     
+        }
+      
   
   
       });
@@ -443,26 +454,47 @@ $('#btn_add').on('click', function(){
         });
       };
       ////////////////////////////////
-      function carga_form_alta_fa(){
-        $.ajax({
-          url: 'php/alta.php',
-          type: 'GET',
-          success: function (response) {
-              if(!response.error) {
-                //console.log(response);
-                let datos = JSON.parse(response);
-                //console.log(datos);
-                let template4 = '';
-                datos['faunas'].forEach(dato => {
-                  template4 += `
+  function carga_form_alta_fa(){
+   var x=x_fau;
+   var antfau = new Array();
+
+     while(x!=-1){
+        antfau[x] = $('#sel_fauna.form-select.'+ x.toString()).val();
+        x--;
+      }
+        
+      $.ajax({
+        url: 'php/alta.php',
+        type: 'GET',
+          
+        success: function (response) {
+            
+          if(!response.error) {
+              let datos = JSON.parse(response);
+              let template4 = '';
+              
+              datos['faunas'].forEach(dato => {
+                var val= true;
+                antfau.forEach(e =>{
+                  if(e==dato.nom_fauna){
+                    val = false;}
+                  });
+                  if(val==true){
+                    template4 += `
                   <option>${dato.nom_fauna}</option>
-                          ` });       
-                $('#sel_fauna.form-select.'+ x_fau.toString()).html(template4);
-                }
-                
-              }
-            });
-          };
+                          `
+                   }
+              });  
+              $('#sel_fauna.form-select.'+ x_fau.toString()).html(template4);
+          }
+              
+        }
+                  
+                 
+                  
+      });
+            }
+          
   
       ////////////////////////////////
       function carga_form_alta_fl(){
@@ -554,7 +586,60 @@ $('#btn_add').on('click', function(){
                       }
                     });
                   };
+//-------------------------------------------------//
+//--------------------Modificar--------------------------//
+    
 
 
+$('#btn_modif').on('click', function(){
+  $('#form_modif').show();
+  $('#t_form.modal-title').html('Modificar');
+  $('#form_modal').css({'background':'#DEFEAE'});
+  update = false; 
+  
+  function modif_comp(){
+    $.ajax({
+      url: 'php/modificar.php',
+      type: 'GET',
+      success: function (response) {
+         //lo que devuelve modificar.php
+         
+         
+          }
+                
+        });
+      };
+    
+ 
+
+});           
+
+
+
+//-----------------------------------------------------------------------//
+//----------------------Validacion------------------------------------//
+
+
+function validacion(postData){
+  if(postData.nombre==''){
+    alert("Ingrese un nombre al humedal para continuar");
+    $('#nombre').css({'background' : '#FFDDDD', 'border': '1px dashed #FF0000' });
+    return false;
+  }
+
+  
+    else {
+      return true;
+  }
+  }
+
+
+
+
+
+
+                   
+                    
+                   
 
 
