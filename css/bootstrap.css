@@ -10183,6 +10183,7 @@ th {
 }
 
 
+/*======================================== AÑADIDO Gabriel ========================================*/
 
 .pI {
   border: 5px solid black;
@@ -10198,8 +10199,8 @@ th {
   margin: auto;
   text-align: center;
   padding: 0px;
-  color: #4bbf73;
-  text-shadow: #5ee78e 0px 0px 10px;
+  color: #7b7b7b;
+  text-shadow: #999999 0px 0px 10px;
   font-size: 40px;
   position: absolute;
   right: 0px;
@@ -10208,7 +10209,20 @@ th {
   height: 40px;
   border: 0px;
 }
-.pI .pI2:active{
-  color: #bd2a2a;
-  text-shadow: #5ee78e 0px 0px 10px;
+  
+.pI .pI2:hover{   /* :active indica que si es activado el elemento cambia el estilo, solo cuando es activado*/
+  color: #2e2d2d;
+  text-shadow: #999999 0px 0px 10px;
+}
+
+.ContenedorImgCarg
+{
+  height: 232px;
+  width: 717px;
+  overflow-y: hidden;
+}
+.ContenedorImgCarg:empty /* {:empty} sirbe para dar estilo cuando el objeto no tiene elementos hijos */
+{
+  height: 1px;
+  width: 717px;
 }

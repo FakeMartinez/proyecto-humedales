@@ -7,7 +7,7 @@
   $q_presion = mysqli_query($connect,"SELECT Tipo FROM presiones");
   $q_fauna = mysqli_query($connect,"SELECT NombreColoquial FROM fauna");
   $q_flora =  mysqli_query($connect,"SELECT NombreColoquial FROM flora");
-  $q_propie = mysqli_query($connect,"SELECT Nombre FROM propietario, persona WHERE persona.Id_persona = propietario.Id_persona");
+  $q_propie = mysqli_query($connect,"SELECT Nombre FROM persona");
 
   $json1 = array();
   $json2 = array();

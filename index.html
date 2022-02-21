@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="css/stylemap.css">
     <link rel="stylesheet" href="css/bootstrap.css?v=<?php echo time(); ?">
     <link rel="stylesheet" href="css/wbootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-icons.css">
 
   <!--al vincular un documento css y jss se pone ?v=<?php echo time(); ? para indicarle una version al archivo y que se actualice siempre al ejecutarlo en el navegador-->
 
@@ -520,7 +521,7 @@
 <!-- Imgaen del humedal -->
       <label for="formFile" class="form-label mt-4">Imagen</label> <br>
       <button type="button" class="btn btn-success" id="btn_imagen_addHu">Cargar Imagen</button>
-      <div id="ContenedorImgHu"></div>
+      <div class="ContenedorImgCarg" id="ContenedorImgHu" style="display: flex;"></div>
       
     </fieldset> <!--  -->
 
@@ -617,10 +618,11 @@
          <input type="text" id="nom_comp" placeholder="Nombre" class="form-control"> 
          </div>
         <!-- Propietario -->
-        <div class="form-group">
+        <div class="form-group" style="display: flex;">
           <select class="form-select" id="sel_propietario">
             <option>Seleccione Propietario...</option>
-          </select>
+          </select>  
+          <button type="button" class="btn btn-warning" id="NuevoPropietario" style="margin: 5px;padding-left: 10px;padding-right: 10px;font-size: 20px;"><i class="bi bi-pen" style="color: black;" id="Buscar"></i></button>
         </div>
         </fieldset>
         <div class="modal-footer">
@@ -635,6 +637,67 @@
   </div>
 </div>
 </div>
+<!--
+  _________________________________Formulario Nuevo Propietario_________________________
+-->
+<div class="modal" role="document" id="form_propietario_add" style="background: rgba(0,0,0,0.8);">
+  <div class="modal-dialog modal-lg">
+     <div class="modal-content">
+       <div class="modal-header">
+         <h5 class="modal-title">Cargar Propietario</h5>
+         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close_btn_Prop_add">
+           <span aria-hidden="true"></span>
+         </button>
+       </div>
+ 
+       <div class="modal-body">
+         <div class="row p-4">
+ 
+         <fieldset> <!-- Formulario -->
+         <form id="form-complejo">
+ 
+          <!-- ID Propietario-->
+          <div class="form-group">
+          <input type="text" id="id_propietario" placeholder="ID Propietario" class="form-control"> 
+          </div>
+         
+         <!-- Nombre -->
+         <div class="form-group">
+          <input type="text" id="nom_Prop" placeholder="Nombre" class="form-control"> 
+          </div>
+
+          <!-- Correo -->
+         <div class="form-group">
+          <input type="text" id="correo_Prop" placeholder="Correo" class="form-control"> 
+          </div>
+
+          <!-- Telefono -->
+         <div class="form-group">
+          <input type="text" id="tel_Prop" placeholder="Teléfono" class="form-control"> 
+          </div>
+
+          <!-- Dirección -->
+         <div class="form-group">
+          <input type="text" id="Dire_Prop" placeholder="Dirección" class="form-control"> 
+          </div>
+
+         </fieldset>
+
+
+         <div class="modal-footer">
+                 <input type="hidden" id="form_prop_id">
+                 <button type="submit" class="btn btn-primary btn-block text-center">
+                   Guardar datos
+                 </button>
+           </form>
+         </div>
+       </div>
+     </div>
+   </div>
+ </div>
+ </div>
+
+
 <!------------------------------------------------------------------------->
 
 <!-------------------------Formulario Presion------------------------------->
@@ -719,7 +782,7 @@
          <!-- Imagen -->
           <label for="formFile" class="form-label mt-4">Imagen</label> <br>
           <button type="button" class="btn btn-success" id="btn_imagen_add">Cargar Imagen</button>
-          <div id="ContenedorImgFau"></div>
+          <div class="ContenedorImgCarg" id="ContenedorImgFau" style="display: flex;"></div>
 <!--    <div class="form-group">
           <label for="formFile" class="form-label mt-4">Cargar Imagen</label>
           <input class="form-control" type="file" id="img_fauna">
@@ -778,7 +841,7 @@
           <!-- Imagen -->
           <label for="formFile" class="form-label mt-4">Imagen</label> <br>
           <button type="button" class="btn btn-success" id="btn_imagen_addFl">Cargar Imagen</button>
-          <div id="ContenedorImgFlor"></div>
+          <div class="ContenedorImgCarg" id="ContenedorImgFlor" style="display: flex;"></div>
         <!--  
           <div class="form-group">
             <label for="formFile" class="form-label mt-4">Cargar Imagen</label>

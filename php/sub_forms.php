@@ -8,10 +8,7 @@
     if (!$result) {
         die('Query Error'.mysqli_error($connect));
       }
-       
-      echo "Task Added Successfully";  
-     
-      
+      echo "Task Added Successfully";        
 };
 
 /////////////////Cuenca/////////////////////////
@@ -46,7 +43,19 @@ if(isset($_POST['id_complejo'])) {
   act($connect,$query2);
 };
 
+/////////////////Propietario////////////////////////
 
+if(isset($_POST['id_propie'])) {
+  $add_id = $_POST['id_propie'];
+  $add_nom = $_POST['nom_prop'];
+  $add_correo = $_POST['corre_prop'];
+  $add_tel = $_POST['tel_propi'];
+  $add_dire = $_POST['dir_prop'];
+
+  $query2 = "INSERT into persona (Id_persona, Nombre, Correo, Teléfono, Dirección) VALUES ('$add_id','$add_nom', '$add_correo', '$add_tel', '$add_dire')";
+
+  act($connect,$query2);
+};
   
 
 /////////////////Tipo de Presion///////////////////  | 🗸 FUNCIONA 🗸 |
@@ -55,7 +64,7 @@ if(isset($_POST['id_complejo'])) {
     $add_tipo= $_POST['tipo_presion'];  // agrega el valor de $_POST.tipo_presion a $add_tipo
     $add_obs = $_POST['obs_presion'];   // agrega el valor de $_POST.obs_presion a $add_obs
     $add_ID = $_POST['ID_presion'];
-    $query3 = "INSERT into presiones (Id_presiones, Tipo, Observacion) VALUES ('$add_ID', $add_tipo','$add_obs')";  //crea la insercion en SQL de la nueva informacion en la tabla presiones
+    $query3 = "INSERT into presiones (Id_presiones, Tipo, Observacion) VALUES ('$add_ID', '$add_tipo','$add_obs')";  //crea la insercion en SQL de la nueva informacion en la tabla presiones
     act($connect,$query3);  // ¿act() ejecuta la consulta de $query3 en la base de datos $connect? act(base de datos, consulta)
   };
 

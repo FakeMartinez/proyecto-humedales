@@ -90,13 +90,21 @@ $(function(){
         BtFlo = true;
         BtHum = false;
       });
+      //agregar imagen humedal
       $('#btn_imagen_addHu').on('click', function(){
         $('#form_imagen_add').show();
         BtFau = false;
         BtFlo = false;
         BtHum = true;
       });
-      
+       //Mostrar formulario Propietario
+      $('#NuevoPropietario').on('click', function(){
+        $('#form_propietario_add').show();
+      })
+       //Cerrar formulario Propietario
+       $('#close_btn_Prop_add').on('click', function(){
+        $('#form_propietario_add').hide();
+      })
      
     
   //////////////////////Formulario Alta////////////////////////
@@ -198,7 +206,7 @@ $(function(){
         };
         //console.log(postData);
         $.post('php/sub_forms.php', postData, (response) => {
-          console.log(response);
+          //console.log(response);
           //$('#form_add').trigger('reset');
           e.preventDefault();
           carga_form_alta_cu();
@@ -222,7 +230,7 @@ $(function(){
     };
     //console.log(postData);
     $.post('php/sub_forms.php', postData, (response) => {
-      console.log(response);
+      //console.log(response);
       //$('#form_add').trigger('reset');
       e.preventDefault();
       carga_form_alta_co();
@@ -233,6 +241,35 @@ $(function(){
     });
   });
   
+/////////////////////////////////////////////////////
+
+///////////////Form Propietarios//////////////////////
+$('#form_propietario_add').submit(e => {
+  e.preventDefault();
+  const postData = {
+    id_propie: $('#id_propietario').val(),
+    nom_prop: $('#nom_Prop').val(),
+    corre_prop: $('#correo_Prop').val(),
+    tel_propi: $('#tel_Prop').val(),
+    dir_prop: $('#Dire_Prop').val()
+
+  };
+  //DireccionesFA.forEach(dir =>{postData.Dir += dir});
+  //console.log(postData);
+  $.post('php/sub_forms.php', postData, (response) => {
+    //console.log(response);
+    //$('#form_add').trigger('reset');
+    e.preventDefault();
+    carga_form_alta_propie();
+    $('#form_propietario_add').hide();
+    $('#id_propietario').val('');
+    $('#nom_Prop').val('');
+    $('#correo_Prop').val('');
+    $('#tel_Prop').val('');
+    $('#Dire_Prop').val('');
+  });
+});
+
   ////////////////////////////////////////////////
 
   //////////////////Form presion///////////////////// | 🗸 FUNCIONA 🗸 |
@@ -245,7 +282,7 @@ $(function(){
     };
     //console.log(postData);
     $.post('php/sub_forms.php', postData, (response) => {  //post llama al archivo php llamada sub_forms.php    ¿response es el valor que devuelve?
-      console.log(response);                               // ¿que es el parametro response? que es console.log?
+      //console.log(response);                               // ¿que es el parametro response? que es console.log?
       //$('#form_add').trigger('reset');
       e.preventDefault();
       carga_form_alta_p();    //definido en linea *357
@@ -264,11 +301,12 @@ $(function(){
     e.preventDefault();
     DireccionesFA.forEach(function (Dire, Indi, Vect){
       if(Dire==""){
-        console.log("Elimina" + DireccionesFA[Indi]);
+        //console.log("Elimina" + DireccionesFA[Indi]);
         DireccionesFA.splice(Indi,1);
-        console.log("eliminado"+ DireccionesFA[Indi]);
+        //console.log("eliminado"+ DireccionesFA[Indi]);
       };
     });
+    
     const postData = {
       id_fauna: $('#ID_fauna').val(),
       nom_cq_fauna: $('#nom_colquial_fauna').val(),
@@ -279,9 +317,9 @@ $(function(){
   
     };
     //DireccionesFA.forEach(dir =>{postData.Dir += dir});
-    console.log(postData);
+    //console.log(postData);
     $.post('php/sub_forms.php', postData, (response) => {
-      console.log(response);
+      //console.log(response);
       //$('#form_add').trigger('reset');
       e.preventDefault();
       carga_form_alta_fa();
@@ -292,7 +330,7 @@ $(function(){
       $('#carac_fauna').val('');
       $('#ContenedorImgFau').empty();
       DireccionesFA.splice(0, DireccionesFA.length);
-      console.log(DireccionesFA);
+      //console.log(DireccionesFA);
     });
   });
   
@@ -308,7 +346,7 @@ $(function(){
   });
 
 */
-  
+
 //////////////////Form imagen/////////////////////
 $('#form-imagen').submit(e => {
   e.preventDefault();
@@ -316,87 +354,125 @@ $('#form-imagen').submit(e => {
   var files = $('#Newimg')[0].files[0];
   formData.append('file',files);
  
-  $.ajax({
-    url: 'php/CargaImagenes.php',
-    type: 'post',
-    data: formData,
-    contentType: false,
-    processData: false,
-    success: function(response) {
-     // console.log(response);
-      let templateD = '';
-      if (BtFau){
-        DireccionesFA.push(response);
-      //  console.log(DireccionesFA);
-        DireccionesFA.forEach(function (Dire, Indi, Vect){
-          if (Dire!="")
-          {
-            templateD += `<div class=pI id='CIFa${Indi}'><button type="button" class='pI2' id='BIFa${Indi}'>X</button><img src='images/${Dire}' style="width:200px;height:200px;"></img></div>`;
-          }
-        })
-        $('#ContenedorImgFau').html(templateD);
-        DireccionesFA.forEach(function (Dire, Indi, Vect){
-          $('#BIFa' + Indi.toString()).on('click',function(e){
-         //  console.log("imagen" + Indi);
-          // DireccionesHU.splice(Indi,1);
-          DireccionesFA[Indi] = "";
-           $('#CIFa' + Indi.toString()).remove();
-        //   console.log(DireccionesFA);
-          });
-           
-         })
-        
-      }else
-      if (BtFlo){
-        DireccionesFL.push(response);
-      ////  console.log(DireccionesFL);
-        DireccionesFL.forEach(function (Dire, Indi, Vect){
-          if (Dire!="")
-          {
-            templateD += `<div class=pI id='CIFl${Indi}'><button type="button" class='pI2' id='BIFl${Indi}' >X</button><img src='images/${Dire}' style="width:200px;height:200px;"></img></div>`;
-          }
-        })
-        $('#ContenedorImgFlor').html(templateD);
-        DireccionesFL.forEach(function (Dire, Indi, Vect){
-          $('#BIFl' + Indi.toString()).on('click',function(e){
-          // console.log("imagen" + Indi);
-          // DireccionesHU.splice(Indi,1);
-          DireccionesFL[Indi] = "";
-           $('#CIFl' + Indi.toString()).remove();
-          //// console.log(DireccionesFL);
-          });
-           
-         })
-        }else{
-          if (BtHum){
-            DireccionesHU.push(response);
-        //    console.log("direccionesHU");
-           // console.log(DireccionesHU);
-            DireccionesHU.forEach(function (Dire, Indi, Vect){
-              if (Dire!="")
-              {
-              templateD += `<div class=pI id='CIH${Indi}'><button type="button" class='pI2' id='BIH${Indi}'>X</button><img src='images/${Dire}' style="width:200px;height:200px;"></img></div>`;
-              }
-            })
-            $('#ContenedorImgHu').html(templateD);
-            DireccionesHU.forEach(function (Dire, Indi, Vect){
-             $('#BIH' + Indi.toString()).on('click',function(e){
-              //console.log("imagen" + Indi);
-             // DireccionesHU.splice(Indi,1);
-             DireccionesHU[Indi] = "";
-              $('#CIH' + Indi.toString()).remove();
-              //console.log(DireccionesHU);
-             });
-              
-            })
-          }
-        }
+    $.ajax({
+      url: 'php/CargaImagenes.php',
+      type: 'post',
+      data: formData,
+      contentType: false,
+      processData: false,
+      success: function(response) {
+       // console.log(response);
+  let templateD = '';
+  if (BtFau){
+    DireccionesFA.push(response);
+    //  console.log(DireccionesFA);
+    DireccionesFA.forEach(function (Dire, Indi, Vect){
+      if (Dire!="")
+      {
+        templateD += `<div class=pI id='CIFa${Indi}'><button type="button" class='pI2' id='BIFa${Indi}'>X</button><img src='images/${Dire}' style="width:200px;height:200px;"></img></div>`;
+      }
+    })
+    $('#ContenedorImgFau').html(templateD);
+    DireccionesFA.forEach(function (Dire, Indi, Vect){
+    //=============================================================
+    // == Boton para quitar la imagen de la carga ==
 
+      $('#BIFa' + Indi.toString()).on('click',function(e){
+      //  console.log("imagen" + Indi);
+      DireccionesFA[Indi] = ""; //Elimina el elemento del array de direcciones de Fauna
+      $('#CIFa' + Indi.toString()).remove(); //Elimina el elemento del HTML de la carga de Fauna
+      const DataEli ={
+        eliminar : true,
+        nomImag : Dire
+      };
+      //console.log(DataEli);
+      $.post('php/CargaImagenes.php', DataEli, (response) => { //Llama al PHP para eliminar la imagen cargada en el servidor
+      console.log(response);
+    })
+
+    // == Termina la creacion del evento click del boton eliminar ==
+    //============================================================= 
+      });
+       
+     })
+    
+  }else
+  if (BtFlo){
+    DireccionesFL.push(response);
+    //console.log(DireccionesFL);
+    DireccionesFL.forEach(function (Dire, Indi, Vect){
+      if (Dire!="")
+      {
+        templateD += `<div class=pI id='CIFl${Indi}'><button type="button" class='pI2' id='BIFl${Indi}' >X</button><img src='images/${Dire}' style="width:200px;height:200px;"></img></div>`;
+      }
+    })
+    $('#ContenedorImgFlor').html(templateD);
+    DireccionesFL.forEach(function (Dire, Indi, Vect){
+    //=============================================================
+    // == Boton para quitar la imagen de la carga ==
+    
+      $('#BIFl' + Indi.toString()).on('click',function(e){
+      // console.log("imagen" + Indi);
+      
+      DireccionesFL[Indi] = ""; //Elimina el elemento del array de direcciones de Flora
+      $('#CIFl' + Indi.toString()).remove(); //Elimina el elemento del HTML de la carga de Flora
+      const DataEli ={
+        eliminar : true,
+        nomImag : Dire
+      };
+      //console.log(DataEli);
+      $.post('php/CargaImagenes.php', DataEli, (response) => { //Llama al PHP para eliminar la imagen cargada en el servidor
+      console.log(response);
+    })
+
+    // == Termina la creacion del evento click del boton eliminar ==
+    //=============================================================
+      });
+       
+     })
+    }else{
+      if (BtHum){ //Carga de imagenes en el HTML
+       DireccionesHU.push(response);
+       // console.log("direccionesHU");
+       // console.log(DireccionesHU);
+        DireccionesHU.forEach(function (Dire, Indi, Vect){
+          if (Dire!="")
+          {
+          templateD += `<div class=pI id='CIH${Indi}'><button type="button" class='pI2' id='BIH${Indi}'>X</button><img src='images/${Dire}' style="width:200px;height:200px;"></img></div>`;
+          }
+        })
+        $('#ContenedorImgHu').html(templateD);
+        DireccionesHU.forEach(function (Dire, Indi, Vect){
+          //=============================================================
+          // == Boton para quitar la imagen de la carga ==
+
+          $('#BIH' + Indi.toString()).on('click',function(e){
+          //console.log("imagen" + Indi);
+          
+          DireccionesHU[Indi] = ""; //Elimina el elemento del array de direcciones de Humedales
+          $('#CIH' + Indi.toString()).remove(); //Elimina el elemento del HTML de la carga de Humedales
+          const DataEli ={
+              eliminar : true,
+              nomImag : Dire
+          };
+          //console.log(DataEli);
+          $.post('php/CargaImagenes.php', DataEli, (response) => { //Llama al PHP para eliminar la imagen cargada en el servidor
+            console.log(response);
+          })
+
+          // == Termina la creacion del evento click del boton eliminar ==
+          //=============================================================
+         });
+
+        })
+      }
+    }
+    
 
      
       //Direcciones.forEach(dir => {templateD += `<div class=pI><button class=pI2>X</button><img src='images/${dir}' style="width:200px;height:200px;"></img></div>`});
      
-      console.log(templateD);
+      //console.log(templateD);
       
       
       
@@ -412,12 +488,12 @@ $('#form-imagen').submit(e => {
     e.preventDefault();
     DireccionesFL.forEach(function (Dire, Indi, Vect){
       if(Dire==""){
-        console.log("Elimina" + DireccionesFL[Indi]);
+        //console.log("Elimina" + DireccionesFL[Indi]);
         DireccionesFL.splice(Indi,1);
-        console.log("eliminado"+ DireccionesFL[Indi]);
+        //console.log("eliminado"+ DireccionesFL[Indi]);
       };
     });
-    console.log(DireccionesFL);
+    //console.log(DireccionesFL);
     const postData = {
       id_flora: $('#ID_flora').val(),
       nom_cq_flora: $('#nom_colquial_flora').val(),
@@ -426,7 +502,7 @@ $('#form-imagen').submit(e => {
      // img_flora: $('#img_flora').val(),
       Dir: DireccionesFL.slice()   
     };
-    console.log(postData);
+    //console.log(postData);
     //console.log("antes de llamar al php");
     $.post('php/sub_forms.php', postData, (response) => {
       //console.log("despues de llamar al php");
@@ -571,7 +647,9 @@ $('#btn_add').on('click', function(){
         });
       };
       ////////////////////////////////
+     
       function carga_form_alta_fa(){
+        
         $.ajax({
           url: 'php/alta.php',
           type: 'GET',
@@ -581,17 +659,20 @@ $('#btn_add').on('click', function(){
                 let datos = JSON.parse(response);
                 //console.log(datos);
                 let template4 = '';
+                
                 datos['faunas'].forEach(dato => {
                   template4 += `
                   <option>${dato.nom_fauna}</option>
-                          ` });       
+                          ` });     
+                          
+                        
                 $('#sel_fauna.form-select.'+ x_fau.toString()).html(template4);
-                }
-                
+                            
               }
-            });
+        }});
+            
           };
-  
+          
       ////////////////////////////////
       function carga_form_alta_fl(){
         $.ajax({
@@ -601,7 +682,7 @@ $('#btn_add').on('click', function(){
               if(!response.error) {
                 //console.log(response);
                 let datos = JSON.parse(response);
-                //console.log(datos);
+                console.log(datos);
                 let template5 = '';
                 datos['floras'].forEach(dato => {
                   template5 += `
@@ -609,11 +690,11 @@ $('#btn_add').on('click', function(){
                           ` });          
                 $('#sel_flora.form-select.'+ x_flo.toString()).html(template5);
                 }
-                
               }
             });
           };
-  
+          
+          
           function carga_form_alta_propie(){
             $.ajax({
               url: 'php/alta.php',
