@@ -1,3 +1,6 @@
+
+
+
 //---Capas de fondo para el mapa-------------------
 
 var g_hum = L.layerGroup(); //grupo de capas de los humedales
@@ -23,16 +26,136 @@ var baseMaps = { //Configura el objeto de los layers del mapa
   "<span style='color: gray'>Satelite</span>": especial,
   "<span style='color: gray'>Topografico</span>": topo
 };
+var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+            osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+            osm = L.tileLayer(osmUrl, { maxZoom: 18, attribution: osmAttrib }),
+            myMap = new L.Map('myMap', { center: new L.LatLng(-30.7628, -57.9567), zoom: 13 }),
+            drawnItems = L.featureGroup().addTo(myMap);
+    L.control.layers({
+        /*'osm': osm.addTo(myMap),
+        "google": L.tileLayer('http://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}', {
+            attribution: 'google'
+        })*/
+    }, { 'drawlayer': drawnItems }, { position: 'topleft', collapsed: false }).addTo(myMap);
+    myMap.addControl(new L.Control.Draw({
+        edit: {
+            featureGroup: drawnItems,
+            poly: {
+                allowIntersection: false
+            }
+        },
+        draw: {
+            polygon: {
+                allowIntersection: false,
+                showArea: true
+            }
+        }
+    }));
 
+    myMap.on(L.Draw.Event.CREATED, function (event) {
+        var layer = event.layer;
+        var points = JSON.stringify(event.layer.toGeoJSON());
+        console.log("coord : "+event.layer.toGeoJSON().geometry.coordinates); 
+        console.log("points : "+ points);
+        $("#msj_marcar_mapa").show();
+        $('#continue_marcar').on('click', function(){
+          $("#msj_marcar_mapa").hide();
+        });
+
+        drawnItems.addLayer(layer);
+
+        $('#cancel_marcar').on('click', function(){
+          $("#form_marcar").show();
+          $('#form-marcado').submit(e => {
+            //llamar formulario
+            //guardar datos del formulario
+            e.preventDefault();
+            const postData = {
+              type: event.layer.toGeoJSON().geometry.type,
+              coors: event.layer.toGeoJSON().geometry.coordinates
+            
+            };
+            /*
+          $('#close_btn_marcar').on('click', function(){
+            $("#form_marcar").hide();
+          });
+          */
+          $.post('php/geometry.php', postData, (response) => {
+            console.log(postData);
+            console.log(response);
+          });
+
+        });
+
+       
+    });
+
+ });
+
+
+/*
 //---El objeto map-----------------
 var myMap = L.map('myMap', {
   center: [-30.7628, -57.9567],
   zoom: 10,
+  drawControl: true,
   layers: [m_default,g_hum] //los layers o capas que contiene el mapa
 });
 
 myMap.setView([-30.7628, -57.9567], 13) //setear vista al comienzo
 
+
+
+var drawnItems = new L.FeatureGroup();
+myMap.addLayer(drawnItems);
+var drawControl = new L.Control.Draw({
+    edit: {
+        featureGroup: drawnItems
+    }
+});
+//yMap.addControl(drawControl);
+
+var editableLayers = new L.FeatureGroup();
+myMap.addLayer(editableLayers);
+
+L.Control.RemoveAll = L.Control.extend({
+  options: {
+      position: 'topleft',
+  },
+
+  onAdd: function (myMap) {
+      var controlDiv = L.DomUtil.create('div', 'leaflet-control leaflet-bar');
+      var controlUI = L.DomUtil.create('a', 'leaflet-draw-edit-remove', controlDiv);
+      controlUI.title = 'Remove all drawn items';
+      controlUI.setAttribute('href', '#');
+
+      L.DomEvent
+          .addListener(controlUI, 'click', L.DomEvent.stopPropagation)
+          .addListener(controlUI, 'click', L.DomEvent.preventDefault)
+          .addListener(controlUI, 'click', function () {
+              drawnItems.clearLayers();
+              if(window.console) window.console.log('Drawings deleted...');
+          });
+      return controlDiv;
+  }
+});
+
+removeAllControl = new L.Control.RemoveAll();
+myMap.addControl(removeAllControl);
+
+myMap.on('draw:created', function(e) {
+  var type = e.layerType,
+    layer = e.layer;
+
+  if (type === 'marker') {
+    layer.bindPopup('A popup!');
+  }
+
+  drawnItems.addLayer(layer);
+});
+
+
+*/
 L.control.layers(baseMaps,overlayMaps).addTo(myMap); //Construye el panel de control con los objetos de layers
 
 

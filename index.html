@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
     integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
     crossorigin="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.css"/>
     <link rel="stylesheet" href="css/stylemap.css">
     <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="css/wbootstrap.css">
@@ -50,9 +51,6 @@
             <!--<div class="card my col-md-6" id="task-result"  style="height: 45px; width: 98px; display:block; "></div>-->
           </form>
       </div>
-
-
-
 </nav>
 
 
@@ -279,6 +277,7 @@
   <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
    integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
    crossorigin=""></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.js"></script>
    <script src="js/html2pdf.bundle.min.js"></script>
    <script src="js/export.js" async></script>
    <script src="js/map.js"></script> 
@@ -824,7 +823,62 @@
   </div>
 </div>
 </div>
+
+<!-------------------------Mensaje Marcar Mapa----------------------------------------------------------->
+<div class="modal" role="document" id="msj_marcar_mapa" style="background: rgba(0,0,0,0.8);">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Marcar Mapa</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true"></span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>¿Desea agregar otro tipo de representación?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="continue_marcar">Aceptar</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="cancel_marcar">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
 <!------------------------------------------------------------------------------------>
+<!---------------------Formulario Marcar Mapa---------------------------------------------->
+<div class="modal" role="document" id="form_marcar" style="background: rgba(0,0,0,0.8);">
+  <div class="modal-dialog modal-lg">
+     <div class="modal-content">
+       <div class="modal-header">
+         <h5 class="modal-title">Seleccionar Accidente Geografico</h5>
+         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close_btn_marcar">
+           <span aria-hidden="true"></span>
+         </button>
+       </div>
+ 
+       <div class="modal-body">
+         <div class="row p-4">
+          <form id="form-marcado">
+          <div class="from-group"> <!-- Parte que se agrega-->
+            <select class="form-select" id="sel_objeto">
+            <option>Humedal</option>
+            <option>Lugar de Interes</option>
+            <option>Otro...</option>
+            </select>
+            </div>
+         <div class="modal-footer">
+                 <input type="hidden" id="form_cuenca_id">
+                 <button type="submit" class="btn btn-primary btn-block text-center" id="sub_marcar">
+                   Seleccionar representacion
+                 </button>
+           </form>
+         </div>
+         
+       </div>
+     </div>
+   </div>
+ </div>
+ </div>
  
  <!-- <table id="resultado" class="table"><?php //include('consulta.php');?></div>-->
 
