@@ -204,9 +204,9 @@ $(function(){
           sup_cuenca: $('#sup_cuenca').val(),
           tipo_cuenca:$('#tipo_cuenca').val(),
         };
-        //console.log(postData);
+        console.log(postData);
         $.post('php/sub_forms.php', postData, (response) => {
-          //console.log(response);
+          console.log(response);        //Si se comenta, no se va a escribir ningún echo del php en la consola de la pagina ¡OJO!
           //$('#form_add').trigger('reset');
           e.preventDefault();
           carga_form_alta_cu();
@@ -215,8 +215,8 @@ $(function(){
           $('#nom_cuenca').val('');
           $('#sup_cuenca').val('');
           $('#tipo_cuenca').val('');
-          
-        });
+          }
+        );
       });
   ////////////////////////////////////////////////
 
@@ -226,11 +226,11 @@ $(function(){
     const postData = {
       id_complejo:$('#id_complejo').val(),
       nombre_complejo: $('#nom_comp').val(),
-      prop_complejo: $('#prop_comp').val(),
+      prop_complejo: $('#sel_propietario').val(),
     };
-    //console.log(postData);
+    console.log(postData);
     $.post('php/sub_forms.php', postData, (response) => {
-      //console.log(response);
+      console.log(response);    //Si se comenta, no se va a escribir ningún echo del php en la consola de la pagina ¡OJO!
       //$('#form_add').trigger('reset');
       e.preventDefault();
       carga_form_alta_co();
@@ -257,7 +257,7 @@ $('#form_propietario_add').submit(e => {
   //DireccionesFA.forEach(dir =>{postData.Dir += dir});
   //console.log(postData);
   $.post('php/sub_forms.php', postData, (response) => {
-    //console.log(response);
+    console.log(response);     //Si se comenta, no se va a escribir ningún echo del php en la consola de la pagina ¡OJO!
     //$('#form_add').trigger('reset');
     e.preventDefault();
     carga_form_alta_propie();
@@ -281,8 +281,8 @@ $('#form_propietario_add').submit(e => {
       ID_presion: $('#Id_presion').val()    //Parametro obs_presion de la variable postData, toma el valor del objeto con id  obs_presion
     };
     //console.log(postData);
-    $.post('php/sub_forms.php', postData, (response) => {  //post llama al archivo php llamada sub_forms.php    ¿response es el valor que devuelve?
-      //console.log(response);                               // ¿que es el parametro response? que es console.log?
+    $.post('php/sub_forms.php', postData, (response) => {  //post llama al archivo php llamada sub_forms.php, response es lo que devuelve
+      console.log(response);                               //Si se comenta, no se va a escribir ningún echo del php en la consola de la pagina ¡OJO!     
       //$('#form_add').trigger('reset');
       e.preventDefault();
       carga_form_alta_p();    //definido en linea *357
@@ -319,7 +319,7 @@ $('#form_propietario_add').submit(e => {
     //DireccionesFA.forEach(dir =>{postData.Dir += dir});
     //console.log(postData);
     $.post('php/sub_forms.php', postData, (response) => {
-      //console.log(response);
+      console.log(response);  //Si se comenta, no se va a escribir ningún echo del php en la consola de la pagina ¡OJO!
       //$('#form_add').trigger('reset');
       e.preventDefault();
       carga_form_alta_fa();
@@ -361,7 +361,7 @@ $('#form-imagen').submit(e => {
       contentType: false,
       processData: false,
       success: function(response) {
-       // console.log(response);
+      console.log(response);  //Si se comenta, no se va a escribir ningún echo del php en la consola de la pagina ¡OJO!
   let templateD = '';
   if (BtFau){
     DireccionesFA.push(response);
@@ -387,7 +387,7 @@ $('#form-imagen').submit(e => {
       };
       //console.log(DataEli);
       $.post('php/CargaImagenes.php', DataEli, (response) => { //Llama al PHP para eliminar la imagen cargada en el servidor
-      console.log(response);
+      console.log(response);  //Si se comenta, no se va a escribir ningún echo del php en la consola de la pagina ¡OJO!
     })
 
     // == Termina la creacion del evento click del boton eliminar ==
@@ -457,7 +457,7 @@ $('#form-imagen').submit(e => {
           };
           //console.log(DataEli);
           $.post('php/CargaImagenes.php', DataEli, (response) => { //Llama al PHP para eliminar la imagen cargada en el servidor
-            console.log(response);
+            console.log(response); //Si se comenta, no se va a escribir ningún echo del php en la consola de la pagina ¡OJO!
           })
 
           // == Termina la creacion del evento click del boton eliminar ==
@@ -502,7 +502,7 @@ $('#form-imagen').submit(e => {
      // img_flora: $('#img_flora').val(),
       Dir: DireccionesFL.slice()   
     };
-    //console.log(postData);
+    console.log(postData);  //Si se comenta, no se va a escribir ningún echo del php en la consola de la pagina ¡OJO!
     //console.log("antes de llamar al php");
     $.post('php/sub_forms.php', postData, (response) => {
       //console.log("despues de llamar al php");

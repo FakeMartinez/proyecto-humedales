@@ -6,7 +6,7 @@ $carpeta_destino=$_SERVER['DOCUMENT_ROOT'] . '/proyecto-humedales/proyecto-humed
 
 if (isset($_POST['eliminar']))
 {
-    //echo "entra al eliminar";
+    echo "entra al eliminar";
     
     $NomImag =  trim($_POST['nomImag']); //Extraigo el nombre del archivo a eliminar, el trim() elimina los espacios en blanco de la cadena de caracteres, es necesario porque se pasan espacios en la cadena y da fallo
     $Imagen = $carpeta_destino.$NomImag; //Construyo la ruta completa del archivo
@@ -35,10 +35,10 @@ if (($_FILES["file"]["type"] == "image/pjpeg")
     if (move_uploaded_file($_FILES["file"]["tmp_name"], "$carpeta_destino".$_FILES['file']['name'])) {
         echo ($_FILES['file']['name']);
     } else {
-        //echo 0;
+        echo "Ha habido un herror en la carga de imagen, vuelva a intentar";
     }
 } else {
-    echo "no hizo nada";
+    echo "Formato de imagen no valido";
 }
 };
 
