@@ -317,7 +317,7 @@ $('#form_propietario_add').submit(e => {
   
     };
     //DireccionesFA.forEach(dir =>{postData.Dir += dir});
-    //console.log(postData);
+    console.log(postData);
     $.post('php/sub_forms.php', postData, (response) => {
       console.log(response);  //Si se comenta, no se va a escribir ningún echo del php en la consola de la pagina ¡OJO!
       //$('#form_add').trigger('reset');

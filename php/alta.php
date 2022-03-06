@@ -2,12 +2,12 @@
 
   require('conexion.php');
 
-  $q_cuenca = mysqli_query($connect,"SELECT Nombre FROM cuenca");
-  $q_comp = mysqli_query($connect,"SELECT Nombre FROM complejo");
-  $q_presion = mysqli_query($connect,"SELECT Tipo FROM presiones");
-  $q_fauna = mysqli_query($connect,"SELECT NombreColoquial FROM fauna");
-  $q_flora =  mysqli_query($connect,"SELECT NombreColoquial FROM flora");
-  $q_propie = mysqli_query($connect,"SELECT Nombre FROM persona");
+  $q_cuenca = mysqli_query($connect,"SELECT Nombre_cuenca FROM cuenca");
+  $q_comp = mysqli_query($connect,"SELECT Nombre_complejo FROM complejo");
+  $q_presion = mysqli_query($connect,"SELECT Tipo_presiones FROM presiones");
+  $q_fauna = mysqli_query($connect,"SELECT Nombre_coloquial FROM fauna");
+  $q_flora =  mysqli_query($connect,"SELECT Nombre_coloquial FROM flora");
+  $q_propie = mysqli_query($connect,"SELECT Nombre_persona FROM persona");
 
   $json1 = array();
   $json2 = array();
@@ -18,38 +18,38 @@
 
   while($row = mysqli_fetch_array($q_cuenca)) {
     array_push($json1, [
-      'nombre_cuenca' => $row['Nombre']
+      'nombre_cuenca' => $row['Nombre_cuenca']
     ]);
   };
 
   while($row = mysqli_fetch_array($q_comp)) {
     array_push($json2, [
-      'nombre_complejo' => $row['Nombre']
+      'nombre_complejo' => $row['Nombre_complejo']
     ]);
   };
 
   while($row = mysqli_fetch_array($q_presion)) {
     array_push($json3, [
-      'tipo_presion' => $row['Tipo']
+      'tipo_presion' => $row['Tipo_presiones']
     ]);
   };
 
   while($row = mysqli_fetch_array($q_fauna)) {
     array_push($json4, [
-      'nom_fauna' => $row['NombreColoquial']
+      'nom_fauna' => $row['Nombre_coloquial']
     ]);
   };
 
   while($row = mysqli_fetch_array($q_flora)) {
     array_push($json5, [
-      'nom_flora' => $row['NombreColoquial']
+      'nom_flora' => $row['Nombre_coloquial']
     ]);
   };
 
   
   while($row = mysqli_fetch_array($q_propie)) {
     array_push($json6, [
-      'nom_prop' => $row['Nombre']
+      'nom_prop' => $row['Nombre_persona']
     ]);
   };
   //echo($json);
