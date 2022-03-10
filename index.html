@@ -10,7 +10,6 @@
   <link rel="stylesheet" href="css/stylemap.css">
   <link rel="stylesheet" href="css/bootstrap.css">
   <link rel="stylesheet" href="css/wbootstrap.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css" integrity="sha512-f0tzWhCwVFS3WeYaofoLWkTP62ObhewQ1EZn65oSYDZUg1+CyywGKkWzm8BxaJj5HGKI72PnMH9jYyIFz+GH7g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
 <body>
@@ -282,15 +281,90 @@
    <script src="js/data_geojson.js"></script> 
    <script src="js/forms.js"></script>
 
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js" integrity="sha512-AIOTidJAcHBH2G/oZv9viEGXRqDNmfdPVPYOYKGy3fti0xIplnlgMHUGfuNRzC6FkzIo0iIxgFnr9RikFxK+sw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<!---------------Formulario Alta Humedal--------------------------->
+   <div class="modal" role="document" id="form_add" style="background: rgba(0,0,0,0.8);">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" id="form_modal">
+          <div class="modal-header">
+            <h5 class="modal-title" id="t_form">Alta Humedal</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close_btn_add">
+              <span aria-hidden="true"></span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row p-4">
+    
+            <fieldset> <!-- Formulario -->
+            <form id="task-form">
+    
+            <!-- Nombre -->
+            <div class="form-group">
+              <legend class="mt-4">Nombre del humedal:</legend>
+             <input type="text" id="nombre" name="nombre" placeholder="Nombre"  required class="form-control"> 
+            </div>
+             
+             <!-- cuenca -->
+            <div class="form-group">
+              <legend class="mt-4">Cuenca</legend>
+              <select class="form-select" id="sel_cuenca">
+                <option>Seleccione Cuenca...</option>
+              </select>
+              <button type="button" class="btn btn-success" id="btn_cuenca_add">Añadir Nueva Cuenca</button>
+            </div>
+    
+           <!-- complejo -->
+            <div class="form-group">
+              <legend class="mt-4">Complejo</legend>
+              <select class="form-select" id="sel_complejo">
+                <option>Seleccione Complejo...</option>
+              </select>
+              <button type="button" class="btn btn-success" id="btn_complejo_add">Añadir Nuevo Complejo</button>
+            </div>
+          
+    
+       
+          <!-- Presion -->
+              <div class="form-group" id="input_presion">
+                <legend class="mt-4">Presión del terreno</legend>
+                <button type="button" class="btn btn-success" id="btn_presion_hum">+</button>
+                <button type="button" class="btn btn-success" id="btn_presion_add">Añadir Nueva Presion</button>
+                
+                <div class="from-group"> <!-- Parte que se agrega-->
+                <select class="form-select 0" id="sel_presion">
+                  <option>Tipo de presion...</option>
+                  <option>Complejo 2</option>
+                  <option>Complejo 3</option>
+                  <option>Complejo 4</option>
+                  <option>Complejo 5</option>
+                </select>
+                </div>
+              </div>           
+    
+        
+        
+       
+    
+          </fieldset> <!--  -->
+            <div class="modal-footer">
+              <input type="hidden" id="form_alta_id">
+              <button type="button" class="btn btn-primary btn-block text-center" id="btn_brel">Subir relevamiento</button>
+              <button type="submit" class="btn btn-primary btn-block text-center" id="bEnviar">Guardar datos</button>
+              </form> <!-- Fin del formulario -->
+              <div  id='error'></div>
+            </div>      
+          </div>
+       </div>
+      </div>
+     </div>
+    </div>
+    
 
-
-<!---------------Formulario Alta--------------------------->
-<div class="modal" role="document" id="form_add" style="background: rgba(0,0,0,0.8);">
+<!---------------Formulario Alta relevamiento--------------------------->
+<div class="modal" role="document" id="form_add2" style="background: rgba(0,0,0,0.8);">
 <div class="modal-dialog modal-lg">
     <div class="modal-content" id="form_modal">
       <div class="modal-header">
-        <h5 class="modal-title" id="t_form">Alta Humedal</h5>
+        <h5 class="modal-title" id="t_form">Relevamiento</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close_btn_add">
           <span aria-hidden="true"></span>
         </button>
@@ -301,39 +375,16 @@
         <fieldset> <!-- Formulario -->
         <form id="task-form">
 
-        <!-- ID Humedal -->
-        <div class="form-group">
-         <input type="text" id="ID_humedal" placeholder="Código Humedal" class="form-control"> 
-        </div> 
-
-        <!-- Nombre -->
-        <div class="form-group">
-         <input type="text" id="nombre" name="nombre" placeholder="Nombre"   class="form-control"> 
-        </div>
-         
-         <!-- Fecha relevamiento -->
-        <legend class="mt-4">Fecha de relevamiento</legend>
        
-        <input type="text" name="fecha" id="fecha_rel" value="">
+         <!-- Fecha relevamiento -->
         
+       <legend class="mt-4">Fecha de relevamiento:</legend>
 
-         <!-- cuenca -->
-        <div class="form-group">
-          <legend class="mt-4">Cuenca:</legend>
-          <select class="form-select" id="sel_cuenca">
-          <option>Seleccione Cuenca...</option>
-          </select>
-          <button type="button" class="btn btn-success" id="btn_cuenca_add">Añadir Nueva Cuenca</button>
-        </div>
+        <input type="date" id="fecha_rel" name="fecha"
+       value="2022-01-01"
+       min="2018-01-01" max="2022-12-31">
 
-       <!-- complejo -->
-        <div class="form-group">
-          <legend class="mt-4">Complejo:</legend>
-          <select class="form-select" id="sel_complejo">
-          <option>Seleccione Complejo...</option>
-          </select>
-          <button type="button" class="btn btn-success" id="btn_complejo_add">Añadir Nuevo Complejo</button>
-        </div>
+        
       
       <!-- Ancho -->
         <div class="form-group">
@@ -378,7 +429,7 @@
        <div class="form-check">
          <label class="form-check-label">
          <input type="radio" class="form-check-input" name="optionsAgua" id="agua_op1" value="Conservado" checked="">
-         Conservado
+          Conservado
          </label>
         </div>
         <div class="form-check">
@@ -429,70 +480,54 @@
           <div class="form-check">
             <label class="form-check-label">
             <input type="radio" class="form-check-input" name="optionsReg" id="reg_op1" value="Conservado" checked="">
-            Conservado
+              Conservado
             </label>
           </div>
           <div class="form-check">
             <label class="form-check-label">
             <input type="radio" class="form-check-input" name="optionsReg" id="reg_op2" value="Alterado" checked="">
-            Alterado
+              Alterado
             </label>
           </div>
 
           <div class="form-check">
             <label class="form-check-label">
             <input type="radio" class="form-check-input" name="optionsReg" id="reg_op3" value="Muy Alterado" checked="">
-            Muy Alterado
+              Muy Alterado
             </label>
           </div>
 
-      <!-- Presion -->
-          <div class="form-group" id="input_presion">
-           <button type="button" class="btn btn-success" id="btn_presion_hum">+</button>
-            <button type="button" class="btn btn-success" id="btn_presion_add">Añadir Nueva Presion</button>
-            <label for="presion_label" class="form-label mt-4">Presión del terreno:</label>
-
-            <div class="from-group"> <!-- Parte que se agrega-->
-            <select class="form-select 0" id="sel_presion">
-              <option>Tipo de presion...</option>
-              <option>Complejo 2</option>
-              <option>Complejo 3</option>
-              <option>Complejo 4</option>
-              <option>Complejo 5</option>
-            </select>
-            </div>
-          </div>           
+         
 
       <!-- Diversidad Vegetal -->
         <legend class="mt-4">Diversidad Vegetal</legend>
         <div class="form-check">
          <label class="form-check-label">
           <input type="radio" class="form-check-input" name="optionsDV" id="dv_op1" value="Conservado" checked="">
-          Conservado
+            Conservado
           </label>
         </div>
 
         <div class="form-check">
           <label class="form-check-label">
           <input type="radio" class="form-check-input" name="optionsDV" id="dv_op2" value="Alterado" checked="">
-          Alterado
+            Alterado
          </label>
         </div>
 
         <div class="form-check">
          <label class="form-check-label">
           <input type="radio" class="form-check-input" name="optionsDV" id="dv_op3" value="Muy Alterado" checked="">
-          Muy Alterado
+            Muy Alterado
          </label>
        </div>
 
     
     <!-- Fauna -->
       <div class="form-group" id="input_fauna">
+        <legend class="mt-4">Fauna</legend>
         <button type="button" class="btn btn-success" id="btn_fauna_hum">+</button>
         <button type="button" class="btn btn-success" id="btn_fauna_add">Añadir Nueva Fauna</button>
-       <label for="fauna_label" class="form-label mt-4"></label>
-       
         <div class="from-group"> <!-- Parte que se agrega-->
           <select class="form-select 0" id="sel_fauna">
             <option>Seleccione Fauna...</option>
@@ -502,14 +537,13 @@
             <option>Complejo 5</option>
         </select>
         </div>
-
       </div>
 
     <!-- Flora -->
       <div class="form-group" id="input_flora">
+        <legend class="mt-4">Flora</legend>
         <button type="button" class="btn btn-success" id="btn_flora_hum">+</button>
          <button type="button" class="btn btn-success" id="btn_flora_add">Añadir Nueva Flora</button>
-        <label for="flora_label" class="form-label mt-4">Flora:</label>
         <div class="from-group"> <!-- Parte que se agrega-->
             <select class="form-select 0" id="sel_flora">
               <option>Seleccione Flora...</option>
@@ -519,17 +553,14 @@
               <option>Complejo 5</option>
             </select>
           </div>
-
-
       </div>
-
 
       <!-- Miembro -->
       <div class="form-group" id="input_miembro">
+        <legend class="mt-4">Personas que intervinieron en el relevamiento </legend>
         <button type="button" class="btn btn-success" id="btn_miembro_hum">+</button>
          <button type="button" class="btn btn-success" id="btn_miembro_add">Añadir otro miembro</button>
-         <label for="miembro_label" class="form-label mt-4">Personas que intervinieron en el relevamiento:</label>
-
+       
         <div class="from-group"> <!-- Parte que se agrega-->
           <select class="form-select 0" id="sel_miembro">
             <option>Miembro ...</option>
@@ -920,13 +951,7 @@
   
   <!------------------------------------------------------------------------->
 
-  <script>
-    $('#fecha_rel').datetimepicker({
-      inline:true,        
-      timepicker:false,   //hora desactivada
-    });
-   
-    </script>
+ 
 
 </body>
 

@@ -16,7 +16,6 @@
   $json5 = array();
   $json6 = array();
 
-
   while($row = mysqli_fetch_array($q_cuenca)) {
     array_push($json1, [
       'nombre_cuenca' => $row['Nombre_cuenca']
@@ -75,32 +74,16 @@
 
 
     if(isset($_POST['nombre'])) {          
-      $add_id = $_POST['id'];
+      
       $add_nom = $_POST['nombre'];
-      $add_fecha = $_POST['fecha'];
+     
       $add_cuenca = $_POST['cuenca'];
       $add_complejo = $_POST['complejo'];
-      $add_ancho = $_POST['ancho'];
-      $add_largo = $_POST['largo'];
-      $add_fuente = $_POST['fuente'];
-      $add_tiempo =  $_POST['tiempo'];
-      $add_calidad_agua = $_POST['calidad_agua'];  
-      $add_conductividad =  $_POST['conductividad'];
-      $add_pH =  $_POST['pH'];
-      $add_o2disuelto =  $_POST['o2disuelto'];
-      $add_turbidez=  $_POST['turbidez'];
-      $add_color =  $_POST['color'];
-      $add_temperatrura =  $_POST['temperatura'];
-      $add_regimen_hidrologico = $_POST['regimen_hidrologico'];
-      $add_diversidad_vegetal =  $_POST['diversidad_vegetal'];
-      $add_obs = $_POST['obs'];
-      
+     
      
       //---------------------
       $cont_pre = $_POST['cont_pre'];
-      $cont_fau = $_POST['cont_fau'];
-      $cont_flo = $_POST['cont_flo'];
-      $cont_pers = $_POST['cont_pers'];
+      
       //---------------------
   
 //Falta consulta id_cuenca y id_complejo!!!! (Proximamente ID_humedal incremental)
@@ -118,17 +101,23 @@ while($row = mysqli_fetch_array($q_id_comp)) {
   $id_complejo = ($row['Id_complejo']);
 };
 
+$query0= "INSERT into humedal (Nombre,Id_cuenca,Id_complejo) values ('$add_nom' , '$id_cuenca' , '$id_complejo')";
+
+$c_humedal =mysqli_query($connect, $query0);
+
+    if (!$c_humedal) {
+      die('Query Error'.mysqli_error($connect));
+    }
+  
+  }
 ///////////////////////////////
-echo($add_fecha);
+ 
+  
 
-  $query1 = "INSERT into humedal ( Id_humedal,fecha_rel,Id_cuenca, Id_complejo, Nombre, Conductividad , Ancho , O2_disuelto , Calidad_de_H2O , Diversidad_Vegetal , Observaciones , 
+   $query1 = "INSERT into relevamiento ( fecha_rel, Conductividad , Ancho , O2_disuelto , Calidad_de_H2O , Diversidad_Vegetal , Observaciones , 
 Regimen_hidrológico , turbidez , Largo , ph , Color , Fuente  , Tiempo , Temperatura_H2O) VALUES 
-  ('$add_id','$add_fecha','$id_cuenca' ,'$id_complejo ' , '$add_nom',' $add_conductividad ','$add_ancho','$add_o2disuelto ','$add_calidad_agua', '$add_diversidad_vegetal', '$add_obs',
-  '$add_regimen_hidrologico','$add_turbidez','$add_largo', '$add_pH' , ' $add_color' ,'$add_fuente', '$add_tiempo',  '$add_temperatrura'   )";
-
-    
- /* $query2 = "INSERT into carac_humedal (id_humedal, fuente, tiempo, diversidad_vegetal, regimen_hidrologico, calidad_agua, carac_inclusion, observaciones) VALUES 
-  ('$add_id', '$add_fuente', '$add_tiempo', '$add_diversidad_vegetal', '$add_regimen_hidrologico', '$add_calidad_agua', '$add_carac', '$add_obs')";*/
+  ('$add_fecha',' $add_conductividad ','$add_ancho','$add_o2disuelto ','$add_calidad_agua', '$add_diversidad_vegetal', '$add_obs',
+  '$add_regimen_hidrologico','$add_turbidez','$add_largo', '$add_pH' , ' $add_color' ,'$add_fuente', '$add_tiempo',  '$add_temperatrura'   )"; 
 
   $result = mysqli_query($connect, $query1);
 
@@ -136,11 +125,7 @@ Regimen_hidrológico , turbidez , Largo , ph , Color , Fuente  , Tiempo , Temper
     die('Query Error'.mysqli_error($connect));
   }
   
-  /*$result2 = mysqli_query($connect, $query2);
-
-  if (!$result2) {
-    die('Query Error'.mysqli_error($connect));
-  }*/
+  
 
   ///////////////////////////////////////////////
     $a = array();
@@ -156,8 +141,7 @@ Regimen_hidrológico , turbidez , Largo , ph , Color , Fuente  , Tiempo , Temper
       $a = ($row['Id_presiones']);
     };
 
-    //echo ("???".$a."???");
-    $qp = mysqli_query($connect,"INSERT into contiene_presiones(Id_humedal, fecha_rel, Id_presiones  ) VALUES ('$add_id',1978-01-01,'$a')");
+    $qp = mysqli_query($connect,"INSERT into contiene_presiones(Id_humedal, Id_presiones ) VALUES ('$add_id,'$a')");
     
   
     if (!$qp) {
@@ -169,7 +153,7 @@ Regimen_hidrológico , turbidez , Largo , ph , Color , Fuente  , Tiempo , Temper
 
   //////////////////////////////////////////////
 
-    ///////////////////////////////////////////////
+    //////////////////////Relevamiento_fauna/////////////////////////
    $b = array();
   while ($cont_fau >= 0) {
     $fauna = $_POST["fauna{$cont_fau}"];
@@ -184,7 +168,7 @@ Regimen_hidrológico , turbidez , Largo , ph , Color , Fuente  , Tiempo , Temper
     };
 
     //echo ("???".$b."???");
-    $qp = mysqli_query($connect,"INSERT into contiene_fauna (Id_humedal, Id_fauna) VALUES ('$add_id','$b')");
+    $qp = mysqli_query($connect,"INSERT into contiene_fauna (Id_rel, Id_fauna) VALUES ('$add_id','$add_fecha','$b')");
     
 
     if (!$qp) {
@@ -196,7 +180,7 @@ Regimen_hidrológico , turbidez , Largo , ph , Color , Fuente  , Tiempo , Temper
 
   //////////////////////////////////////////////
 
-  ///////////////////////////////////////////////
+  /////////////////////Relevamiento_flora//////////////////////////
       $c = array();
       while ($cont_flo >= 0) {
         $flora = $_POST["flora{$cont_flo}"];
@@ -211,7 +195,7 @@ Regimen_hidrológico , turbidez , Largo , ph , Color , Fuente  , Tiempo , Temper
         };
     
         //echo ("???".$c."???");
-        $qp = mysqli_query($connect,"INSERT into contiene_flora (Id_humedal, Id_flora) VALUES ('$add_id','$c')");
+        $qp = mysqli_query($connect,"INSERT into contiene_flora (Id_rel, Id_flora) VALUES ('$add_id','$add_fecha','$c')");
         
     
         if (!$qp) {
@@ -222,7 +206,7 @@ Regimen_hidrológico , turbidez , Largo , ph , Color , Fuente  , Tiempo , Temper
       }
     
   //////////////////////////////////////////////
-  ///////////////////////////////////////////////
+  //////////////////////Relevamiento_miembro/////////////////////////
   $d = array();
   $e = array();
   while ($cont_pers >= 0) {
@@ -249,7 +233,7 @@ Regimen_hidrológico , turbidez , Largo , ph , Color , Fuente  , Tiempo , Temper
   while($row = mysqli_fetch_array($q_id_miembro)) {
     $e = ($row['Id_miembro']);
   };
-   $qp = mysqli_query($connect,"INSERT into investiga (Id_humedal, Id_miembro) VALUES ('$add_id','$e')");
+   $qp = mysqli_query($connect,"INSERT into investiga (Id_rel,  Id_miembro) VALUES ('$add_id','$add_fecha','$e')");
    
 
    if (!$qp) {
@@ -259,8 +243,7 @@ Regimen_hidrológico , turbidez , Largo , ph , Color , Fuente  , Tiempo , Temper
    }
  }
 
-   }
-
+   
   
 
 

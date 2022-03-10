@@ -3,11 +3,11 @@ error_reporting(0);
 require('conexion.php');
 
 if(isset($_POST['nombre'])) {          
-  $add_id = $_POST['id'];
-  $add_nom = $_POST['nombre'];
+  //$add_id = $_POST['id'];
+ // $add_nom = $_POST['nombre'];
   $add_fecha = $_POST['fecha'];
-  $add_cuenca = $_POST['cuenca'];
-  $add_complejo = $_POST['complejo'];
+  //$add_cuenca = $_POST['cuenca'];
+  //$add_complejo = $_POST['complejo'];
   $add_latitud = $_POST['latitud'];
   $add_longitud = $_POST['longitud'];
   $add_ancho = $_POST['ancho'];
@@ -27,15 +27,14 @@ if(isset($_POST['nombre'])) {
   
  
   //---------------------
-  $cont_pre = $_POST['cont_pre'];
+  //$cont_pre = $_POST['cont_pre'];
   $cont_fau = $_POST['cont_fau'];
   $cont_flo = $_POST['cont_flo'];
   $cont_pers = $_POST['cont_pers'];
   //---------------------
   
-//Falta consulta id_cuenca y id_complejo!!!! (Proximamente ID_humedal incremental)
-$q_id_cue = mysqli_query($connect,"SELECT Id_cuenca FROM cuenca where Nombre_cuenca = '$add_cuenca'");
-$q_id_comp = mysqli_query($connect,"SELECT Id_complejo FROM complejo where  Nombre_complejo = '$add_complejo'");
+//$q_id_cue = mysqli_query($connect,"SELECT Id_cuenca FROM cuenca where Nombre_cuenca = '$add_cuenca'");
+//$q_id_comp = mysqli_query($connect,"SELECT Id_complejo FROM complejo where  Nombre_complejo = '$add_complejo'");
 
 $id_cuenca = array();
 $id_complejo = array();
@@ -48,11 +47,10 @@ while($row = mysqli_fetch_array($q_id_comp)) {
   $id_complejo = ($row['Id_complejo']);
 };
 
-$query1 = "UPDATE humedal SET Id_cuenca ='$id_cuenca' , Id_complejo = '$id_complejo' , Nombre = '$add_nom', Largo = '$add_largo', Ancho = '$add_ancho', Fuente = '$add_fuente', Tiempo ='$add_tiempo' , Diversidad_vegetal = '$add_diversidad_vegetal', Regimen_hidrológico = '$add_regimen_hidrologico', Calidad_de_H2O = '$add_calidad_agua', observaciones = '$add_obs',
-fecha_rel='$add_fecha' , Conductividad=' $add_conductividad ' , O2 disuelto='$add_o2disuelto ' , Turbidez='$add_turbidez' , pH='$add_pH' ,  Color=' $add_color' , Temperatura_H2O='$add_temperatrura'  where Id_humedal = '$add_id'";
-
-  /*$query2 = "UPDATE carac_humedal SET fuente = '$add_fuente', tiempo ='$add_tiempo' , diversidad_vegetal = '$add_diversidad_vegetal', regimen_hidrologico = '$add_regimen_hidrologico', calidad_agua = '$add_calidad_agua', carac_inclusion = '$add_carac', observaciones = '$add_obs'
-  where id_humedal = '$add_id'";*/
+$query1 = "UPDATE relevamiento SET  Largo = '$add_largo', Ancho = '$add_ancho', Fuente = '$add_fuente', Tiempo ='$add_tiempo' , Diversidad_vegetal = '$add_diversidad_vegetal', Regimen_hidrológico = '$add_regimen_hidrologico', Calidad_de_H2O = '$add_calidad_agua', observaciones = '$add_obs',
+fecha_rel='$add_fecha' , Conductividad=' $add_conductividad ' , O2_disuelto='$add_o2disuelto ' , Turbidez='$add_turbidez' , pH='$add_pH' ,  Color=' $add_color' , Temperatura_H2O='$add_temperatrura'  where Id_humedal = '$add_id'";
+//miembro funa y flora
+ 
 
 $result = mysqli_query($connect, $query1);
 
@@ -82,7 +80,7 @@ while ($cont_pre >= 0) {
   };
 
   //echo ("???".$a."???");
-  $qp = mysqli_query($connect,"INSERT into contiene_presiones (Id_humedal, Id_presiones) VALUES ('$add_id','$a')");
+  $qp = mysqli_query($connect,"INSERT into contiene_presiones (Id_humedal,fecha_rel,Id_presiones) VALUES ('$add_id','$add_fecha','$a')");
   
 
   if (!$qp) {
@@ -111,7 +109,7 @@ while ($cont_fau >= 0) {
   };
 
   //echo ("???".$b."???");
-  $qp = mysqli_query($connect,"INSERT into contiene_fauna (Id_humedal, Id_fauna) VALUES ('$add_id','$b')");
+  $qp = mysqli_query($connect,"INSERT into contiene_fauna (Id_humedal, fecha_rel, Id_fauna) VALUES ('$add_id','$add_fecha','$b')");
   
 
   if (!$qp) {
@@ -139,7 +137,7 @@ while ($cont_fau >= 0) {
       };
   
       //echo ("???".$c."???");
-      $qp = mysqli_query($connect,"INSERT into contiene_flora (Id_humedal, Id_flora) VALUES ('$add_id','$c')");
+      $qp = mysqli_query($connect,"INSERT into contiene_flora (Id_humedal, Id_flora) VALUES ('$add_id','$add_fecha','$c')");
       
   
       if (!$qp) {
@@ -167,7 +165,7 @@ while ($cont_pers >= 0) {
   
   $q_id_miembro = mysqli_query($connect,"SELECT Id_miembro FROM miembro where Id_persona = '$d'");
   //echo ("???".$a."???");
-  $qp = mysqli_query($connect,"INSERT into investiga (Id_humedal, Id_miembro) VALUES ('$add_id','$q_id_miembro')");
+  $qp = mysqli_query($connect,"INSERT into investiga (Id_humedal, Id_miembro) VALUES ('$add_id','$add_fecha','$q_id_miembro')");
   
 
   if (!$qp) {

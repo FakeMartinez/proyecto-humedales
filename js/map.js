@@ -318,7 +318,7 @@ for(i=0;i<markerBackup.length;i++) {
 
   $(function(){ //Funciones al iniciar el documento
     
-    tabla();
+   // tabla();
     $('#info').hide();
     $('#myMap').css({'width': '100%'});
     $('#task-result').hide();
