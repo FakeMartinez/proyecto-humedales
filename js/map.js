@@ -41,12 +41,12 @@ var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
         edit: {
             featureGroup: drawnItems,
             poly: {
-                allowIntersection: false
+                allowIntersection: true
             }
         },
         draw: {
             polygon: {
-                allowIntersection: false,
+                allowIntersection: true,
                 showArea: true
             }
         }
@@ -71,8 +71,8 @@ var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
             //guardar datos del formulario
             e.preventDefault();
             const postData = {
-              type: event.layer.toGeoJSON().geometry.type,
-              coors: event.layer.toGeoJSON().geometry.coordinates
+              type: event.layer.toGeoJSON().geometry.type, //Pasa el tipo de objeto deibujado en el mapa
+              coors: event.layer.toGeoJSON().geometry.coordinates //Pasa las coordenadas del objeto dibujado
             
             };
             /*
