@@ -7,6 +7,7 @@ var max_flora = 0;
 var max_fauna = 0;
 var max_miembro = 0;
 var max_pre = 0;
+var form2 = false;
 
 
 $(function(){
@@ -23,7 +24,6 @@ $(function(){
         $('#form_add2').hide();
       });
   
-      
       //Añadir Cuenca
       $('#btn_cuenca_add').on('click', function(){
         $('#form_cuenca_add').show();
@@ -86,12 +86,14 @@ $(function(){
 
   //////////////////////Formulario Alta////////////////////////
   
-    
+  $(document).on('click','#btn_brel', function(){
+    form2= true;
+  });
   $('#form_add').submit(e => {
         e.preventDefault();
         var postData = {
           
-          id:$('#ID_humedal').val(),  
+          
           nombre: $('#nombre').val(),  
           cuenca: $('#sel_cuenca').val(),
           complejo: $('#sel_complejo').val(),
@@ -132,31 +134,33 @@ $(function(){
 
      else{
       
-      if(validacion(postData) == true){          //comprueba los campos 
-        console.log('entro0');
+      if(postData.nombre != ''){          
+       
         $.post('php/alta.php', postData, (response) => {
           console.log(response);
-          console.log(postData);
+         console.log(postData);
           //$('#form_add').trigger('reset');
            e.preventDefault();
         
         });
       }
-        
+      else { validacion(postData)}        
           }
      
-        
       
   
-  
       });
-
+      
+      if(form2 == true){
+        from2();
+      }
+      
       $('#form_add2').submit(e => {
         e.preventDefault();
         
         var postData = {
           
-          id:$('#ID_humedal').val(),  
+          
           fecha: $('#fecha_rel').val(),
           ancho:$('#ancho').val(),
           largo:$('#largo').val(),
@@ -220,7 +224,7 @@ $(function(){
   
         
         e.preventDefault();
-        console.log(update);
+        
         
   
         if (update != false){
@@ -246,7 +250,28 @@ $(function(){
   
       });
   ////////////////////////////////////////////////////////////////
-  
+  //$(document).on('click','#btn_brel', form2());
+     
+    function from2(){
+ 
+        $('#form_add').hide();
+        $('#form_add2').show();
+        $('#t_form.modal-title').html('Relevamiento');
+        $('#form_modal').css({'background':'#DEFEAE'});
+       
+        $('#ancho').val('');
+        $('#largo').val('');
+        $('#Conductividad').val('');
+        $('#pH').val('');
+        $('#o2disuelto').val('');
+        $('#Turbidez').val('');
+        $('#Color').val('');
+        $('#Temperatura').val('');
+        $('#obs').val('');
+        
+    
+    }
+      
   //////////////////Form cuenca/////////////////////
        $('#form-cuenca').submit(e => {
         e.preventDefault();
@@ -350,8 +375,8 @@ $(function(){
   });
 
   ///---------------form rel---------
-
-  $('#form-relevamiento').submit(e => {
+  
+  $('#form_add2').submit(e => {
     e.preventDefault();
     const postData = {
      /* $('#ancho').val('');
@@ -371,7 +396,7 @@ $(function(){
       //$('#form_add').trigger('reset');
       e.preventDefault();
       carga_form_alta_p();
-      $('#form_relevamiento_add').hide();
+      $('#form_add2').hide();
     });
   });
 
@@ -507,26 +532,7 @@ $('#btn_add').on('click', function(){
 
    
   });
-$(document).on('click','#btn_brel',function(){
-//  $('#btn_brel').on('click', function(){
-    $('#form_add').hide();
-    $('#form_add2').show();
-    $('#t_form.modal-title').html('Relevamiento');
-    $('#form_modal').css({'background':'#DEFEAE'});
-   
-    $('#ancho').val('');
-    $('#largo').val('');
-    $('#Conductividad').val('');
-    $('#pH').val('');
-    $('#o2disuelto').val('');
-    $('#Turbidez').val('');
-    $('#Color').val('');
-    $('#Temperatura').val('');
-    $('#obs').val('');
-    update = false; 
 
-   
-  });
  //----------------------------------CARGA DE LOS SELECT-----------------------------------------------------------------------//
  // ----------------Presiones-----------------  //
       
@@ -824,7 +830,6 @@ $('#nombre').on('input', function(){
     $('#nombre').css({'background' : '#FFDDDD', 'border': '1px dashed #FF0000' });
     
     b = false;
-    console.log('entro2');
   }
 
  /* if(isNaN(postData.ancho) && postData.ancho!=''){
