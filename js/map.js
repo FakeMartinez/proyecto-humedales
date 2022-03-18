@@ -75,11 +75,14 @@ var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
               coors: event.layer.toGeoJSON().geometry.coordinates //Pasa las coordenadas del objeto dibujado
             
             };
-            /*
-          $('#close_btn_marcar').on('click', function(){
-            $("#form_marcar").hide();
-          });
-          */
+            
+         /*
+      $('#close_btn_marcar').on('click', function(){
+        console.log("intenta ocultar");
+        $("#form_marcar").hide();
+      });*/
+     
+          
           $.post('php/geometry.php', postData, (response) => {
             console.log(postData);
             console.log(response);
@@ -92,7 +95,12 @@ var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
 
  });
 
+ // Cerrar Seleccionar accidente geografico
+ $(document).on('click','#close_btn_marcar',function(){
+  console.log("intenta ocultar");
+  $("#form_marcar").hide();
 
+});
 /*
 //---El objeto map-----------------
 var myMap = L.map('myMap', {

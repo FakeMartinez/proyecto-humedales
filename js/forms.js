@@ -59,7 +59,7 @@ $(function(){
       $('#close_btn_flora_add').on('click', function(){
         $('#form_flora_add').hide();
       });
-
+      
   //////////////////////Formulario Alta////////////////////////
       $('#form_add').submit(e => {
         //e.preventDefault();

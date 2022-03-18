@@ -12,13 +12,17 @@
  if($add_type == 'LineString'){
   foreach($add_coors as $key){
     //$ult = $key[0];
+    
     foreach($key as $k){
-    $add = $add."".$k.",";//" ".$k[1].","; 
+    $add = $add."".$k." ";
     }
-    $add = substr($add, 0, -1);
+    $add = $add.",";
+    
   }
+  $add = substr($add, 0, -1);
+  
   echo $add;
-  $query1 = "INSERT into objeto_geometry (Tipo) VALUES (ST_GeomFromText('LINESTRING(({$add}))', 4326))";
+  $query1 = "INSERT into objeto_geometry (Tipo) VALUES (ST_GeomFromText('LINESTRING({$add})', 4326))";
   echo($query1);
 
   $result = mysqli_query($connect, $query1);
