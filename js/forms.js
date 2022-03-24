@@ -10,6 +10,16 @@ var BtFau = false;
 var BtFlo = false;
 var BtHum = false;
 
+//Funcion para cambiar la clase de un objeto
+//                    Objeto <======= Es el objeto o elemento HTML al cual se le cambiará el class
+//                    ClassActual <== Es el class que se le quitará al objeto/elemento HTML
+//                    ClassNueva <=== Es el class nuevo que se le dará al objeto/elemento HTML
+// quitar el class actual para que el objeto no tenga la convinación de 2 class. Puede no ser necesario, pero de esta manera se evitan fallos
+function CambiarClass(Objeto, ClassActual, ClassNueva){
+  $(Objeto).removeClass(ClassActual); //Elimina el Class actual del elemento HTML
+  $(Objeto).addClass(ClassNueva);   //agrega el nuevo class al elemento HTML
+};
+
 
 $(function(){
     
@@ -36,6 +46,10 @@ $(function(){
   
       //Cerrar Formulario Cuenca
       $('#close_btn_cuenca_add').on('click', function(){
+        $('div').remove('#TexErrorIncompleto');
+        CambiarClass($('#nom_cuenca'), "form-control is-invalid", "form-control");
+        CambiarClass($('#sup_cuenca'), "form-control is-invalid", "form-control");
+        CambiarClass($('#tipo_cuenca'), "form-control is-invalid", "form-control");
         $('#form_cuenca_add').hide();
       });
   
@@ -45,6 +59,8 @@ $(function(){
       });
       //Cerrar Formulario Complejo
       $('#close_btn_comp_add').on('click', function(){
+        $('div').remove('#TexErrorIncompleto');
+        CambiarClass($('#nom_comp'), "form-control is-invalid", "form-control");
         $('#form_complejo_add').hide();
       });
   
@@ -54,6 +70,8 @@ $(function(){
       });
       //Cerrar Formulario Presión
       $('#close_btn_presion_add').on('click', function(){
+        $('div').remove('#TexErrorIncompleto'); 
+        CambiarClass($('#tipo_presion'), "form-control is-invalid", "form-control");
         $('#form_presion_add').hide();
       });
       //Añadir Fauna
@@ -62,6 +80,9 @@ $(function(){
       });
       //Cerrar Formulario Fauna
       $('#close_btn_fauna_add').on('click', function(){
+        $('div').remove('#TexErrorIncompleto'); 
+        CambiarClass($('#nom_colquial_fauna'), "form-control is-invalid", "form-control");
+        CambiarClass($('#nom_ctfico_fauna'), "form-control is-invalid", "form-control");
         $('#form_fauna_add').hide();
       });
       //Añadir Flora
@@ -70,6 +91,9 @@ $(function(){
       });
       //Cerrar Formulario Flora
       $('#close_btn_flora_add').on('click', function(){
+        $('div').remove('#TexErrorIncompleto'); 
+        CambiarClass($('#nom_colquial_flora'), "form-control is-invalid", "form-control");
+        CambiarClass($('#nom_ctfico_flora'), "form-control is-invalid", "form-control");
         $('#form_flora_add').hide();
       });
       //agregar imagen fauna
@@ -103,6 +127,12 @@ $(function(){
       })
        //Cerrar formulario Propietario
        $('#close_btn_Prop_add').on('click', function(){
+        $('div').remove('#TexErrorIncompleto'); //Elimina los mensajes de campo obligatorio
+        CambiarClass($('#id_propietario'), "form-control is-invalid", "form-control");
+        CambiarClass($('#nom_Prop'), "form-control is-invalid", "form-control");
+        CambiarClass($('#correo_Prop'), "form-control is-invalid", "form-control"); 
+        CambiarClass($('#tel_Prop'), "form-control is-invalid", "form-control");
+        CambiarClass($('#Dire_Prop'), "form-control is-invalid", "form-control");
         $('#form_propietario_add').hide();
       })
      
@@ -198,33 +228,69 @@ $(function(){
   //////////////////Form cuenca/////////////////////
        $('#form-cuenca').submit(e => {
         e.preventDefault();
-        const postData = {
-          id_cuenca:$('#id_cuenca').val(),
-          nombre_cuenca: $('#nom_cuenca').val(),
-          sup_cuenca: $('#sup_cuenca').val(),
-          tipo_cuenca:$('#tipo_cuenca').val(),
-        };
-        console.log(postData);
-        $.post('php/sub_forms.php', postData, (response) => {
-          console.log(response);        //Si se comenta, no se va a escribir ningún echo del php en la consola de la pagina ¡OJO!
-          //$('#form_add').trigger('reset');
-          e.preventDefault();
-          carga_form_alta_cu();
-          $('#form_cuenca_add').hide();
-          $('#id_cuenca').val('');
-          $('#nom_cuenca').val('');
-          $('#sup_cuenca').val('');
-          $('#tipo_cuenca').val('');
-          }
-        );
+
+        $('div').remove('#TexErrorIncompleto'); //Elimina los mensajes de campo obligatorio
+    
+        //Comprueba los campos obligatorios para verificar que no estén vacíos
+        if ($('#nom_cuenca').val() === ''){
+          CambiarClass($('#nom_cuenca'), "form-control", "form-control is-invalid"); //Si el campo está vacío, cambia la clase del input de "form-control" a "form control is-invalid"
+          $('#DivNomCuen').append("<div id='TexErrorIncompleto' style='color: red'>Este campo es obligatorio</div>"); //Crea el mensaje de advertencia de campo incompleto
+        }
+  
+        if ($('#sup_cuenca').val() === ''){
+          CambiarClass($('#sup_cuenca'), "form-control", "form-control is-invalid"); //Si el campo está vacío, cambia la clase del input de "form-control" a "form control is-invalid"
+          $('#DivSupCuen').append("<div id='TexErrorIncompleto' style='color: red'>Este campo es obligatorio</div>"); //Crea el mensaje de advertencia de campo incompleto
+        }
+  
+        if ($('#tipo_cuenca').val() === ''){
+          CambiarClass($('#tipo_cuenca'), "form-control", "form-control is-invalid"); //Si el campo está vacío, cambia la clase del input de "form-control" a "form control is-invalid"
+          $('#DivTipCuen').append("<div id='TexErrorIncompleto' style='color: red'>Este campo es obligatorio</div>"); //Crea el mensaje de advertencia de campo incompleto
+        }
+
+        //Si ninguno de los campos obligatorios está vacío, hace el submit
+        if ($('#nom_cuenca').val() !== '' && $('#sup_cuenca').val() !== '' && $('#tipo_cuenca').val() !== ''){
+          console.log('Todos completos');
+          const postData = {
+            //id_cuenca:$('#id_cuenca').val(),
+            nombre_cuenca: $('#nom_cuenca').val(),
+            sup_cuenca: $('#sup_cuenca').val(),
+            tipo_cuenca:$('#tipo_cuenca').val(),
+          };
+          console.log(postData);
+          $.post('php/sub_forms.php', postData, (response) => {
+            console.log(response);        //Si se comenta, no se va a escribir ningún echo del php en la consola de la pagina ¡OJO!
+            //$('#form_add').trigger('reset');
+            e.preventDefault();
+            carga_form_alta_cu();
+            $('#form_cuenca_add').hide();
+            //$('#id_cuenca').val('');
+            $('#nom_cuenca').val('');
+            $('#sup_cuenca').val('');
+            $('#tipo_cuenca').val('');
+           // $('div').remove('#TexErrorIncompleto');
+            CambiarClass($('#nom_cuenca'), "form-control is-invalid", "form-control");
+            CambiarClass($('#sup_cuenca'), "form-control is-invalid", "form-control");
+            CambiarClass($('#tipo_cuenca'), "form-control is-invalid", "form-control");
+            }
+          );
+        }
       });
   ////////////////////////////////////////////////
 
   //////////////////Form complejo/////////////////////
   $('#form-complejo').submit(e => {
     e.preventDefault();
+
+    $('div').remove('#TexErrorIncompleto'); //Elimina los mensajes de campo obligatorio
+    //Comprueba los campos obligatorios para verificar que no estén vacíos
+    if ($('#nom_comp').val() === ''){
+      CambiarClass($('#nom_comp'), "form-control", "form-control is-invalid"); //Si el campo está vacío, cambia la clase del input de "form-control" a "form control is-invalid"
+      $('#DivNomComp').append("<div id='TexErrorIncompleto' style='color: red'>Este campo es obligatorio</div>"); //Crea el mensaje de advertencia de campo incompleto
+    }
+
+    if ($('#nom_comp').val() !== ''){
     const postData = {
-      id_complejo:$('#id_complejo').val(),
+    //  id_complejo:$('#id_complejo').val(),
       nombre_complejo: $('#nom_comp').val(),
       prop_complejo: $('#sel_propietario').val(),
     };
@@ -238,7 +304,9 @@ $(function(){
       $('#id_complejo').val('');
       $('#nom_comp').val('');
       $('#prop_comp').val('');
+      CambiarClass($('#nom_comp'), "form-control is-invalid", "form-control");
     });
+    }
   });
   
 /////////////////////////////////////////////////////
@@ -246,6 +314,28 @@ $(function(){
 ///////////////Form Propietarios//////////////////////
 $('#form_propietario_add').submit(e => {
   e.preventDefault();
+
+  $('div').remove('#TexErrorIncompleto'); //Elimina los mensajes de campo obligatorio
+
+    //Comprueba los campos obligatorios para verificar que no estén vacíos
+    if ($('#id_propietario').val() === ''){
+      CambiarClass($('#id_propietario'), "form-control", "form-control is-invalid"); //Si el campo está vacío, cambia la clase del input de "form-control" a "form control is-invalid"
+      $('#DivIDPers').append("<div id='TexErrorIncompleto' style='color: red'>Este campo es obligatorio</div>"); //Crea el mensaje de advertencia de campo incompleto
+    }
+
+    if ($('#nom_Prop').val() === ''){
+      CambiarClass($('#nom_Prop'), "form-control", "form-control is-invalid"); //Si el campo está vacío, cambia la clase del input de "form-control" a "form control is-invalid"
+      $('#DivNomPers').append("<div id='TexErrorIncompleto' style='color: red'>Este campo es obligatorio</div>"); //Crea el mensaje de advertencia de campo incompleto
+    }
+
+    if ($('#correo_Prop').val() === '' && $('#tel_Prop').val() === '' && $('#Dire_Prop').val() === ''){
+      CambiarClass($('#correo_Prop'), "form-control", "form-control is-invalid"); //Si el campo está vacío, cambia la clase del input de "form-control" a "form control is-invalid"
+      CambiarClass($('#tel_Prop'), "form-control", "form-control is-invalid");
+      CambiarClass($('#Dire_Prop'), "form-control", "form-control is-invalid");
+      $('#DivDirPers').append("<div id='TexErrorIncompleto' style='color: red'> Almenos uno de los 3 campos entre Teléfono, Correo o Dirección deben estár completos</div>"); //Crea el mensaje de advertencia de campo incompleto
+    }
+    
+  if ($('#id_propietario').val() !== '' && $('#nom_Prop').val() !== '' && ($('#correo_Prop').val() !== '' || $('#tel_Prop').val() !== '' || $('#Dire_Prop').val() !== '')){
   const postData = {
     id_propie: $('#id_propietario').val(),
     nom_prop: $('#nom_Prop').val(),
@@ -267,7 +357,13 @@ $('#form_propietario_add').submit(e => {
     $('#correo_Prop').val('');
     $('#tel_Prop').val('');
     $('#Dire_Prop').val('');
+    CambiarClass($('#id_propietario'), "form-control is-invalid", "form-control");
+    CambiarClass($('#nom_Prop'), "form-control is-invalid", "form-control");
+    CambiarClass($('#correo_Prop'), "form-control is-invalid", "form-control"); 
+    CambiarClass($('#tel_Prop'), "form-control is-invalid", "form-control");
+    CambiarClass($('#Dire_Prop'), "form-control is-invalid", "form-control");
   });
+  }
 });
 
   ////////////////////////////////////////////////
@@ -275,10 +371,19 @@ $('#form_propietario_add').submit(e => {
   //////////////////Form presion///////////////////// | 🗸 FUNCIONA 🗸 |
   $('#form-presion').submit(e => {
     e.preventDefault();                         //para que es preventDefault();
+    
+    $('div').remove('#TexErrorIncompleto'); 
+   
+    if ($('#tipo_presion').val() === ''){
+      CambiarClass($('#tipo_presion'), "form-control", "form-control is-invalid"); //Si el campo está vacío, cambia la clase del input de "form-control" a "form control is-invalid"
+      $('#DivTipoPre').append("<div id='TexErrorIncompleto' style='color: red'>Este campo es obligatorio</div>"); //Crea el mensaje de advertencia de campo incompleto
+    }
+
+    if ($('#tipo_presion').val() !== ''){
     const postData = {                          //const crea una variable llamada postData
       tipo_presion: $('#tipo_presion').val(),   //Parametro tipo_presion de la variable postData, toma el valor del objeto con id tipo_presion
       obs_presion: $('#obs_presion').val(), 
-      ID_presion: $('#Id_presion').val()    //Parametro obs_presion de la variable postData, toma el valor del objeto con id  obs_presion
+      //ID_presion: $('#Id_presion').val()    //Parametro obs_presion de la variable postData, toma el valor del objeto con id  obs_presion
     };
     //console.log(postData);
     $.post('php/sub_forms.php', postData, (response) => {  //post llama al archivo php llamada sub_forms.php, response es lo que devuelve
@@ -290,8 +395,9 @@ $('#form_propietario_add').submit(e => {
       $('#tipo_presion').val('');
       $('#obs_presion').val('');
       $('#Id_presion').val('');
-        
+      CambiarClass($('#tipo_presion'), "form-control is-invalid", "form-control");
     });
+    }
   });
   
   ////////////////////////////////////////////////
@@ -299,6 +405,19 @@ $('#form_propietario_add').submit(e => {
   //////////////////Form fauna/////////////////////
   $('#form-fauna').submit(e => {
     e.preventDefault();
+
+    $('div').remove('#TexErrorIncompleto'); 
+
+    if ($('#nom_colquial_fauna').val() === ''){
+      CambiarClass($('#nom_colquial_fauna'), "form-control", "form-control is-invalid"); //Si el campo está vacío, cambia la clase del input de "form-control" a "form control is-invalid"
+      $('#DivNombreColFau').append("<div id='TexErrorIncompleto' style='color: red'>Este campo es obligatorio</div>"); //Crea el mensaje de advertencia de campo incompleto
+    }
+    if ($('#nom_ctfico_fauna').val() === ''){
+      CambiarClass($('#nom_ctfico_fauna'), "form-control", "form-control is-invalid"); //Si el campo está vacío, cambia la clase del input de "form-control" a "form control is-invalid"
+      $('#DivNombreCieFau').append("<div id='TexErrorIncompleto' style='color: red'>Este campo es obligatorio</div>"); //Crea el mensaje de advertencia de campo incompleto
+    }
+
+    if ($('#nom_colquial_fauna').val() !== '' && $('#nom_ctfico_fauna').val() !== ''){   
     DireccionesFA.forEach(function (Dire, Indi, Vect){
       if(Dire==""){
         //console.log("Elimina" + DireccionesFA[Indi]);
@@ -308,7 +427,7 @@ $('#form_propietario_add').submit(e => {
     });
     
     const postData = {
-      id_fauna: $('#ID_fauna').val(),
+      //id_fauna: $('#ID_fauna').val(),
       nom_cq_fauna: $('#nom_colquial_fauna').val(),
       nom_cf_fauna: $('#nom_ctfico_fauna').val(),
       carac_fauna: $('#carac_fauna').val(),
@@ -331,7 +450,10 @@ $('#form_propietario_add').submit(e => {
       $('#ContenedorImgFau').empty();
       DireccionesFA.splice(0, DireccionesFA.length);
       //console.log(DireccionesFA);
+      CambiarClass($('#nom_colquial_fauna'), "form-control is-invalid", "form-control");
+      CambiarClass($('#nom_ctfico_fauna'), "form-control is-invalid", "form-control");
     });
+    }
   });
   
   ////////////////////////////////////////////////
@@ -486,6 +608,20 @@ $('#form-imagen').submit(e => {
   //////////////////Form flora/////////////////////
   $('#form-flora').submit(e => {
     e.preventDefault();
+
+    $('div').remove('#TexErrorIncompleto'); 
+
+    if ($('#nom_colquial_flora').val() === ''){
+      CambiarClass($('#nom_colquial_flora'), "form-control", "form-control is-invalid"); //Si el campo está vacío, cambia la clase del input de "form-control" a "form control is-invalid"
+      $('#DivNombreColFlo').append("<div id='TexErrorIncompleto' style='color: red'>Este campo es obligatorio</div>"); //Crea el mensaje de advertencia de campo incompleto
+    }
+    if ($('#nom_ctfico_flora').val() === ''){
+      CambiarClass($('#nom_ctfico_flora'), "form-control", "form-control is-invalid"); //Si el campo está vacío, cambia la clase del input de "form-control" a "form control is-invalid"
+      $('#DivNombreCieFlo').append("<div id='TexErrorIncompleto' style='color: red'>Este campo es obligatorio</div>"); //Crea el mensaje de advertencia de campo incompleto
+    }
+
+    if ($('#nom_colquial_flora').val() !== '' && $('#nom_ctfico_flora').val() !== ''){
+
     DireccionesFL.forEach(function (Dire, Indi, Vect){
       if(Dire==""){
         //console.log("Elimina" + DireccionesFL[Indi]);
@@ -518,7 +654,10 @@ $('#form-imagen').submit(e => {
       $('#ContenedorImgFlor').empty();
       DireccionesFL.splice(0, DireccionesFL.length);
      // console.log(DireccionesFL);
+     CambiarClass($('#nom_colquial_flora'), "form-control is-invalid", "form-control");
+     CambiarClass($('#nom_ctfico_flora'), "form-control is-invalid", "form-control");
     });
+    }
   });
 
 ///////////////////////Agregar Filas de Elementos/////////////////////////
