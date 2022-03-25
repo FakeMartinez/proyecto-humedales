@@ -143,10 +143,11 @@ while ($cont_fau >= 0) {
   
 //////////////////////////////////////////////
 // Carga de las imagenes
+/*
   foreach ($Dir_img as $valor){
     mysqli_query($connect,"INSERT into imagen (Id_humedal,PATH) VALUES ('$add_id','$valor')") //Para cargar la imagen
   }
-}
+}*/
 
 
 

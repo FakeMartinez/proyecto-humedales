@@ -156,7 +156,7 @@ $(function(){
           diversidad_vegetal:$('input:radio[name=optionsDV]:checked').val(),
           regimen_hidrologico:$('input:radio[name=optionsReg]:checked').val(),
           calidad_agua:$('input:radio[name=optionsAgua]:checked').val(),
-          Dir : DireccionesHU.slice(),
+          //Dir : DireccionesHU.slice(),
           cont_pre: x_pre,
           cont_fau: x_fau,
           cont_flo: x_flo
