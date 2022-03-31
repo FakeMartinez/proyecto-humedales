@@ -10226,3 +10226,19 @@ th {
   height: 1px;
   width: 717px;
 }
+
+.Info{
+  position: relative;
+    padding-top: 1rem;
+    height: 20px;
+    width: 20px;
+    font-size: 20px;
+    padding: 0px;
+    /*top: 5px;*/
+    left: 5px;
+    color: #fff;
+    text-align: center;
+    font-weight: 700;
+    line-height: 1;
+    
+}
