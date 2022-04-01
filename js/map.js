@@ -1,3 +1,5 @@
+var VisibleTool = false;
+
 //---Capas de fondo para el mapa-------------------
 
 var g_hum = L.layerGroup(); //grupo de capas de los humedales
@@ -362,7 +364,13 @@ $('#sub_img').on('click', function(){
 
   //////////////////////////////////////////////////////////////////////////
   $('#tools').on('click',function(){
-    $('#tools_op').show();
+    if (VisibleTool){
+      $('#tools_op').hide();
+      VisibleTool = false;
+    }else{
+      $('#tools_op').show();
+      VisibleTool = true;
+    }
   });
   //////////////////////////////////////////////////////////////////////////
   $('#btn_img_xy').on('click', function(){
