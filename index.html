@@ -1000,12 +1000,12 @@
           <div style="width: 96%; border-bottom: 1px solid black;"></div>
           <label class="form-label mt-4" style="display: flex;">
             <div class="form-check form-switch">
-              <input class="form-check-input" type="checkbox" id="CheckCuenca" checked="" onclick="DisCheck(this, 'FiltroInputCuenca')">
+              <input class="form-check-input" type="checkbox" id="CheckCuenca" onclick="DisCheck(this, 'FiltroInputCuenca')">
             </div>
             <h5 class="card-title" style="margin-top:5px;font-size: 12px;">Cuenca</h5>
              <abbr title="Buscar los humedales en una cuenca" style="text-decoration: none; margin-top:3px;" class="Info rounded-pill bg-info"> ?</abbr>
           </label>
-          <div id="FiltroInputCuenca">
+          <div id="FiltroInputCuenca" style="height: 0px; visibility: hidden">
               <select class="form-select" id="SelectCuenca" style="border: 1px solid #d3d3d3; height: 35px; padding-top: 5px; padding-bottom: 5px;">
               <option>1</option>
               <option>2</option>
@@ -1154,40 +1154,40 @@
           <div style="width: 96%; border-bottom: 1px solid black;"></div>
           <label class="form-label mt-4" style="display: flex;">
             <div class="form-check form-switch">
-              <input class="form-check-input" type="checkbox" id="CheckPresiones" onclick="DisCheck(this, 'FiltroInputPresiones')">
+              <input class="form-check-input" type="checkbox" id="CheckPresiones" onclick="DisCheck(this, 'FiltroPresiones')">
             </div>
               <h5 class="card-title" style="margin-top:5px;font-size: 12px;">Presiones</h5>
               <abbr title="Buscar los humedales con un conjunto de presiones específicos" style="text-decoration: none; margin-top:3px;" class="Info rounded-pill bg-info"> ?</abbr>
           </label>
-            <fieldset class="form-group" id="FiltroInputPresiones" style="height: 90px; width: 350px; background-color: #9affe3; overflow-y: auto; overflow-x: hidden; visibility: hidden; height: 0px; margin: 0px; font-size: 13px;">
+            <fieldset class="form-group" id="FiltroPresiones" style="height: 90px; width: 350px; background-color: #9affe3; overflow-y: auto; overflow-x: hidden; visibility: hidden; height: 0px; margin: 0px; font-size: 13px;">
               <div class="form-check" style="left: 5px;">
                 <label class="form-check-label">
-                  <input type="checkbox" class="form-check-input"  id="option1Pr" value="Fauna1"> Fauna1
+                  <input type="checkbox" class="form-check-input"  id="option1Pr" value="Presione1"> Fauna1
                 </label>
               </div>
               <div class="form-check" style="left: 5px;">
                 <label class="form-check-label">
-                  <input type="checkbox" class="form-check-input" id="option2Pr" value="Fauna2"> Fauna2
+                  <input type="checkbox" class="form-check-input" id="option2Pr" value="Presione2"> Fauna2
                 </label>
               </div>
               <div class="form-check" style="left: 5px;">
                 <label class="form-check-label">
-                  <input type="checkbox" class="form-check-input" id="option3Pr" value="Fauna3"> Fauna3
+                  <input type="checkbox" class="form-check-input" id="option3Pr" value="Presione3"> Fauna3
                 </label>
               </div>
               <div class="form-check" style="left: 5px;">
                 <label class="form-check-label">
-                  <input type="checkbox" class="form-check-input" id="option4Pr" value="Fauna4"> Fauna4
+                  <input type="checkbox" class="form-check-input" id="option4Pr" value="Presione4"> Fauna4
                 </label>
               </div>
               <div class="form-check" style="left: 5px;">
                 <label class="form-check-label">
-                  <input type="checkbox" class="form-check-input" id="option5Pr" value="Fauna5"> Fauna5
+                  <input type="checkbox" class="form-check-input" id="option5Pr" value="Presione5"> Fauna5
                 </label>
               </div>
               <div class="form-check" style="left: 5px;">
                 <label class="form-check-label">
-                  <input type="checkbox" class="form-check-input" id="option6Pr" value="Fauna6"> Fauna6
+                  <input type="checkbox" class="form-check-input" id="option6Pr" value="Presione6"> Fauna6
                 </label>
               </div>
             </fieldset>
@@ -1208,32 +1208,32 @@
           <fieldset class="form-group" id="FiltroFauna" style="height: 90px; width: 350px; background-color: #9affe3; overflow-y: auto; overflow-x: hidden; visibility: hidden; height: 0px; margin: 0px; font-size: 13px;">
               <div class="form-check" style="left: 5px;">
                 <label class="form-check-label">
-                  <input type="checkbox" class="form-check-input"  id="option1Fa"> Fauna1
+                  <input type="checkbox" class="form-check-input"  id="option1Fa" value="Fauna1"> Fauna1
                 </label>
               </div>
               <div class="form-check" style="left: 5px;">
                 <label class="form-check-label">
-                  <input type="checkbox" class="form-check-input" id="option2Fa"> Fauna2
+                  <input type="checkbox" class="form-check-input" id="option2Fa" value="Fauna2"> Fauna2
                 </label>
               </div>
               <div class="form-check" style="left: 5px;">
                 <label class="form-check-label">
-                  <input type="checkbox" class="form-check-input" id="option3Fa"> Fauna3
+                  <input type="checkbox" class="form-check-input" id="option3Fa" value="Fauna3"> Fauna3
                 </label>
               </div>
               <div class="form-check" style="left: 5px;">
                 <label class="form-check-label">
-                  <input type="checkbox" class="form-check-input" id="option4Fa"> Fauna4
+                  <input type="checkbox" class="form-check-input" id="option4Fa" value="Fauna4"> Fauna4
                 </label>
               </div>
               <div class="form-check" style="left: 5px;">
                 <label class="form-check-label">
-                  <input type="checkbox" class="form-check-input" id="option5Fa"> Fauna5
+                  <input type="checkbox" class="form-check-input" id="option5Fa" value="Fauna5"> Fauna5
                 </label>
               </div>
               <div class="form-check" style="left: 5px;">
                 <label class="form-check-label">
-                  <input type="checkbox" class="form-check-input" id="option6Fa"> Fauna6
+                  <input type="checkbox" class="form-check-input" id="option6Fa" value="Fauna6"> Fauna6
                 </label>
               </div>
             </fieldset>
@@ -1250,35 +1250,35 @@
               <h5 class="card-title" style="margin-top:5px;font-size: 12px;">Flora</h5>
               <abbr title="Buscar los humedales con un conjunto de presiones específicos" style="text-decoration: none; margin-top:3px;" class="Info rounded-pill bg-info"> ?</abbr>
           </label>
-            <fieldset class="form-group" id="FiltroFlora" style="height: 90px; width: 350px; background-color: #9affe3; overflow-y: auto; overflow-x: hidden; visibility: hidden; height: 0px; margin: 0px;">
+            <fieldset class="form-group" id="FiltroFlora" style="height: 90px; width: 350px; background-color: #9affe3; overflow-y: auto; overflow-x: hidden; visibility: hidden; height: 0px; margin: 0px; font-size: 13px;">
               <div class="form-check" style="left: 5px;">
                 <label class="form-check-label">
-                  <input type="checkbox" class="form-check-input"  id="option1Fl"> Flora1
+                  <input type="checkbox" class="form-check-input"  id="option1Fl" value="Flora1"> Flora1
                 </label>
               </div>
               <div class="form-check" style="left: 5px;">
                 <label class="form-check-label">
-                  <input type="checkbox" class="form-check-input" id="option2Fl"> Flora2
+                  <input type="checkbox" class="form-check-input" id="option2Fl" value="Flora2"> Flora2
                 </label>
               </div>
               <div class="form-check" style="left: 5px;">
                 <label class="form-check-label">
-                  <input type="checkbox" class="form-check-input" id="option3Fl"> Flora3
+                  <input type="checkbox" class="form-check-input" id="option3Fl" value="Flora3"> Flora3
                 </label>
               </div>
               <div class="form-check" style="left: 5px;">
                 <label class="form-check-label">
-                  <input type="checkbox" class="form-check-input" id="option4Fl"> Flora4
+                  <input type="checkbox" class="form-check-input" id="option4Fl" value="Flora4"> Flora4
                 </label>
               </div>
               <div class="form-check" style="left: 5px;">
                 <label class="form-check-label">
-                  <input type="checkbox" class="form-check-input" id="option5Fl"> Flora5
+                  <input type="checkbox" class="form-check-input" id="option5Fl" value="Flora5"> Flora5
                 </label>
               </div>
               <div class="form-check" style="left: 5px;">
                 <label class="form-check-label">
-                  <input type="checkbox" class="form-check-input" id="option6Fl"> Flora6
+                  <input type="checkbox" class="form-check-input" id="option6Fl" value="Flora6"> Flora6
                 </label>
               </div>
             </fieldset>
