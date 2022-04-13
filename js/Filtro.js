@@ -114,7 +114,85 @@ $(function(){
               
         }
     });
+    $('#FiltroPuntos').on('change', (event) => {
+        //console.log(event.target.value);
+        if ($('#CheckAcc').prop('checked') || $('#CheckHume').prop('checked')){
+            $('#divCuenca').css({"visibility":"visible", "height":"60px"});
+            $('#divComplejo').css({"visibility":"visible", "height":"60px"});
+            $('#divPresion').css({"visibility":"visible", "height":"60px"});
+        }else{            
+            $('#divCuenca').css({"visibility":"hidden"});
+            $('#CheckCuenca').prop("checked", false);
+            DisCheck('CheckCuenca', 'FiltroInputCuenca');
 
+            $('#divComplejo').css({"visibility":"hidden"});
+            $('#CheckComplejo').prop("checked", false);
+            DisCheck('CheckComplejo', 'FiltroComplejo');
+
+            $('#divPresion').css({"visibility":"hidden"});
+            $('#CheckPresiones').prop("checked", false);
+            DisCheck('CheckPresiones', 'FiltroPresiones');
+        }
+
+
+        if ($('#CheckHume').prop('checked')){
+            $('#divCuenca').css({"visibility":"visible", "height":"60px"});
+            $('#divComplejo').css({"visibility":"visible", "height":"60px"});
+            $('#divPresion').css({"visibility":"visible", "height":"60px"});
+            $('#divFuente').css({"visibility":"visible", "height":"60px"});
+            $('#divCalidadAgua').css({"visibility":"visible", "height":"60px"});
+            $('#divDiversidadVege').css({"visibility":"visible", "height":"60px"});
+            $('#divRegimenHidro').css({"visibility":"visible", "height":"60px"});
+            $('#divTiempoPerma').css({"visibility":"visible", "height":"60px"});
+            $('#divFauna').css({"visibility":"visible", "height":"60px"});
+            $('#divFlora').css({"visibility":"visible", "height":"60px"});
+        }else{            
+            if (!$('#CheckAcc').prop('checked')){
+                $('#divCuenca').css({"visibility":"hidden", "height":"0px"});
+                $('#CheckCuenca').prop("checked", false);
+                DisCheck('CheckCuenca', 'FiltroInputCuenca');
+    
+                $('#divComplejo').css({"visibility":"hidden", "height":"0px"});
+                $('#CheckComplejo').prop("checked", false);
+                DisCheck('CheckComplejo', 'FiltroComplejo');
+
+                $('#divPresion').css({"visibility":"hidden", "height":"0px"});
+                $('#CheckPresiones').prop("checked", false);
+                DisCheck('CheckPresiones', 'FiltroPresiones');
+            }
+            $('#divFuente').css({"visibility":"hidden", "height":"0px"});
+            $('#CheckFuente').prop("checked", false);
+            DisCheck('CheckFuente', 'FiltroFuente');
+
+            $('#divCalidadAgua').css({"visibility":"hidden", "height":"0px"});
+            $('#CheckCalidadAgua').prop("checked", false);
+            DisCheck('CheckCalidadAgua', 'FiltroCalidadAgua');
+
+            $('#divDiversidadVege').css({"visibility":"hidden", "height":"0px"});
+            $('#CheckDiversidadVegetal').prop("checked", false);
+            DisCheck('CheckDiversidadVegetal', 'FiltroDiversidadVegetal');
+            
+            $('#divRegimenHidro').css({"visibility":"hidden", "height":"0px"});
+            $('#CheckRegimenHidrologico').prop("checked", false);
+            DisCheck('CheckRegimenHidrologico', 'FiltroRegimenHidro');
+            
+            $('#divTiempoPerma').css({"visibility":"hidden", "height":"0px"});
+            $('#CheckTiempoPerma').prop("checked", false);
+            DisCheck('CheckTiempoPerma', 'FiltroTiempoPerma');
+            
+            $('#divFauna').css({"visibility":"hidden", "height":"0px"});
+            $('#CheckFauna').prop("checked", false);
+            DisCheck('CheckFauna', 'FiltroFauna');
+
+            $('#divFlora').css({"visibility":"hidden", "height":"0px"});
+            $('#CheckFlora').prop("checked", false);
+            DisCheck('CheckFlora', 'FiltroFlora');
+
+            
+        }
+        ObtenerDatosFiltro();
+
+    })
 
     $('#SelectCuenca').on('change', (event) => {
         //console.log(event.target.value);
@@ -181,24 +259,42 @@ function ObtenerDatosFiltro(){
     if ($('#CheckCuenca').prop('checked')){
         //console.log('Cuenca ',$('#FiltroInputCuenca option:selected').text());
         var Cuenca = $('#FiltroInputCuenca option:selected').text();
+        $('#divCuenca').css({"height":"120px"});
+    }else{
+        $('#divCuenca').css({"height":"60px"});
     }
 
     //  Complejo
     if ($('#CheckComplejo').prop('checked')){
         //console.log('Complejo ',$('#FiltroComplejo option:selected').text());
         var Complejo = $('#FiltroComplejo option:selected').text();
+        $('#divComplejo').css({"height":"120px"});
+    }else{
+        $('#divComplejo').css({"height":"60px"});
     }
+        
+    
 
     //  Fuente
     if ($('#CheckFuente').prop('checked')){
-      var radioF = document.getElementsByName("OptionFuente1");
-      for (var i = 0; i < radioF.length; i++){
-          if (radioF[i].checked){
-            //console.log("Fuente ", radioF[i].value);
-            var Fuente = radioF[i].value;
-          }
-      }
+        var radioF = document.getElementsByName("OptionFuente1");
+        for (var i = 0; i < radioF.length; i++){
+            if (radioF[i].checked){
+                //console.log("Fuente ", radioF[i].value);
+                var Fuente = radioF[i].value;
+            }
+        }
+        $('#divFuente').css({"height":"120px"});
+    }else
+    {
+        if ($('#CheckHume').prop('checked')){
+            $('#divFuente').css({"height":"60px"});
+        }else{
+            $('#divFuente').css({"height":"0px"});
+        }
     }
+
+ 
 
     //  Calidad de Agua
     if ($('#CheckCalidadAgua').prop('checked')){
@@ -208,6 +304,13 @@ function ObtenerDatosFiltro(){
               //console.log("Calidad de agua ", radioCA[i].value);
               var CalidadAgua = radioCA[i].value;
             }
+        }
+        $('#divCalidadAgua').css({"height":"150px"});
+    }else{
+        if ($('#CheckHume').prop('checked')){
+            $('#divCalidadAgua').css({"height":"60px"});
+        }else{
+            $('#divCalidadAgua').css({"height":"0px"});
         }
     }
 
@@ -220,6 +323,13 @@ function ObtenerDatosFiltro(){
               var DivVegetal = radioD[i].value;
             }
         }
+        $('#divDiversidadVege').css({"height":"150px"});
+    }else{
+        if ($('#CheckHume').prop('checked')){
+            $('#divDiversidadVege').css({"height":"60px"});
+        }else{
+            $('#divDiversidadVege').css({"height":"0px"});
+        }
     }
 
     //  Diversidad Regimen Hidrologico
@@ -231,6 +341,13 @@ function ObtenerDatosFiltro(){
               var RegiHidro = radioRH[i].value;
             }
         }
+        $('#divRegimenHidro').css({"height":"150px"});
+    }else{
+        if ($('#CheckHume').prop('checked')){
+            $('#divRegimenHidro').css({"height":"60px"});
+        }else{
+            $('#divRegimenHidro').css({"height":"0px"});
+        }
     }
 
     //  Tiempo de permanencia
@@ -241,6 +358,13 @@ function ObtenerDatosFiltro(){
               //console.log("Tiempo de Permanencia ", radioTP[i].value);
               var TiempoPerma = radioTP[i].value;
             }
+        }
+        $('#divTiempoPerma').css({"height":"120px"});
+    }else{
+        if ($('#CheckHume').prop('checked')){
+            $('#divTiempoPerma').css({"height":"60px"});
+        }else{
+            $('#divTiempoPerma').css({"height":"0px"});
         }
     }
 
@@ -254,6 +378,13 @@ function ObtenerDatosFiltro(){
             }
         }
         //console.log(Presiones);
+        $('#divPresion').css({"height":"165px"});
+    }else{
+        if ($('#CheckAcc').prop('checked') || $('#CheckHume').prop('checked')){
+            $('#divPresion').css({"height":"60px"});
+        }else{
+            $('#divPresion').css({"height":"0px"});
+        }
     }
 
     //  Fauna
@@ -265,7 +396,14 @@ function ObtenerDatosFiltro(){
                 Faunas.push(CheckFaunas[i].value); 
             }
         }
+        $('#divFauna').css({"height":"165px"});
         //console.log(Faunas);
+    }else{
+        if ($('#CheckHume').prop('checked')){
+            $('#divFauna').css({"height":"60px"});
+        }else{
+            $('#divFauna').css({"height":"0px"});
+        }
     }
 
     //  Flora
@@ -277,7 +415,14 @@ function ObtenerDatosFiltro(){
                 Floras.push(CheckFlora[i].value); 
             }
         }
+        $('#divFlora').css({"height":"165px"});
         //console.log(Floras);
+    }else{
+        if ($('#CheckHume').prop('checked')){
+            $('#divFlora').css({"height":"60px"});
+        }else{
+            $('#divFlora').css({"height":"0px"});
+        }
     }
 
     var postData = {
