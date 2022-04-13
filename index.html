@@ -1001,25 +1001,56 @@
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close_filtro"></button>
   </div>
   <div class="card-body">
-    <div class="form-group" style="width: 96%; padding-top: 16px; border-top: 1px solid rgb(226 226 226); border-bottom: 1px solid rgb(226 226 226);">
+    <div class="form-group" style="width: 96%; padding-top: 16px; border-top: 1px solid rgb(226 226 226); border-bottom: 1px solid rgb(226 226 226);">  
       <fieldset class="form-group" id="FiltroPuntos" style="height: 90px; width: 350px; overflow-y: auto; overflow-x: hidden; margin: 0px; font-size: 13px;">
-        <div class="form-check form-switch" style="left: 5px; border-radius: 10px;">
-          <label class="form-check-label">
-            <input type="checkbox" class="form-check-input upon" id="CheckInte" value="Interés" style="border-radius: 10px;"> Puntos de Interés
-          </label>
-        </div>
-        <div class="form-check form-switch" style="left: 5px; border-radius: 10px;">
-          <label class="form-check-label">
-            <input type="checkbox" class="form-check-input" id="CheckAcc" value="Accidente Geográfico" style="border-radius: 10px;"> Accidentes Geográficos
-          </label>
-        </div>
-        <div class="form-check form-switch" style="left: 5px;">
-          <label class="form-check-label">
-            <input type="checkbox" class="form-check-input" id="CheckHume" value="Humedale" style="border-radius: 10px;"> Humedales
-          </label>
-        </div>
-        
+        <table>  
+          <tr>
+            <td>
+              <div class="form-check form-switch" style="left: 5px; border-radius: 10px;">
+                <label class="form-check-label">
+                  <input type="checkbox" class="form-check-input upon" id="CheckInte" value="Interés" style="border-radius: 10px;"> Puntos de Interés
+                </label>
+              </div>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <div class="form-check form-switch" style="left: 5px; border-radius: 10px;">
+                <label class="form-check-label">
+                  <input type="checkbox" class="form-check-input" id="CheckAcc" value="Accidente Geográfico" style="border-radius: 10px;"> Accidentes Geográficos
+                </label>
+              </div>
+            </td>
+            <td>
+              <div class="form-check form-switch" style="left: 5px; border-radius: 10px; margin-left: 5px;">
+                <label class="form-check-label">
+                  <input type="checkbox" class="form-check-input upon" id="CheckNatural" value="Naturales" style="border-radius: 10px;"> Naturales
+                </label>
+              </div>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <div class="form-check form-switch" style="left: 5px;">
+                <label class="form-check-label">
+                  <input type="checkbox" class="form-check-input" id="CheckHume" value="Humedale" style="border-radius: 10px;"> Humedales
+                </label>
+              </div>
+            </td>
+            <td>
+              <div class="form-check form-switch" style="left: 5px; border-radius: 10px; margin-left: 5px;">
+                <label class="form-check-label">
+                  <input type="checkbox" class="form-check-input upon" id="CheckArtificial" value="Artificial" style="border-radius: 10px;"> Artificiales
+                </label>
+              </div>
+            </td>
+          </tr>
+
+        </table>
       </fieldset>
+      
 
     </div>
     <div class="form-group" id="divCuenca" style=" visibility: hidden; margin: 0px; height: 0px;">
