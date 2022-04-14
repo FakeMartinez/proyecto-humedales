@@ -4,9 +4,7 @@
 
   function act($connect,$q)
 {
-  echo"dentro del act||||||";
     $result = mysqli_query($connect, $q);
-    echo"hecha la consulta|||||||";
     if (!$result) {
       echo "ERROR EN LA CARGA";
       die('Query Error'.mysqli_error($connect));
@@ -24,7 +22,7 @@ function rec($connect,$q)
       die('Query Error'.mysqli_error($connect));
     }
     $dato=mysqli_fetch_array($result);
-    //echo "Info Obtenida $dato[0]";
+    echo "Rec Successfully"; 
     return $dato[0];  
 }
 
@@ -59,17 +57,21 @@ if(isset($_POST['nombre_complejo'])) {
   //echo "Nombre del comlejo : $add_nom |||||";
   $query2_2 = "SELECT Id_complejo FROM complejo WHERE Nombre_complejo='$add_nom'";
   $IDComplejo = rec($connect, $query2_2);
-  //echo "ID del comlejo obtenido: $IDComplejo |||||";
-  //echo "===================================";
-  //echo "Nombre de propietario : $add_prop |||||";
-  $query2_3 = "SELECT Id_persona FROM persona WHERE Nombre_persona='$add_prop'";
-  $IDPersona  = rec($connect, $query2_3);
-  //echo "ID de propietario obtenido: $IDPersona |||||";
+  echo "ID del comlejo obtenido: $IDComplejo 
+  ";
+  echo "===================================
+  ";
+  echo "Nombre de propietario : $add_prop 
+  ";
 
-
-  $query2_2 = "INSERT into propietario (Id_persona, Id_complejo) VALUE ('$IDPersona','$IDComplejo')";
-  act($connect,$query2_2);
-
+  foreach ($add_prop as $prop){
+    $query2_3 = "SELECT Id_persona FROM persona WHERE Nombre_persona='$prop'";
+    $IDPersona  = rec($connect, $query2_3);
+    echo "ID de propietario obtenido: $IDPersona
+    ";
+    $query2_2 = "INSERT into propietario (Id_persona, Id_complejo) VALUE ('$IDPersona','$IDComplejo')";
+    act($connect,$query2_2);
+  }
 };
 
 /////////////////Persona////////////////////////

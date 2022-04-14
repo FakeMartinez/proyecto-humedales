@@ -307,13 +307,21 @@ $(function(){
         CambiarClass($('#sel_propietario'+i.toString()), "form-select is-invalid", "form-select");
       }
     }
-    
+    var arrayProp = new Array();
 
     if ($('#nom_comp').val() !== '' && $('#sel_propietario').val() !== '... agregue un propietario ...'){
+      for (var i=0; i<=x_prop; i++){
+        if ($('#sel_propietario'+i.toString()).val() !== '... agregue un propietario ...'){
+          arrayProp.push($('#sel_propietario').val());
+          console.log($('#sel_propietario').val());
+      }
+    }
+
     const postData = {
     //  id_complejo:$('#id_complejo').val(),
       nombre_complejo: $('#nom_comp').val(),
-      prop_complejo: $('#sel_propietario').val(),
+      //prop_complejo: $('#sel_propietario').val(),
+      prop_complejo: arrayProp
     };
     console.log(postData);
     $.post('php/sub_forms.php', postData, (response) => {
@@ -902,10 +910,10 @@ $('#btn_add').on('click', function(){
                     let template6 = `<option>... agregue un propietario ...</option>`;
                     datos['propietarios'].forEach(dato => {template6 += `<option>${dato.nom_prop}</option>` });  
                     //console.log(template6);    
-                    for (var i = 0; i <= x_prop; i++) {
+                    /*for (var i = 0; i <= x_prop; i++) {
                       $('#sel_propietario'+i.toString()).html(template6);
-                    }
-                    
+                    }*/
+                    $('#sel_propietario'+x_prop.toString()).html(template6);
                   }                    
               }
             });
