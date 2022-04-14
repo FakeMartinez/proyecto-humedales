@@ -312,8 +312,8 @@ $(function(){
     if ($('#nom_comp').val() !== '' && $('#sel_propietario').val() !== '... agregue un propietario ...'){
       for (var i=0; i<=x_prop; i++){
         if ($('#sel_propietario'+i.toString()).val() !== '... agregue un propietario ...'){
-          arrayProp.push($('#sel_propietario').val());
-          console.log($('#sel_propietario').val());
+          arrayProp.push($("#sel_propietario"+i.toString()+" option:selected").text());
+          //console.log($('#sel_propietario'+i.toString()+' option:selected').text());
       }
     }
 
@@ -330,9 +330,12 @@ $(function(){
       e.preventDefault();
       carga_form_alta_co();
       $('#form_complejo_add').hide();
-      $('#id_complejo').val('');
+      //$('#id_complejo').val('');
       $('#nom_comp').val('');
-      $('#prop_comp').val('');
+      $('#sel_propietario0').val('... agregue un propietario ...');
+      for (var i=1; i<=x_prop; i++){
+        ($('#sel_propietario'+i.toString()).parent()).remove();
+      }
       CambiarClass($('#nom_comp'), "form-control is-invalid", "form-control");
       CambiarClass($('#sel_propietario'), "form-select is-invalid", "form-select");
     });

@@ -61,10 +61,11 @@ if(isset($_POST['nombre_complejo'])) {
   ";
   echo "===================================
   ";
-  echo "Nombre de propietario : $add_prop 
-  ";
+ 
 
   foreach ($add_prop as $prop){
+    echo "Nombre de propietario : $prop 
+    ";
     $query2_3 = "SELECT Id_persona FROM persona WHERE Nombre_persona='$prop'";
     $IDPersona  = rec($connect, $query2_3);
     echo "ID de propietario obtenido: $IDPersona
