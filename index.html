@@ -605,34 +605,33 @@
 
       <div class="modal-body">
         <div class="row p-4">
+          <fieldset>
+            <!-- Formulario -->
+            <form id="form-complejo">
+                        
+              <!-- Nombre -->
+              <div class="form-group" id="DivNomComp">
+                <input type="text" id="nom_comp" placeholder="Nombre" class="form-control"> 
+              </div>
 
-        <fieldset> <!-- Formulario -->
-        <form id="form-complejo">
-
-         <!-- ID Complejo 
-         <div class="form-group">
-         <input type="text" id="id_complejo" placeholder="ID Complejo" class="form-control"> 
-         </div>
-         -->
-        
-        <!-- Nombre -->
-        <div class="form-group" id="DivNomComp">
-         <input type="text" id="nom_comp" placeholder="Nombre" class="form-control"> 
-         </div>
-        <!-- Propietario -->
-        <div class="form-group" style="display: flex;" id="DivPropComp">
-          <select class="form-select" id="sel_propietario">
-            <option>Seleccione Propietario...</option>
-          </select>  
-          <button type="button" class="btn btn-warning" id="NuevoPropietario" style="margin: 5px;padding-left: 10px;padding-right: 10px;font-size: 20px;"><i class="bi bi-pen" style="color: black;" id="Buscar"></i></button>
-        </div>
-        </fieldset>
-        <div class="modal-footer">
+              <!-- Propietario -->
+              <div id="ContePropies">
+                <div class="form-group" style="display: flex;" id="DivPropComp0">
+                  <select class="form-select" id="sel_propietario0">
+                    <option>Seleccione Propietario...</option>
+                  </select>  
+                  <button type="button" class="btn btn-warning" id="NuevoPropietario" style="margin: 5px;padding-left: 10px;padding-right: 10px;font-size: 20px;"><i class="bi bi-pen" style="color: black;" id="Buscar"></i></button>
+                </div>
+              </div>
+              <button type="button" class="btn btn-success" id="btn_Otro_Propie">+</button>
+            
+              <div class="modal-footer">
                 <input type="hidden" id="form_comp_id">
                 <button type="submit" class="btn btn-primary btn-block text-center">
                   Guardar datos
-                </button>
-          </form>
+                 </button>
+            </form>
+          </fieldset>
         </div>
       </div>
     </div>

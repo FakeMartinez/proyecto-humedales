@@ -61,6 +61,9 @@ $(function(){
       $('#close_btn_comp_add').on('click', function(){
         $('div').remove('#TexErrorIncompleto');
         CambiarClass($('#nom_comp'), "form-control is-invalid", "form-control");
+        for (var i=0; i<=x_prop; i++){
+            CambiarClass($('#sel_propietario'+i.toString()), "form-select is-invalid", "form-select");
+        }
         $('#form_complejo_add').hide();
       });
   
@@ -235,16 +238,22 @@ $(function(){
         if ($('#nom_cuenca').val() === ''){
           CambiarClass($('#nom_cuenca'), "form-control", "form-control is-invalid"); //Si el campo está vacío, cambia la clase del input de "form-control" a "form control is-invalid"
           $('#DivNomCuen').append("<div id='TexErrorIncompleto' style='color: red'>Este campo es obligatorio</div>"); //Crea el mensaje de advertencia de campo incompleto
+        }else{
+          CambiarClass($('#nom_cuenca'), "form-control is-invalid", "form-control");
         }
   
         if ($('#sup_cuenca').val() === ''){
           CambiarClass($('#sup_cuenca'), "form-control", "form-control is-invalid"); //Si el campo está vacío, cambia la clase del input de "form-control" a "form control is-invalid"
           $('#DivSupCuen').append("<div id='TexErrorIncompleto' style='color: red'>Este campo es obligatorio</div>"); //Crea el mensaje de advertencia de campo incompleto
+        }else{
+          CambiarClass($('#sup_cuenca'), "form-control is-invalid", "form-control");
         }
   
         if ($('#tipo_cuenca').val() === ''){
           CambiarClass($('#tipo_cuenca'), "form-control", "form-control is-invalid"); //Si el campo está vacío, cambia la clase del input de "form-control" a "form control is-invalid"
           $('#DivTipCuen').append("<div id='TexErrorIncompleto' style='color: red'>Este campo es obligatorio</div>"); //Crea el mensaje de advertencia de campo incompleto
+        }else{
+          CambiarClass($('#tipo_cuenca'), "form-control is-invalid", "form-control");
         }
 
         //Si ninguno de los campos obligatorios está vacío, hace el submit
@@ -286,9 +295,21 @@ $(function(){
     if ($('#nom_comp').val() === ''){
       CambiarClass($('#nom_comp'), "form-control", "form-control is-invalid"); //Si el campo está vacío, cambia la clase del input de "form-control" a "form control is-invalid"
       $('#DivNomComp').append("<div id='TexErrorIncompleto' style='color: red'>Este campo es obligatorio</div>"); //Crea el mensaje de advertencia de campo incompleto
+    }else{
+      CambiarClass($('#nom_comp'), "form-control is-invalid", "form-control");
     }
 
-    if ($('#nom_comp').val() !== ''){
+    for (var i=0; i<=x_prop; i++){
+      if ($('#sel_propietario'+i.toString()).val() === '... agregue un propietario ...'){
+        CambiarClass($('#sel_propietario'+i.toString()), "form-select", "form-select is-invalid"); //Si el campo está vacío, cambia la clase del input de "form-control" a "form control is-invalid"
+        $('#DivPropComp'+i.toString()).append("<div id='TexErrorIncompleto' style='color: red'>Este campo es obligatorio</div>"); //Crea el mensaje de advertencia de campo incompleto
+      }else{
+        CambiarClass($('#sel_propietario'+i.toString()), "form-select is-invalid", "form-select");
+      }
+    }
+    
+
+    if ($('#nom_comp').val() !== '' && $('#sel_propietario').val() !== '... agregue un propietario ...'){
     const postData = {
     //  id_complejo:$('#id_complejo').val(),
       nombre_complejo: $('#nom_comp').val(),
@@ -305,6 +326,7 @@ $(function(){
       $('#nom_comp').val('');
       $('#prop_comp').val('');
       CambiarClass($('#nom_comp'), "form-control is-invalid", "form-control");
+      CambiarClass($('#sel_propietario'), "form-select is-invalid", "form-select");
     });
     }
   });
@@ -744,6 +766,40 @@ $('#btn_presion_hum').on('click', function(){
   });
   //-----------------------------------------------------------------------
   
+  //-----------------------------------------------------------------------
+  //---------------------------- Agregar más propietario ------------------------------
+  $('#btn_Otro_Propie').on('click', function(){
+    x_prop++;
+    var add = '';
+    add += `
+    <div class="form-group" style="display: flex;" id="DivPropComp`+ x_prop.toString() +`">
+      <select class="form-select" id="sel_propietario`+ x_prop.toString() +`">
+        <option>Seleccione Propietario ...</option>
+      </select>
+      <button type="button" class="btn btn-danger" id="btn_Propiet_delet`+ x_prop.toString() +`">-</button>
+    </div>
+    `;
+  
+  //$('#btn_flora_dhum').remove();
+  $('#ContePropies').append(add);
+  
+  
+  carga_form_alta_propie();
+  
+  
+  $('#btn_Propiet_delet'+ x_prop.toString()).on('click', function(){
+    var Padre = $(this).parent();
+    Padre.remove();
+    //$('#sel_propietario'+ x_prop.toString()).remove();
+    //$('#btn_Propiet_delet'+ x_prop.toString()).remove();
+    
+    //console.log('#sel_propietario'+ x_prop.toString());
+    //console.log(x_prop)
+  });
+  
+  });
+  //-----------------------------------------------------------------------
+  
   
 });
 
@@ -843,14 +899,17 @@ $('#btn_add').on('click', function(){
                     //console.log(response);
                     let datos = JSON.parse(response);
                     //console.log(datos);
-                    let template6 = '';
+                    let template6 = `<option>... agregue un propietario ...</option>`;
                     datos['propietarios'].forEach(dato => {template6 += `<option>${dato.nom_prop}</option>` });  
                     //console.log(template6);    
-                    $('#sel_propietario').html(template6);
-                    }                    
-                  }
-                });
-              };
+                    for (var i = 0; i <= x_prop; i++) {
+                      $('#sel_propietario'+i.toString()).html(template6);
+                    }
+                    
+                  }                    
+              }
+            });
+          };
               
       ////////////////////////////////
   
