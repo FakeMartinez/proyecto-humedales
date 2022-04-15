@@ -996,7 +996,7 @@
 <!--       FORMULARIO FILTRO DE SELECCION DE HUMEDALES, ACCIDENTES Y PUNTOS DE INTERES      -->
 <!--________________________________________________________________________________________-->
 
-<div id="FiltroDeHumedales" class="card border-dark mb-3" style="max-width: 30rem; min-width:400px; position: absolute; right: 5px; top: 5px; height: 98.5%; overflow: auto; overflow-y: overlay; flex-wrap: unset; align-items: flex-start; visibility: hidden;">
+<div id="FiltroDeHumedales" class="card border-dark mb-3" style="max-width: 30rem; min-width:400px; position: absolute; right: 5px; top: 5px; height: 98.5%; overflow: auto; overflow-x: hidden; flex-wrap: unset; align-items: flex-start; visibility: hidden;">
   <div class="card-header" style="width: 100%; display: flex; justify-content: space-between;">Busqueda por Filtrado
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close_filtro"></button>
   </div>
@@ -1008,7 +1008,7 @@
             <td>
               <div class="form-check form-switch" style="left: 5px; border-radius: 10px;">
                 <label class="form-check-label">
-                  <input type="checkbox" class="form-check-input upon" id="CheckInte" value="Interés" style="border-radius: 10px;"> Puntos de Interés
+                  <input type="checkbox" class="form-check-input upon" id="CheckInte" value="Interes" style="border-radius: 10px;"> Puntos de Interés
                 </label>
               </div>
             </td>
@@ -1023,11 +1023,7 @@
               </div>
             </td>
             <td>
-              <div class="form-check form-switch" style="left: 5px; border-radius: 10px; margin-left: 5px;">
-                <label class="form-check-label">
-                  <input type="checkbox" class="form-check-input upon" id="CheckNatural" value="Naturales" style="border-radius: 10px;"> Naturales
-                </label>
-              </div>
+              
             </td>
           </tr>
 
@@ -1040,11 +1036,7 @@
               </div>
             </td>
             <td>
-              <div class="form-check form-switch" style="left: 5px; border-radius: 10px; margin-left: 5px;">
-                <label class="form-check-label">
-                  <input type="checkbox" class="form-check-input upon" id="CheckArtificial" value="Artificial" style="border-radius: 10px;"> Artificiales
-                </label>
-              </div>
+              
             </td>
           </tr>
 
@@ -1248,7 +1240,7 @@
               <h5 class="card-title" style="margin-top:5px;font-size: 12px;">Presiones</h5>
               <abbr title="Buscar los humedales con un conjunto de presiones específicos" style="text-decoration: none; margin-top:3px;" class="Info rounded-pill bg-info"> ?</abbr>
           </label>
-            <fieldset class="form-group" id="FiltroPresiones" style="height: 90px; width: 350px; background-color: #9affe3; overflow-y: auto; overflow-x: hidden; visibility: hidden; height: 0px; margin: 0px; font-size: 13px;">
+            <fieldset class="form-group" id="FiltroPresiones" style="height: 90px; width: 350px; background-color: rgb(235 235 235); overflow-y: auto; overflow-x: hidden; visibility: hidden; height: 0px; margin: 0px; font-size: 13px;">
               <div class="form-check" style="left: 5px;">
                 <label class="form-check-label">
                   <input type="checkbox" class="form-check-input"  id="option1Pr" value="Presion1"> Fauna1
@@ -1295,7 +1287,7 @@
               <abbr title="Permanencia de un humedal a lo largo del tiempo (Temporal o permanente)" style="text-decoration: none; margin-top:3px;" class="Info rounded-pill bg-info"> ?</abbr>
           </label>
 
-          <fieldset class="form-group" id="FiltroFauna" style="height: 90px; width: 350px; background-color: #9affe3; overflow-y: auto; overflow-x: hidden; visibility: hidden; height: 0px; margin: 0px; font-size: 13px;">
+          <fieldset class="form-group" id="FiltroFauna" style="height: 90px; width: 350px; background-color: rgb(235 235 235); overflow-y: auto; overflow-x: hidden; visibility: hidden; height: 0px; margin: 0px; font-size: 13px;">
               <div class="form-check" style="left: 5px;">
                 <label class="form-check-label">
                   <input type="checkbox" class="form-check-input"  id="option1Fa" value="Fauna1"> Fauna1
@@ -1340,7 +1332,7 @@
               <h5 class="card-title" style="margin-top:5px;font-size: 12px;">Flora</h5>
               <abbr title="Buscar los humedales con un conjunto de presiones específicos" style="text-decoration: none; margin-top:3px;" class="Info rounded-pill bg-info"> ?</abbr>
           </label>
-            <fieldset class="form-group" id="FiltroFlora" style="height: 90px; width: 350px; background-color: #9affe3; overflow-y: auto; overflow-x: hidden; visibility: hidden; height: 0px; margin: 0px; font-size: 13px;">
+            <fieldset class="form-group" id="FiltroFlora" style="height: 90px; width: 350px; background-color: rgb(235 235 235); overflow-y: auto; overflow-x: hidden; visibility: hidden; height: 0px; margin: 0px; font-size: 13px;">
               <div class="form-check" style="left: 5px;">
                 <label class="form-check-label">
                   <input type="checkbox" class="form-check-input"  id="option1Fl" value="Flora1"> Flora1

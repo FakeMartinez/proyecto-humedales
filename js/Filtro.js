@@ -18,6 +18,27 @@
     }
     ObtenerDatosFiltro();
 }
+
+function DisCheckODF(e, cont){
+    if(!e.checked){
+        document.getElementById(cont).style.visibility = "hidden";
+        document.getElementById(cont).style.height = "5px";
+    }else{
+        document.getElementById(cont).style.visibility = "visible";
+        document.getElementById(cont).style.height = "60px";
+        
+        if (cont == "FiltroFauna" || cont == "FiltroFlora" || cont == "FiltroPresiones")
+        {
+            document.getElementById(cont).style.height = "90px";
+        }
+        if ( cont == "FiltroInputCuenca" || cont == "FiltroComplejo" || cont == "FiltroTiempoPerma" || cont == "FiltroFuente")
+        {
+            document.getElementById(cont).style.height = "35px";
+        }
+    }
+}
+
+
 $(function(){
 
     $('#Filtrador').on('click',function(){
@@ -123,15 +144,15 @@ $(function(){
         }else{            
             $('#divCuenca').css({"visibility":"hidden"});
             $('#CheckCuenca').prop("checked", false);
-            DisCheck('CheckCuenca', 'FiltroInputCuenca');
+            DisCheckODF('CheckCuenca', 'FiltroInputCuenca');
 
             $('#divComplejo').css({"visibility":"hidden"});
             $('#CheckComplejo').prop("checked", false);
-            DisCheck('CheckComplejo', 'FiltroComplejo');
+            DisCheckODF('CheckComplejo', 'FiltroComplejo');
 
             $('#divPresion').css({"visibility":"hidden"});
             $('#CheckPresiones').prop("checked", false);
-            DisCheck('CheckPresiones', 'FiltroPresiones');
+            DisCheckODF('CheckPresiones', 'FiltroPresiones');
         }
 
 
@@ -150,50 +171,51 @@ $(function(){
             if (!$('#CheckAcc').prop('checked')){
                 $('#divCuenca').css({"visibility":"hidden", "height":"0px"});
                 $('#CheckCuenca').prop("checked", false);
-                DisCheck('CheckCuenca', 'FiltroInputCuenca');
+                DisCheckODF('CheckCuenca', 'FiltroInputCuenca');
     
                 $('#divComplejo').css({"visibility":"hidden", "height":"0px"});
                 $('#CheckComplejo').prop("checked", false);
-                DisCheck('CheckComplejo', 'FiltroComplejo');
+                DisCheckODF('CheckComplejo', 'FiltroComplejo');
 
                 $('#divPresion').css({"visibility":"hidden", "height":"0px"});
                 $('#CheckPresiones').prop("checked", false);
-                DisCheck('CheckPresiones', 'FiltroPresiones');
+                DisCheckODF('CheckPresiones', 'FiltroPresiones');
             }
             $('#divFuente').css({"visibility":"hidden", "height":"0px"});
             $('#CheckFuente').prop("checked", false);
-            DisCheck('CheckFuente', 'FiltroFuente');
+            DisCheckODF('CheckFuente', 'FiltroFuente');
 
             $('#divCalidadAgua').css({"visibility":"hidden", "height":"0px"});
             $('#CheckCalidadAgua').prop("checked", false);
-            DisCheck('CheckCalidadAgua', 'FiltroCalidadAgua');
+            DisCheckODF('CheckCalidadAgua', 'FiltroCalidadAgua');
 
             $('#divDiversidadVege').css({"visibility":"hidden", "height":"0px"});
             $('#CheckDiversidadVegetal').prop("checked", false);
-            DisCheck('CheckDiversidadVegetal', 'FiltroDiversidadVegetal');
+            DisCheckODF('CheckDiversidadVegetal', 'FiltroDiversidadVegetal');
             
             $('#divRegimenHidro').css({"visibility":"hidden", "height":"0px"});
             $('#CheckRegimenHidrologico').prop("checked", false);
-            DisCheck('CheckRegimenHidrologico', 'FiltroRegimenHidro');
+            DisCheckODF('CheckRegimenHidrologico', 'FiltroRegimenHidro');
             
             $('#divTiempoPerma').css({"visibility":"hidden", "height":"0px"});
             $('#CheckTiempoPerma').prop("checked", false);
-            DisCheck('CheckTiempoPerma', 'FiltroTiempoPerma');
+            DisCheckODF('CheckTiempoPerma', 'FiltroTiempoPerma');
             
             $('#divFauna').css({"visibility":"hidden", "height":"0px"});
             $('#CheckFauna').prop("checked", false);
-            DisCheck('CheckFauna', 'FiltroFauna');
+            DisCheckODF('CheckFauna', 'FiltroFauna');
 
             $('#divFlora').css({"visibility":"hidden", "height":"0px"});
             $('#CheckFlora').prop("checked", false);
-            DisCheck('CheckFlora', 'FiltroFlora');
-
-            
+            DisCheckODF('CheckFlora', 'FiltroFlora');
         }
-        ObtenerDatosFiltro();
+     
 
     })
-
+    $('#FiltroPuntos').on('change', (event) => {
+        //console.log(event.target.value);
+        ObtenerDatosFiltro();
+    })
     $('#SelectCuenca').on('change', (event) => {
         //console.log(event.target.value);
         ObtenerDatosFiltro();
@@ -203,9 +225,7 @@ $(function(){
         ObtenerDatosFiltro();
     })
     $('#FiltroFuente').on('change', (event) => {
-        //console.log(event.target.value);
         ObtenerDatosFiltro();
-        //cosa();
     })
     $('#FiltroCalidadAgua').on('change', (event) => {
         ObtenerDatosFiltro()
@@ -221,39 +241,30 @@ $(function(){
     })
     $('#FiltroPresiones').on('change', (event) => {
         ObtenerDatosFiltro();
-        /* var ChecksPres = $('#FiltroPresiones').find('input');
-        console.log("entra")
-        for (var i=0; ChecksPres.length > i; i++){
-            if (ChecksPres[i].checked){
-                console.log("Checado", ChecksPres[i].value, ChecksPres[i].checked);
-            }
-        }*/
     })
     $('#FiltroFauna').on('change', (event) => {
         ObtenerDatosFiltro();
-        /*var ChecksFau = $('#FiltroFauna').find('input');
-        console.log("entra")
-        for (var i=0; ChecksFau.length > i; i++){
-            if (ChecksFau[i].checked){
-                console.log("Checado", ChecksFau[i].value, ChecksFau[i].checked);
-            }
-        }*/
     })
     $('#FiltroFlora').on('change', (event) => {
         ObtenerDatosFiltro();
-        /*var ChecksFlo = $('#FiltroFlora').find('input');
-        console.log("entra")
-        for (var i=0; ChecksFlo.length > i; i++){
-            if (ChecksFlo[i].checked){
-                console.log("Checado", ChecksFlo[i].value, ChecksFlo[i].checked);
-            }
-        }*/
     })
     
 })
 
 
 function ObtenerDatosFiltro(){
+    if ($('#CheckInte').prop('checked')){
+        var Interes = true;
+    }
+
+    if ($('#CheckAcc').prop('checked')){
+        var Accidente = true;
+    }
+
+    if ($('#CheckHume').prop('checked')){
+        var Humedal = true;
+    }
+
     console.log("==============")
     //  Cuenca
     if ($('#CheckCuenca').prop('checked')){
@@ -426,6 +437,9 @@ function ObtenerDatosFiltro(){
     }
 
     var postData = {
+        OBInteres : Interes,
+        OBAccidente : Accidente,
+        OBHumedal : Humedal,
         OBCuenca :  Cuenca,
         OBComplejo : Complejo,
         OBFuente : Fuente,

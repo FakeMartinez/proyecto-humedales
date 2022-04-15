@@ -26,6 +26,9 @@ function rec($connect,$q)
 }
 
 
+$Interes = $_POST['OBInteres'];
+$Acc = $_POST['OBAccidente'];
+$Humedal = $_POST['OBHumedal'];
 $Cuenca = $_POST['OBCuenca'];
 $Complejo = $_POST['OBComplejo'];
 $Fuente = $_POST['OBFuente'];
@@ -45,26 +48,60 @@ $Floras = $_POST['OBFloras'];
 //Consultas relacionadas a accidentes geográficos
 
 
-//____________________________________________
-//Para seleccionar cuenca
-if ($Cuenca){
-  //echo "cuenca con algo";
-  $IDCuenca = rec($connect,"SELECT Id_cuenca FROM cuenca WHERE Nombre_cuenca='$Cuenca'");
-  //echo "Cuenca: ", $IDCuenca, " ||| ";
-  $ConsultB = " and Id_cuenca=$IDCuenca";
-  //echo $ConsultB;
-}
+
+
 
 //____________________________________________
-// Para seleccionar complejo
-if ($Complejo){
-  /*if ($Cuenca)
-  { $ConsultB= $ConsultB." and"; }*/
-  //echo"complejo con algo";
-  $IDComplejo = rec($connect,"SELECT Id_complejo FROM complejo WHERE Nombre_complejo='$Complejo'");
-  //echo "Complejo: ", $IDComplejo, " ||| ";
-  $ConsultB = $ConsultB." and Id_complejo=$IDComplejo";
+//Para seleccionar cuenca
+if ($Acc || $Humedal){
+  if ($Cuenca){
+    //echo "cuenca con algo";
+    $IDCuenca = rec($connect,"SELECT Id_cuenca FROM cuenca WHERE Nombre_cuenca='$Cuenca'");
+    //echo "Cuenca: ", $IDCuenca, " ||| ";
+    $ConsultB = " and Id_cuenca=$IDCuenca";
+    $ConsultAc = "SELECT Id_acc FROM accidente_geografico WHERE Id_cuenca=$IDCuenca";
+    //echo $ConsultB;
+  }
+  
+  //____________________________________________
+  // Para seleccionar complejo
+  if ($Complejo){
+    /*if ($Cuenca)
+    { $ConsultB= $ConsultB." and"; }*/
+    //echo"complejo con algo";
+    $IDComplejo = rec($connect,"SELECT Id_complejo FROM complejo WHERE Nombre_complejo='$Complejo'");
+    //echo "Complejo: ", $IDComplejo, " ||| ";
+    $ConsultB = $ConsultB." and Id_complejo=$IDComplejo";
+    $ConsultAc = $ConsultAc." and Id_complejo=$IDComplejo";
+    
+  }
+
+  //Consultas relacionadas a presiones
+
+  $Ip = 0;
+  $consulP ="SELECT T0.Id_acc from ";
+  if ($Presiones){
+    //echo"Presiones con algo";
+    foreach ($Presiones as $pre)
+    {
+      $ID = rec($connect,"SELECT Id_presiones FROM presiones WHERE Tipo_presiones='$pre'");
+      $IDPre[$Ip] = $ID; 
+      $consulP = $consulP."(SELECT Id_acc FROM contiene_presiones WHERE Id_presiones=$ID) as T$Ip";
+      
+      if ($Ip>0){
+        $consulP = $consulP." on T".($Ip-1).".Id_acc=T".($Ip).".Id_acc";
+      }
+      if (array_key_exists($Ip+1, $Presiones)){
+        $consulP = $consulP." INNER join ";
+      }
+      $Ip = $Ip + 1;
+    }
+  }
 }
+
+
+
+
 /*
 // Construccion de la consulta completa y Obtencion del humedal
 if ($Complejo || $Cuenca){
@@ -193,26 +230,7 @@ if ($Cuenca || $Complejo || $Fuente || $CalidadAgua || $DivVegetal || $RegiHidro
 //========================================================================
 //========================================================================
 
-//Consultas relacionadas a presiones
 
-$Ip = 0;
-$consulP ="SELECT T0.Id_acc from ";
-if ($Presiones){
-  //echo"Presiones con algo";
-  foreach ($Presiones as $pre)
-  {
-    $ID = rec($connect,"SELECT Id_presiones FROM presiones WHERE Tipo_presiones='$pre'");
-    $IDPre[$Ip] = $ID; 
-    $consulP = $consulP."(SELECT Id_acc FROM contiene_presiones WHERE Id_presiones=$ID) as T$Ip";
-    
-    if ($Ip>0){
-      $consulP = $consulP." on T".($Ip-1).".Id_acc=T".($Ip).".Id_acc";
-    }
-    if (array_key_exists($Ip+1, $Presiones)){
-      $consulP = $consulP." INNER join ";
-    }
-    $Ip = $Ip + 1;
-  }
   /*echo "
   =================================
   ";
@@ -234,7 +252,7 @@ if ($Presiones){
 */
 
 
-}
+
 
 //===========================================================================
 //===========================================================================
@@ -321,72 +339,174 @@ if ($Floras){
   }*/
 }
 
+if ($Interes){
+  $ConsultInte = "SELECT Id_acc FROM accidente_geografico WHERE tipo='Interes'";
+  echo "
+  ========================================
+  ";
+  echo "Puntos de Interes";
+  echo "
+  ========================================
+  ";
+  echo $ConsultInte;
+  echo "
+  ========================================
+  ";
+  echo "Resultados:
+  ";
+  $resultadoFinal = mysqli_query($connect,$ConsultInte);
+
+  foreach($resultadoFinal as $ResFi){
+    foreach($ResFi as $RF){
+      echo $RF, "
+  ";
+    }
+  }
+}
+
+if ($Acc){
+  if ($Cuenca || $Complejo){
+    $ConsultAcc = "SELECT ConRel.Id_acc FROM (";
+    $ConsultAcc = $ConsultAcc.$ConsultAc.") as ConRel";
+    if ($Presiones){
+      $ConsultAcc = $ConsultAcc." INNER JOIN (";
+      $ConsultAcc = $ConsultAcc.$consulP.") as ConPre on ConRel.Id_acc=ConPre.Id_acc WHERE Tipo <> 'Interes'";
+    }
+    /*
+SELECT T0.Id_acc 
+from (SELECT Id_acc 
+      FROM contiene_presiones 
+      WHERE Id_presiones=10) as T0 
+WHERE Tipo <> 'Interes'*/
+  }else{
+    if ($Presiones){
+      
+      $ConsultAcc = "SELECT AC.Id_acc FROM accidente_geografico as AC INNER JOIN (";
+ 
+      $ConsultAcc = $ConsultAcc.$consulP.") as R1 on AC.Id_acc=R1.Id_acc WHERE AC.Tipo <> 'Interes'";   
+    }else{
+      $ConsultAcc = "SELECT Id_acc FROM accidente_geografico WHERE Tipo <> 'Interes'";
+    }
+/*
+SELECT ConRel.Id_acc 
+FROM accidente_geografico as AC INNER JOIN (SELECT T0.Id_acc 
+                                            from (SELECT Id_acc 
+                                                  FROM contiene_presiones 
+                                                  WHERE Id_presiones=10) as T0
+                                           ) as R1 on AC.Id_acc=R1.Id_acc
+WHERE AC.Tipo <> 'Interes'
+*/
+  }
+  echo "
+  ========================================
+  ";
+  echo "Accidentes Geográficos";
+  echo "
+  ========================================
+  ";
+  echo $ConsultAcc;
+  echo "
+  ========================================
+  ";
+  echo "Resultados:
+  ";
+  $resultadoFinal = mysqli_query($connect,$ConsultAcc);
+
+  foreach($resultadoFinal as $ResFi){
+    foreach($ResFi as $RF){
+      echo $RF, "
+  ";
+    }
+  }
+}
 
 
-if ($Cuenca || $Complejo || $Fuente || $CalidadAgua || $DivVegetal || $RegiHidro || $TiempoPerma){
-  $Consult = "SELECT ConRel.Id_acc FROM (";
-  $Consult = $Consult.$ConsultA.") as ConRel";
-  if ($Presiones){
-    $Consult = $Consult." INNER JOIN (";
-    $Consult = $Consult.$consulP.") as ConPre on ConRel.Id_acc=ConPre.Id_acc";
-  }
-  if ($Faunas){
-    $Consult = $Consult." INNER JOIN (";
-    $Consult = $Consult.$consulFa.") as ConFau on ConRel.Id_rel=ConFau.Id_rel";
-  }
-  if ($Floras){
-    $Consult = $Consult." INNER JOIN (";
-    $Consult = $Consult.$consulFl.") as ConFlo on ConRel.Id_rel=ConFlo.Id_rel";
-  }
-}else{
-  if ($Presiones){
-    $Consult = "SELECT R1.Id_acc from relevamiento as R1 INNER join (";
-            
-    $Consult = $Consult.$consulP.") as ConPre on R1.Id_acc = ConPre.Id_acc";
 
+if ($Humedal){
+  if ($Cuenca || $Complejo || $Fuente || $CalidadAgua || $DivVegetal || $RegiHidro || $TiempoPerma){
+    $ConsultH = "SELECT ConRel.Id_acc FROM (";
+    $ConsultH = $ConsultH.$ConsultA.") as ConRel";
+    if ($Presiones){
+      $ConsultH = $ConsultH." INNER JOIN (";
+      $ConsultH = $ConsultH.$consulP.") as ConPre on ConRel.Id_acc=ConPre.Id_acc";
+    }
     if ($Faunas){
-      $Consult = $Consult." INNER JOIN (";
-      $Consult = $Consult.$consulFa.") as ConFau on R1.Id_rel=ConFau.Id_rel";
+      $ConsultH = $ConsultH." INNER JOIN (";
+      $ConsultH = $ConsultH.$consulFa.") as ConFau on ConRel.Id_rel=ConFau.Id_rel";
     }
     if ($Floras){
-      $Consult = $Consult." INNER JOIN (";
-      $Consult = $Consult.$consulFl.") as ConFlo on R1.Id_rel=ConFlo.Id_rel";
+      $ConsultH = $ConsultH." INNER JOIN (";
+      $ConsultH = $ConsultH.$consulFl.") as ConFlo on ConRel.Id_rel=ConFlo.Id_rel";
     }
-    $Consult = $Consult."where not exists (select * from relevamiento as R2 where R1.Id_acc = R2.Id_acc and R1.Fecha < R2.Fecha)";
   }else{
-    if ($Faunas){
-      $Consult = "SELECT R1.Id_rel from relevamiento as R1 INNER join (";
-
-      $Consult = $Consult.$consulFa.") as ConFau on R1.Id_rel=ConFau.Id_rel";
-      if ($Floras){
-        $Consult = $Consult." INNER JOIN (";
-        $Consult = $Consult.$consulFl.") as ConFlo on ConFau.Id_rel=ConFlo.Id_rel";
-      }
-      $Consult = $Consult."where not exists (select * from relevamiento as R2 where R1.Id_acc = R2.Id_acc and R1.Fecha < R2.Fecha)";
-    }else{
-      if ($Floras){
-        $Consult = "SELECT R1.Id_rel from relevamiento as R1 INNER join (";
+    if ($Presiones){
+      $ConsultH = "SELECT R1.Id_acc from relevamiento as R1 INNER join (";
+              
+      $ConsultH = $ConsultH.$consulP.") as ConPre on R1.Id_acc = ConPre.Id_acc";
   
-        $Consult = $Consult.$consulFl.") as ConFlo on R1.Id_rel=ConFlo.Id_rel";
-      
-        $Consult = $Consult."where not exists (select * from relevamiento as R2 where R1.Id_acc = R2.Id_acc and R1.Fecha < R2.Fecha)";  
+      if ($Faunas){
+        $ConsultH = $ConsultH." INNER JOIN (";
+        $ConsultH = $ConsultH.$consulFa.") as ConFau on R1.Id_rel=ConFau.Id_rel";
       }
+      if ($Floras){
+        $ConsultH = $ConsultH." INNER JOIN (";
+        $ConsultH = $ConsultH.$consulFl.") as ConFlo on R1.Id_rel=ConFlo.Id_rel";
+      }
+      $ConsultH = $ConsultH." where not exists (select * from relevamiento as R2 where R1.Id_acc = R2.Id_acc and R1.Fecha < R2.Fecha)";
+    }else{
+      if ($Faunas){
+        $ConsultH = "SELECT R1.Id_rel from relevamiento as R1 INNER join (";
+  
+        $ConsultH = $ConsultH.$consulFa.") as ConFau on R1.Id_rel=ConFau.Id_rel";
+        if ($Floras){
+          $ConsultH = $ConsultH." INNER JOIN (";
+          $ConsultH = $ConsultH.$consulFl.") as ConFlo on ConFau.Id_rel=ConFlo.Id_rel";
+        }
+        $ConsultH = $ConsultH."where not exists (select * from relevamiento as R2 where R1.Id_acc = R2.Id_acc and R1.Fecha < R2.Fecha)";
+      }else{
+        if ($Floras){
+          $ConsultH = "SELECT R1.Id_rel from relevamiento as R1 INNER join (";
+    
+          $ConsultH = $ConsultH.$consulFl.") as ConFlo on R1.Id_rel=ConFlo.Id_rel";
+        
+          $ConsultH = $ConsultH."where not exists (select * from relevamiento as R2 where R1.Id_acc = R2.Id_acc and R1.Fecha < R2.Fecha)";  
+        }else{
+          $ConsultH = 
+"SELECT R1.Id_acc 
+  from relevamiento as R1 INNER join (SELECT Id_acc 
+                                      from accidente_geografico 
+                                      where Tipo='humedal') as R2 on R1.Id_acc=R2.Id_acc 
+  WHERE not exists (select * from relevamiento as R2 where R1.Id_acc = R2.Id_acc and R1.Fecha < R2.Fecha)";
+          
+        }
+      }
+    }
+  }
+  echo "
+  ========================================
+  ";
+  echo "Humedal";
+  echo "
+  ========================================
+  ";
+  echo $ConsultH;
+  echo "
+  ========================================
+  ";
+  echo "Resultados:
+  ";
+  $resultadoFinal = mysqli_query($connect,$ConsultH);
+
+  foreach($resultadoFinal as $ResFi){
+    foreach($ResFi as $RF){
+      echo $RF, "
+  ";
     }
   }
 }
 
-echo $Consult;
-echo "
-========================================
-";
-$resultadoFinal = mysqli_query($connect,$Consult);
 
-foreach($resultadoFinal as $ResFi){
-  foreach($ResFi as $RF){
-    echo $RF, "
-";
-  }
-}
+
 
 
 /*
