@@ -40,7 +40,7 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <button type="button" class="btn btn-success" id="btn_add">+</button>
       <button type="button" class="btn btn-warning" id="btn_img_xy">Obtener Coordenadas</button>
-          <a class="nav-link dropdown-toggle" id="tools" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Herramientas</a>
+          <a class="nav-link dropdown-toggle" id="tools" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" style="color: #d3d3d3;">Herramientas</a>
           <div class="dropdown-menu" id="tools_op">
             <a class="dropdown-item" href="https://facu52da.users.earthengine.app/view/humedales">Imagenes Satelitales</a>
             <button class="dropdown-item" id="Filtrador">Filtrar los humedales</button>
@@ -49,11 +49,7 @@
             <a class="dropdown-item" href="#">Separated link</a>
           </div>
 
-          <div class="tiposHumedal">
-    <button type="radio" onClick="validarTipo(this.id);" id="all">Todos</button>
-    <button class="radio" onClick="validarTipo(this.id);" id="Natural">Natural</button>
-    <button class="radio" onClick="validarTipo(this.id);" id="Artificial">Artificial</button>
-  </div>
+          
 
         <ul class="navbar-nav ml-auto">
           <form class="form-inline my-2 my-lg-0">
@@ -1003,44 +999,24 @@
   <div class="card-body">
     <div class="form-group" style="width: 96%; padding-top: 16px; border-top: 1px solid rgb(226 226 226); border-bottom: 1px solid rgb(226 226 226);">  
       <fieldset class="form-group" id="FiltroPuntos" style="height: 90px; width: 350px; overflow-y: auto; overflow-x: hidden; margin: 0px; font-size: 13px;">
-        <table>  
-          <tr>
-            <td>
-              <div class="form-check form-switch" style="left: 5px; border-radius: 10px;">
-                <label class="form-check-label">
-                  <input type="checkbox" class="form-check-input upon" id="CheckInte" value="Interes" style="border-radius: 10px;"> Puntos de Interés
-                </label>
-              </div>
-            </td>
-          </tr>
+       
+        <div class="form-check form-switch" style="left: 5px; border-radius: 10px;">
+          <label class="form-check-label">
+            <input type="checkbox" class="form-check-input upon" id="CheckInte" value="Interes" style="border-radius: 10px;"> Puntos de Interés
+          </label>
+        </div>
 
-          <tr>
-            <td>
-              <div class="form-check form-switch" style="left: 5px; border-radius: 10px;">
-                <label class="form-check-label">
-                  <input type="checkbox" class="form-check-input" id="CheckAcc" value="Accidente Geográfico" style="border-radius: 10px;"> Accidentes Geográficos
-                </label>
-              </div>
-            </td>
-            <td>
-              
-            </td>
-          </tr>
+        <div class="form-check form-switch" style="left: 5px; border-radius: 10px;">
+          <label class="form-check-label">
+            <input type="checkbox" class="form-check-input" id="CheckAcc" value="Accidente Geográfico" style="border-radius: 10px;"> Accidentes Geográficos
+          </label>
+        </div>
 
-          <tr>
-            <td>
-              <div class="form-check form-switch" style="left: 5px;">
-                <label class="form-check-label">
-                  <input type="checkbox" class="form-check-input" id="CheckHume" value="Humedale" style="border-radius: 10px;"> Humedales
-                </label>
-              </div>
-            </td>
-            <td>
-              
-            </td>
-          </tr>
-
-        </table>
+        <div class="form-check form-switch" style="left: 5px;">
+          <label class="form-check-label">
+            <input type="checkbox" class="form-check-input" id="CheckHume" value="Humedale" style="border-radius: 10px;"> Humedales
+          </label>
+        </div>
       </fieldset>
       
 
