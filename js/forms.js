@@ -84,10 +84,12 @@ $(function(){
       });
 
 
-  //////////////////////Formulario Alta////////////////////////
+  //////////////////////Formulario Alta Acc////////////////////////
   
   $(document).on('click','#btn_brel', function(){
     form2= true;
+    from2();
+    
   });
   $('#form_add').submit(e => {
         e.preventDefault();
@@ -95,6 +97,8 @@ $(function(){
           
           
           nombre: $('#nombre').val(),  
+          tipo: $('#tipo').val(),  
+          descripcion: $('#descripcion').val(),  
           cuenca: $('#sel_cuenca').val(),
           complejo: $('#sel_complejo').val(),
          
@@ -138,7 +142,7 @@ $(function(){
        
         $.post('php/alta.php', postData, (response) => {
           console.log(response);
-         console.log(postData);
+         //console.log(postData);
           //$('#form_add').trigger('reset');
            e.preventDefault();
         
@@ -151,16 +155,14 @@ $(function(){
   
       });
       
-      if(form2 == true){
-        from2();
-      }
+    
       
       $('#form_add2').submit(e => {
         e.preventDefault();
         
         var postData = {
           
-          
+          nombre:$('#nombre').val(),  
           fecha: $('#fecha_rel').val(),
           ancho:$('#ancho').val(),
           largo:$('#largo').val(),
@@ -184,7 +186,7 @@ $(function(){
           //
         }
               
-
+console.log(postData);
        
   
         while(x_fau>=0){
@@ -257,7 +259,7 @@ $(function(){
         $('#form_add').hide();
         $('#form_add2').show();
         $('#t_form.modal-title').html('Relevamiento');
-        $('#form_modal').css({'background':'#DEFEAE'});
+        $('#form_modal').css({'background':'#DEFEAE' });
        
         $('#ancho').val('');
         $('#largo').val('');
@@ -505,7 +507,7 @@ $('#btn_presion_hum').on('click', function(){
     `;
   
   $('#btn_miembro_dhum').remove();
-  $('#input_miembro').append(add);
+  $('#input_miembro').append(add); 
   
   
   carga_form_alta_pers();
@@ -524,7 +526,7 @@ $('#btn_presion_hum').on('click', function(){
 
 $('#btn_add').on('click', function(){
     $('#form_add').show();
-    $('#t_form.modal-title').html('Alta Humedal');
+    $('#t_form.modal-title').html('Alta Accidente Geografico');
     $('#form_modal').css({'background':'#DEFEAE'});
     $('#ID_humedal').val('');
     $('#nombre').val('');
@@ -826,7 +828,7 @@ $('#nombre').on('input', function(){
   $('#nombre').css({'background' : '#FFFFFF', 'border': '1px dashed #FFFFFF' });
 })
   if(postData.nombre==''){
-    alert("Ingrese un nombre al humedal para continuar");
+    alert("Ingrese un nombre al accidente geografico para continuar");
     $('#nombre').css({'background' : '#FFDDDD', 'border': '1px dashed #FF0000' });
     
     b = false;
@@ -838,7 +840,6 @@ $('#nombre').on('input', function(){
  
    b = false;
   }
-
   if(isNaN(postData.largo) && postData.largo!=''){
     alert("Ingrese un valor númerico en largo");
     $('#largo').css({'background' : '#FFDDDD', 'border': '1px dashed #FF0000' });
@@ -849,14 +850,3 @@ $('#nombre').on('input', function(){
      return b;
    
   }
-
-
-
-
-
-
-                   
-                    
-                   
-
-
