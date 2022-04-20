@@ -58,15 +58,11 @@ $result = mysqli_query($connect, $query1);
     die('Query Error'.mysqli_error($connect));
   }
   
- /* $result2 = mysqli_query($connect, $query2);
 
-  if (!$result2) {
-    die('Query Error'.mysqli_error($connect));
-  }*/
 
 ///////////////////////////////////////////////
  $a = array();
-$del1 = mysqli_query($connect,"DELETE from contiene_presiones where Id_humedal = '$add_id'");
+$del1 = mysqli_query($connect,"DELETE from contiene_presiones where Id_acc = '$add_id'");
 while ($cont_pre >= 0) {
   $presion = $_POST["presiones{$cont_pre}"];
   $q_id = mysqli_query($connect,"SELECT Id_presiones FROM presiones where Tipo_presiones = '$presion'");
@@ -79,8 +75,8 @@ while ($cont_pre >= 0) {
     $a = ($row['Id_presiones']);
   };
 
-  //echo ("???".$a."???");
-  $qp = mysqli_query($connect,"INSERT into contiene_presiones (Id_humedal,fecha_rel,Id_presiones) VALUES ('$add_id','$add_fecha','$a')");
+  
+  $qp = mysqli_query($connect,"INSERT into contiene_presiones (Id_acc,Id_presiones) VALUES ('$add_id','$a')");
   
 
   if (!$qp) {
@@ -95,7 +91,7 @@ while ($cont_pre >= 0) {
 
   ///////////////////////////////////////////////
   $b = array();
-  $del2 = mysqli_query($connect,"DELETE from contiene_fauna where Id_humedal = '$add_id'");
+  $del2 = mysqli_query($connect,"DELETE from contiene_fauna where Id_rel = '$add_id'");
 while ($cont_fau >= 0) {
   $fauna = $_POST["fauna{$cont_fau}"];
   $q_id = mysqli_query($connect,"SELECT Id_fauna FROM fauna WHERE Nombre_coloquial = '$fauna'");
@@ -109,7 +105,7 @@ while ($cont_fau >= 0) {
   };
 
   //echo ("???".$b."???");
-  $qp = mysqli_query($connect,"INSERT into contiene_fauna (Id_humedal, fecha_rel, Id_fauna) VALUES ('$add_id','$add_fecha','$b')");
+  $qp = mysqli_query($connect,"INSERT into contiene_fauna (Id_rel, Id_fauna) VALUES ('$add_id','$b')");
   
 
   if (!$qp) {
@@ -120,10 +116,9 @@ while ($cont_fau >= 0) {
 }
 
 //////////////////////////////////////////////
-
 ///////////////////////////////////////////////
     $c = array();
-    $del3 = mysqli_query($connect,"DELETE from contiene_flora where Id_humedal = '$add_id'");
+    $del3 = mysqli_query($connect,"DELETE from contiene_flora where Id_rel = '$add_id'");
     while ($cont_flo >= 0) {
       $flora = $_POST["flora{$cont_flo}"];
       $q_id = mysqli_query($connect,"SELECT Id_flora FROM flora WHERE Nombre_coloquial = '$flora'");
@@ -137,7 +132,7 @@ while ($cont_fau >= 0) {
       };
   
       //echo ("???".$c."???");
-      $qp = mysqli_query($connect,"INSERT into contiene_flora (Id_humedal, Id_flora) VALUES ('$add_id','$add_fecha','$c')");
+      $qp = mysqli_query($connect,"INSERT into contiene_flora (Id_rel, Id_flora) VALUES ('$add_id','$add_fecha','$c')");
       
   
       if (!$qp) {
@@ -165,7 +160,7 @@ while ($cont_pers >= 0) {
   
   $q_id_miembro = mysqli_query($connect,"SELECT Id_miembro FROM miembro where Id_persona = '$d'");
   //echo ("???".$a."???");
-  $qp = mysqli_query($connect,"INSERT into investiga (Id_humedal, Id_miembro) VALUES ('$add_id','$add_fecha','$q_id_miembro')");
+  $qp = mysqli_query($connect,"INSERT into investiga (Id_rel, Id_miembro) VALUES ('$add_id','$q_id_miembro')");
   
 
   if (!$qp) {
