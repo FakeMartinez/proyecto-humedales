@@ -21,7 +21,7 @@
       </button>
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <button type="button" class="btn btn-success" id="btn_add">+</button>
+      <button type="button" class="btn btn-success" id="btn_add">Accidente geografico</button>
       <button type="button" class="btn btn-warning" id="btn_img_xy">Obtener Coordenadas</button>
      <button type="button" class="btn btn-warning" id="btn_modif">Modificar</button>
           <a class="nav-link dropdown-toggle" id="tools" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Herramientas</a>
@@ -281,12 +281,12 @@
    <script src="js/data_geojson.js"></script> 
    <script src="js/forms.js"></script>
 
-<!---------------Formulario Alta Humedal--------------------------->
+<!---------------Formulario Alta Accidente Geografico--------------------------->
    <div class="modal" role="document" id="form_add" style="background: rgba(0,0,0,0.8);">
     <div class="modal-dialog modal-lg">
         <div class="modal-content" id="form_modal">
           <div class="modal-header">
-            <h5 class="modal-title" id="t_form">Alta Humedal</h5>
+            <h5 class="modal-title" id="t_form">Alta Accidente Geografico</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close_btn_add">
               <span aria-hidden="true"></span>
             </button>
@@ -299,10 +299,18 @@
     
             <!-- Nombre -->
             <div class="form-group">
-              <legend class="mt-4">Nombre del humedal:</legend>
+              <legend class="mt-4">Nombre</legend>
              <input type="text" id="nombre" name="nombre" placeholder="Nombre" class="form-control"> 
             </div>
              
+
+            <!-- Tipo -->
+            <div class="form-group">
+              <legend class="mt-4">Tipo</legend>
+             <input type="text" id="tipo" name="tipo" placeholder="Tipo de accidente geografico" class="form-control"> 
+            </div>
+
+
              <!-- cuenca -->
             <div class="form-group">
               <legend class="mt-4">Cuenca</legend>
@@ -341,7 +349,11 @@
               </div>           
     
         
-        
+      
+        <!-- Descripcion -->
+      <div class="form-group">
+        <textarea id="descripcion" cols="30" rows="10" class="form-control" placeholder="Descripcion"></textarea>
+      </div>
        
     
           </fieldset> <!--  -->
@@ -362,7 +374,7 @@
 <!---------------Formulario Alta relevamiento--------------------------->
 <div class="modal" role="document" id="form_add2" style="background: rgba(0,0,0,0.8);">
 <div class="modal-dialog modal-lg">
-    <div class="modal-content" id="form_modal">
+    <div class="modal-content" id="form_modal" style="border: 5px solid black">
       <div class="modal-header">
         <h5 class="modal-title" id="t_form">Relevamiento</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close_btn_add">
@@ -911,20 +923,44 @@
           <form id="task-formodif">
             <div id="contenedor">
               <div>
+                <button type="button" class="btn btn-success btn-block" id="btn_mcomplejo">Accidente</button>
                 <button type="button" class="btn btn-success btn-block" id="btn_mcomplejo">Complejo</button>
                 <button type="button" class="btn btn-success btn-block" id="btn_mcuenca">Cuenca</button>
+                <button type="button" class="btn btn-success btn-block" id="btn_mcomplejo">Relevamiento</button>
                 <button type="button" class="btn btn-success btn-block" id="btn_mfauna">Fauna</button>
                 <button type="button" class="btn btn-success btn-block" id="btn_mflora">Flora</button>
-                <button type="button" class="btn btn-success btn-block" id="btn_mpresiones">Propietario</button>
+                <button type="button" class="btn btn-success btn-block" id="btn_mpresiones">Persona</button>
               </div>
               <div>
                 <table id="myTable" class="table table-dark">
-                   <tr>
-                    </tr>
+                  
                     <tr>
+                      <th><strong>x11</strong></th>
+                      <th><strong>x12</strong></th>
+                      <th><strong>x13</strong></th>
+                    </tr>
+                    
+                    <tr>
+                      <td>x21</td>
+                      <td>x22</td>
+                      <td>x23</td>
+                    </tr>
+                    
+                    <tr>
+                      <td>x31</td>
+                      <td>x32</td>
+                      <td>x33</td>
+                    </tr>
+                    
+                    <tr>
+                      <td>x41</td>
+                      <td>x42</td>
+                      <td>x43</td>
                     </tr>
                     </table>
+            
              
+                  
 
               </div>
             </div>
@@ -941,7 +977,7 @@
   </div>
   
 
-    
+  
        
  
  
