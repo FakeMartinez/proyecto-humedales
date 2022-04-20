@@ -76,15 +76,16 @@
     if(isset($_POST['nombre'])) {          
       
       $add_nom = $_POST['nombre'];
+      $add_tipo = $_POST['tipo'];
       $add_cuenca = $_POST['cuenca'];
       $add_complejo = $_POST['complejo'];
-     
+      $add_descripcion = $_POST['descripcion'];
      
       //---------------------
       $cont_pre = $_POST['cont_pre'];
       
       //---------------------
-  
+     
 $q_id_cue = mysqli_query($connect,"SELECT Id_cuenca FROM cuenca where Nombre_cuenca = '$add_cuenca'");
 $q_id_comp = mysqli_query($connect,"SELECT Id_complejo FROM complejo where  Nombre_complejo = '$add_complejo'");
 
@@ -100,23 +101,22 @@ while($row = mysqli_fetch_array($q_id_comp)) {
 };
 
 
-$query0= "INSERT into humedal (Nombre,Id_cuenca,Id_complejo) values ('$add_nom' , '$id_cuenca' , '$id_complejo')";
+$query0= "INSERT into accidente_geografico (Nombre,Tipo,Descripcion,Id_cuenca,Id_complejo) values ('$add_nom' ,'$add_tipo' , '$add_descripcion',$id_cuenca , $id_complejo)";
 
 
 $c_humedal =mysqli_query($connect, $query0);
-
+echo('llego2');
     if (!$c_humedal) {
       die('Query Error'.mysqli_error($connect));
     }
 ///////////////////////////////////////////////////////////////////   
  
-    $add_id= mysqli_query($connect,"SELECT Id_humedal from humedal where Nombre = '$add_nom'"); 
+    $add_id= mysqli_query($connect,"SELECT Id_acc from accidente_geografico where Nombre = '$add_nom'"); 
      foreach ($add_id as $i){
-       $id = $i["Id_humedal"];
+       $id = $i["Id_acc"];
      }
 
     $a = array();
-echo($id.'aaaaaaaaaa');
     
   while ($cont_pre >= 0) {
    $presion = $_POST["presiones{$cont_pre}"];
@@ -131,7 +131,7 @@ echo($id.'aaaaaaaaaa');
    };
 
 
-   $qp = mysqli_query($connect,"INSERT into contiene_presiones(Id_humedal, Id_presiones ) VALUES ('$id','$a')");
+   $qp = mysqli_query($connect,"INSERT into contiene_presiones(Id_acc, Id_presiones ) VALUES ('$id','$a')");
    
  
    if (!$qp) {
@@ -143,17 +143,19 @@ echo($id.'aaaaaaaaaa');
   }
   
   
-///////////////////////////////
- 
-
+////////////////Relevamiento///////////////
+$nom=$_POST['nombre'];
+$aux =  mysqli_query($connect,"SELECT Id_acc FROM accidente_geografico where accidente_geografico.Nombre=  '$nom'");
   
+echo($aux);
+
 if(isset($_POST['fecha_rel'])) {          
       
   $add_fecha = $_POST['fecha_rel'];
 
-   $query1 = "INSERT into relevamiento ( fecha_rel, Conductividad , Ancho , O2_disuelto , Calidad_de_H2O , Diversidad_Vegetal , Observaciones , 
+   $query1 = "INSERT into relevamiento ( Id_acc,Fecha, Conductividad , Ancho , O2_disuelto , Calidad_de_H2O , Diversidad_Vegetal , Observaciones , 
 Regimen_hidrológico , turbidez , Largo , ph , Color , Fuente  , Tiempo , Temperatura_H2O) VALUES 
-  ('$add_fecha',' $add_conductividad ','$add_ancho','$add_o2disuelto ','$add_calidad_agua', '$add_diversidad_vegetal', '$add_obs',
+  (,'$add_fecha',' $add_conductividad ','$add_ancho','$add_o2disuelto ','$add_calidad_agua', '$add_diversidad_vegetal', '$add_obs',
   '$add_regimen_hidrologico','$add_turbidez','$add_largo', '$add_pH' , ' $add_color' ,'$add_fuente', '$add_tiempo',  '$add_temperatrura'   )"; 
 
   $result = mysqli_query($connect, $query1);
@@ -218,7 +220,7 @@ Regimen_hidrológico , turbidez , Largo , ph , Color , Fuente  , Tiempo , Temper
         }
       }
     
-  //////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////
   //////////////////////Relevamiento_miembro/////////////////////////
   $d = array();
   $e = array();
@@ -263,4 +265,3 @@ Regimen_hidrológico , turbidez , Largo , ph , Color , Fuente  , Tiempo , Temper
 
 
 ?>
-
