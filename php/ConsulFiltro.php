@@ -59,7 +59,7 @@ if ($Acc || $Humedal){
     $IDCuenca = rec($connect,"SELECT Id_cuenca FROM cuenca WHERE Nombre_cuenca='$Cuenca'");
     //echo "Cuenca: ", $IDCuenca, " ||| ";
     $ConsultB = " and Id_cuenca=$IDCuenca";
-    $ConsultAc = "SELECT Id_acc FROM accidente_geografico WHERE Id_cuenca=$IDCuenca";
+    $ConsultAc = "SELECT * FROM accidente_geografico WHERE Id_cuenca=$IDCuenca";
     //echo $ConsultB;
   }
   
@@ -278,6 +278,7 @@ if ($Faunas){
     $Ifa = $Ifa + 1;
   }
   /*echo "
+  
   =================================
   ";
   echo $consulFa;
@@ -373,11 +374,27 @@ if ($Acc){
       $ConsultAcc = $ConsultAcc.$consulP.") as ConPre on ConRel.Id_acc=ConPre.Id_acc WHERE Tipo <> 'Interes'";
     }
     /*
-SELECT T0.Id_acc 
-from (SELECT Id_acc 
-      FROM contiene_presiones 
-      WHERE Id_presiones=10) as T0 
-WHERE Tipo <> 'Interes'*/
+SELECT ConRel.Id_acc 
+FROM (SELECT * 
+      FROM accidente_geografico 
+      WHERE Id_cuenca=4565 and Id_complejo=53
+     ) as ConRel INNER JOIN 
+     (SELECT T0.Id_acc 
+      from (SELECT Id_acc 
+            FROM contiene_presiones 
+            WHERE Id_presiones=10
+           ) as T0 INNER join 
+      		(SELECT Id_acc 
+             FROM contiene_presiones
+             WHERE Id_presiones=11
+            ) as T1 on T0.Id_acc=T1.Id_acc INNER join 
+      (SELECT Id_acc 
+       FROM contiene_presiones 
+       WHERE Id_presiones=12
+      ) as T2 on T1.Id_acc=T2.Id_acc
+     ) as ConPre on ConRel.Id_acc=ConPre.Id_acc
+WHERE Tipo <> 'Interes'
+*/
   }else{
     if ($Presiones){
       
