@@ -798,21 +798,40 @@ $('#btn_modif').on('click', function(){
   $('#t_form.modal-title').html('Modificar');
   $('#form_modal').css({'background':'#DEFEAE'});
   update = false; 
-  
-  function modif_comp(){
-    $.ajax({
-      url: 'php/modificar.php',
-      type: 'GET',
-      success: function (response) {
-         //lo que devuelve modificar.php
-         
-         
-          }
-                
-        });
-      };
-    
- 
+  var postData= {
+        accidente:false,
+        complejo:false,
+        cuenca:false,
+        relevamiento:false,
+        fauna:false,
+        flora:false,
+        persona:false
+  }
+  $('#btn_maccidente').on('click',function(){
+    postData.accidente= true;
+    postData.complejo= false;
+    postData.cuenca = false;
+    postData.relevamiento= false;
+    postData.fauna = false; 
+    postData.flora = false;
+    postData.persona = false;
+    $.post('php/modificar.php', postData, (response) => {
+      console.log(response);  
+      
+      $("#myTable").html(response);
+    });
+  })
+$('#btn_mcomplejo').on('click',function(){
+  postData.accidente=false;
+  postData.complejo= true;
+  postData.cuenca = false;
+  postData.relevamiento= false;
+  postData.fauna = false; 
+  postData.flora = false;
+  postData.persona = false;
+})
+
+        
 
 });           
 
