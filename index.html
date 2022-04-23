@@ -908,8 +908,8 @@
 <!-------------------------------------MODIFICAR------------------------------------------->
 
  <div class="modal" role="document" id="form_modif" style="background: rgba(0,0,0,0.8);">
-  <div class="modal-dialog modal-lg">
-      <div class="modal-content">
+  <div class="modal-dialog modal-lg" style="display: inline-table;">
+      <div class="modal-content" style="width: 92vmax; left: 3vmax;">
         <div class="modal-header">
           <h5 class="modal-title" id="t_form">Modificar</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close_btn_modif">
@@ -922,46 +922,19 @@
           <fieldset> <!-- Formulario -->
           <form id="task-formodif">
             <div id="contenedor">
-              <div>
-                <button type="button" class="btn btn-success btn-block" id="btn_maccidente">Accidente</button>
-                <button type="button" class="btn btn-success btn-block" id="btn_mcomplejo">Complejo</button>
-                <button type="button" class="btn btn-success btn-block" id="btn_mcuenca">Cuenca</button>
-                <button type="button" class="btn btn-success btn-block" id="btn_mrelevamiento">Relevamiento</button>
-                <button type="button" class="btn btn-success btn-block" id="btn_mfauna">Fauna</button>
-                <button type="button" class="btn btn-success btn-block" id="btn_mflora">Flora</button>
-                <button type="button" class="btn btn-success btn-block" id="btn_mpresiones">Persona</button>
+              <div style="width: 210px;">
+                <button type="button" class="btn btn-success btn-block" id="btn_maccidente" style="width: 200px;">Accidente</button>
+                <button type="button" class="btn btn-success btn-block" id="btn_mcomplejo" style="width: 200px;">Complejo</button>
+                <button type="button" class="btn btn-success btn-block" id="btn_mcuenca" style="width: 200px;">Cuenca</button>
+                <button type="button" class="btn btn-success btn-block" id="btn_mrelevamiento" style="width: 200px;">Relevamiento</button>
+                <button type="button" class="btn btn-success btn-block" id="btn_mfauna" style="width: 200px;">Fauna</button>
+                <button type="button" class="btn btn-success btn-block" id="btn_mflora" style="width: 200px;">Flora</button>
+                <button type="button" class="btn btn-success btn-block" id="btn_mpresiones" style="width: 200px;">Persona</button>
               </div>
-              <div>
-                <table id="myTable" class="table table-dark">
-                  
-                    <tr>
-                      <th><strong>x11</strong></th>
-                      <th><strong>x12</strong></th>
-                      <th><strong>x13</strong></th>
-                    </tr>
-                    
-                    <tr>
-                      <td>x21</td>
-                      <td>x22</td>
-                      <td>x23</td>
-                    </tr>
-                    
-                    <tr>
-                      <td>x31</td>
-                      <td>x32</td>
-                      <td>x33</td>
-                    </tr>
-                    
-                    <tr>
-                      <td>x41</td>
-                      <td>x42</td>
-                      <td>x43</td>
-                    </tr>
-                    </table>
-            
-             
-                  
-
+              <div id="ContTable" style="width: 69vmax; height: 385px; visibility: hidden; overflow: auto;" class="TablaMod"> 
+                <!--<table id="myTable" class="table table-dark">-->
+                <table id="myTable">
+                </table>
               </div>
             </div>
         </fieldset> <!--  -->

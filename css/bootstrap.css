@@ -10205,3 +10205,16 @@ position: absolute;
 #contenedor > div {
   width: 50%;
 }
+
+.TablaMod
+{
+  background: #343a40;
+  width: 100%;
+  height: 100%;
+  color: white;
+ 
+  text-align: center;
+}
+.TablaMod tr{
+  border-bottom: 2px solid grey;
+}

@@ -1,29 +1,64 @@
 <?php
 
 include('conexion.php');
-$acc = $_POST['accidente'];
 
-if ($acc == true){
+//===========================================================================================
+//Para Accidentes 
+if (isset($_POST['accidente'])){
   $Consulta = "SELECT * FROM accidente_geografico;";
   $resulta = mysqli_query($connect, $Consulta);
   $cosa = "
           <table>
-                <tr>
-                  <td>ID</td> <td>Nombre</td><td>Tipo</td><td>Descripcion</td><td>objeto_geo</td><td>id_complejo</td><td>Id_cuenca</td>
+                <tr style='height:40px'>
+                  <td style='width:70px; min-width: 70px;'>ID</td> 
+                  <td style='width:225px; min-width: 225px;'>Nombre</td>
+                  <td style='width:225px; min-width: 225px;'>Tipo</td>
+                  <td style='width:225px; min-width: 225px;'>Descripcion</td>
+                  <!--<td style='width:225px; min-width: 225px;'>objeto_geo</td>-->
+                  <td style='width:225px; min-width: 225px;'>id_complejo</td>
+                  <td style='width:225px; min-width: 225px;'>Id_cuenca</td>
+                  <td style='width:225px; min-width: 225px;'>Cosa1</td>
+                  <td style='width:225px; min-width: 225px;'>Cosa2</td>
+                  <td style='width:225px; min-width: 225px;'>Cosa3</td>
+                  <td style='width:225px; min-width: 225px;'>Cosa4</td>
+                  <td style='width:225px; min-width: 225px;'>Cosa5</td>
+                  <td style='width:225px; min-width: 225px;'>Cosa6</td>
+                  <td style='width:225px; min-width: 225px;'>Cosa7</td>
+                  <td style='width:225px; min-width: 225px;'>Cosa8</td>
+                  <td style='width:225px; min-width: 225px;'>Cosa9</td>
                 </tr>";
 $C= 0;
 $F= 0;
   foreach($resulta as $Fil){
-    $cosa = $cosa."<tr>";
+    $cosa = $cosa."<tr style='height:40px'>";
       foreach($Fil as $Col){
             if ($C == 0){
-                  $cosa = $cosa."<td>$Col</td>";
+                  $cosa = $cosa."<td style='width:70px; min-width: 70px;'>$Col</td>";
             }else{
-                  if ($C == 5){
-                        $cosa = $cosa."<td id='IDCom$F'>$Col</td>";
+                  if ($C == 1){
+                        $cosa = $cosa."<td style='width:225px; min-width: 225px;'><input value=$Col></input></td>";
                   }else{
-                        $cosa = $cosa."<td><input value=$Col></input></td>";
+                        if ($C == 2){
+                              $cosa = $cosa."<td style='width:225px; min-width: 225px;'><input value=$Col></input></td>";
+                        }else{
+                              if ($C == 3){
+                                    $cosa = $cosa."<td style='width:225px; min-width: 225px;'><input value=$Col></input></td>";
+                              }else{
+                                    if ($C == 4){
+                                          //Nada, es el objeto geometrico y no se escribe
+                                    }else{
+                                          if ($C == 5){
+                                                $cosa = $cosa."<td id='IDCom$F' style='width:225px; min-width: 225px;'>$Col</td>";
+                                          }else{
+                                                if ($C == 6){
+                                                      $cosa = $cosa."<td id='IDCue$F' style='width:225px; min-width: 225px;'>$Col</td>";
+                                                }                                                
+                                          }
+                                    }
+                              }
+                        }
                   }
+                  
             }
         $C++;
       }
@@ -34,10 +69,46 @@ $F= 0;
     $cosa = $cosa."</table>";
     echo $cosa;
 }else{
-      echo"no entró";
+      
 }
 
 
+//===========================================================================================
+//Para Complejos
+if (isset($_POST['complejo'])){
+      $Consulta = "SELECT * FROM complejo;";
+      $resulta = mysqli_query($connect, $Consulta);
+      $cosa = "
+              <table>
+                    <tr style='height:40px'>
+                      <td style='width:70px; min-width: 70px;'>ID</td> 
+                      <td style='width:300px; min-width: 300px;'>Nombre</td>
+                    </tr>";
+    $C= 0;
+    $F= 0;
+      foreach($resulta as $Fil){
+        $cosa = $cosa."<tr style='height:40px'>";
+          foreach($Fil as $Col){
+                if ($C == 0){
+                      $cosa = $cosa."<td>$Col</td>";
+                }else{
+                      if ($C == 5){
+                            $cosa = $cosa."<td id='IDCom$F' style='width:70px; min-width: 70px;'>'$Col'</td>";
+                      }else{
+                            $cosa = $cosa."<td style='width:300px; min-width: 300px;'><input value='$Col' style='width:275px; min-width: 275px;'></input></td>";
+                      }
+                }
+            $C++;
+          }
+          $cosa = $cosa."</tr>";
+          $C=0;
+          $F= 1;
+        }
+        $cosa = $cosa."</table>";
+        echo $cosa;
+    }else{
+
+    }
 
 
 

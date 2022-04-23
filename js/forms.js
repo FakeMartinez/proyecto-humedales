@@ -80,6 +80,7 @@ $(function(){
       
        //Añadir modif
        $('#close_btn_modif').on('click', function(){
+        $('#ContTable').css({'visibility':'hidden'});
         $('#form_modif').hide();
       });
 
@@ -798,37 +799,28 @@ $('#btn_modif').on('click', function(){
   $('#t_form.modal-title').html('Modificar');
   $('#form_modal').css({'background':'#DEFEAE'});
   update = false; 
-  var postData= {
-        accidente:false,
-        complejo:false,
-        cuenca:false,
-        relevamiento:false,
-        fauna:false,
-        flora:false,
-        persona:false
-  }
+  
   $('#btn_maccidente').on('click',function(){
-    postData.accidente= true;
-    postData.complejo= false;
-    postData.cuenca = false;
-    postData.relevamiento= false;
-    postData.fauna = false; 
-    postData.flora = false;
-    postData.persona = false;
+    var postData= {
+      accidente:true,
+    }
+    $('#ContTable').css({'visibility':'visible'});
+    
     $.post('php/modificar.php', postData, (response) => {
       console.log(response);  
-      
       $("#myTable").html(response);
     });
   })
+
 $('#btn_mcomplejo').on('click',function(){
-  postData.accidente=false;
-  postData.complejo= true;
-  postData.cuenca = false;
-  postData.relevamiento= false;
-  postData.fauna = false; 
-  postData.flora = false;
-  postData.persona = false;
+  var postData= {
+    complejo:true,
+  }
+  $('#ContTable').css({'visibility':'visible'});
+  $.post('php/modificar.php', postData, (response) => {
+    console.log(response);  
+    $("#myTable").html(response);
+  });
 })
 
         
