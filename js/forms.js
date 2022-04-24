@@ -89,72 +89,58 @@ $(function(){
   
   $(document).on('click','#btn_brel', function(){
     form2= true;
-    from2();
-    
+    from2(); 
   });
+
   $('#form_add').submit(e => {
-        e.preventDefault();
-        var postData = {
-          
-          
-          nombre: $('#nombre').val(),  
-          tipo: $('#tipo').val(),  
-          descripcion: $('#descripcion').val(),  
-          cuenca: $('#sel_cuenca').val(),
-          complejo: $('#sel_complejo').val(),
-         
-
-          cont_pre: x_pre,
-          
-          
-        }
+    e.preventDefault();
+    var postData = {
+      nombre: $('#nombre').val(),  
+      tipo: $('#tipo').val(),  
+      descripcion: $('#descripcion').val(),  
+      cuenca: $('#sel_cuenca').val(),
+      complejo: $('#sel_complejo').val(),
+      cont_pre: x_pre,
+    }
               
-
-        while(x_pre>=0){
-          console.log('sel_presion.form-select '.concat(x_pre.toString()));
-          Object.defineProperty(postData, 'presiones'+ x_pre.toString(),{
-            value:$('#sel_presion.form-select.'.concat(x_pre.toString())).val(),
-            writable: true,
-            enumerable: true,
-            configurable: true
-          }); 
-          //postData.presion.concat(x.toString()) = $('#sel_presion.form-select '.concat(x.toString())).val()
-          x_pre = x_pre-1;
-        }
-  
-       
-        e.preventDefault();
-        console.log(update);
+    while(x_pre>=0)
+    {
+      console.log('sel_presion.form-select '.concat(x_pre.toString()));
+      Object.defineProperty(postData, 'presiones'+ x_pre.toString(),
+      {
+        value:$('#sel_presion.form-select.'.concat(x_pre.toString())).val(),
+        writable: true,
+        enumerable: true,
+        configurable: true
+      }); 
+    //postData.presion.concat(x.toString()) = $('#sel_presion.form-select '.concat(x.toString())).val()
+      x_pre = x_pre-1;
+    }
+    e.preventDefault();
+    console.log(update);
         
-  
-        if (update != false){
-        $.post('php/carga.php', postData, (response) => {
-          console.log(response);
-          e.preventDefault();
-          //$('#form_add').trigger('reset');
-          
-        });
+    if (update != false)
+    {
+      $.post('php/carga.php', postData, (response) => {
+        console.log(response);
+        e.preventDefault();
+        //$('#form_add').trigger('reset');
+      });
       } 
-
-
      else{
-      
       if(postData.nombre != ''){          
-       
         $.post('php/alta.php', postData, (response) => {
           console.log(response);
          //console.log(postData);
           //$('#form_add').trigger('reset');
            e.preventDefault();
-        
         });
       }
-      else { validacion(postData)}        
-          }
-     
-      
-  
-      });
+      else
+      { 
+        validacion(postData)}        
+      }
+  });
       
     
       
@@ -832,32 +818,31 @@ $('#btn_mcomplejo').on('click',function(){
 //-----------------------------------------------------------------------//
 //----------------------Validacion------------------------------------//
 
+
+function CambiarClass(Objeto, ClassActual, ClassNueva){
+  $(Objeto).removeClass(ClassActual); //Elimina el Class actual del elemento HTML
+  $(Objeto).addClass(ClassNueva);   //agrega el nuevo class al elemento HTML
+};
+
 function validacion(postData){
   console.log('entro1');
-var b = true;
-$('#nombre').on('input', function(){
-  $('#nombre').css({'background' : '#FFFFFF', 'border': '1px dashed #FFFFFF' });
-})
-  if(postData.nombre==''){
-    alert("Ingrese un nombre al accidente geografico para continuar");
-    $('#nombre').css({'background' : '#FFDDDD', 'border': '1px dashed #FF0000' });
-    
+  var b = true;
+  $('div').remove('#TexErrorIncompleto'); 
+/*
+  $('#nombre').on('input', function(){
+    $('#nombre').css({'background' : '#FFFFFF', 'border': '1px dashed #FFFFFF' });
+  })*/
+  if(postData.nombre=='')
+  {      
+    CambiarClass($('#nombre'), "form-control", "form-control is-invalid"); //Si el campo está vacío, cambia la clase del input de "form-control" a "form control is-invalid"
+    $('#ContNomAcc').append("<div id='TexErrorIncompleto' style='color: red'>Este campo es obligatorio</div>"); //Crea el mensaje de advertencia de campo incompleto
     b = false;
-  }
-
- /* if(isNaN(postData.ancho) && postData.ancho!=''){
-    alert("Ingrese un valor númerico en ancho");
-    $('#ancho').css({'background' : '#FFDDDD', 'border': '1px dashed #FF0000' }); 
- 
-   b = false;
-  }
-  if(isNaN(postData.largo) && postData.largo!=''){
-    alert("Ingrese un valor númerico en largo");
-    $('#largo').css({'background' : '#FFDDDD', 'border': '1px dashed #FF0000' });
+  }  
+  if(postData.tipo=='')
+  {      
+    CambiarClass($('#tipo'), "form-control", "form-control is-invalid"); //Si el campo está vacío, cambia la clase del input de "form-control" a "form control is-invalid"
+    $('#ContTipAcc').append("<div id='TexErrorIncompleto' style='color: red'>Este campo es obligatorio</div>"); //Crea el mensaje de advertencia de campo incompleto
     b = false;
-    } */
-
-   
-     return b;
-   
-  }
+  }  
+  return b;
+}
