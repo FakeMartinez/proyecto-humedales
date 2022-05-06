@@ -10182,6 +10182,7 @@ th {
   color: inherit;
 }
 
+
 /*=================================================================================================*/
 /*======================================== AÑADIDO Gabriel ========================================*/
 
@@ -10225,4 +10226,40 @@ th {
 {
   height: 1px;
   width: 717px;
+
+.error
+{
+  
+box-shadow:  0 0 10px rgba(0, 0, 0, 0.3);
+color : #fff ;
+background-color: red;
+display: none;  
+font-size: 14px;
+margin-top: -80px;
+margin-left: 340px;
+padding: 10px;
+position: absolute;
+}
+
+#contenedor {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+#contenedor > div {
+  width: 50%;
+}
+
+.TablaMod
+{
+  background: #343a40;
+  width: 100%;
+  height: 100%;
+  color: white;
+ 
+  text-align: center;
+}
+.TablaMod tr{
+  border-bottom: 2px solid grey;
 }

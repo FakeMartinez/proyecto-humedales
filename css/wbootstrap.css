@@ -10773,3 +10773,11 @@ th {
 .card-title, .card-header {
   color: inherit;
 }
+
+form label.error {
+	float: left;
+	color: red;
+	font-weight: normal;
+	padding-left: .5em;
+	vertical-align: top;
+}

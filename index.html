@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
+
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
     integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
     crossorigin="" />
@@ -24,12 +25,10 @@
     
     
 
+
 </head>
 
 <body>
-
-
-
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <a class="navbar-brand" href="#">Humedal App</a>
@@ -38,8 +37,9 @@
       </button>
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <button type="button" class="btn btn-success" id="btn_add">+</button>
+      <button type="button" class="btn btn-success" id="btn_add">Accidente geografico</button>
       <button type="button" class="btn btn-warning" id="btn_img_xy">Obtener Coordenadas</button>
+     <button type="button" class="btn btn-warning" id="btn_modif">Modificar</button>
           <a class="nav-link dropdown-toggle" id="tools" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Herramientas</a>
           <div class="dropdown-menu" id="tools_op">
             <a class="dropdown-item" href="https://facu52da.users.earthengine.app/view/humedales">Imagenes Satelitales</a>
@@ -297,14 +297,109 @@
    <script src="js/data_geojson.js"></script> 
    <script src="js/forms.js?v=<?php echo time(); ?"></script>
 
+<!---------------Formulario Alta Accidente Geografico--------------------------->
+   <div class="modal" role="document" id="form_add" style="background: rgba(0,0,0,0.8);">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" id="form_modal">
+          <div class="modal-header">
+            <h5 class="modal-title" id="t_form">Alta Accidente Geografico</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close_btn_add">
+              <span aria-hidden="true"></span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row p-4">
+    
+            <fieldset> <!-- Formulario -->
+            <form id="task-form">
+    
+            <!-- Nombre -->
+
+            <div class="form-group" id="ContNomAcc">
+
+              <legend class="mt-4">Nombre</legend>
+             <input type="text" id="nombre" name="nombre" placeholder="Nombre" class="form-control"> 
+            </div>
+             
+
+            <!-- Tipo -->
+
+            <div class="form-group" id="ContTipAcc">
 
 
-<!---------------Formulario Alta--------------------------->
-<div class="modal" role="document" id="form_add" style="background: rgba(0,0,0,0.8);">
+              <legend class="mt-4">Tipo</legend>
+             <input type="text" id="tipo" name="tipo" placeholder="Tipo de accidente geografico" class="form-control"> 
+            </div>
+
+
+             <!-- cuenca -->
+            <div class="form-group">
+              <legend class="mt-4">Cuenca</legend>
+              <select class="form-select" id="sel_cuenca">
+                <option>Seleccione Cuenca...</option>
+              </select>
+              <button type="button" class="btn btn-success" id="btn_cuenca_add">Añadir Nueva Cuenca</button>
+            </div>
+    
+           <!-- complejo -->
+            <div class="form-group">
+              <legend class="mt-4">Complejo</legend>
+              <select class="form-select" id="sel_complejo">
+                <option>Seleccione Complejo...</option>
+              </select>
+              <button type="button" class="btn btn-success" id="btn_complejo_add">Añadir Nuevo Complejo</button>
+            </div>
+          
+    
+       
+          <!-- Presion -->
+              <div class="form-group" id="input_presion">
+                <legend class="mt-4">Presión del terreno</legend>
+                <button type="button" class="btn btn-success" id="btn_presion_hum">+</button>
+                <button type="button" class="btn btn-success" id="btn_presion_add">Añadir Nueva Presion</button>
+                
+                <div class="from-group"> <!-- Parte que se agrega-->
+                <select class="form-select 0" id="sel_presion">
+                  <option>Tipo de presion...</option>
+                  <option>Complejo 2</option>
+                  <option>Complejo 3</option>
+                  <option>Complejo 4</option>
+                  <option>Complejo 5</option>
+                </select>
+                </div>
+              </div>           
+    
+        
+      
+        <!-- Descripcion -->
+      <div class="form-group">
+        <textarea id="descripcion" cols="30" rows="10" class="form-control" placeholder="Descripcion"></textarea>
+      </div>
+       
+    
+          </fieldset> <!--  -->
+            <div class="modal-footer">
+              <input type="hidden" id="form_alta_id">
+              <button type="submit" class="btn btn-primary btn-block text-center" id="btn_brel">Guardar datos y subir relevamiento</button>
+              <button type="submit" class="btn btn-primary btn-block text-center" id="bEnviar">Guardar datos y salir</button>
+              </form> <!-- Fin del formulario -->
+              <div  id='error'></div>
+            </div>      
+          </div>
+       </div>
+      </div>
+     </div>
+    </div>
+    
+
+<!---------------Formulario Alta relevamiento--------------------------->
+<div class="modal" role="document" id="form_add2" style="background: rgba(0,0,0,0.8);">
 <div class="modal-dialog modal-lg">
-    <div class="modal-content" id="form_modal">
+
+    <div class="modal-content" id="form_modal" style="border: 5px solid black">
+
       <div class="modal-header">
-        <h5 class="modal-title" id="t_form">Alta Humedal</h5>
+        <h5 class="modal-title" id="t_form">Relevamiento</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close_btn_add">
           <span aria-hidden="true"></span>
         </button>
@@ -315,224 +410,247 @@
         <fieldset> <!-- Formulario -->
         <form id="task-form">
 
-        <!-- ID Humedal -->
-        <div class="form-group">
-         <input type="text" id="ID_humedal" placeholder="ID" class="form-control"> 
-         </div>
+       
+         <!-- Fecha relevamiento -->
+        
 
-        <!-- Nombre -->
-        <div class="form-group">
-         <input type="text" id="nombre" placeholder="Nombre" class="form-control"> 
-         </div>
+       <legend class="mt-4">Fecha de relevamiento:</legend>
 
-         <!-- cuenca -->
-        <div class="form-group">
-      <label for="cuenca_label" class="form-label mt-4">Cuenca:</label>
-      <select class="form-select" id="sel_cuenca">
-        <option>Seleccione Cuenca...</option>
-      </select>
-      <button type="button" class="btn btn-success" id="btn_cuenca_add">Añadir Nueva Cuenca</button>
-      </div>
 
-      <!-- complejo -->
-      <div class="form-group">
-      <label for="complejo_label" class="form-label mt-4">Complejo:</label>
-      <select class="form-select" id="sel_complejo">
-      <option>Seleccione Complejo...</option>
-      </select>
-      <button type="button" class="btn btn-success" id="btn_complejo_add">Añadir Nuevo Complejo</button>
-      </div>
-      <!--Latiud-->
-                <div class="form-group">
-                  <input type="text" id="lat" placeholder="Latitud" class="form-control">
-                </div>
-      <!-- Longitud -->
-                <div class="form-group">
-                  <input type="text" id="lng" placeholder="Longitud" class="form-control">
-                </div>
+        <input type="date" id="fecha_rel" name="fecha"
+       value="2022-01-01"
+       min="2018-01-01" max="2022-12-31">
+
+        
+      
       <!-- Ancho -->
-                <div class="form-group">
-                  <input type="text" id="ancho" placeholder="Ancho" class="form-control">
-                </div>
+        <div class="form-group">
+            <input type="text" id="ancho" placeholder="Ancho" class="form-control">
+
+        </div>
+
       <!-- Largo -->
-                <div class="form-group">
-                  <input type="text" id="largo" placeholder="Largo" class="form-control">
-                </div>
-      <!-- Caracteristicas -->
-                <div class="form-group">
-                  <textarea id="carac" cols="30" rows="10" class="form-control" placeholder="Caracteristicas"></textarea>
-                </div>
-      <!-- Observaciones -->
-      <div class="form-group">
-                  <textarea id="obs" cols="30" rows="10" class="form-control" placeholder="Observaciones"></textarea>
-                </div>
+        <div class="form-group">
+
+             <input type="text" id="largo" placeholder="Largo" class="form-control">
+        </div>
 
       <!-- Fuente -->
-        <legend class="mt-4">Fuente</legend>
+        <legend class="mt-4" >Fuente</legend>
         <div class="form-check">
-        <label class="form-check-label">
-          <input type="radio" class="form-check-input" name="optionsFuente" id="fuente_op1" value="Artificial">
-           Artificial
-        </label>
-          
-          </div>
+          <label class="form-check-label">
 
-        <div class="form-check">
-        <label class="form-check-label">
-          <input type="radio" class="form-check-input" name="optionsFuente" id="fuente_op2" value="Natural">
-           Natural
-        </label>
+          <input type="radio" class="form-check-input" name="optionsFuente" id="fuente_op1" value="Artificial">
+
+          Artificial
+          </label>
         </div>
-        
+        <div class="form-check">
+          <label class="form-check-label">
+          <input type="radio" class="form-check-input" name="optionsFuente" id="fuente_op2" value="Natural">
+          Natural
+          </label>
+        </div> 
         <legend class="mt-4">Tiempo</legend>
         <div class="form-check">
-        <label class="form-check-label">
+          <label class="form-check-label">
           <input type="radio" class="form-check-input" name="optionsTiempo" id="tiempo_op1" value="Permanente" checked="">
           Permanente
           </label>
-          </div>
+        </div>
         <div class="form-check">
-        <label class="form-check-label">
+          <label class="form-check-label">
           <input type="radio" class="form-check-input" name="optionsTiempo" id="tiempo_op2" value="Temporal" checked="">
           Temporal
         </label>
-      </div>
+        </div>          
 
-  <!-- Diversidad Vegetal -->
-        <legend class="mt-4">Div Vegetal</legend>
-        <div class="form-check">
-        <label class="form-check-label">
-          <input type="radio" class="form-check-input" name="optionsDV" id="dv_op1" value="Conservado" checked="">
+      <!-- Calidad del agua -->
+       <legend class="mt-4">Calidad del Agua</legend>
+       <div class="form-check">
+         <label class="form-check-label">
+         <input type="radio" class="form-check-input" name="optionsAgua" id="agua_op1" value="Conservado" checked="">
           Conservado
-          </label>
-          </div>
-
+         </label>
+        </div>
         <div class="form-check">
-        <label class="form-check-label">
-          <input type="radio" class="form-check-input" name="optionsDV" id="dv_op2" value="Alterado" checked="">
+         <label class="form-check-label">
+         <input type="radio" class="form-check-input" name="optionsAgua" id="agua_op2" value="Alterado" checked="">
           Alterado
         </label>
-      </div>
-
-      <div class="form-check">
-        <label class="form-check-label">
-          <input type="radio" class="form-check-input" name="optionsDV" id="dv_op3" value="Muy Alterado" checked="">
-          Muy Alterado
-        </label>
-      </div>
-
-    <!-- Regimen Hidrologico -->
-        <legend class="mt-4">Regimen Hidrologico</legend>
+        </div>
         <div class="form-check">
-        <label class="form-check-label">
-          <input type="radio" class="form-check-input" name="optionsReg" id="reg_op1" value="Conservado" checked="">
-          Conservado
-          </label>
-          </div>
-
-        <div class="form-check">
-        <label class="form-check-label">
-          <input type="radio" class="form-check-input" name="optionsReg" id="reg_op2" value="Alterado" checked="">
-          Alterado
-        </label>
-      </div>
-
-      <div class="form-check">
-        <label class="form-check-label">
-          <input type="radio" class="form-check-input" name="optionsReg" id="reg_op3" value="Muy Alterado" checked="">
-          Muy Alterado
-        </label>
-      </div>
-
-    <!-- Calidad del agua -->
-        <legend class="mt-4">Calidad del Agua</legend>
-        <div class="form-check">
-        <label class="form-check-label">
-          <input type="radio" class="form-check-input" name="optionsAgua" id="agua_op1" value="Conservado" checked="">
-          Conservado
-          </label>
-          </div>
-
-        <div class="form-check">
-        <label class="form-check-label">
-          <input type="radio" class="form-check-input" name="optionsAgua" id="agua_op2" value="Alterado" checked="">
-          Alterado
-        </label>
-      </div>
-
-      <div class="form-check">
-        <label class="form-check-label">
+          <label class="form-check-label">
           <input type="radio" class="form-check-input" name="optionsAgua" id="agua_op3" value="Muy Alterado" checked="">
           Muy Alterado
-        </label>
-      </div>
+          </label>
+        </div>
 
-<!-- Presion -->
-      <div class="form-group" id="input_presion">
-        <button type="button" class="btn btn-success" id="btn_presion_hum">+</button>
-        <button type="button" class="btn btn-success" id="btn_presion_add">Añadir Nueva Presion</button>
-        
-        <label for="presion_label" class="form-label mt-4">Presión del terreno:</label>
+      <!-- Conductividad -->
+        <div class="form-group">
+
+          <input type="text" id="Conductividad" placeholder="Conductividad" class="form-control">
+
+        </div>
+
+      <!-- pH -->
+        <div class="form-group">
+
+            <input type="text" id="pH" placeholder="pH" class="form-control">
+
+        </div>              
+
+      <!-- O2 disuelto -->
+         <div class="form-group">
+
+           <input type="text" id="O2disuelto" placeholder="02 disuelto" class="form-control">
+
+          </div>
+
+      <!-- Turbidez -->
+          <div class="form-group">
+
+            <input type="text" id="Turbidez" placeholder="Turbidez" class="form-control">
+
+          </div>        
+
+      <!-- Color -->
+          <div class="form-group">
+
+            <input type="text" id="Color" placeholder="Color" class="form-control">
+
+          </div>         
+
+      <!-- Temperatura -->
+          <div class="form-group">
+
+             <input type="text" id="Temperatura" placeholder="Temperatura" class="form-control">
+
+          </div>        
+
+     <!-- Regimen Hidrologico -->
+          <legend class="mt-4">Regimen Hidrologico</legend>
+          <div class="form-check">
+            <label class="form-check-label">
+            <input type="radio" class="form-check-input" name="optionsReg" id="reg_op1" value="Conservado" checked="">
+              Conservado
+            </label>
+          </div>
+          <div class="form-check">
+            <label class="form-check-label">
+            <input type="radio" class="form-check-input" name="optionsReg" id="reg_op2" value="Alterado" checked="">
+              Alterado
+            </label>
+          </div>
+
+          <div class="form-check">
+            <label class="form-check-label">
+            <input type="radio" class="form-check-input" name="optionsReg" id="reg_op3" value="Muy Alterado" checked="">
+              Muy Alterado
+            </label>
+          </div>
+
+         
+
+      <!-- Diversidad Vegetal -->
+        <legend class="mt-4">Diversidad Vegetal</legend>
+        <div class="form-check">
+         <label class="form-check-label">
+          <input type="radio" class="form-check-input" name="optionsDV" id="dv_op1" value="Conservado" checked="">
+            Conservado
+          </label>
+        </div>
+
+        <div class="form-check">
+          <label class="form-check-label">
+          <input type="radio" class="form-check-input" name="optionsDV" id="dv_op2" value="Alterado" checked="">
+            Alterado
+         </label>
+        </div>
+
+
+        <div class="form-check">
+         <label class="form-check-label">
+          <input type="radio" class="form-check-input" name="optionsDV" id="dv_op3" value="Muy Alterado" checked="">
+            Muy Alterado
+         </label>
+       </div>
+
+
+    
+    <!-- Fauna -->
+      <div class="form-group" id="input_fauna">
+
+        <legend class="mt-4">Fauna</legend>
+        <button type="button" class="btn btn-success" id="btn_fauna_hum">+</button>
+        <button type="button" class="btn btn-success" id="btn_fauna_add">Añadir Nueva Fauna</button>
 
         <div class="from-group"> <!-- Parte que se agrega-->
-          <select class="form-select 0" id="sel_presion">
-            <option>Tipo de presion...</option>
+          <select class="form-select 0" id="sel_fauna">
+
+            <option>Seleccione Fauna...</option>
             <option>Complejo 2</option>
             <option>Complejo 3</option>
             <option>Complejo 4</option>
             <option>Complejo 5</option>
+        </select>
+        </div>
+      </div>
+
+    <!-- Flora -->
+      <div class="form-group" id="input_flora">
+
+        <legend class="mt-4">Flora</legend>
+        <button type="button" class="btn btn-success" id="btn_flora_hum">+</button>
+         <button type="button" class="btn btn-success" id="btn_flora_add">Añadir Nueva Flora</button>
+        <div class="from-group"> <!-- Parte que se agrega-->
+
+            <select class="form-select 0" id="sel_flora">
+
+              <option>Seleccione Flora...</option>
+              <option>Complejo 2</option>
+              <option>Complejo 3</option>
+              <option>Complejo 4</option>
+              <option>Complejo 5</option>
+            </select>
+          </div>
+      </div>
+
+      <!-- Miembro -->
+      <div class="form-group" id="input_miembro">
+        <legend class="mt-4">Personas que intervinieron en el relevamiento </legend>
+        <button type="button" class="btn btn-success" id="btn_miembro_hum">+</button>
+         <button type="button" class="btn btn-success" id="btn_miembro_add">Añadir otro miembro</button>
+       
+        <div class="from-group"> <!-- Parte que se agrega-->
+
+          <select class="form-select 0" id="sel_miembro">
+
+
+            <option>Miembro ...</option>
+            <option>Miembro 2</option>
+            <option>Miembro 3</option>
+            <option>Miembro 4</option>
+            <option>Miembro 5</option>
           </select>
         </div>
+       </div>   
 
+    <!-- Observaciones -->
+      <div class="form-group">
+
+        <textarea id="obs" cols="30" rows="10" class="form-control" placeholder="Observaciones"></textarea>
+
+      </div>
       
-      </div>
-<!-- Fauna -->
-      <div class="form-group" id="input_fauna">
-      <button type="button" class="btn btn-success" id="btn_fauna_hum">+</button>
-      <button type="button" class="btn btn-success" id="btn_fauna_add">Añadir Nueva Fauna</button>
-      <label for="fauna_label" class="form-label mt-4">Fauna:</label>
 
-      <div class="from-group"> <!-- Parte que se agrega-->
-        <select class="form-select 0" id="sel_fauna">
-          <option>Seleccione Fauna...</option>
-          <option>Complejo 2</option>
-          <option>Complejo 3</option>
-          <option>Complejo 4</option>
-          <option>Complejo 5</option>
-        </select>
-      </div>
-
-      </div>
-<!-- Flora -->
-      <div class="form-group" id="input_flora">
-      <button type="button" class="btn btn-success" id="btn_flora_hum">+</button>
-      <button type="button" class="btn btn-success" id="btn_flora_add">Añadir Nueva Flora</button>
-      <label for="flora_label" class="form-label mt-4">Flora:</label>
-      <div class="from-group"> <!-- Parte que se agrega-->
-        <select class="form-select 0" id="sel_flora">
-          <option>Seleccione Flora...</option>
-          <option>Complejo 2</option>
-          <option>Complejo 3</option>
-          <option>Complejo 4</option>
-          <option>Complejo 5</option>
-        </select>
-      </div>
-      </div>
-<!-- Para agregar imagen del humedal 
-      <label for="formFile" class="form-label mt-4">Imagen</label> <br>
-      <button type="button" class="btn btn-success" id="btn_imagen_addHu">Cargar Imagen</button>
-      <div class="ContenedorImgCarg" id="ContenedorImgHu" style="display: flex;"></div>
-      -->
-    </fieldset> <!--  -->
-
-
-      <div class="modal-footer">
-                <input type="hidden" id="form_alta_id">
-                <button type="submit" class="btn btn-primary btn-block text-center">
-                  Guardar datos
-                </button>
-                </form> <!-- Fin del formulario -->
-                </div>      
+      </fieldset> <!--  -->
+        <div class="modal-footer">
+          <input type="hidden" id="form_alta_id">
+          <button type="submit" class="btn btn-primary btn-block text-center" id="bEnviar">Guardar datos</button>
+          </form> <!-- Fin del formulario -->
+          <div  id='error'></div>
+        </div>      
       </div>
    </div>
   </div>
@@ -981,9 +1099,66 @@
 </div>
 </div>
 <!------------------------------------------------------------------------------------>
- 
- <!-- <table id="resultado" class="table"><?php //include('consulta.php');?></div>-->
+<!-------------------------------------MODIFICAR------------------------------------------->
 
+ <div class="modal" role="document" id="form_modif" style="background: rgba(0,0,0,0.8);">
+
+  <div class="modal-dialog modal-lg" style="display: inline-table;">
+      <div class="modal-content" style="width: 92vmax; left: 3vmax;">
+
+        <div class="modal-header">
+          <h5 class="modal-title" id="t_form">Modificar</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close_btn_modif">
+            <span aria-hidden="true"></span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row p-4">
+  
+          <fieldset> <!-- Formulario -->
+          <form id="task-formodif">
+            <div id="contenedor">
+
+              <div style="width: 210px;">
+                <button type="button" class="btn btn-success btn-block" id="btn_maccidente" style="width: 200px;">Accidente</button>
+                <button type="button" class="btn btn-success btn-block" id="btn_mcomplejo" style="width: 200px;">Complejo</button>
+                <button type="button" class="btn btn-success btn-block" id="btn_mcuenca" style="width: 200px;">Cuenca</button>
+                <button type="button" class="btn btn-success btn-block" id="btn_mrelevamiento" style="width: 200px;">Relevamiento</button>
+                <button type="button" class="btn btn-success btn-block" id="btn_mfauna" style="width: 200px;">Fauna</button>
+                <button type="button" class="btn btn-success btn-block" id="btn_mflora" style="width: 200px;">Flora</button>
+                <button type="button" class="btn btn-success btn-block" id="btn_mpresiones" style="width: 200px;">Persona</button>
+              </div>
+              <div id="ContTable" style="width: 69vmax; height: 385px; visibility: hidden; overflow: auto;" class="TablaMod"> 
+                <!--<table id="myTable" class="table table-dark">-->
+                <table id="myTable">
+                </table>
+
+              </div>
+            </div>
+        </fieldset> <!--  -->
+          <div class="modal-footer">
+            <input type="hidden" id="form_modif_id">
+            <button type="submit" class="btn btn-primary btn-block text-center" id="bEnviar">Guardar</button>
+            </form> <!-- Fin del formulario -->
+          </div>      
+        </div>
+     </div>
+    </div>
+   </div>
+  </div>
+  
+
+  
+       
+ 
+ 
+        
+          
+
+  
+  <!------------------------------------------------------------------------->
+
+ 
 
 </body>
 
