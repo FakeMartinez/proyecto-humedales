@@ -1,7 +1,14 @@
 var x_pre = 0;
 var x_fau = 0;
 var x_flo = 0;
+var x_pers = 0 ;
 var update = false;
+var max_flora = 0;
+var max_fauna = 0;
+var max_miembro = 0;
+var max_pre = 0;
+var form2 = false;
+
 
 $(function(){
     
@@ -10,10 +17,11 @@ $(function(){
     carga_form_alta_p();
     carga_form_alta_fa();
     carga_form_alta_fl();
-
-    //Cerrar Formulario Alta
+    carga_form_alta_pers();
+    //Cerrar Formulario Alta y relevamiento 
     $('#close_btn_add').on('click', function(){
         $('#form_add').hide();
+        $('#form_add2').hide();
       });
   
       //Añadir Cuenca
@@ -60,43 +68,113 @@ $(function(){
         $('#form_flora_add').hide();
       });
 
-  //////////////////////Formulario Alta////////////////////////
-      $('#form_add').submit(e => {
-        //e.preventDefault();
+       //Añadir Persona
+       $('#btn_miembro_add').on('click', function(){
+        $('#form_miembro_add').show();
+      });
+      //Cerrar Formulario Persona
+      $('#close_btn_miembro_add').on('click', function(){
+        $('#form_miembro_add').hide();
+      });
+
+      
+       //Añadir modif
+       $('#close_btn_modif').on('click', function(){
+        $('#ContTable').css({'visibility':'hidden'});
+        $('#form_modif').hide();
+      });
+
+
+  //////////////////////Formulario Alta Acc////////////////////////
+  
+  $(document).on('click','#btn_brel', function(){
+    form2= true;
+    from2(); 
+  });
+
+  $('#form_add').submit(e => {
+    e.preventDefault();
+    var postData = {
+      nombre: $('#nombre').val(),  
+      tipo: $('#tipo').val(),  
+      descripcion: $('#descripcion').val(),  
+      cuenca: $('#sel_cuenca').val(),
+      complejo: $('#sel_complejo').val(),
+      cont_pre: x_pre,
+    }
+              
+    while(x_pre>=0)
+    {
+      console.log('sel_presion.form-select '.concat(x_pre.toString()));
+      Object.defineProperty(postData, 'presiones'+ x_pre.toString(),
+      {
+        value:$('#sel_presion.form-select.'.concat(x_pre.toString())).val(),
+        writable: true,
+        enumerable: true,
+        configurable: true
+      }); 
+    //postData.presion.concat(x.toString()) = $('#sel_presion.form-select '.concat(x.toString())).val()
+      x_pre = x_pre-1;
+    }
+    e.preventDefault();
+    console.log(update);
+        
+    if (update != false)
+    {
+      $.post('php/carga.php', postData, (response) => {
+        console.log(response);
+        e.preventDefault();
+        //$('#form_add').trigger('reset');
+      });
+      } 
+     else{
+      if(postData.nombre != ''){          
+        $.post('php/alta.php', postData, (response) => {
+          console.log(response);
+         //console.log(postData);
+          //$('#form_add').trigger('reset');
+           e.preventDefault();
+        });
+      }
+      else
+      { 
+        validacion(postData)}        
+      }
+  });
+      
+    
+      
+      $('#form_add2').submit(e => {
+        e.preventDefault();
+        
         var postData = {
           
-          id:$('#ID_humedal').val(),
-          nombre: $('#nombre').val(),
-          cuenca: $('#sel_cuenca').val(),
-          complejo: $('#sel_complejo').val(),
-          latitud:$('#lat').val(),
-          longitud:$('#lng').val(),
+          nombre:$('#nombre').val(),  
+          fecha: $('#fecha_rel').val(),
           ancho:$('#ancho').val(),
           largo:$('#largo').val(),
-          carac:$('#carac').val(),
+          conductividad:$('#Conductividad').val(),
+          pH:$('#pH').val(),
+          o2disuelto:$('#O2disuelto').val(),
+          turbidez:$('#Turbidez').val(),
+          color:$('#Color').val(),
+          temperatura:$('#Temperatura').val(),
           obs:$('#obs').val(),
           fuente:$('input:radio[name=optionsFuente]:checked').val(),
           tiempo:$('input:radio[name=optionsTiempo]:checked').val(),
           diversidad_vegetal:$('input:radio[name=optionsDV]:checked').val(),
           regimen_hidrologico:$('input:radio[name=optionsReg]:checked').val(),
           calidad_agua:$('input:radio[name=optionsAgua]:checked').val(),
-          cont_pre: x_pre,
+
           cont_fau: x_fau,
-          cont_flo: x_flo
+          cont_flo: x_flo,
+          cont_pers: x_pers
           //
           //
-        };
-        while(x_pre>=0){
-          console.log('sel_presion.form-select '.concat(x_pre.toString()));
-          Object.defineProperty(postData, 'presion'+ x_pre.toString(),{
-            value:$('#sel_presion.form-select.'.concat(x_pre.toString())).val(),
-            writable: true,
-            enumerable: true,
-            configurable: true
-          }); 
-          //postData.presion.concat(x.toString()) = $('#sel_presion.form-select '.concat(x.toString())).val()
-          x_pre = x_pre-1;
         }
+              
+console.log(postData);
+       
   
         while(x_fau>=0){
           console.log('sel_fauna.form-select '.concat(x_fau.toString()));
@@ -118,35 +196,71 @@ $(function(){
             enumerable: true,
             configurable: true
           }); 
-          //postData.presion.concat(x.toString()) = $('#sel_presion.form-select '.concat(x.toString())).val()
+          
           x_flo = x_flo-1;
         }
   
-  
+        while(x_pers>=0){
+          console.log('sel_miembro.form-select '.concat(x_pers.toString()));
+          Object.defineProperty(postData, 'persona'+ x_pers.toString(),{
+            value:$('#sel_miembro.form-select.'.concat(x_pers.toString())).val(),
+            writable: true,
+            enumerable: true,
+            configurable: true
+          }); 
+          x_pers = x_pers-1;
+        }
   
         
-        //e.preventDefault();
-        console.log(update);
+        e.preventDefault();
+        
         
   
         if (update != false){
         $.post('php/carga.php', postData, (response) => {
           console.log(response);
-          //e.preventDefault();
-          //$('#form_add').trigger('reset');
+          e.preventDefault();
           
         });
-      }else{
-        $.post('php/alta.php', postData, (response) => {
-          console.log(response);
-          //$('#form_add').trigger('reset');
+      }/*else{
+       if(validacion(postData) == true){       
           
+        $.post('php/alta.php', postData, (response) => {
+          console.log(postData);
+          //$('#form_add').trigger('reset');
+           e.preventDefault();
+        
         });
       }
+     
+        }*/
+      
+  
   
       });
   ////////////////////////////////////////////////////////////////
-  
+  //$(document).on('click','#btn_brel', form2());
+     
+    function from2(){
+ 
+        $('#form_add').hide();
+        $('#form_add2').show();
+        $('#t_form.modal-title').html('Relevamiento');
+        $('#form_modal').css({'background':'#DEFEAE' });
+       
+        $('#ancho').val('');
+        $('#largo').val('');
+        $('#Conductividad').val('');
+        $('#pH').val('');
+        $('#o2disuelto').val('');
+        $('#Turbidez').val('');
+        $('#Color').val('');
+        $('#Temperatura').val('');
+        $('#obs').val('');
+        
+    
+    }
+      
   //////////////////Form cuenca/////////////////////
        $('#form-cuenca').submit(e => {
         e.preventDefault();
@@ -249,6 +363,33 @@ $(function(){
     });
   });
 
+  ///---------------form rel---------
+  
+  $('#form_add2').submit(e => {
+    e.preventDefault();
+    const postData = {
+     /* $('#ancho').val('');
+      $('#largo').val('');
+      $('#Conductividad').val('');
+      $('#pH').val('');
+      $('#o2disuelto').val('');
+      $('#Turbidez').val('');
+      $('#Color').val('');
+      $('#Temperatura').val('');
+      $('#obs').val('');*/
+      
+    };
+    //console.log(postData);
+    $.post('php/sub_forms.php', postData, (response) => {
+      console.log(response);
+      //$('#form_add').trigger('reset');
+      e.preventDefault();
+      carga_form_alta_p();
+      $('#form_add2').hide();
+    });
+  });
+
+
 ///////////////////////Agregar Filas de Elementos/////////////////////////
 
 //---------------------Presion Humedal--------------------------------
@@ -274,6 +415,8 @@ $('#btn_presion_hum').on('click', function(){
   $('#btn_presion_dhum').on('click', function(){
     $('#sel_presion.form-select.'+ x_pre.toString()).remove();
     x_pre = x_pre-1;
+   if (max_pre != x_pre){
+    $('#btn_presion_hum').show();}
   });
   
   });
@@ -301,6 +444,8 @@ $('#btn_presion_hum').on('click', function(){
   $('#btn_fauna_dhum').on('click', function(){
     $('#sel_fauna.form-select.'+ x_fau.toString()).remove();
     x_fau = x_fau-1;
+   if (max_fauna != x_fau){
+    $('#btn_fauna_hum').show();}
   });
   
   });
@@ -328,98 +473,106 @@ $('#btn_presion_hum').on('click', function(){
   $('#btn_flora_dhum').on('click', function(){
     $('#sel_flora.form-select.'+ x_flo.toString()).remove();
     x_flo = x_flo-1;
+   if (max_flora != x_flo){
+    $('#btn_flora_hum').show();
+    
+   } 
+  });
+  
+  });
+  //-----------------------------Persona------------------------------------------
+  $('#btn_miembro_hum').on('click', function(){
+    x_pers = x_pers+1;
+    var add = '';
+    add += `
+    <div class="form-group">
+    <select class="form-select `+ x_pers.toString() +`" id="sel_miembro">
+    <option>Miembro</option>
+    </select>
+    <button type="button" class="btn btn-danger" id="btn_miembro_dhum">-</button>
+    </div>
+    `;
+  
+  $('#btn_miembro_dhum').remove();
+  $('#input_miembro').append(add); 
+  
+  
+  carga_form_alta_pers();
+  
+  
+  $('#btn_miembro_dhum').on('click', function(){
+    $('#sel_miembro.form-select.'+ x_pers.toString()).remove();
+    x_pers = x_pers-1;
+   if (max_miembro != x_pers){
+    $('#btn_miebro_hum').show();}
   });
   
   });
   //-----------------------------------------------------------------------
-
-  
 });
 
 $('#btn_add').on('click', function(){
     $('#form_add').show();
-    $('#t_form.modal-title').html('Alta Humedal');
+    $('#t_form.modal-title').html('Alta Accidente Geografico');
     $('#form_modal').css({'background':'#DEFEAE'});
-  
     $('#ID_humedal').val('');
     $('#nombre').val('');
-    $('#lat').val('');
-    $('#lng').val('');
-    $('#ancho').val('');
-    $('#largo').val('');
-    $('#carac').val('');
-    $('#obs').val('');
-    update = false;
-    
+    update = false; 
+
+   
   });
-  
-  //Carga de los select de Presion,Fauna,Flora
-  function carga_form_alta_p(){
-    $.ajax({
-      url: 'php/alta.php',
-      type: 'GET',
-      success: function (response) {
-          if(!response.error) {
-            //console.log(response);
-            let datos = JSON.parse(response);
-            console.log(datos);
-            let template3 = '';
-            datos['presiones'].forEach(dato => {
-              template3 += `
-              <option>${dato.tipo_presion}</option>
-                     ` });       
-            $('#sel_presion.form-select.'+ x_pre.toString()).html(template3);
-            }
-            
-          }
-        });
-      };
-      ////////////////////////////////
-      function carga_form_alta_fa(){
-        $.ajax({
-          url: 'php/alta.php',
-          type: 'GET',
-          success: function (response) {
-              if(!response.error) {
-                //console.log(response);
-                let datos = JSON.parse(response);
-                //console.log(datos);
-                let template4 = '';
-                datos['faunas'].forEach(dato => {
-                  template4 += `
-                  <option>${dato.nom_fauna}</option>
-                          ` });       
-                $('#sel_fauna.form-select.'+ x_fau.toString()).html(template4);
-                }
-                
-              }
-            });
-          };
-  
-      ////////////////////////////////
-      function carga_form_alta_fl(){
-        $.ajax({
-          url: 'php/alta.php',
-          type: 'GET',
-          success: function (response) {
-              if(!response.error) {
-                //console.log(response);
-                let datos = JSON.parse(response);
-                //console.log(datos);
-                let template5 = '';
-                datos['floras'].forEach(dato => {
-                  template5 += `
-                  <option>${dato.nom_flora}</option>
-                          ` });          
-                $('#sel_flora.form-select.'+ x_flo.toString()).html(template5);
-                }
-                
-              }
-            });
-          };
-  
-      ////////////////////////////////
-  
+
+ //----------------------------------CARGA DE LOS SELECT-----------------------------------------------------------------------//
+ // ----------------Presiones-----------------  //
+      
+ function carga_form_alta_p(){
+        var x=x_pre;
+        var antpre = new Array();
+     
+          while(x!=-1){
+             antpre[x] = $('#sel_presion.form-select.'+ x.toString()).val();
+             x--;
+           }
+             
+           $.ajax({
+             url: 'php/alta.php',
+             type: 'GET',
+               
+             success: function (response) {
+                 
+               if(!response.error) {
+                   let datos = JSON.parse(response);
+                   let template0 = '';
+                   datos['presiones'].forEach(dato => {
+                     var val= true;
+                     antpre.forEach(e =>{
+                       if(e==dato.tipo_presion){
+                         val = false;
+                        
+                        }
+
+                       });
+                       if(val==true){
+                         template0 += `
+                       <option>${dato.tipo_presion}</option>
+                               `
+                        }
+                   });  
+                   $('#sel_presion.form-select.'+ x_pre.toString()).html(template0);
+                 
+              if( (datos['presiones'].length-1) == x_pre){
+                $('#btn_presion_hum').hide();
+                max_pre = (datos['presiones'].length-1);
+           
+             }  
+               }
+                   
+             }
+                                
+           });
+                 }
+
+// ----------------Cuenca-----------------  //
       function carga_form_alta_cu(){
         $.ajax({
           url: 'php/alta.php',
@@ -442,29 +595,254 @@ $('#btn_add').on('click', function(){
               }
             });
           };
-  
-          function carga_form_alta_co(){
-            $.ajax({
-              url: 'php/alta.php',
-              type: 'GET',
-              success: function (response) {
-                  if(!response.error) {
-                    //console.log(response);
-                    let datos = JSON.parse(response);
-                    //console.log(datos);
-                    let template2 = '';
-                    datos['complejos'].forEach(dato => {
-                      template2 += `
-                      <option>${dato.nombre_complejo}</option>
-                            ` });
-                    
-                    $('#sel_complejo').html(template2);
-                    
-                    }
-                    
-                  }
-                });
-              };
 
-  
 
+//----------COMPLEJO-----------------------------------//
+   
+   function carga_form_alta_co(){
+    $.ajax({
+      url: 'php/alta.php',
+      type: 'GET',
+      success: function (response) {
+          if(!response.error) {
+            //console.log(response);
+            let datos = JSON.parse(response);
+            //console.log(datos);
+            let template2 = '';
+            datos['complejos'].forEach(dato => {
+              template2 += `
+              <option>${dato.nombre_complejo}</option>
+                    ` });
+            
+            $('#sel_complejo').html(template2);
+            
+            }
+            
+          }
+        });
+      };
+
+      
+//----------------MIEMBRO---------------------------------------//      
+      function carga_form_alta_pers(){
+        var x=x_pers;
+        var antpers = new Array();
+     
+          while(x!=-1){
+             antpers[x] = $('#sel_miembro.form-select.'+ x.toString()).val();
+             x--;
+           }
+             
+           $.ajax({
+             url: 'php/alta.php',
+             type: 'GET',
+               
+             success: function (response) {
+                 
+               if(!response.error) {
+                   let datos = JSON.parse(response);
+                   let template3 = '';
+                   
+                   datos['persona'].forEach(dato => {
+                     var val= true;
+                     antpers.forEach(e =>{
+                       if(e==dato.nom_pers){
+                         val = false;}
+                       });
+                       if(val==true){
+                         template3 += `
+                       <option>${dato.nom_pers}</option>
+                               `
+                        }
+                   });  
+                   $('#sel_miembro.form-select.'+ x_pers.toString()).html(template3);
+                   if( (datos['persona'].length-1) == x_pers){
+                    $('#btn_miembro_hum').hide();
+                    max_miembro = (datos['persona'].length-1);
+               
+                 }  
+               }
+                   
+             }
+                       
+                      
+                       
+           });
+                 }
+
+//-------------FAUNA----------------------------------------------------//
+  function carga_form_alta_fa(){
+   var x=x_fau;
+   var antfau = new Array();
+
+     while(x!=-1){
+        antfau[x] = $('#sel_fauna.form-select.'+ x.toString()).val();
+        x--;
+      }
+        
+      $.ajax({
+        url: 'php/alta.php',
+        type: 'GET',
+          
+        success: function (response) {
+            
+          if(!response.error) {
+              let datos = JSON.parse(response);
+              let template4 = '';
+              
+              datos['faunas'].forEach(dato => {
+                var val= true;
+                antfau.forEach(e =>{
+                  if(e==dato.nom_fauna){
+                    val = false;}
+                  });
+                  if(val==true){
+                    template4 += `
+                  <option>${dato.nom_fauna}</option>
+                          `
+                   }
+              });  
+              $('#sel_fauna.form-select.'+ x_fau.toString()).html(template4);
+              if( (datos['faunas'].length-1) == x_fau){
+                $('#btn_fauna_hum').hide();
+                max_fauna = (datos['faunas'].length-1);
+           
+             }  
+          }
+              
+        }
+                  
+                 
+                  
+      });
+            }
+          
+//---------------------FLORA--------------------------------//
+    
+          function carga_form_alta_fl(){
+            var x=x_flo;  
+            var antflo = new Array();
+         
+              while(x!=-1){
+                 antflo[x] = $('#sel_flora.form-select.'+ x.toString()).val();
+                 x--;
+               }
+                    
+               $.ajax({
+                 url: 'php/alta.php',
+                 type: 'GET',
+                   
+                 success: function (response) {
+                     
+                   if(!response.error) {
+                    
+                       let datos = JSON.parse(response);
+                       let template5 = '';
+                       
+                       datos['floras'].forEach(dato => {
+                         var val= true;
+                         antflo.forEach(e =>{
+                           if(e==dato.nom_flora){
+                             val = false;}
+                           });
+                           if(val==true){
+                             template5 += `
+                           <option>${dato.nom_flora}</option>
+                                   `
+                            }
+                       });  
+                       $('#sel_flora.form-select.'+ x_flo.toString()).html(template5);
+                       if( (datos['floras'].length-1) == x_flo){
+                        $('#btn_flora_hum').hide();
+                        max_flora = (datos['floras'].length-1);
+                      }  
+                       
+                   }
+                       
+                 }
+                           
+                          
+                           
+               });
+              
+                     }
+
+   
+
+             
+
+               
+        
+
+
+//-------------------------------------------------//
+//--------------------Modificar--------------------------//
+    
+
+
+$('#btn_modif').on('click', function(){
+  $('#form_modif').show();
+  $('#t_form.modal-title').html('Modificar');
+  $('#form_modal').css({'background':'#DEFEAE'});
+  update = false; 
+  
+  $('#btn_maccidente').on('click',function(){
+    var postData= {
+      accidente:true,
+    }
+    $('#ContTable').css({'visibility':'visible'});
+    
+    $.post('php/modificar.php', postData, (response) => {
+      console.log(response);  
+      $("#myTable").html(response);
+    });
+  })
+
+$('#btn_mcomplejo').on('click',function(){
+  var postData= {
+    complejo:true,
+  }
+  $('#ContTable').css({'visibility':'visible'});
+  $.post('php/modificar.php', postData, (response) => {
+    console.log(response);  
+    $("#myTable").html(response);
+  });
+})
+
+        
+
+});           
+
+
+
+//-----------------------------------------------------------------------//
+//----------------------Validacion------------------------------------//
+
+
+function CambiarClass(Objeto, ClassActual, ClassNueva){
+  $(Objeto).removeClass(ClassActual); //Elimina el Class actual del elemento HTML
+  $(Objeto).addClass(ClassNueva);   //agrega el nuevo class al elemento HTML
+};
+
+function validacion(postData){
+  console.log('entro1');
+  var b = true;
+  $('div').remove('#TexErrorIncompleto'); 
+/*
+  $('#nombre').on('input', function(){
+    $('#nombre').css({'background' : '#FFFFFF', 'border': '1px dashed #FFFFFF' });
+  })*/
+  if(postData.nombre=='')
+  {      
+    CambiarClass($('#nombre'), "form-control", "form-control is-invalid"); //Si el campo está vacío, cambia la clase del input de "form-control" a "form control is-invalid"
+    $('#ContNomAcc').append("<div id='TexErrorIncompleto' style='color: red'>Este campo es obligatorio</div>"); //Crea el mensaje de advertencia de campo incompleto
+    b = false;
+  }  
+  if(postData.tipo=='')
+  {      
+    CambiarClass($('#tipo'), "form-control", "form-control is-invalid"); //Si el campo está vacío, cambia la clase del input de "form-control" a "form control is-invalid"
+    $('#ContTipAcc').append("<div id='TexErrorIncompleto' style='color: red'>Este campo es obligatorio</div>"); //Crea el mensaje de advertencia de campo incompleto
+    b = false;
+  }  
+  return b;
+}

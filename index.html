@@ -298,14 +298,19 @@
             <form id="task-form">
     
             <!-- Nombre -->
-            <div class="form-group">
+
+            <div class="form-group" id="ContNomAcc">
+
               <legend class="mt-4">Nombre</legend>
              <input type="text" id="nombre" name="nombre" placeholder="Nombre" class="form-control"> 
             </div>
              
 
             <!-- Tipo -->
-            <div class="form-group">
+
+            <div class="form-group" id="ContTipAcc">
+
+
               <legend class="mt-4">Tipo</legend>
              <input type="text" id="tipo" name="tipo" placeholder="Tipo de accidente geografico" class="form-control"> 
             </div>
@@ -374,7 +379,9 @@
 <!---------------Formulario Alta relevamiento--------------------------->
 <div class="modal" role="document" id="form_add2" style="background: rgba(0,0,0,0.8);">
 <div class="modal-dialog modal-lg">
-    <div class="modal-content" id="form_modal" style="background: #c3dc92 ;" >
+
+    <div class="modal-content" id="form_modal" style="border: 5px solid black">
+
       <div class="modal-header">
         <h5 class="modal-title" id="t_form">Relevamiento</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close_btn_add">
@@ -390,29 +397,34 @@
        
          <!-- Fecha relevamiento -->
         
-       <legend class="mt-4">Fecha de relevamiento</legend>
-        <div><input type="date" id="fecha_rel" name="fecha"
-               value="2022-01-01"
-               min="2018-01-01" max="2022-12-31"></div>
-        
 
-        <legend class="mt-4"> </legend>
+       <legend class="mt-4">Fecha de relevamiento:</legend>
+
+        <input type="date" id="fecha_rel" name="fecha"
+       value="2022-01-01"
+       min="2018-01-01" max="2022-12-31">
+
+        
       
       <!-- Ancho -->
         <div class="form-group">
-            <input type="text" id="ancho" placeholder="Ancho" class="form-control" style="border: 2px solid black">
+            <input type="text" id="ancho" placeholder="Ancho" class="form-control">
+
         </div>
 
       <!-- Largo -->
         <div class="form-group">
-             <input type="text" id="largo" placeholder="Largo" class="form-control" style="border: 2px solid black">
+
+             <input type="text" id="largo" placeholder="Largo" class="form-control">
         </div>
 
       <!-- Fuente -->
         <legend class="mt-4" >Fuente</legend>
         <div class="form-check">
           <label class="form-check-label">
-          <input type="radio" class="form-check-input" name="optionsFuente" id="fuente_op1" value="Artificial" >
+
+          <input type="radio" class="form-check-input" name="optionsFuente" id="fuente_op1" value="Artificial">
+
           Artificial
           </label>
         </div>
@@ -459,32 +471,44 @@
 
       <!-- Conductividad -->
         <div class="form-group">
-          <input type="text" id="Conductividad" placeholder="Conductividad" class="form-control" style="border: 2px solid black">
+
+          <input type="text" id="Conductividad" placeholder="Conductividad" class="form-control">
+
         </div>
 
       <!-- pH -->
         <div class="form-group">
-            <input type="text" id="pH" placeholder="pH" class="form-control" style="border: 2px solid black">
+
+            <input type="text" id="pH" placeholder="pH" class="form-control">
+
         </div>              
 
       <!-- O2 disuelto -->
          <div class="form-group">
-           <input type="text" id="O2disuelto" placeholder="02 disuelto" class="form-control" style="border: 2px solid black">
+
+           <input type="text" id="O2disuelto" placeholder="02 disuelto" class="form-control">
+
           </div>
 
       <!-- Turbidez -->
           <div class="form-group">
-            <input type="text" id="Turbidez" placeholder="Turbidez" class="form-control" style="border: 2px solid black">
+
+            <input type="text" id="Turbidez" placeholder="Turbidez" class="form-control">
+
           </div>        
 
       <!-- Color -->
           <div class="form-group">
-            <input type="text" id="Color" placeholder="Color" class="form-control" style="border: 2px solid black">
+
+            <input type="text" id="Color" placeholder="Color" class="form-control">
+
           </div>         
 
       <!-- Temperatura -->
           <div class="form-group">
-             <input type="text" id="Temperatura" placeholder="Temperatura" class="form-control" style="border: 2px solid black">
+
+             <input type="text" id="Temperatura" placeholder="Temperatura" class="form-control">
+
           </div>        
 
      <!-- Regimen Hidrologico -->
@@ -540,8 +564,10 @@
         <legend class="mt-4">Fauna</legend>
         <button type="button" class="btn btn-success" id="btn_fauna_hum">+</button>
         <button type="button" class="btn btn-success" id="btn_fauna_add">Añadir Nueva Fauna</button>
-        <div class="from-group" > <!-- Parte que se agrega-->
-          <select class="form-select 0" id="sel_fauna"  style="border: 2px solid black">
+
+        <div class="from-group"> <!-- Parte que se agrega-->
+          <select class="form-select 0" id="sel_fauna">
+
             <option>Seleccione Fauna...</option>
             <option>Complejo 2</option>
             <option>Complejo 3</option>
@@ -557,7 +583,9 @@
         <button type="button" class="btn btn-success" id="btn_flora_hum">+</button>
          <button type="button" class="btn btn-success" id="btn_flora_add">Añadir Nueva Flora</button>
         <div class="from-group"> <!-- Parte que se agrega-->
-            <select class="form-select 0" id="sel_flora" style="border: 2px solid black">
+
+            <select class="form-select 0" id="sel_flora">
+
               <option>Seleccione Flora...</option>
               <option>Complejo 2</option>
               <option>Complejo 3</option>
@@ -574,7 +602,9 @@
          <button type="button" class="btn btn-success" id="btn_miembro_add">Añadir otro miembro</button>
        
         <div class="from-group"> <!-- Parte que se agrega-->
-          <select class="form-select 0" id="sel_miembro" style="border: 2px solid black">
+
+          <select class="form-select 0" id="sel_miembro">
+
             <option>Miembro ...</option>
             <option>Miembro 2</option>
             <option>Miembro 3</option>
@@ -586,7 +616,9 @@
 
     <!-- Observaciones -->
       <div class="form-group">
-        <textarea id="obs" cols="30" rows="10" class="form-control" placeholder="Observaciones" style="border: 2px solid black"></textarea>
+
+        <textarea id="obs" cols="30" rows="10" class="form-control" placeholder="Observaciones"></textarea>
+
       </div>
       
 
@@ -908,8 +940,10 @@
 <!-------------------------------------MODIFICAR------------------------------------------->
 
  <div class="modal" role="document" id="form_modif" style="background: rgba(0,0,0,0.8);">
-  <div class="modal-dialog modal-lg">
-      <div class="modal-content">
+
+  <div class="modal-dialog modal-lg" style="display: inline-table;">
+      <div class="modal-content" style="width: 92vmax; left: 3vmax;">
+
         <div class="modal-header">
           <h5 class="modal-title" id="t_form">Modificar</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close_btn_modif">
@@ -922,45 +956,20 @@
           <fieldset> <!-- Formulario -->
           <form id="task-formodif">
             <div id="contenedor">
-              <div>
-                <button type="button" class="btn btn-success btn-block" id="btn_mcomplejo">Accidente</button>
-                <button type="button" class="btn btn-success btn-block" id="btn_mcomplejo">Complejo</button>
-                <button type="button" class="btn btn-success btn-block" id="btn_mcuenca">Cuenca</button>
-                <button type="button" class="btn btn-success btn-block" id="btn_mcomplejo">Relevamiento</button>
-                <button type="button" class="btn btn-success btn-block" id="btn_mfauna">Fauna</button>
-                <button type="button" class="btn btn-success btn-block" id="btn_mflora">Flora</button>
-                <button type="button" class="btn btn-success btn-block" id="btn_mpresiones">Persona</button>
+
+              <div style="width: 210px;">
+                <button type="button" class="btn btn-success btn-block" id="btn_maccidente" style="width: 200px;">Accidente</button>
+                <button type="button" class="btn btn-success btn-block" id="btn_mcomplejo" style="width: 200px;">Complejo</button>
+                <button type="button" class="btn btn-success btn-block" id="btn_mcuenca" style="width: 200px;">Cuenca</button>
+                <button type="button" class="btn btn-success btn-block" id="btn_mrelevamiento" style="width: 200px;">Relevamiento</button>
+                <button type="button" class="btn btn-success btn-block" id="btn_mfauna" style="width: 200px;">Fauna</button>
+                <button type="button" class="btn btn-success btn-block" id="btn_mflora" style="width: 200px;">Flora</button>
+                <button type="button" class="btn btn-success btn-block" id="btn_mpresiones" style="width: 200px;">Persona</button>
               </div>
-              <div>
-                <table id="myTable" class="table table-dark">
-                  
-                    <tr>
-                      <th><strong>x11</strong></th>
-                      <th><strong>x12</strong></th>
-                      <th><strong>x13</strong></th>
-                    </tr>
-                    
-                    <tr>
-                      <td>x21</td>
-                      <td>x22</td>
-                      <td>x23</td>
-                    </tr>
-                    
-                    <tr>
-                      <td>x31</td>
-                      <td>x32</td>
-                      <td>x33</td>
-                    </tr>
-                    
-                    <tr>
-                      <td>x41</td>
-                      <td>x42</td>
-                      <td>x43</td>
-                    </tr>
-                    </table>
-            
-             
-                  
+              <div id="ContTable" style="width: 69vmax; height: 385px; visibility: hidden; overflow: auto;" class="TablaMod"> 
+                <!--<table id="myTable" class="table table-dark">-->
+                <table id="myTable">
+                </table>
 
               </div>
             </div>
