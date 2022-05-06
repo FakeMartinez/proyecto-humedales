@@ -10,6 +10,7 @@ if (isset($_POST['accidente'])){
   $cosa = "
           <table>
                 <tr style='height:40px'>
+                <td style='width:50px; min-width: 50px;'></td> 
                   <td style='width:70px; min-width: 70px;'>ID</td> 
                   <td style='width:225px; min-width: 225px;'>Nombre</td>
                   <td style='width:225px; min-width: 225px;'>Tipo</td>
@@ -17,41 +18,61 @@ if (isset($_POST['accidente'])){
                   <!--<td style='width:225px; min-width: 225px;'>objeto_geo</td>-->
                   <td style='width:225px; min-width: 225px;'>id_complejo</td>
                   <td style='width:225px; min-width: 225px;'>Id_cuenca</td>
-                  <td style='width:225px; min-width: 225px;'>Cosa1</td>
-                  <td style='width:225px; min-width: 225px;'>Cosa2</td>
-                  <td style='width:225px; min-width: 225px;'>Cosa3</td>
-                  <td style='width:225px; min-width: 225px;'>Cosa4</td>
-                  <td style='width:225px; min-width: 225px;'>Cosa5</td>
-                  <td style='width:225px; min-width: 225px;'>Cosa6</td>
-                  <td style='width:225px; min-width: 225px;'>Cosa7</td>
-                  <td style='width:225px; min-width: 225px;'>Cosa8</td>
-                  <td style='width:225px; min-width: 225px;'>Cosa9</td>
                 </tr>";
 $C= 0;
 $F= 0;
   foreach($resulta as $Fil){
     $cosa = $cosa."<tr style='height:40px'>";
+    $cosa = $cosa."<td style='width:25px; min-width: 25px;'><button style='background: orange;position: relative;float: right;'>||</button></td>";
       foreach($Fil as $Col){
-            if ($C == 0){
+            if ($C == 0){ //ID
                   $cosa = $cosa."<td style='width:70px; min-width: 70px;'>$Col</td>";
             }else{
-                  if ($C == 1){
-                        $cosa = $cosa."<td style='width:225px; min-width: 225px;'><input value=$Col></input></td>";
+                  if ($C == 1){ //Nombre
+                        //$cosa = $cosa."<td style='width:225px; min-width: 225px;'><input value=$Col></input></td>";
+                        $cosa = $cosa."<td style='width:225px; min-width: 225px;'>$Col</td>";
                   }else{
-                        if ($C == 2){
-                              $cosa = $cosa."<td style='width:225px; min-width: 225px;'><input value=$Col></input></td>";
+                        if ($C == 2){ //Tipo
+                              //$cosa = $cosa."<td style='width:225px; min-width: 225px;'><input value=$Col></input></td>";
+                              $cosa = $cosa."<td style='width:225px; min-width: 225px;'>$Col</td>";
                         }else{
-                              if ($C == 3){
-                                    $cosa = $cosa."<td style='width:225px; min-width: 225px;'><input value=$Col></input></td>";
+                              if ($C == 3){ //Descripcion
+                                    //$cosa = $cosa."<td style='width:225px; min-width: 225px;'><input value=$Col></input></td>";
+                                    $cosa = $cosa."<td style='width:225px; min-width: 225px;'>$Col</td>";
                               }else{
-                                    if ($C == 4){
+                                    if ($C == 4){ //Objeto geometrico
                                           //Nada, es el objeto geometrico y no se escribe
                                     }else{
-                                          if ($C == 5){
-                                                $cosa = $cosa."<td id='IDCom$F' style='width:225px; min-width: 225px;'>$Col</td>";
+                                          if ($C == 5){ //Id_complejo
+                                                if ($Col!=null){ // Si es distinto de NULL el id de complejo, entonces busca el nombre del complejo para escribirlo en lugar de la id
+                                                     //echo ("COl". $Col);
+                                                      $nomcomple=mysqli_query($connect, "SELECT Nombre_complejo FROM complejo WHERE Id_complejo=$Col");
+                                                      foreach ($nomcomple as $NCom){
+                                                            foreach($NCom as $NC){
+                                                                  //echo ("nomcomple:". $NC);
+                                                                  $cosa = $cosa."<td id='IDCom$F' style='width:225px; min-width: 225px;'>$NC</td>";
+                                                            }
+                                                      }
+                                                }
+                                                else{
+                                                      $cosa = $cosa."<td id='IDCom$F' style='width:225px; min-width: 225px;'>-</td>";
+                                                }
+                                                
                                           }else{
-                                                if ($C == 6){
-                                                      $cosa = $cosa."<td id='IDCue$F' style='width:225px; min-width: 225px;'>$Col</td>";
+                                                if ($C == 6){//Id_cuenca
+                                                      if ($Col!=null){ // Si es distinto de NULL el id de complejo, entonces busca el nombre del complejo para escribirlo en lugar de la id
+                                                            //echo ("COl". $Col);
+                                                             $nomcomple=mysqli_query($connect, "SELECT Nombre_cuenca FROM cuenca WHERE Id_cuenca=$Col");
+                                                             foreach ($nomcomple as $NCom){
+                                                                   foreach($NCom as $NC){
+                                                                         //echo ("nomcomple:". $NC);
+                                                                         $cosa = $cosa."<td id='IDCom$F' style='width:225px; min-width: 225px;'>$NC</td>";
+                                                                   }
+                                                             }
+                                                       }
+                                                       else{
+                                                             $cosa = $cosa."<td id='IDCom$F' style='width:225px; min-width: 225px;'>-</td>";
+                                                       }
                                                 }                                                
                                           }
                                     }
@@ -62,6 +83,7 @@ $F= 0;
             }
         $C++;
       }
+     
       $cosa = $cosa."</tr>";
       $C=0;
       $F= 1;
@@ -81,21 +103,39 @@ if (isset($_POST['complejo'])){
       $cosa = "
               <table>
                     <tr style='height:40px'>
+                      <td style='width:50px; min-width: 50px;'></td> 
                       <td style='width:70px; min-width: 70px;'>ID</td> 
                       <td style='width:300px; min-width: 300px;'>Nombre</td>
+                      <td style='width:300px; min-width: 300px;'>Propietario</td>
                     </tr>";
     $C= 0;
     $F= 0;
       foreach($resulta as $Fil){
         $cosa = $cosa."<tr style='height:40px'>";
+        $cosa = $cosa."<td style='width:25px; min-width: 25px;'><button style='background: orange;position: relative;float: right;'>||</button></td>";
           foreach($Fil as $Col){
-                if ($C == 0){
+                if ($C == 0){//ID
                       $cosa = $cosa."<td>$Col</td>";
                 }else{
-                      if ($C == 5){
+                      if ($C == 1){ //Nombre
                             $cosa = $cosa."<td id='IDCom$F' style='width:70px; min-width: 70px;'>'$Col'</td>";
+                            //echo("hace cosas1");
+                            $PersonaRes = mysqli_query($connect, "SELECT Id_persona FROM propietario WHERE Id_complejo='$Col';");
+                            //echo("hace cosas2");
+                            $cosa = $cosa."<td id='IDPropCom$F' style='width:70px; min-width: 70px;'>";
+                            echo("hace cosas3");
+                            
+                            foreach($PersonaRes as $PerRes){
+                              echo("hace cosas4");
+                                  foreach($PerRes as $PR){
+                                        echo("PR:".$PR);
+                                    $cosa = $cosa."<a>'$PR'<a><br>";
+                                  }
+                            }
+                            $cosa = $cosa."</td>";
+                            
                       }else{
-                            $cosa = $cosa."<td style='width:300px; min-width: 300px;'><input value='$Col' style='width:275px; min-width: 275px;'></input></td>";
+                        //$cosa = $cosa."<td style='width:300px; min-width: 300px;'><input value='$Col' style='width:275px; min-width: 275px;'></input></td>";
                       }
                 }
             $C++;
