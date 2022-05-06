@@ -6,10 +6,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ==" crossorigin="" />
-  <link rel="stylesheet" href="css/stylemap.css">
-  <link rel="stylesheet" href="css/bootstrap.css">
-  <link rel="stylesheet" href="css/wbootstrap.css">
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
+    integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+    crossorigin="" />
+    <link rel="stylesheet" href="css/stylemap.css">
+    <link rel="stylesheet" href="css/bootstrap.css?v=<?php echo time(); ?">
+    <link rel="stylesheet" href="css/wbootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-icons.css">
+
+  <!--al vincular un documento css y jss se pone ?v=<?php echo time(); ? para indicarle una version al archivo y que se actualice siempre al ejecutarlo en el navegador-->
+
+    <!--Para no guardar caché y que los documentos que se cargan se carguen actualizados siempre-->
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Last-Modified" content="0">
+    <meta http-equiv="Cache-Control" content="no-cache, mustrevalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    
+    
+
+
 </head>
 
 <body>
@@ -279,7 +295,7 @@
    <script src="js/export.js" async></script>
    <script src="js/map.js"></script> 
    <script src="js/data_geojson.js"></script> 
-   <script src="js/forms.js"></script>
+   <script src="js/forms.js?v=<?php echo time(); ?"></script>
 
 <!---------------Formulario Alta Accidente Geografico--------------------------->
    <div class="modal" role="document" id="form_add" style="background: rgba(0,0,0,0.8);">
@@ -399,6 +415,7 @@
         
 
        <legend class="mt-4">Fecha de relevamiento:</legend>
+
 
         <input type="date" id="fecha_rel" name="fecha"
        value="2022-01-01"
@@ -551,6 +568,7 @@
          </label>
         </div>
 
+
         <div class="form-check">
          <label class="form-check-label">
           <input type="radio" class="form-check-input" name="optionsDV" id="dv_op3" value="Muy Alterado" checked="">
@@ -558,9 +576,11 @@
          </label>
        </div>
 
+
     
     <!-- Fauna -->
       <div class="form-group" id="input_fauna">
+
         <legend class="mt-4">Fauna</legend>
         <button type="button" class="btn btn-success" id="btn_fauna_hum">+</button>
         <button type="button" class="btn btn-success" id="btn_fauna_add">Añadir Nueva Fauna</button>
@@ -579,6 +599,7 @@
 
     <!-- Flora -->
       <div class="form-group" id="input_flora">
+
         <legend class="mt-4">Flora</legend>
         <button type="button" class="btn btn-success" id="btn_flora_hum">+</button>
          <button type="button" class="btn btn-success" id="btn_flora_add">Añadir Nueva Flora</button>
@@ -604,6 +625,7 @@
         <div class="from-group"> <!-- Parte que se agrega-->
 
           <select class="form-select 0" id="sel_miembro">
+
 
             <option>Miembro ...</option>
             <option>Miembro 2</option>
@@ -654,25 +676,23 @@
         <fieldset> <!-- Formulario -->
         <form id="form-cuenca">
 
-          <!-- ID Cuenca -->
+          <!-- ID Cuenca 
           <div class="form-group">
          <input type="text" id="id_cuenca" placeholder="ID Cuenca" class="form-control"> 
          </div>
-        
+        -->
+
         <!-- Nombre -->
-        <div class="form-group">
+        <div class="form-group" id="DivNomCuen">
          <input type="text" id="nom_cuenca" placeholder="Nombre" class="form-control"> 
          </div>
         <!-- Superficie -->
-        <div class="form-group">
+        <div class="form-group" id="DivSupCuen">
          <input type="text" id="sup_cuenca" placeholder="Superficie" class="form-control"> 
         </div>
-        <!-- Extensión -->
-        <div class="form-group">
-         <input type="text" id="ext_cuenca" placeholder="Extensión" class="form-control"> 
-        </div>
+
         <!-- Tipo -->
-        <div class="form-group">
+        <div class="form-group" id="DivTipCuen">
          <input type="text" id="tipo_cuenca" placeholder="Tipo de cuenca" class="form-control"> 
         </div>
         </fieldset>
@@ -703,36 +723,100 @@
 
       <div class="modal-body">
         <div class="row p-4">
+          <fieldset>
+            <!-- Formulario -->
+            <form id="form-complejo">
+                        
+              <!-- Nombre -->
+              <div class="form-group" id="DivNomComp">
+                <input type="text" id="nom_comp" placeholder="Nombre" class="form-control"> 
+              </div>
 
-        <fieldset> <!-- Formulario -->
-        <form id="form-complejo">
-
-         <!-- ID Complejo -->
-         <div class="form-group">
-         <input type="text" id="id_complejo" placeholder="ID Complejo" class="form-control"> 
-         </div>
-        
-        <!-- Nombre -->
-        <div class="form-group">
-         <input type="text" id="nom_comp" placeholder="Nombre" class="form-control"> 
-         </div>
-        <!-- Superficie -->
-        <div class="form-group">
-         <input type="text" id="prop_comp" placeholder="Propietario" class="form-control"> 
-        </div>
-        </fieldset>
-        <div class="modal-footer">
+              <!-- Propietario -->
+              <div id="ContePropies">
+                <div class="form-group" style="display: flex;" id="DivPropComp0">
+                  <select class="form-select" id="sel_propietario0">
+                    <option>Seleccione Propietario...</option>
+                  </select>  
+                  <button type="button" class="btn btn-warning" id="NuevoPropietario" style="margin: 5px;padding-left: 10px;padding-right: 10px;font-size: 20px;"><i class="bi bi-pen" style="color: black;" id="Buscar"></i></button>
+                </div>
+              </div>
+              <button type="button" class="btn btn-success" id="btn_Otro_Propie">+</button>
+            
+              <div class="modal-footer">
                 <input type="hidden" id="form_comp_id">
                 <button type="submit" class="btn btn-primary btn-block text-center">
                   Guardar datos
-                </button>
-          </form>
+                 </button>
+            </form>
+          </fieldset>
         </div>
       </div>
     </div>
   </div>
 </div>
 </div>
+<!--
+  _________________________________Formulario Nuevo Persona_________________________
+-->
+<div class="modal" role="document" id="form_propietario_add" style="background: rgba(0,0,0,0.8);">
+  <div class="modal-dialog modal-lg">
+     <div class="modal-content">
+       <div class="modal-header">
+         <h5 class="modal-title">Cargar Propietario</h5>
+         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close_btn_Prop_add">
+           <span aria-hidden="true"></span>
+         </button>
+       </div>
+ 
+       <div class="modal-body">
+         <div class="row p-4">
+ 
+         <fieldset> <!-- Formulario -->
+         <form id="form-complejo">
+ 
+          <!-- ID Persona-->
+          <div class="form-group" id="DivIDPers">
+          <input type="text" id="id_propietario" placeholder="DNI / CUIT / CUIL" class="form-control"> 
+          </div>
+         
+         <!-- Nombre -->
+         <div class="form-group" id="DivNomPers">
+          <input type="text" id="nom_Prop" placeholder="Nombre" class="form-control"> 
+          </div>
+
+          <!-- Correo -->
+         <div class="form-group" id="DivCorrPers">
+          <input type="text" id="correo_Prop" placeholder="Correo" class="form-control"> 
+          </div>
+
+          <!-- Telefono -->
+         <div class="form-group" id="DivTelPers">
+          <input type="text" id="tel_Prop" placeholder="Teléfono" class="form-control"> 
+          </div>
+
+          <!-- Dirección -->
+         <div class="form-group" id="DivDirPers">
+          <input type="text" id="Dire_Prop" placeholder="Dirección" class="form-control"> 
+          </div>
+
+         </fieldset>
+
+
+         <div class="modal-footer">
+                 <input type="hidden" id="form_prop_id">
+                 <button type="submit" class="btn btn-primary btn-block text-center">
+                   Guardar datos
+                 </button>
+           </form>
+         </div>
+       </div>
+     </div>
+   </div>
+ </div>
+ </div>
+
+
 <!------------------------------------------------------------------------->
 
 <!-------------------------Formulario Presion------------------------------->
@@ -752,8 +836,13 @@
         <fieldset> <!-- Formulario -->
         <form id="form-presion">
         
-        <!-- Tipo Presion -->
+        <!-- ID Presion
         <div class="form-group">
+          <input type="text" id="Id_presion" placeholder="ID" class="form-control"> 
+          </div>
+ -->
+          <!-- Tipo Presion -->
+        <div class="form-group" id="DivTipoPre">
          <input type="text" id="tipo_presion" placeholder="Tipo de Presión" class="form-control"> 
          </div>
          <!-- Observaciones -->
@@ -793,12 +882,19 @@
         <fieldset> <!-- Formulario -->
         <form id="form-fauna">
         
-        <!-- Nombre coloquial -->
+
+        <!-- Nombre ID 
         <div class="form-group">
+          <input type="text" id="ID_fauna" placeholder="ID" class="form-control"> 
+          </div>
+          -->
+
+        <!-- Nombre coloquial -->
+        <div class="form-group" id="DivNombreColFau">
          <input type="text" id="nom_colquial_fauna" placeholder="Nombre Coloquial" class="form-control"> 
          </div>
         <!-- Nombre cientifico -->
-        <div class="form-group">
+        <div class="form-group" id="DivNombreCieFau">
          <input type="text" id="nom_ctfico_fauna" placeholder="Nombre Cientifico" class="form-control"> 
         </div>
          <!-- Caracteristicas -->
@@ -806,11 +902,14 @@
          <textarea id="carac_fauna" cols="30" rows="10" class="form-control" placeholder="Caracteristicas"></textarea>
          </div>
          <!-- Imagen -->
-         <div class="form-group">
-      <label for="formFile" class="form-label mt-4">Cargar Imagen</label>
-      <input class="form-control" type="file" id="img_fauna">
-      </div>
-        </fieldset>
+          <label for="formFile" class="form-label mt-4">Imagen</label> <br>
+          <button type="button" class="btn btn-success" id="btn_imagen_add">Cargar Imagen</button>
+          <div class="ContenedorImgCarg" id="ContenedorImgFau" style="display: flex;"></div>
+<!--    <div class="form-group">
+          <label for="formFile" class="form-label mt-4">Cargar Imagen</label>
+          <input class="form-control" type="file" id="img_fauna">
+     </div>
+-->        </fieldset>
         <div class="modal-footer">
                 <input type="hidden" id="form_fauna_id">
                 <button type="submit" class="btn btn-primary btn-block text-center">
@@ -823,6 +922,7 @@
   </div>
 </div>
 </div>
+
 <!------------------------------------------------------------------------->
 <!-------------------------Formulario Flora------------------------------->
 <div class="modal" role="document" id="form_flora_add" style="background: rgba(0,0,0,0.8);">
@@ -838,26 +938,39 @@
       <div class="modal-body">
         <div class="row p-4">
 
+      
+
         <fieldset> <!-- Formulario -->
-        <form id="form-flora">
-        
-        <!-- Nombre coloquial -->
-        <div class="form-group">
-         <input type="text" id="nom_colquial_flora" placeholder="Nombre Coloquial" class="form-control"> 
-         </div>
-        <!-- Nombre cientifico -->
-        <div class="form-group">
-         <input type="text" id="nom_ctfico_flora" placeholder="Nombre Cientifico" class="form-control"> 
-        </div>
-         <!-- Caracteristicas -->
-         <div class="form-group">
-         <textarea id="carac_flora" cols="30" rows="10" class="form-control" placeholder="Caracteristicas"></textarea>
-         </div>
-         <!-- Imagen -->
-         <div class="form-group">
-      <label for="formFile" class="form-label mt-4">Cargar Imagen</label>
-      <input class="form-control" type="file" id="img_flora">
-      </div>
+          <form id="form-flora" enctype="multipart/form-data">
+          
+          <!-- Nombre ID 
+          <div class="form-group">
+            <input type="text" id="ID_flora" placeholder="ID" class="form-control"> 
+          </div>
+          -->
+
+          <!-- Nombre coloquial -->
+          <div class="form-group" id="DivNombreColFlo">
+          <input type="text" id="nom_colquial_flora" placeholder="Nombre Coloquial" class="form-control"> 
+          </div>
+          <!-- Nombre cientifico -->
+          <div class="form-group" id="DivNombreCieFlo">
+          <input type="text" id="nom_ctfico_flora" placeholder="Nombre Cientifico" class="form-control"> 
+          </div>
+          <!-- Caracteristicas -->
+          <div class="form-group">
+            <textarea id="carac_flora" cols="30" rows="10" class="form-control" placeholder="Caracteristicas"></textarea>
+          </div>
+          <!-- Imagen -->
+          <label for="formFile" class="form-label mt-4">Imagen</label> <br>
+          <button type="button" class="btn btn-success" id="btn_imagen_addFl">Cargar Imagen</button>
+          <div class="ContenedorImgCarg" id="ContenedorImgFlor" style="display: flex;"></div>
+        <!--  
+          <div class="form-group">
+            <label for="formFile" class="form-label mt-4">Cargar Imagen</label>
+            <input class="form-control" type="file" id="img_flora">
+          </div>
+        -->
         </fieldset>
         <div class="modal-footer">
                 <input type="hidden" id="form_flora_id">
@@ -871,6 +984,55 @@
   </div>
 </div>
 </div>
+
+
+<!------------------------------------------------------------------------->
+<!-----------------------Formulario de Imagenes---------------------------->
+<div class="modal" role="document" id="form_imagen_add" style="background: rgba(0,0,0,0.8);">
+  <div class="modal-dialog modal-lg">
+     <div class="modal-content">
+       <div class="modal-header">
+         <h5 class="modal-title">Cargar Imagen</h5>
+         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close_btn_imagen_add">
+           <span aria-hidden="true"></span>
+         </button>
+       </div>
+ 
+       <div class="modal-body">
+         <div class="row p-4"> 
+           
+        <fieldset> <!-- Formulario -->
+          <form id="form-imagen" enctype="multipart/form-data">
+           <!-- Imagen -->
+           <div class="form-group">
+             <label for="formFile" class="form-label mt-4">Cargar Imagen</label>
+             <input class="form-control" type="file" id="Newimg">
+           </div>
+ 
+         </fieldset>
+         <div class="modal-footer">
+                 <input type="hidden" id="form_imagen_id">
+                 <button type="submit" class="btn btn-primary btn-block text-center">
+                   Guardar imagen
+                 </button>
+           </form>
+         </div>
+       </div>
+     </div>
+   </div>
+ </div>
+ </div>
+
+
+<!---
+<script>
+  var InputIMG= document.getElementById("img_flora");
+  InputIMG.addEventListener("change",(e) =>
+ {
+   console.log(e.target.value);
+ } )
+</script>
+----->
 <!------------------------------------------------------------------------->
 
 <!------------Mensaje Eliminar---------------------------------------------->

@@ -2,12 +2,15 @@
 error_reporting(0);
 require('conexion.php');
 
-if(isset($_POST['nombre'])) {          
-  //$add_id = $_POST['id'];
- // $add_nom = $_POST['nombre'];
+
+if(isset($_POST['nombre'])) {
+  $add_id = $_POST['id'];
+  $add_nom = $_POST['nombre'];
   $add_fecha = $_POST['fecha'];
-  //$add_cuenca = $_POST['cuenca'];
-  //$add_complejo = $_POST['complejo'];
+  $add_cuenca = $_POST['cuenca'];
+  $add_complejo = $_POST['complejo'];
+
+
   $add_latitud = $_POST['latitud'];
   $add_longitud = $_POST['longitud'];
   $add_ancho = $_POST['ancho'];
@@ -22,10 +25,14 @@ if(isset($_POST['nombre'])) {
   $add_color =  $_POST['color'];
   $add_temperatrura =  $_POST['temperatura'];
   $add_regimen_hidrologico = $_POST['regimen_hidrologico'];
+
+  $add_calidad_agua = $_POST['calidad_agua'];
+  $Dir_img = $_POST['Dir'];
+
+
   $add_diversidad_vegetal =  $_POST['diversidad_vegetal'];
   $add_obs = $_POST['obs'];
-  
- 
+
   //---------------------
   //$cont_pre = $_POST['cont_pre'];
   $cont_fau = $_POST['cont_fau'];
@@ -144,6 +151,14 @@ while ($cont_fau >= 0) {
   
 //////////////////////////////////////////////
 
+// Carga de las imagenes
+/*
+  foreach ($Dir_img as $valor){
+    mysqli_query($connect,"INSERT into imagen (Id_humedal,PATH) VALUES ('$add_id','$valor')") //Para cargar la imagen
+  }
+}*/
+
+
 $d = array();
 $del4 = mysqli_query($connect,"DELETE from investiga where Id_humedal = '$add_id'");
 
@@ -172,6 +187,7 @@ while ($cont_pers >= 0) {
 
 
 }
+
 
 
 

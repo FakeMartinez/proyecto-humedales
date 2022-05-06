@@ -4,10 +4,15 @@
 
   $q_cuenca = mysqli_query($connect,"SELECT Nombre_cuenca FROM cuenca");
   $q_comp = mysqli_query($connect,"SELECT Nombre_complejo FROM complejo");
+
+  $q_presion = mysqli_query($connect,"SELECT Tipo_presiones FROM presiones");
+
+  $q_propie = mysqli_query($connect,"SELECT Nombre_persona FROM persona");
+
   $q_pre = mysqli_query($connect,"SELECT Tipo_presiones FROM presiones");
-  $q_fauna = mysqli_query($connect,"SELECT Nombre_coloquial FROM fauna");
-  $q_flora =  mysqli_query($connect,"SELECT Nombre_coloquial FROM flora");
+
   $q_pers =  mysqli_query($connect,"SELECT Nombre_persona FROM persona join miembro on persona.Id_persona = miembro.Id_persona");    // solo los miembros del proyecto de la tabla persona
+
 
   $json1 = array();
   $json2 = array();
@@ -21,6 +26,49 @@
       'nombre_cuenca' => $row['Nombre_cuenca']
     ]);
   };
+
+
+  while($row = mysqli_fetch_array($q_comp)) {
+    array_push($json2, [
+      'nombre_complejo' => $row['Nombre_complejo']
+    ]);
+  };
+
+  while($row = mysqli_fetch_array($q_presion)) {
+    array_push($json3, [
+      'tipo_presion' => $row['Tipo_presiones']
+    ]);
+  };
+
+  while($row = mysqli_fetch_array($q_fauna)) {
+    array_push($json4, [
+      'nom_fauna' => $row['Nombre_coloquial']
+    ]);
+  };
+
+  while($row = mysqli_fetch_array($q_flora)) {
+    array_push($json5, [
+      'nom_flora' => $row['Nombre_coloquial']
+    ]);
+  };
+
+  
+  while($row = mysqli_fetch_array($q_propie)) {
+    array_push($json6, [
+      'nom_prop' => $row['Nombre_persona']
+    ]);
+  };
+  //echo($json);
+  
+
+  $jsons = [
+    "cuencas"=> $json1,
+    "complejos"=> $json2,
+    "presiones"=> $json3,
+    "faunas"=>$json4,
+    "floras"=>$json5,
+    "propietarios"=>$json6
+  ];
 
     while($row = mysqli_fetch_array($q_comp)) {
       array_push($json2, [
@@ -64,11 +112,12 @@
       "persona"=>$json6
     ];
 
-    //array_push($jsons, $json1, $json2);
 
-    $jsonstring = json_encode($jsons);
+  //array_push($jsons, $json1, $json2);
 
-    echo $jsonstring;
+  $jsonstring = json_encode($jsons);
+
+  echo $jsonstring;
 
 
 

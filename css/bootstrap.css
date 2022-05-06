@@ -10182,6 +10182,51 @@ th {
   color: inherit;
 }
 
+
+/*=================================================================================================*/
+/*======================================== AÑADIDO Gabriel ========================================*/
+
+.pI {
+  border: 5px solid black;
+  width: 215px;
+  height: 213px;
+  padding: 2px;
+
+  margin: center;
+  position: relative;
+  
+}
+.pI .pI2{
+  margin: auto;
+  text-align: center;
+  padding: 0px;
+  color: #7b7b7b;
+  text-shadow: #999999 0px 0px 10px;
+  font-size: 40px;
+  position: absolute;
+  right: 0px;
+  background-color: transparent;
+  width: 40px;
+  height: 40px;
+  border: 0px;
+}
+  
+.pI .pI2:hover{   /* :active indica que si es activado el elemento cambia el estilo, solo cuando es activado*/
+  color: #2e2d2d;
+  text-shadow: #999999 0px 0px 10px;
+}
+
+.ContenedorImgCarg
+{
+  height: 232px;
+  width: 717px;
+  overflow-y: hidden;
+}
+.ContenedorImgCarg:empty /* {:empty} sirbe para dar estilo cuando el objeto no tiene elementos hijos */
+{
+  height: 1px;
+  width: 717px;
+
 .error
 {
   
