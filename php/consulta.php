@@ -16,7 +16,9 @@ $con_completa2 = "SELECT humedal.*, presion.*, complejo.*, cuenca.*, fauna_humed
 fauna ON fauna_humedal.id_fauna=fauna.id_fauna JOIN flora_humedal ON humedal.id_humedal=flora_humedal.id_humedal JOIN flora ON flora_humedal.id_flora=flora.id_flora LEFT JOIN img_humedal ON img_humedal.id_humedal=humedal.id_humedal where humedal.fuente = '$id' GROUP BY humedal.id_humedal, presion_humedal.id_presion, fauna_humedal.id_fauna, flora_humedal.id_flora, img_humedal";
 
 $con_completa3 = "SELECT humedal.*, presion.*, complejo.*, cuenca.*, fauna_humedal.id_fauna, fauna.*,flora_humedal.id_flora, flora.*,img_humedal FROM humedal JOIN cuenca ON humedal.id_cuenca=cuenca.id_cuenca JOIN complejo ON humedal.id_complejo=complejo.id_complejo JOIN presion_humedal ON humedal.id_humedal=presion_humedal.id_humedal JOIN presion ON presion_humedal.id_presion=presion.id_presion JOIN fauna_humedal ON humedal.id_humedal=fauna_humedal.id_humedal JOIN 
-fauna ON fauna_humedal.id_fauna=fauna.id_fauna JOIN flora_humedal ON humedal.id_humedal=flora_humedal.id_humedal JOIN flora ON flora_humedal.id_flora=flora.id_flora LEFT JOIN img_humedal ON img_humedal.id_humedal=humedal.id_humedal where humedal.nombre Like '$name%' GROUP BY humedal.id_humedal, presion_humedal.id_presion, fauna_humedal.id_fauna, flora_humedal.id_flora, img_humedal";
+fauna ON fauna_humedal.id_fauna=fauna.id_fauna JOIN flora_humedal ON humedal.id_humedal=flora_humedal.id_humedal JOIN flora ON flora_humedal.id_flora=flora.id_flora LEFT JOIN img_humedal ON img_humedal.id_humedal=humedal.id_humedal where humedal.nombre Like '$name%' GROUP BY humedal.id_humedal, presion_humedal.id_presion, fauna_humedal.id_fauna, flora_humedal.id_flora, img_humedal";*/
+
+//$con_completa3 = "SELECT humedal.* FROM humedal where humedal.Nombre Like 'name%'";
 
 $q = mysqli_query($connect,$con_ant);
 

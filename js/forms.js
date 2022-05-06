@@ -60,9 +60,13 @@ $(function(){
         $('#form_flora_add').hide();
       });
 
+      $('#bEnviar').on('click', cont);
+      $('#bEnviar2').on('click', cont);
+
   //////////////////////Formulario Alta////////////////////////
-      $('#form_add').submit(e => {
+      //$('#form_add').submit(e => {
         //e.preventDefault();
+        function cont(e){
         var postData = {
           
           id:$('#ID_humedal').val(),
@@ -125,26 +129,43 @@ $(function(){
   
   
         
-        //e.preventDefault();
-        console.log(update);
         
-  
+        //Si Se Comprueba los datos{
+        $('#form_add').submit(e=>{e.preventDefault();});
+        console.log("Enviado");
+        //}
+
+
+//*------------------------------------------------
+
+
+        if(e.target.id == "bEnviar2"){
+          console.log("Mostrar Formulario2");
+        }else{
+          //Salir
+        };
+        
+        
+        
+        /*
         if (update != false){
         $.post('php/carga.php', postData, (response) => {
           console.log(response);
-          //e.preventDefault();
-          //$('#form_add').trigger('reset');
+          e.preventDefault();
+          $('#form_add').trigger('reset');
           
         });
       }else{
         $.post('php/alta.php', postData, (response) => {
           console.log(response);
           //$('#form_add').trigger('reset');
-          
+          //e.preventDefault();
+          //$('#form_add').trigger('reset');
         });
-      }
+                
+      }*/
   
-      });
+      };
   ////////////////////////////////////////////////////////////////
   
   //////////////////Form cuenca/////////////////////
@@ -426,9 +447,9 @@ $('#btn_add').on('click', function(){
           type: 'GET',
           success: function (response) {
               if(!response.error) {
-                //console.log(response);
+                console.log(response);
                 let datos = JSON.parse(response);
-                //console.log(datos);
+                console.log(datos);
                 let template1 = '';
                 datos['cuencas'].forEach(dato => {
                   template1 += `
