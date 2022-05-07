@@ -167,10 +167,15 @@ $(function(){
           complejo: $('#sel_complejo').val(),
           latitud:$('#lat').val(),
           longitud:$('#lng').val(),
-
+        }
+//==================================
+//=================================
+//==================================
+//=================================
 
        //Añadir Persona
-       $('#btn_miembro_add').on('click', function(){
+       
+       $("#btn_miembro_add").on('click', function(){
         $('#form_miembro_add').show();
       });
       //Cerrar Formulario Persona
@@ -220,15 +225,13 @@ $(function(){
     e.preventDefault();
     console.log(update);
         
-    if (update != false)
-    {
+    if (update != false){
       $.post('php/carga.php', postData, (response) => {
         console.log(response);
         e.preventDefault();
         //$('#form_add').trigger('reset');
       });
-      } 
-     else{
+      }else{
       if(postData.nombre != ''){          
         $.post('php/alta.php', postData, (response) => {
           console.log(response);
@@ -1226,6 +1229,9 @@ $('#btn_add').on('click', function(){
                     let template2 = '';
                     datos['complejos'].forEach(dato => {template2 += `<option>${dato.nombre_complejo}</option>` });                    
                     $('#sel_complejo').html(template2);
+                  }
+                }
+              })}
 
 
 
@@ -1479,4 +1485,4 @@ function validacion(postData){
     b = false;
   }  
   return b;
-}
+}})
