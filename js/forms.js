@@ -9,14 +9,30 @@ var max_miembro = 0;
 var max_pre = 0;
 var form2 = false;
 
+function DisCheck(e, cont){
+  if(!e.checked){
+    document.getElementById(cont).style.visibility = "hidden";
+    document.getElementById(cont).style.height = "5px";
+  }else{
+    document.getElementById(cont).style.visibility = "visible";
+    document.getElementById(cont).style.height = "60px";
+    if (cont == "FiltroFauna" || cont == "FiltroFlora" || cont == "FiltroInputPresiones")
+    {
+      document.getElementById(cont).style.height = "90px";
+    }
+  }
+}
 
 $(function(){
+
   carga_form_alta_cu();
   carga_form_alta_co();
   carga_form_alta_p();
   carga_form_alta_fa();
   carga_form_alta_fl();
   carga_form_alta_pers();
+  //carga_form_alta_propie();
+
 
   //Cerrar Formulario Alta y relevamiento 
   $('#close_btn_add').on('click', function(){

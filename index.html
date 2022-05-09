@@ -23,21 +23,17 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <button type="button" class="btn btn-success" id="btn_add">Accidente geografico</button>
       <button type="button" class="btn btn-warning" id="btn_img_xy">Obtener Coordenadas</button>
-     <button type="button" class="btn btn-warning" id="btn_modif">Modificar</button>
-          <a class="nav-link dropdown-toggle" id="tools" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Herramientas</a>
-          <div class="dropdown-menu" id="tools_op">
-            <a class="dropdown-item" href="https://facu52da.users.earthengine.app/view/humedales">Imagenes Satelitales</a>
-            <a class="dropdown-item" href="#">Another action</a>
-            <a class="dropdown-item" href="#">Something else here</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Separated link</a>
-          </div>
+      <button type="button" class="btn btn-warning" id="btn_modif">Modificar</button>
+      <a class="nav-link dropdown-toggle" id="tools" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" style="color: #d3d3d3;">Herramientas</a>
+      <div class="dropdown-menu" id="tools_op">
+        <a class="dropdown-item" href="https://facu52da.users.earthengine.app/view/humedales">Imagenes Satelitales</a>
+        <button class="dropdown-item" id="Filtrador">Filtrar los humedales</button>
+        <a class="dropdown-item" href="#">Something else here</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="#">Separated link</a>
+      </div>
 
-          <div class="tiposHumedal">
-    <button type="radio" onClick="validarTipo(this.id);" id="all">Todos</button>
-    <button class="radio" onClick="validarTipo(this.id);" id="Natural">Natural</button>
-    <button class="radio" onClick="validarTipo(this.id);" id="Artificial">Artificial</button>
-  </div>
+          
 
         <ul class="navbar-nav ml-auto">
           <form class="form-inline my-2 my-lg-0">
@@ -55,7 +51,7 @@
 
  <div id= "contenido_principal" class="contenido" style="height: 600px;">
 
- <div id="myMap" style="height: 600px; width: 80%; float: left; ">
+ <div id="myMap" style="height: 100%; width: 80%; float: left; z-index: 0;">
  <div class="info leaflet-control" id="task-result" style="display:block; float:right; position: absolute; left: 989px"></div>
 </div>
     <!------------------------Cuadro de Info------------------------------------->
@@ -280,6 +276,7 @@
    <script src="js/map.js"></script> 
    <script src="js/data_geojson.js"></script> 
    <script src="js/forms.js"></script>
+   <script src="js/Filtro.js"></script>
 
 <!---------------Formulario Alta Accidente Geografico--------------------------->
   <div class="modal" role="document" id="form_add" style="background: rgba(0,0,0,0.8);">
@@ -946,7 +943,370 @@
  
  
  <!-- <table id="resultado" class="table"><?php //include('consulta.php');?></div>-->
-<!--Comentario extra de prueba-->
+<!--========================================================================================-->
+<!--========================================================================================-->
+<!--========================================================================================-->
+<!--========================================================================================-->
+<!--========================================================================================-->
+<!--========================================================================================-->
+<!--========================================================================================-->
+
+<!--       FORMULARIO FILTRO DE SELECCION DE HUMEDALES, ACCIDENTES Y PUNTOS DE INTERES      -->
+<!--________________________________________________________________________________________-->
+
+<div id="FiltroDeHumedales" class="card border-dark mb-3" style="max-width: 30rem; min-width:400px; position: absolute; right: 5px; top: 5px; height: 98.5%; overflow: auto; overflow-x: hidden; flex-wrap: unset; align-items: flex-start; visibility: hidden;">
+  <div class="card-header" style="width: 100%; display: flex; justify-content: space-between;">Busqueda por Filtrado
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close_filtro"></button>
+  </div>
+  <div class="card-body">
+    <div class="form-group" style="width: 96%; padding-top: 16px; border-top: 1px solid rgb(226 226 226); border-bottom: 1px solid rgb(226 226 226);">  
+      <fieldset class="form-group" id="FiltroPuntos" style="height: 90px; width: 350px; overflow-y: auto; overflow-x: hidden; margin: 0px; font-size: 13px;">
+       
+        <div class="form-check form-switch" style="left: 5px; border-radius: 10px;">
+          <label class="form-check-label">
+            <input type="checkbox" class="form-check-input upon" id="CheckInte" value="Interes" style="border-radius: 10px;"> Puntos de Interés
+          </label>
+        </div>
+
+        <div class="form-check form-switch" style="left: 5px; border-radius: 10px;">
+          <label class="form-check-label">
+            <input type="checkbox" class="form-check-input" id="CheckAcc" value="Accidente Geográfico" style="border-radius: 10px;"> Accidentes Geográficos
+          </label>
+        </div>
+
+        <div class="form-check form-switch" style="left: 5px;">
+          <label class="form-check-label">
+            <input type="checkbox" class="form-check-input" id="CheckHume" value="Humedale" style="border-radius: 10px;"> Humedales
+          </label>
+        </div>
+      </fieldset>
+      
+
+    </div>
+    <div class="form-group" id="divCuenca" style=" visibility: hidden; margin: 0px; height: 0px;">
+      <!--================================================-->
+      <!-- Filtro de Cuencas -->
+      <div style="width: 96%; border-bottom: 1px solid black;"></div>
+      <label class="form-label mt-4" style="display: flex;">
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" id="CheckCuenca" style="border-radius: 10px;" onclick="DisCheck(this, 'FiltroInputCuenca')">
+        </div>
+        <h5 class="card-title" style="margin-top:5px;font-size: 12px;">Cuenca</h5>
+        <abbr title="Buscar los humedales en una cuenca" style="text-decoration: none; margin-top:3px;" class="Info rounded-pill bg-info"> ?</abbr>
+      </label>
+      <div id="FiltroInputCuenca" style="height: 0px; visibility: hidden">
+        <select class="form-select" id="SelectCuenca" style="border: 1px solid #d3d3d3; height: 35px; padding-top: 5px; padding-bottom: 5px;">
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+          <option>5</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group" id="divComplejo" style=" visibility: hidden; margin: 0px; height: 0px;">
+      <!--================================================-->
+      <!-- Filtro de Complejo -->
+     
+      <div style="width: 96%; border-bottom: 1px solid black;"></div>
+      <label class="form-label mt-4" style="display: flex;">
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" id="CheckComplejo" style="border-radius: 10px;" onclick="DisCheck(this, 'FiltroComplejo')">
+        </div>
+        <h5 class="card-title" style="margin-top:5px; font-size: 12px;">Complejo</h5>
+        <abbr title="Buscar los humedales en un complejo" style="text-decoration: none; margin-top:3px;" class="Info rounded-pill bg-info"> ?</abbr>
+      </label>
+      <div id="FiltroComplejo" style="height: 0px; visibility: hidden"> 
+        <select class="form-select" id="SelectComplejo"  style="border: 1px solid #d3d3d3; height: 35px; padding-top: 5px; padding-bottom: 5px;">
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+          <option>5</option>
+        </select>
+      </div>
+    </div>
+        <div class="form-group" id="divFuente" style="visibility: hidden; margin: 0px; height: 0px;">
+          <!--================================================-->
+          <!-- Filtro de Fuente -->
+          
+          <div style="width: 96%; border-bottom: 1px solid black;"></div>
+          <label class="form-label mt-4" style="display: flex;">
+            <div class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" id="CheckFuente" style="border-radius: 10px;" onclick="DisCheck(this, 'FiltroFuente')">
+            </div>
+              <h5 class="card-title" style="margin-top:5px;font-size: 12px;">Fuente</h5>
+              <abbr title="Buscar los humedales que sean artificiales o naturales" style="text-decoration: none; margin-top:3px;" class="Info rounded-pill bg-info"> ?</abbr>
+          </label>
+          <fieldset class="form-group" id="FiltroFuente" name="filtroFuente" style="visibility: hidden; height: 0px; margin: 0px; font-size: 13px;">
+              <div class="form-check" style="left: 5px;">
+                <label class="form-check-label">
+                  <input type="radio" class="form-check-input" name="OptionFuente1" id="option1Fu" value="Natural" checked=""> Natural
+                </label>
+              </div>
+              <div class="form-check" style="left: 5px;">
+                <label class="form-check-label">
+                  <input type="radio" class="form-check-input" name="OptionFuente1" id="option2Fu" value="Artificial"> Artificial
+                </label>
+              </div>
+            </fieldset>
+        </div>
+        <div class="form-group" id="divCalidadAgua" style="visibility: hidden; margin: 0px; height: 0px;">
+          <!--================================================-->
+          <!-- Filtro de Calidad de agua -->
+          
+          <div style="width: 96%; border-bottom: 1px solid black;"></div>
+          <label class="form-label mt-4" style="display: flex;">
+            <div class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" id="CheckCalidadAgua" style="border-radius: 10px;" onclick="DisCheck(this, 'FiltroCalidadAgua')">
+            </div>
+              <h5 class="card-title" style="margin-top:5px;font-size: 12px;">Calidad del agua</h5>
+              <abbr title="Buscar los humedales con una calidad de agua específica (conservado, alterado, muy alterado)" style="text-decoration: none; margin-top:3px;" class="Info rounded-pill bg-info"> ?</abbr>
+          </label>
+          <fieldset class="form-group" id="FiltroCalidadAgua" style="visibility: hidden; height: 0px; margin: 0px; font-size: 13px;">
+              <div class="form-check" style="left: 5px;">
+                <label class="form-check-label">
+                  <input type="radio" class="form-check-input" name="OptionCalidadAgua" id="option1CA" value="Conservado" checked=""> Conservado
+                </label>
+              </div>
+              <div class="form-check" style="left: 5px;">
+                <label class="form-check-label">
+                  <input type="radio" class="form-check-input" name="OptionCalidadAgua" id="option2CA" value="Alterado"> Alterado
+                </label>
+              </div>
+              <div class="form-check disabled" style="left: 5px;">
+                <label class="form-check-label">
+                  <input type="radio" class="form-check-input" name="OptionCalidadAgua" id="option3CA" value="Muy alterado"> Muy alterado
+                </label>
+              </div>
+            </fieldset>
+        </div> 
+        <div class="form-group" id="divDiversidadVege" style="visibility: hidden; margin: 0px; height: 0px;">
+          <!--================================================-->
+          <!-- Filtro de Diversidad vegetal -->
+         
+          <div style="width: 96%; border-bottom: 1px solid black;"></div>
+          <label class="form-label mt-4" style="display: flex;">
+            <div class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" id="CheckDiversidadVegetal" style="border-radius: 10px;" onclick="DisCheck(this, 'FiltroDiversidadVegetal')">
+            </div>
+              <h5 class="card-title" style="margin-top:5px;font-size: 12px;">Diversidad vegetal</h5>
+              <abbr title="Buscar los humedales con una diversidad vegetal específica (conservado, alterado, muy alterado)" style="text-decoration: none; margin-top:3px;" class="Info rounded-pill bg-info"> ?</abbr>
+          </label>
+          <fieldset class="form-group" id="FiltroDiversidadVegetal" style="visibility: hidden; height: 0px; margin: 0px; font-size: 13px;">
+              <div class="form-check" style="left: 5px;">
+                <label class="form-check-label">
+                  <input type="radio" class="form-check-input" name="OptionDiversidad" id="option1DV" value="Conservado" checked=""> Conservado
+                </label>
+              </div>
+              <div class="form-check" style="left: 5px;">
+                <label class="form-check-label">
+                  <input type="radio" class="form-check-input" name="OptionDiversidad" id="option2DV" value="Alterado"> Alterado
+                </label>
+              </div>
+              <div class="form-check disabled" style="left: 5px;">
+                <label class="form-check-label">
+                  <input type="radio" class="form-check-input" name="OptionDiversidad" id="option3DV" value="Muy alterado"> Muy alterado
+                </label>
+              </div>
+            </fieldset>
+        </div>
+        <div class="form-group" id="divRegimenHidro" style="visibility: hidden; margin: 0px; height: 0px;;">
+          <!--================================================-->
+          <!-- Filtro de Regimen hidrológico -->
+          
+          <div style="width: 96%; border-bottom: 1px solid black;"></div>
+          <label class="form-label mt-4" style="display: flex;">
+            <div class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" id="CheckRegimenHidrologico" style="border-radius: 10px;" onclick="DisCheck(this, 'FiltroRegimenHidro')">
+            </div>
+              <h5 class="card-title" style="margin-top:5px;font-size: 12px;">Regimen hidrológico</h5>
+              <abbr title="Buscar los humedales con un regimen hidrológico específico (conservado, alterado, muy alterado)" style="text-decoration: none; margin-top:3px;" class="Info rounded-pill bg-info"> ?</abbr>
+          </label>
+          <fieldset class="form-group" id="FiltroRegimenHidro" style="visibility: hidden; height: 0px; margin: 0px; font-size: 13px;">
+              <div class="form-check" style="left: 5px;">
+                <label class="form-check-label">
+                  <input type="radio" class="form-check-input" name="OptionRegimen" id="option1RH" value="Conservado" checked=""> Conservado
+                </label>
+              </div>
+              <div class="form-check" style="left: 5px;">
+                <label class="form-check-label">
+                  <input type="radio" class="form-check-input" name="OptionRegimen" id="option2RH" value="Alterado"> Alterado
+                </label>
+              </div>
+              <div class="form-check disabled" style="left: 5px;">
+                <label class="form-check-label">
+                  <input type="radio" class="form-check-input" name="OptionRegimen" id="option3RH" value="Muy alterado"> Muy alterado
+                </label>
+              </div>
+            </fieldset>
+        </div>
+        <div class="form-group" id="divTiempoPerma" style="visibility: hidden; margin: 0px; height: 0px;">
+          <!--================================================-->
+          <!-- Filtro de Tiempo de permanencia -->
+         
+          <div style="width: 96%; border-bottom: 1px solid black;"></div>
+          <label class="form-label mt-4" style="display: flex;">
+            <div class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" id="CheckTiempoPerma" style="border-radius: 10px;" onclick="DisCheck(this, 'FiltroTiempoPerma')">
+            </div>
+              <h5 class="card-title" style="margin-top:5px; font-size: 12px;">Tiempo de permanencia</h5>
+              <abbr title="Permanencia de un humedal a lo largo del tiempo (Temporal o permanente)" style="text-decoration: none; margin-top:3px;" class="Info rounded-pill bg-info"> ?</abbr>
+          </label>
+          <fieldset class="form-group" id="FiltroTiempoPerma" style="visibility: hidden; height: 0px; margin: 0px; font-size: 13px;">
+              <div class="form-check" style="left: 5px;">
+                <label class="form-check-label">
+                  <input type="radio" class="form-check-input" name="OptionTiempo" id="option1TP" value="Temporal" checked=""> Temporal
+                </label>
+              </div>
+              <div class="form-check" style="left: 5px;">
+                <label class="form-check-label">
+                  <input type="radio" class="form-check-input" name="OptionTiempo" id="option2TP" value="Permanente"> Permanente
+                </label>
+              </div>
+            </fieldset>
+        </div>  
+        <div class="form-group" id="divPresion" style=" visibility: hidden; margin: 0px; height: 0px;">   
+          <!--================================================-->
+          <!-- Filtro de Presiones -->
+          
+          <div style="width: 96%; border-bottom: 1px solid black;"></div>
+          <label class="form-label mt-4" style="display: flex;">
+            <div class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" id="CheckPresiones" style="border-radius: 10px;" onclick="DisCheck(this, 'FiltroPresiones')">
+            </div>
+              <h5 class="card-title" style="margin-top:5px;font-size: 12px;">Presiones</h5>
+              <abbr title="Buscar los humedales con un conjunto de presiones específicos" style="text-decoration: none; margin-top:3px;" class="Info rounded-pill bg-info"> ?</abbr>
+          </label>
+            <fieldset class="form-group" id="FiltroPresiones" style="height: 90px; width: 350px; background-color: rgb(235 235 235); overflow-y: auto; overflow-x: hidden; visibility: hidden; height: 0px; margin: 0px; font-size: 13px;">
+              <div class="form-check" style="left: 5px;">
+                <label class="form-check-label">
+                  <input type="checkbox" class="form-check-input"  id="option1Pr" value="Presion1"> Fauna1
+                </label>
+              </div>
+              <div class="form-check" style="left: 5px;">
+                <label class="form-check-label">
+                  <input type="checkbox" class="form-check-input" id="option2Pr" value="Presion2"> Fauna2
+                </label>
+              </div>
+              <div class="form-check" style="left: 5px;">
+                <label class="form-check-label">
+                  <input type="checkbox" class="form-check-input" id="option3Pr" value="Presion3"> Fauna3
+                </label>
+              </div>
+              <div class="form-check" style="left: 5px;">
+                <label class="form-check-label">
+                  <input type="checkbox" class="form-check-input" id="option4Pr" value="Presion4"> Fauna4
+                </label>
+              </div>
+              <div class="form-check" style="left: 5px;">
+                <label class="form-check-label">
+                  <input type="checkbox" class="form-check-input" id="option5Pr" value="Presion5"> Fauna5
+                </label>
+              </div>
+              <div class="form-check" style="left: 5px;">
+                <label class="form-check-label">
+                  <input type="checkbox" class="form-check-input" id="option6Pr" value="Presion6"> Fauna6
+                </label>
+              </div>
+            </fieldset>
+
+          
+        </div>
+        <div class="form-group" id="divFauna" style="visibility: hidden; margin: 0px; height: 0px;">
+           <!--================================================-->
+          <!-- Filtro de Fauna -->
+          <div style="width: 96%; border-bottom: 1px solid black;"></div>
+          <label class="form-label mt-4" style="display: flex;">
+            <div class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" id="CheckFauna" style="border-radius: 10px;" onclick="DisCheck(this, 'FiltroFauna')">
+            </div>
+              <h5 class="card-title" style="margin-top:5px;font-size: 12px;">Fauna</h5>
+              <abbr title="Permanencia de un humedal a lo largo del tiempo (Temporal o permanente)" style="text-decoration: none; margin-top:3px;" class="Info rounded-pill bg-info"> ?</abbr>
+          </label>
+
+          <fieldset class="form-group" id="FiltroFauna" style="height: 90px; width: 350px; background-color: rgb(235 235 235); overflow-y: auto; overflow-x: hidden; visibility: hidden; height: 0px; margin: 0px; font-size: 13px;">
+              <div class="form-check" style="left: 5px;">
+                <label class="form-check-label">
+                  <input type="checkbox" class="form-check-input"  id="option1Fa" value="Fauna1"> Fauna1
+                </label>
+              </div>
+              <div class="form-check" style="left: 5px;">
+                <label class="form-check-label">
+                  <input type="checkbox" class="form-check-input" id="option2Fa" value="Fauna2"> Fauna2
+                </label>
+              </div>
+              <div class="form-check" style="left: 5px;">
+                <label class="form-check-label">
+                  <input type="checkbox" class="form-check-input" id="option3Fa" value="Fauna3"> Fauna3
+                </label>
+              </div>
+              <div class="form-check" style="left: 5px;">
+                <label class="form-check-label">
+                  <input type="checkbox" class="form-check-input" id="option4Fa" value="Fauna4"> Fauna4
+                </label>
+              </div>
+              <div class="form-check" style="left: 5px;">
+                <label class="form-check-label">
+                  <input type="checkbox" class="form-check-input" id="option5Fa" value="Fauna5"> Fauna5
+                </label>
+              </div>
+              <div class="form-check" style="left: 5px;">
+                <label class="form-check-label">
+                  <input type="checkbox" class="form-check-input" id="option6Fa" value="Fauna6"> Fauna6
+                </label>
+              </div>
+            </fieldset>
+            
+        </div>
+        <div class="form-group" id="divFlora" style="visibility: hidden; margin: 0px; height: 0px;">
+            <!--================================================-->
+          <!-- Filtro de Flora -->
+          <div style="width: 96%; border-bottom: 1px solid black; z-index:210;"></div>
+          <label class="form-label mt-4" style="display: flex;">
+            <div class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" id="CheckFlora" style="border-radius: 10px;" onclick="DisCheck(this, 'FiltroFlora')">
+            </div>
+              <h5 class="card-title" style="margin-top:5px;font-size: 12px;">Flora</h5>
+              <abbr title="Buscar los humedales con un conjunto de presiones específicos" style="text-decoration: none; margin-top:3px;" class="Info rounded-pill bg-info"> ?</abbr>
+          </label>
+            <fieldset class="form-group" id="FiltroFlora" style="height: 90px; width: 350px; background-color: rgb(235 235 235); overflow-y: auto; overflow-x: hidden; visibility: hidden; height: 0px; margin: 0px; font-size: 13px;">
+              <div class="form-check" style="left: 5px;">
+                <label class="form-check-label">
+                  <input type="checkbox" class="form-check-input"  id="option1Fl" value="Flora1"> Flora1
+                </label>
+              </div>
+              <div class="form-check" style="left: 5px;">
+                <label class="form-check-label">
+                  <input type="checkbox" class="form-check-input" id="option2Fl" value="Flora2"> Flora2
+                </label>
+              </div>
+              <div class="form-check" style="left: 5px;">
+                <label class="form-check-label">
+                  <input type="checkbox" class="form-check-input" id="option3Fl" value="Flora3"> Flora3
+                </label>
+              </div>
+              <div class="form-check" style="left: 5px;">
+                <label class="form-check-label">
+                  <input type="checkbox" class="form-check-input" id="option4Fl" value="Flora4"> Flora4
+                </label>
+              </div>
+              <div class="form-check" style="left: 5px;">
+                <label class="form-check-label">
+                  <input type="checkbox" class="form-check-input" id="option5Fl" value="Flora5"> Flora5
+                </label>
+              </div>
+              <div class="form-check" style="left: 5px;">
+                <label class="form-check-label">
+                  <input type="checkbox" class="form-check-input" id="option6Fl" value="Flora6"> Flora6
+                </label>
+              </div>
+            </fieldset>
+            <br><br>
+          </div>
+      </div>
+  </div>
+</div>
 
 </body>
 
