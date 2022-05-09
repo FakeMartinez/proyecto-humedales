@@ -5,6 +5,7 @@
   $q_cuenca = mysqli_query($connect,"SELECT Nombre_cuenca FROM cuenca");
   $q_comp = mysqli_query($connect,"SELECT Nombre_complejo FROM complejo");
   $q_presion = mysqli_query($connect,"SELECT Tipo_presiones FROM presiones");
+  $q_propie = mysqli_query($connect,"SELECT Nombre_persona FROM persona");
   $q_fauna = mysqli_query($connect,"SELECT Nombre_coloquial FROM fauna");
   $q_flora =  mysqli_query($connect,"SELECT Nombre_coloquial FROM flora");
   $q_pers =  mysqli_query($connect,"SELECT Nombre_persona FROM persona join miembro on persona.Id_persona = miembro.Id_persona");    // solo los miembros del proyecto de la tabla persona
@@ -16,6 +17,7 @@
   $json4 = array();
   $json5 = array();
   $json6 = array();
+  $json7 = array();
 
   while($row = mysqli_fetch_array($q_cuenca)) {
     array_push($json1, [
@@ -52,6 +54,13 @@
       'nom_pers' => $row['Nombre_persona']
     ]);
   };
+
+  while($row = mysqli_fetch_array($q_propie)) {
+    array_push($json7, [
+      'nom_prop' => $row['Nombre_persona']
+    ]);
+  };
+
   //echo($json);
 
   $jsons = [
@@ -60,7 +69,8 @@
     "presiones"=> $json3,
     "faunas"=>$json4,
     "floras"=>$json5,
-    "persona"=>$json6
+    "persona"=>$json6,
+    "propietarios"=>$json7
   ];
 
   //array_push($jsons, $json1, $json2);
@@ -68,9 +78,9 @@
   $jsonstring = json_encode($jsons);
 
   echo $jsonstring;
-
+//Carga de Accidente_Geografico
     if(isset($_POST['nombre'])) {          
-      echo('llego1');
+      //$add_id = $_POST['id'];
       $add_nom = $_POST['nombre'];
       $add_tipo = $_POST['tipo'];
       $add_cuenca = $_POST['cuenca'];
@@ -143,7 +153,12 @@
       }
     }
   
-  
+  // Carga de las imagenes
+/*
+  foreach ($Dir_img as $valor){
+    mysqli_query($connect,"INSERT into imagen (Id_humedal,PATH) VALUES ('$add_id','$valor')") //Para cargar la imagen
+  }
+}*/
 ////////////////Relevamiento///////////////
 
 
