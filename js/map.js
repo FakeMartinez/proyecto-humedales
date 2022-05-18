@@ -25,15 +25,280 @@ var baseMaps = { //Configura el objeto de los layers del mapa
   "<span style='color: gray'>Satelite</span>": especial,
   "<span style='color: gray'>Topografico</span>": topo
 };
+var osmUrl = //'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+            //osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+            //osm = L.tileLayer(osmUrl, { maxZoom: 18, attribution: osmAttrib }),
+            myMap = new L.Map('myMap', { center: new L.LatLng(-30.7628, -57.9567), zoom: 13 }),
+            drawnItems = L.featureGroup().addTo(myMap);
+    L.control.layers({
+        /*'osm': osm.addTo(myMap),
+        "google": L.tileLayer('http://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}', {
+            attribution: 'google'
+        })*/
+    }, { 'drawlayer': drawnItems }, { position: 'topleft', collapsed: false }).addTo(myMap);
+    myMap.addControl(new L.Control.Draw({
+        edit: {
+            featureGroup: drawnItems,
+            poly: {
+                allowIntersection: true
+            }
+        },
+        draw: {
+            polygon: {
+                allowIntersection: false,
+                showArea: true
+            }
+        }
+    }));
+
+
+    //::::::::::::::::::::::::MARCAR_MAPA::::::::::::::::::::::::
+    myMap.on(L.Draw.Event.CREATED, function (event) {
+        var layer = event.layer;
+        var points = JSON.stringify(event.layer.toGeoJSON());
+        var ubi = [];
+        if(event.layerType == 'marker'){
+          ubi[0] = event.layer.toGeoJSON().geometry.coordinates[0];
+          ubi[1] = event.layer.toGeoJSON().geometry.coordinates[1];
+          console.log('marcador_: '+ubi);
+        };
+
+        if(event.layerType == 'polyline'){
+          var ubi = event.layer.toGeoJSON().geometry.coordinates[0]
+          console.log('linea_: '+ubi);
+        };
+        if(event.layerType=='polygon'){
+          var ubi = event.layer.toGeoJSON().geometry.coordinates[0][0]
+          console.log(ubi);
+        };
+
+        
+        console.log("points : "+ points);
+        $("#msj_marcar_mapa").show();
+        $('#continue_marcar').on('click', function(){
+          $("#msj_marcar_mapa").hide();
+        });
+
+        drawnItems.addLayer(layer);
+
+        $('#cancel_marcar').on('click', function(){
+            //llamar formulario "CARGAR_ACC"
+            //guardar datos del formulario
+
+            const postData = {
+              type: event.layer.toGeoJSON().geometry.type,
+              coors: event.layer.toGeoJSON().geometry.coordinates
+            
+            };
+            
+            L.marker([ubi[1], ubi[0]], {icon: L.AwesomeMarkers.icon({
+              icon: 'tint', 
+              prefix: 'fa', 
+              markerColor: 'blue'}) 
+             }).addTo(myMap);
+
+          /*Guardar Objeto en BD (PERERO)
+          $.post('php/geometry.php', postData, (response) => {
+            console.log(postData);
+            console.log(response);
+            
+          });*/
+          //////////////////////////////
+          $("#msj_marcar_mapa").hide();
+       
+    });
+
+ });
+/*
+ L.marker([-30.7628, -57.9567], {icon: L.AwesomeMarkers.icon({
+  icon: 'tint', 
+  prefix: 'fa', 
+  markerColor: 'blue'}) 
+ }).addTo(myMap);
+
+ L.marker([-30.7628, -57.9650], {icon: L.AwesomeMarkers.icon({
+  icon: 'question', 
+  prefix: 'fa', 
+  markerColor: 'red'}) 
+ }).addTo(myMap);
+
+L.marker([-30.7628, -57.9800], {icon: L.AwesomeMarkers.icon({
+  icon: 'code-fork', 
+  prefix: 'fa', 
+  markerColor: 'green'}) 
+ }).addTo(myMap);
+
+
+ L.marker([-30.7628, -57.9999], {icon: L.AwesomeMarkers.icon({
+  icon: 'circle', 
+  prefix: 'fa', 
+  markerColor: 'cadetblue'}) 
+ }).addTo(myMap);
 
 //---El objeto map-----------------
 var myMap = L.map('myMap', {
   center: [-30.7628, -57.9567],
   zoom: 10,
+  drawControl: true,
   layers: [m_default,g_hum] //los layers o capas que contiene el mapa
 });
 
 myMap.setView([-30.7628, -57.9567], 13) //setear vista al comienzo
+
+
+
+var drawnItems = new L.FeatureGroup();
+myMap.addLayer(drawnItems);
+var drawControl = new L.Control.Draw({
+    edit: {
+        featureGroup: drawnItems
+    }
+});
+//yMap.addControl(drawControl);
+
+var editableLayers = new L.FeatureGroup();
+myMap.addLayer(editableLayers);
+
+L.Control.RemoveAll = L.Control.extend({
+  options: {
+      position: 'topleft',
+  },
+
+  onAdd: function (myMap) {
+      var controlDiv = L.DomUtil.create('div', 'leaflet-control leaflet-bar');
+      var controlUI = L.DomUtil.create('a', 'leaflet-draw-edit-remove', controlDiv);
+      controlUI.title = 'Remove all drawn items';
+      controlUI.setAttribute('href', '#');
+
+      L.DomEvent
+          .addListener(controlUI, 'click', L.DomEvent.stopPropagation)
+          .addListener(controlUI, 'click', L.DomEvent.preventDefault)
+          .addListener(controlUI, 'click', function () {
+              drawnItems.clearLayers();
+              if(window.console) window.console.log('Drawings deleted...');
+          });
+      return controlDiv;
+  }
+});
+
+removeAllControl = new L.Control.RemoveAll();
+myMap.addControl(removeAllControl);
+
+myMap.on('draw:created', function(e) {
+  var type = e.layerType,
+    layer = e.layer;
+
+  if (type === 'marker') {
+    layer.bindPopup('A popup!');
+  }
+
+  drawnItems.addLayer(layer);
+});
+*/
+function colorPuntos(d) { 
+  return d == "Sin Definir" ? 'red' : 
+  d == "Humedal" ? 'blue' : 
+  d == "Arroyo" ? 'green' : 
+  d == "Laguna" ? 'white' :
+  d == "Lago" ? 'purple':
+        '#000000'; 
+};
+
+
+function estilo_monumentos (tipo) {
+  return{
+    fillColor: colorPuntos(tipo), 
+      color: colorPuntos(tipo), 
+    weight: 1,
+    opacity : 1,
+    fillOpacity : 0.1
+  };
+};
+
+  
+///------------000--------------------//SELECCIONAR_ACC//-------------000-------------------///
+var obj;
+$.ajax({
+  url:   'php/cons_lug_interes.php', //Archivo PHP con los datos
+  type:  'GET',
+  success:  function (response) { //Funcion que se ejecuta si la solicitud sucede con exito
+    console.log(response);
+    var lg = JSON.parse(response);
+    
+    for(var key=0; key < lg.length; key++) { //para cada columna
+      var single = lg[key];
+      console.log(single.type);
+if(single.type=="POINT"){
+  obj = L.geoJSON(JSON.parse(single.objeto), {
+    id:single.id,
+  }).bindPopup('<p>'+ single.nombre + '('+single.tipo+')'+ '</p>');
+  marker.push(obj);
+  //obj.on('mouseover', onClick3);
+
+  obj.on('click', onClick2);
+  myMap.addLayer(obj);
+}else{
+     obj = L.geoJSON(JSON.parse(single.objeto), {
+        id:single.id,
+        style: estilo_monumentos(single.tipo),
+        onEachFeature: onEachFeature
+      }).bindPopup('<p>'+ single.nombre + '('+single.tipo+')'+ '</p>');
+      marker.push(obj);
+      //obj.on('mouseover', onClick3);
+
+      obj.on('click', onClick2);
+      myMap.addLayer(obj);
+      }
+
+    };
+    markerBackup = []; //Define como vacio al Array del backup marcadores 
+    markerBackup = marker; //Guarda el los marcadores en el backup
+
+  }});
+
+ //Eventos asociados a los Lugares de interes 
+
+  $(document).on('mouseover','#btnDropLg',function(){
+    $('#dropmenu_lg').show();
+  }); 
+
+  $(document).on('mouseover','#dropmenu_lg',function(){
+    $('#dropmenu_lg').show();
+  });
+  
+  $(document).on('mouseout','#btnDropLg',function(){
+    $('#dropmenu_lg').hide();
+  }); 
+
+  $(document).on('click','#conv_lg',function(){
+    //Convertir Representación
+    $("#form_marcar").show();
+    //-> Fomulario Carga_Humedal (Lucia)
+    //-> Formulario Acc Geografico (Lucia)
+  }); 
+
+  $(document).on('click','#edit_lg',function(){
+    //Editar Descripción
+    //-> Formulario Lugar de Interés (Lucia)
+    
+  }); 
+
+  $(document).on('click','#delete_lg',function(i){
+    //Eliminar Lugar de Interés
+    console.log(i.currentTarget.classList[1]);
+    var id = i.currentTarget.classList[1];
+    $.ajax({
+      data:{Id_lugar:id}, //Ejecuta la consulta dependiendo de la caracteristica que tomó 
+      url:   'php/delete_lug_interes.php',
+      type:  'GET',
+      success:function(resp){
+        console.log(resp);
+      }
+    });
+
+  }); 
+  
+///------------000--------------------//!!!!!!!!!!!!!!!!//-------------000-------------------///
 
 L.control.layers(baseMaps,overlayMaps).addTo(myMap); //Construye el panel de control con los objetos de layers
 
@@ -59,13 +324,19 @@ var markerBackup = new Array(); //Array con el backup de los marcadores
 //myMap.doubleClickZoom.disable() //funcion dobleclick=zoom esta desabilitada
 
 //Funcion que ejecuta la solicitud ajax para los datos en la BD
-function tabla(){ 
+function tabla(id){ 
   $.ajax({
-      url:   'php/consulta.php', //Archivo PHP con los datos
+      url:   'php/busq_sel.php', //Archivo PHP con los datos
       type:  'GET',
+      data:{Id_acc:id},
       success:  function (response) { //Funcion que se ejecuta si la solicitud sucede con exito
         console.log(response);
-        var js = JSON.parse(response); //Obtiene al respuesta (response) y la convierte en string  
+        if(response=="[]"){console.log('Sin Relevamiento')}
+        else{
+          var data = JSON.parse(response);
+          capa(data);
+        };
+       /* var js = JSON.parse(response); //Obtiene al respuesta (response) y la convierte en string  
         console.log(js);
         for(var key=0; key < js.length; key++) { //para cada columna
           var single = js[key]; //pasa por variable cada elemento de la tabla
@@ -83,7 +354,7 @@ function tabla(){
             
             markerBackup = []; //Define como vacio al Array del backup marcadores 
             markerBackup = marker; //Guarda el los marcadores en el backup
-          }
+          }*/
         }
       });
     }
@@ -94,20 +365,81 @@ function tabla(){
  // funcion que se ejecuta cuando se da click sobre un marcador del mapa
  function onClick(e) {
    var i = this.options; //Guarda los datos del elemento clickeado
-   e.target.setIcon(MarkerActive); //Agrega el marcador activo
+   //e.target.setIcon(MarkerActive); //Agrega el marcador activo
    console.log(eventBackup);
 
    if (eventBackup == undefined) { //Si no hay un backup del evento (si aun no se le dio click)
      eventBackup = e; //Guarda el evento reciente
-     capa(i); //Ejecuta la funcion capa 
+     //capa(i); //Ejecuta la funcion capa 
 
     } else { //Si ya hay un backup del evento (si ya se le dio click)
-      eventBackup.target.setIcon(MarkerStyle); //Agrega el marcador por defecto
+      //eventBackup.target.setIcon(MarkerStyle); //Agrega el marcador por defecto
       eventBackup = e; //Guarda el evento reciente
-      capa(i); //Ejecuta la funcion capa 
+      //capa(i); //Ejecuta la funcion capa 
       //$('#info').hide();
     }
   };
+
+  var popup = L.popup();
+
+	function onClick2(e) {
+    var i = this.options;
+    console.log(e.target.options);
+    tabla(e.target.options.id);
+
+
+      
+		//popup.setContent('Descripción: '+ e.target.options.properties).openOn(myMap);
+	};
+
+  function onClick3(e) {
+    var i = this.options;
+    var layer = e.target;
+    console.log(e.target.options);
+    layer.setStyle({
+      weight: 5,
+      color: '#666',
+      dashArray: '',
+      fillOpacity: 0.7
+  });
+    //tabla(e.target.options.id);
+
+
+      
+		//popup.setContent('Descripción: '+ e.target.options.properties).openOn(myMap);
+	};
+
+  function highlightFeature(e) {
+    var layer = e.target;
+
+    layer.setStyle({
+        weight: 3,
+        dashArray: '',
+        fillOpacity: 0.5
+    });
+
+    if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+        layer.bringToFront();
+    }
+
+}
+
+function resetHighlight(e) {
+  obj.resetStyle(e.target);
+}
+
+function zoomToFeature(e) {
+  myMap.fitBounds(e.target.getBounds());
+}
+
+function onEachFeature(feature, layer) {
+  layer.on({
+      mouseover: highlightFeature,
+      mouseout: resetHighlight,
+      click: zoomToFeature
+  });
+}
+  
 
 var info;  //Variable para la capa de control
   // Funcion de capa flotante donde se muestra la info al darle click sobre un marcador
@@ -127,42 +459,40 @@ function capa(data){ //obtiene como parametro la informacion
 
   // Funcion update para mostrar los datos en el info   
   info.update = function (data) {
-   /*
-    var cont =
-    '<div class="btn-group" role="group" aria-label="Button group with nested dropdown">'+
-    '<button type="button" class="btn btn-info">Opciones</button>'+
-    '<div class="btn-group" role="group">'+
-      '<button id="btnDropHum" type="button" class="btn btn-info dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true"></button>'+
-      '<div class="dropdown-menu" id="dropmenu_hum" aria-labelledby="btnDropHum">'+
-        '<a class="dropdown-item" id="modif_hum" href="#" >Modificar</a>'+
-        '<a class="dropdown-item" id="delete_hum" href="#">Eliminar</a>'+
-        '<a class="dropdown-item" id="download" href="#">Exportar a PDF</a>'+
-        '<a class="dropdown-item" id="download2" href="#">Exportar a Word</a>'+
-      '</div>'+
-    '</div>'+
-  '</div>'+
-  '<div id="contenido">'+
-  ' <div class="close" style="cursor:pointer;" id="closeBtn">x</div>'+'<h4>'/*+ data.id *//*+'</h4><h4 class="poppins600 blue-3">Nombre: ' + data.nombre + '</h4>'
-    + '<p class="lead">Largo: ' + data.largo + '</p>' + '<p class="lead">Ancho: ' + data.ancho + '</p>' + '<p class="lead">Lat: ' + data.lat + '</p>'+ '<p class="lead">Lng: ' + data.lng + '</p>'+
-    '<p class="lead">Cuenca: ' + data.cuenca + '</p>'+'<p class="lead">Complejo: ' + data.complejo + '</p>'+'<p class="lead">Fuente: ' + data.fuente + '</p>' +
-    '<p class="lead">Tiempo: ' + data.tiempo + '</p>'+'<p class="lead"> Diversidad vegetal: ' + data.div_veg + '</p>' + '<p class="lead">Regimen hidrologico: ' + data.reg_hidro + '</p>' 
-    + '<p class="lead"> Calidad del agua: ' + data.agua + '</p>' + '<p class="lead"> Presión: ' + data.presion + '</p>' + '<p class="lead">Inclusión: ' + data.inclusion + '</p>'+'<p class="lead">Observaciones: ' + data.obs + '</p>'
-    +'<p class="lead">Flora: ' + data.flora + '</p>' + '<p class="lead">Fauna: ' + data.fauna + '</p>'+'</div>';
+   
+    var cont = data[0].id;
     this._div.innerHTML = cont;
-*/
-$("#h_name").html(data.nombre);
-$("#h_lat").html("Latitud: "+ data.lat);
-$("#h_lng").html("Longitud: "+ data.lng);
-$("#h_cuenca").html("Cuenca: " + data.cuenca);
-$("#h_complejo").html("Complejo: "+ data.complejo);
-$("#h_fuente").html("Fuente: " + data.fuente);
-$("#h_tiempo").html("Tiempo: " + data.tiempo);
-$("#h_div").html("Diversidad Vegetal: " + data.div_veg);
-$("#h_reg").html("Regimen Hidrologico: " + data.reg_hidro);
-$("#h_agua").html("Calidad del agua: " + data.agua);
-$("#h_inclusion").html(data.inclusion);
-$("#h_obs").html(data.obs);
+    $("#rele").html("");
+    $("#rele").html("<p>Relevamiento</p>");
+    $("#rele").append('<select class="form-select" id="sel_frel"></select>');
+    $("#sel_frel").on('change', rele);//Crear funcion para mostrar datos rel por fecha
 
+data.forEach(function(i){
+  console.log(i['fecha']);
+  $("#sel_frel").append('<option value='+(i['id_rel'])+'>'+i['fecha']+'</option>');
+});
+
+rele();
+function rele(){
+  
+  var i = ($("#sel_frel").val())-1;
+  console.log(data[i]);
+  $('#data_list').html('');
+for (const key in data[i]) {
+    if(data[i][key]!==''){
+      console.log(key);
+      $('#h_name').html(data[i]['nombre']);
+      $('#data_list').append('<li class="list-group-item">'+key+': '+data[i][key]+'</li>');
+    }
+  };
+
+}
+$('#closeBtn').on('click', function(){
+  $('#info').hide();
+  $('#myMap').css({'width': '100%'});
+});
+
+/*
 $("#h_presion").html("Presion: "+ data.presion[0].tipo_presion);
 for (var key=1; key< data.presion.length; key++){
   $("#h_presion").append(", "+ data.presion[key].tipo_presion);
@@ -227,9 +557,10 @@ $("#list_img").append(
 );
 
 };
-
+*/
 $('#info').show();
-$('#myMap').css({'width': '70%'});
+$('#myMap').css({'width': '80%'});
+
 };
   info.addTo(myMap);
 
@@ -250,8 +581,8 @@ $('#myMap').css({'width': '70%'});
     //alert('button');
   });
 
-  $('#download.dropdown-item').on('click',function(){exp(data)});
-  $('#download2.dropdown-item').on('click',function(){exp_d(data)});
+  $('#dropdown-item').on('click',function(){exp(data)});
+  $('#dropdown-item2').on('click',function(){exp_d(data)});
 
 }
 
@@ -294,14 +625,14 @@ function validarTipo(id){ //Pasa como parametro la caracteristica del humedal
       }
 }     
        
-// funcion que cierra la capa flotante
+/* funcion que cierra la capa flotante
 $(document).on('click','#closeBtn', function(){ 
   $('#info').hide();
   $('#myMap').css({'width': '100%'});
   info.remove(myMap);
   eventBackup.target.setIcon(MarkerStyle);
 });
-
+*/
 function limpiarMapaDefault() { //Remueve los marcadores del array por Default
 for(i=0;i<marker.length;i++) {
     myMap.removeLayer(marker[i]);
@@ -395,18 +726,32 @@ $('#sub_img').on('click', function(){
      limpiarMapaDefault(); //Ejecuta la funcion de limpiar el mapa por defecto
      limpiarMapaBackup(); //Ejecuta la funcion de limpiar el mapa con el backup de los marcadores
      $.ajax({
-       url: 'php/consulta.php',
+       url: 'php/consulta2.php',
        data: {search},
        type: 'POST',
        success: function (response) {
            if(!response.error) {
              let tasks = JSON.parse(response);
+             console.log(tasks);
+            
+
+             
              let template = '';
              tasks.forEach(task => {
-               template += `
-               <a href="#" class="task-item"><h6 class="poppins600 blue-3">${task.nombre}</h6></a>
-                  ` });
+              
+              var obj = L.geoJSON(JSON.parse(task.objeto), {
+                id:task.id,
+                style: estilo_monumentos(task.tipo)
+              }).bindPopup('<p>'+ task.nombre + '('+task.tipo+')'+ '</p>');
+              //obj.on('click', onClick2);
+              marker.push(obj);
+              obj.on('click', onClick2);
+              myMap.addLayer(obj);
 
+              template += `
+               <a href="#" class="task-item ${task.id}"><h6 class="poppins600 blue-3">${task.nombre}</h6></a>
+             ` });
+                  /*
                   var availableTags = JSON.parse(response);
                   for(var key=0; key<availableTags.length; key++) {
                     console.log(key);
@@ -420,10 +765,11 @@ $('#sub_img').on('click', function(){
                       marker[key].on('click', onClick);
                       myMap.addLayer(marker[key]);
                       };
-
+                      */
           $('#task-result').show();
           $('#task-result').html(template);
           //$('#container').html(template); 
+
     } 
     
   }
@@ -505,7 +851,7 @@ function del(data){
 
 function exp(data){
   
-  const $elementoParaConvertir = $('#contenido').html(); // <-- Aquí puedes elegir cualquier elemento del DOM
+  const $elementoParaConvertir = $('#info').html(); // <-- Aquí puedes elegir cualquier elemento del DOM
   html2pdf()
     .set({
         margin: 1,
@@ -530,7 +876,7 @@ function exp(data){
   };
 
 function exp_d(data){
-  Export2Doc('contenido',data.nombre);
+  Export2Doc('info',data[0].nombre);
 };
 
 /////////////////////////////////
@@ -539,3 +885,5 @@ function add_marker(lat,lng){
   mark.on('click',function(){myMap.removeLayer(mark)});
 
 };
+
+
