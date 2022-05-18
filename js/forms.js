@@ -258,14 +258,14 @@ $(function(){
           //console.log(postData);
           //$('#form_add').trigger('reset');
           e.preventDefault();
-          $('#nombre').val('');
-          $('#tipo').val('');
-          $('#descripcion').val('');
           if (NewRelev){
             NewRelev=false;
             from2();
           }else{
             $('#form_add').hide();
+            $('#nombre').val('');
+            $('#tipo').val('');
+            $('#descripcion').val('');
           }
           
         });
@@ -330,11 +330,15 @@ $(function(){
         writable: true,
         enumerable: true,
         configurable: true
+        
       }); 
       //postData.presion.concat(x.toString()) = $('#sel_presion.form-select '.concat(x.toString())).val()
       x_fau = x_fau-1;
     }
-    
+//    console.log("====================================================================");
+//    console.log("postData.x_fau");
+//    console.log(postData.cont_fau);
+//    console.log("====================================================================");
     while(x_flo>=0){
       console.log('sel_flora.form-select '.concat(x_flo.toString()));
       Object.defineProperty(postData, 'flora'+ x_flo.toString(),{
@@ -378,6 +382,9 @@ $(function(){
         //$('#form_add').trigger('reset');
         e.preventDefault();
         $('#form_add2').hide();
+        $('#nombre').val('');
+        $('#tipo').val('');
+        $('#descripcion').val('');
       });
      
     }
