@@ -125,8 +125,24 @@ if(isset($_POST['nom_cq_fauna'])) {
       echo" $valor";
     }
     */
-   
+    $carpeta_destino=$_SERVER['DOCUMENT_ROOT'] . '/proyecto-humedales/proyecto-humedales/images/';
+
     foreach ($add_img as $valor){
+      $exif = exif_read_data('A.jpg');
+      if ($exif === false){
+        echo "no hay imagne
+        ";
+        echo ($exif['FileName']);
+      }else{
+        echo ("
+      Info imag
+      ");
+      echo ($exif['FileName']);
+      echo ("
+      fin info imag
+      ");
+      }
+      
       $query4_2 = "INSERT into imagen (PATH) VALUES  ('$valor') "; //Preparacion para cargar la imagen
       act($connect,$query4_2);  //Para cargar la imagen
       $ID_Imag = rec($connect, "SELECT Id_imagen FROM imagen where PATH = '$valor'");

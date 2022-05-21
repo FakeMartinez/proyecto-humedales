@@ -28,6 +28,11 @@ function CambiarClass(Objeto, ClassActual, ClassNueva){
   $(Objeto).addClass(ClassNueva);   //agrega el nuevo class al elemento HTML
 };
 
+function CloseMensImag (){
+  $("#MensErrorImag").remove();
+  //getElementById("MensErrorImag").remove();
+}
+
 
 function validacion(postData){
   //console.log('entro a la funcion validacion');
@@ -209,6 +214,9 @@ $(function(){
     CambiarClass($('#Dire_Prop'), "form-control is-invalid", "form-control");
     $('#form_propietario_add').hide();
   })
+
+  
+
 
   //////////////////////Formulario Alta Acc////////////////////////
   $(document).on('click','#btn_brel', function(){
@@ -647,7 +655,7 @@ $('#form_propietario_add').submit(e => {
       nom_cf_fauna: $('#nom_ctfico_fauna').val(),
       carac_fauna: $('#carac_fauna').val(),
       //img_fauna: $('#img_fauna').val(),
-      Dir: DireccionesFA.slice() 
+      Dir: DireccionesFA.slice()  // Pasa todas los nombres de las imagenes cargadas de esta fauna
     };
     //DireccionesFA.forEach(dir =>{postData.Dir += dir});
     console.log(postData);
@@ -681,13 +689,17 @@ $('#form_propietario_add').submit(e => {
   });
 */
 
-//////////////////Form imagen/////////////////////
+//=====================================================================================
+//=====================================================================================
+//=====================================================================================
+//                FORM IMAGEN
+//______________________________________________________________________________________
 $('#form-imagen').submit(e => {
   e.preventDefault();
   var formData = new FormData();
   var files = $('#Newimg')[0].files[0];
   formData.append('file',files);
-
+console.log(files);
     $.ajax({
       url: 'php/CargaImagenes.php',
       type: 'post',
@@ -697,113 +709,126 @@ $('#form-imagen').submit(e => {
       success: function(response) {
       console.log(response);  //Si se comenta, no se va a escribir ningún echo del php en la consola de la pagina ¡OJO!
   let templateD = '';
-  if (BtFau){
-    DireccionesFA.push(response);
-    //  console.log(DireccionesFA);
-    DireccionesFA.forEach(function (Dire, Indi, Vect){
-      if (Dire!="")
-      {
-        templateD += `<div class=pI id='CIFa${Indi}'><button type="button" class='pI2' id='BIFa${Indi}'>X</button><img src='images/${Dire}' style="width:200px;height:200px;"></img></div>`;
-      }
-    })
-    $('#ContenedorImgFau').html(templateD);
-    DireccionesFA.forEach(function (Dire, Indi, Vect){
-    //=============================================================
-    // == Boton para quitar la imagen de la carga ==
-
-      $('#BIFa' + Indi.toString()).on('click',function(e){
-      //  console.log("imagen" + Indi);
-      DireccionesFA[Indi] = ""; //Elimina el elemento del array de direcciones de Fauna
-      $('#CIFa' + Indi.toString()).remove(); //Elimina el elemento del HTML de la carga de Fauna
-      const DataEli ={
-        eliminar : true,
-        nomImag : Dire
-      };
-      //console.log(DataEli);
-      $.post('php/CargaImagenes.php', DataEli, (response) => { //Llama al PHP para eliminar la imagen cargada en el servidor
-      console.log(response);  //Si se comenta, no se va a escribir ningún echo del php en la consola de la pagina ¡OJO!
-    })
-
-    // == Termina la creacion del evento click del boton eliminar ==
-    //============================================================= 
-      });
-
-     })
-
-  }else
-  if (BtFlo){
-    DireccionesFL.push(response);
-    //console.log(DireccionesFL);
-    DireccionesFL.forEach(function (Dire, Indi, Vect){
-      if (Dire!="")
-      {
-        templateD += `<div class=pI id='CIFl${Indi}'><button type="button" class='pI2' id='BIFl${Indi}' >X</button><img src='images/${Dire}' style="width:200px;height:200px;"></img></div>`;
-      }
-    })
-    $('#ContenedorImgFlor').html(templateD);
-    DireccionesFL.forEach(function (Dire, Indi, Vect){
-    //=============================================================
-    // == Boton para quitar la imagen de la carga ==
-
-      $('#BIFl' + Indi.toString()).on('click',function(e){
-      // console.log("imagen" + Indi);
-
-      DireccionesFL[Indi] = ""; //Elimina el elemento del array de direcciones de Flora
-      $('#CIFl' + Indi.toString()).remove(); //Elimina el elemento del HTML de la carga de Flora
-      const DataEli ={
-        eliminar : true,
-        nomImag : Dire
-      };
-      //console.log(DataEli);
-      $.post('php/CargaImagenes.php', DataEli, (response) => { //Llama al PHP para eliminar la imagen cargada en el servidor
-      console.log(response);
-    })
-
-    // == Termina la creacion del evento click del boton eliminar ==
-    //=============================================================
-      });
-
-     })
+  console.log (response);
+  if (response == 0){
+    console.log("Ya existe esta imagen en la base de datos");
+    MesErrorImag="<div class='alert alert-dismissible alert-danger' id='MensErrorImag'><button type='button' class='btn-close' data-bs-dismiss='alert' id='btnCloseAlertImag' onclick=CloseMensImag();></button><strong style='font-size: larger; font-weight: bold;'>ATENCIÓN!</strong> Está intentando cargar una imagen con el mismo nombre de otra que ya ha sido cargada, cambie el nombre de la imagen que va a cargar por una diferente.</div>"
+    
+    $("#ContenedorInputImgForm").append(MesErrorImag);
+    
+  }else{
+    if (BtFau){
+      DireccionesFA.push(response);
+      //  console.log(DireccionesFA);
+      DireccionesFA.forEach(function (Dire, Indi, Vect){
+        if (Dire!="")
+        {
+          templateD += `<div class=pI id='CIFa${Indi}'><button type="button" class='pI2' id='BIFa${Indi}'>X</button><img src='images/${Dire}' style="width:200px;height:200px;"></img></div>`;
+        }
+      })
+      $('#ContenedorImgFau').html(templateD);
+      DireccionesFA.forEach(function (Dire, Indi, Vect){
+      //=============================================================
+      // == Boton para quitar la imagen de la carga ==
+  
+        $('#BIFa' + Indi.toString()).on('click',function(e){
+        //  console.log("imagen" + Indi);
+        DireccionesFA[Indi] = ""; //Elimina el elemento del array de direcciones de Fauna
+        $('#CIFa' + Indi.toString()).remove(); //Elimina el elemento del HTML de la carga de Fauna
+        const DataEli ={
+          eliminar : true,
+          nomImag : Dire
+        };
+        //console.log(DataEli);
+        $.post('php/CargaImagenes.php', DataEli, (response) => { //Llama al PHP para eliminar la imagen cargada en el servidor
+        console.log(response);  //Si se comenta, no se va a escribir ningún echo del php en la consola de la pagina ¡OJO!
+      })
+  
+      // == Termina la creacion del evento click del boton eliminar ==
+      //============================================================= 
+        });
+  
+       })
+  
     }else{
-      if (BtHum){ //Carga de imagenes en el HTML
-       DireccionesHU.push(response);
-       // console.log("direccionesHU");
-       // console.log(DireccionesHU);
-        DireccionesHU.forEach(function (Dire, Indi, Vect){
+      if (BtFlo)
+      {
+        DireccionesFL.push(response);
+        //console.log(DireccionesFL);
+        DireccionesFL.forEach(function (Dire, Indi, Vect){
           if (Dire!="")
           {
-          templateD += `<div class=pI id='CIH${Indi}'><button type="button" class='pI2' id='BIH${Indi}'>X</button><img src='images/${Dire}' style="width:200px;height:200px;"></img></div>`;
+            templateD += `<div class=pI id='CIFl${Indi}'><button type="button" class='pI2' id='BIFl${Indi}' >X</button><img src='images/${Dire}' style="width:200px;height:200px;"></img></div>`;
           }
         })
-        $('#ContenedorImgHu').html(templateD);
-        DireccionesHU.forEach(function (Dire, Indi, Vect){
-          //=============================================================
-          // == Boton para quitar la imagen de la carga ==
-
-          $('#BIH' + Indi.toString()).on('click',function(e){
-          //console.log("imagen" + Indi);
-
-          DireccionesHU[Indi] = ""; //Elimina el elemento del array de direcciones de Humedales
-          $('#CIH' + Indi.toString()).remove(); //Elimina el elemento del HTML de la carga de Humedales
+        $('#ContenedorImgFlor').html(templateD);
+        DireccionesFL.forEach(function (Dire, Indi, Vect){
+        //=============================================================
+        // == Boton para quitar la imagen de la carga ==
+    
+          $('#BIFl' + Indi.toString()).on('click',function(e){
+          // console.log("imagen" + Indi);
+    
+          DireccionesFL[Indi] = ""; //Elimina el elemento del array de direcciones de Flora
+          $('#CIFl' + Indi.toString()).remove(); //Elimina el elemento del HTML de la carga de Flora
           const DataEli ={
-              eliminar : true,
-              nomImag : Dire
+            eliminar : true,
+            nomImag : Dire
           };
           //console.log(DataEli);
           $.post('php/CargaImagenes.php', DataEli, (response) => { //Llama al PHP para eliminar la imagen cargada en el servidor
-            console.log(response); //Si se comenta, no se va a escribir ningún echo del php en la consola de la pagina ¡OJO!
-          })
-
-          // == Termina la creacion del evento click del boton eliminar ==
-          //=============================================================
-         });
-
+          console.log(response);
         })
-      }
+    
+        // == Termina la creacion del evento click del boton eliminar ==
+        //=============================================================
+          });
+    
+        })
+        }else{
+          if (BtHum)
+          { //Carga de imagenes en el HTML
+          DireccionesHU.push(response);
+          // console.log("direccionesHU");
+          // console.log(DireccionesHU);
+            DireccionesHU.forEach(function (Dire, Indi, Vect){
+              if (Dire!="")
+              {
+              templateD += `<div class=pI id='CIH${Indi}'><button type="button" class='pI2' id='BIH${Indi}'>X</button><img src='images/${Dire}' style="width:200px;height:200px;"></img></div>`;
+              }
+            })
+            $('#ContenedorImgHu').html(templateD);
+            DireccionesHU.forEach(function (Dire, Indi, Vect){
+              //=============================================================
+              // == Boton para quitar la imagen de la carga ==
+    
+              $('#BIH' + Indi.toString()).on('click',function(e){
+              //console.log("imagen" + Indi);
+    
+              DireccionesHU[Indi] = ""; //Elimina el elemento del array de direcciones de Humedales
+              $('#CIH' + Indi.toString()).remove(); //Elimina el elemento del HTML de la carga de Humedales
+              const DataEli ={
+                  eliminar : true,
+                  nomImag : Dire
+              };
+              //console.log(DataEli);
+              $.post('php/CargaImagenes.php', DataEli, (response) => { //Llama al PHP para eliminar la imagen cargada en el servidor
+                console.log(response); //Si se comenta, no se va a escribir ningún echo del php en la consola de la pagina ¡OJO!
+              })
+    
+              // == Termina la creacion del evento click del boton eliminar ==
+              //=============================================================
+            });
+    
+            })
+          }
+        }
     }
-
-
-
+    e.preventDefault();
+    $('#form_imagen_add').hide();
+  
+  }
+  
       //Direcciones.forEach(dir => {templateD += `<div class=pI><button class=pI2>X</button><img src='images/${dir}' style="width:200px;height:200px;"></img></div>`});
 
       //console.log(templateD);
@@ -811,8 +836,7 @@ $('#form-imagen').submit(e => {
 
 
       //$('#form_add').trigger('reset');
-      e.preventDefault();
-      $('#form_imagen_add').hide();
+      
     }
 })});
 

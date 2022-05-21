@@ -31,11 +31,17 @@ else{
 if (($_FILES["file"]["type"] == "image/pjpeg")
     || ($_FILES["file"]["type"] == "image/jpeg")
     || ($_FILES["file"]["type"] == "image/png")
-    || ($_FILES["file"]["type"] == "image/gif")) {
-    if (move_uploaded_file($_FILES["file"]["tmp_name"], "$carpeta_destino".$_FILES['file']['name'])) {
-        echo ($_FILES['file']['name']);
-    } else {
-        echo "Ha habido un herror en la carga de imagen, vuelva a intentar";
+    || ($_FILES["file"]["type"] == "image/gif")) 
+{
+    if (file_exists("$carpeta_destino".$_FILES['file']['name'])){
+       // echo ("Ya existe esta imagen en la base de datos");
+        echo 0;
+    }else{
+        if (move_uploaded_file($_FILES["file"]["tmp_name"], "$carpeta_destino".$_FILES['file']['name'])) {
+            echo ($_FILES['file']['name']);
+        } else {
+            echo "Ha habido un herror en la carga de imagen, vuelva a intentar";
+        }
     }
 } else {
     echo "Formato de imagen no valido";
