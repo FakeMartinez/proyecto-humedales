@@ -95,6 +95,9 @@ $(function(){
     CambiarClass($('#tipo'), "form-control is-invalid", "form-control");
     CambiarClass($('#sel_cuenca'), "form-select is-invalid", "form-select");
     $('div').remove('#TexErrorIncompleto');
+    $('#nombre').val('');
+    $('#tipo').val('');
+    $('#descripcion').val('');
     $('#form_add').hide();
     //$('#form_add2').hide();
   });
@@ -274,21 +277,34 @@ $(function(){
       if(postData.nombre != '' && postData.tipo != '' && postData.cuenca != "... Seleccione una cuenca ..."){          
         console.log ("llama al PHP");
         console.log (postData);
+        CambiarClass($('#nombre'), "form-control is-invalid", "form-control"); 
+        CambiarClass($('#tipo'), "form-control is-invalid", "form-control");
+        CambiarClass($('#sel_cuenca'), "form-select is-invalid", "form-select");
+        $('div').remove('#TexErrorIncompleto');
         $.post('php/alta.php', postData, (response) => {
           console.log(response);
           //console.log(postData);
           //$('#form_add').trigger('reset');
           e.preventDefault();
-          if (NewRelev){
-            NewRelev=false;
-            from2();
+          if (response != "existe"){
+            if (NewRelev){
+              NewRelev=false;
+              from2();
+            }else{
+              CambiarClass($('#nombre'), "form-control is-invalid", "form-control"); 
+              CambiarClass($('#tipo'), "form-control is-invalid", "form-control");
+              CambiarClass($('#sel_cuenca'), "form-select is-invalid", "form-select");
+              $('div').remove('#TexErrorIncompleto');
+              $('#form_add').hide();
+              $('#nombre').val('');
+              $('#tipo').val('');
+              $('#descripcion').val('');
+            }
           }else{
-            $('#form_add').hide();
-            $('#nombre').val('');
-            $('#tipo').val('');
-            $('#descripcion').val('');
+            console.log("ERROR AL CARGAR ====== O: O: NOMBRE YA UTILIZADO O: O: ======");
+            CambiarClass($('#nombre'), "form-control", "form-control is-invalid");
+            $('#ContNomAcc').append("<div id='TexErrorIncompleto' style='color: red'>Ya existe un accidente geográfico con este nombre</div>"); //Crea el mensaje de advertencia si ya existe el nombre ingresado
           }
-          
         });
       }
       else
@@ -1115,10 +1131,17 @@ function carga_form_alta_p(){
     antpre[x] = $('#sel_presion.form-select.'+ x.toString()).val();
     x--;
   }
-             
+/*
+  const VerifData = {
+    Cargar: true
+  }
+*/
   $.ajax({
     url: 'php/alta.php',
-    type: 'GET',          
+    type: 'GET',       
+   // data: VerifData,   
+   // contentType: false,
+   // processData: false,
     success: function (response) {            
       if(!response.error) {
         let datos = JSON.parse(response);
@@ -1148,12 +1171,20 @@ function carga_form_alta_p(){
 
 // ----------------CUENCA-----------------  //
 function carga_form_alta_cu(){
+/*
+  const VerifData = {
+    Cargar: "cargar",
+  }
+*/
   $.ajax({
     url: 'php/alta.php',
     type: 'GET',
+  //  data: VerifData,  
+   // contentType: false,
+    //processData: false,
     success: function (response) {
       if(!response.error) {
-        //console.log(response);
+        console.log(response);
         let datos = JSON.parse(response);
         //console.log(datos);
         let template1 = '<option>... Seleccione una cuenca ...</option>';
@@ -1172,9 +1203,15 @@ function carga_form_alta_cu(){
 //----------COMPLEJO-----------------------------------//
    
 function carga_form_alta_co(){
+ /* const VerifData = {
+    Cargar: true
+  }*/
   $.ajax({
     url: 'php/alta.php',
     type: 'GET',
+   // data: VerifData,  
+   // contentType: false,
+   // processData: false,
     success: function (response) {
         if(!response.error) {
         //  console.log(response);
@@ -1197,10 +1234,16 @@ function carga_form_alta_pers(){
     antpers[x] = $('#sel_miembro.form-select.'+ x.toString()).val();
     x--;
   }
-             
+ /*            
+  const VerifData = {
+    Cargar: true
+  }*/
   $.ajax({
     url: 'php/alta.php',
     type: 'GET',
+   // data: VerifData,
+  //  contentType: false,
+  //  processData: false,
     success: function (response) {             
       if(!response.error) {
         let datos = JSON.parse(response);
@@ -1237,10 +1280,17 @@ function carga_form_alta_fa(){
     antfau[x] = $('#sel_fauna.form-select.'+ x.toString()).val();
     x--;
   }   
+
+ /* const VerifData = {
+    Cargar: true
+  }*/
   
   $.ajax({
     url: 'php/alta.php',
     type: 'GET',      
+  //  data: VerifData,
+//    contentType: false,
+ //   processData: false,
     success: function (response) {
       if(!response.error) {
         let datos = JSON.parse(response);
@@ -1277,10 +1327,17 @@ function carga_form_alta_fl(){
     antflo[x] = $('#sel_flora.form-select.'+ x.toString()).val();
     x--;
   }
+/*
+  const VerifData = {
+    Cargar: true
+  }*/
                     
   $.ajax({
     url: 'php/alta.php',
-    type: 'GET',               
+    type: 'GET',  
+  //  data: VerifData,           
+    //contentType: false,
+ //   processData: false,  
     success: function (response) {     
       if(!response.error) {
         let datos = JSON.parse(response);
@@ -1312,9 +1369,15 @@ function carga_form_alta_fl(){
 }
 //---------------------PROPIETARIO--------------------------------//
 function carga_form_alta_propie(){
+/*  const VerifData = {
+    Cargar: true
+  }*/
   $.ajax({
     url: 'php/alta.php',
     type: 'GET',
+  //  data: VerifData,   
+  //  contentType: false,
+  //  processData: false,
     success: function (response) {
         if(!response.error) {
           //console.log(response);
