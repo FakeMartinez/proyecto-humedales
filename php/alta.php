@@ -79,7 +79,8 @@
 
   echo $jsonstring;
 //Carga de Accidente_Geografico
-    if(isset($_POST['nombre'])) {          
+    if(isset($_POST['nombre'])) {  
+      echo "Entra a la carga de accidente";   
       //$add_id = $_POST['id'];
       $add_nom = $_POST['nombre'];
       $add_tipo = $_POST['tipo'];
@@ -93,26 +94,32 @@
       //---------------------
      
       $q_id_cue = mysqli_query($connect,"SELECT Id_cuenca FROM cuenca where Nombre_cuenca = '$add_cuenca'");
-      $q_id_comp = mysqli_query($connect,"SELECT Id_complejo FROM complejo where  Nombre_complejo = '$add_complejo'");
+      
+      
 
       $id_cuenca = array();
-      $id_complejo = array();
+      
 
       while($row = mysqli_fetch_array($q_id_cue)) {
         $id_cuenca = ($row['Id_cuenca']);
       };
 
-      while($row = mysqli_fetch_array($q_id_comp)) {
-        $id_complejo = ($row['Id_complejo']);
-      };
-
+      if ($add_complejo != '... Seleccione un complejo ...'){
+        $q_id_comp = mysqli_query($connect,"SELECT Id_complejo FROM complejo where  Nombre_complejo = '$add_complejo'");
+        foreach ($q_id_comp as $q_idComp){
+          foreach ($q_idComp as $qIdComp){
+            $id_complejo = $qIdComp;
+          }
+        }
+        $query0= "INSERT into accidente_geografico (Nombre,Tipo,Descripcion,Id_complejo,Id_cuenca) values ('$add_nom', '$add_tipo', '$add_descripcion', '$id_complejo', '$id_cuenca')";
+      }else{
+        $id_complejo = '';
+        $query0= "INSERT into accidente_geografico (Nombre,Tipo,Descripcion,Id_cuenca) values ('$add_nom', '$add_tipo', '$add_descripcion', '$id_cuenca')";
+      }
       
-      echo('
-      
-      ');
       echo('Carga de accidente
       ');
-      $query0= "INSERT into accidente_geografico (Nombre,Tipo,Descripcion,Id_cuenca,Id_complejo) values ('$add_nom' ,'$add_tipo' , '$add_descripcion',$id_cuenca , $id_complejo)";
+      
       echo($query0);
       echo "
       ";
@@ -133,22 +140,32 @@
           
       while ($cont_pre >= 0) {
         $presion = $_POST["presiones{$cont_pre}"];
-        $q_id = mysqli_query($connect,"SELECT Id_presiones FROM presiones where Tipo_presiones = '$presion'");
+        echo('Carga de Presiones-Accidente
+        ');
+        if ($presion != '... Seleccione una presión ...'){
+          echo('Hay una presion cargada
+          ');
+          $q_id = mysqli_query($connect,"SELECT Id_presiones FROM presiones where Tipo_presiones = '$presion'");
 
-        if (!$q_id) {
-          die('Query Error'.mysqli_error($connect));
-        }
-
-        while($row = mysqli_fetch_array($q_id)) {
-          $a = ($row['Id_presiones']);
-        };
-
-        $qp = mysqli_query($connect,"INSERT into contiene_presiones(Id_acc, Id_presiones ) VALUES ('$id','$a')");
-        
-        if (!$qp) {
-          die('Query Error'.mysqli_error($connect));
+          if (!$q_id) {
+            die('Query Error'.mysqli_error($connect));
+          }
+  
+          while($row = mysqli_fetch_array($q_id)) {
+            $a = ($row['Id_presiones']);
+          };
+  
+          $qp = mysqli_query($connect,"INSERT into contiene_presiones(Id_acc, Id_presiones ) VALUES ('$id','$a')");
+          
+          if (!$qp) {
+            die('Query Error'.mysqli_error($connect));
+          }else{
+          $cont_pre = $cont_pre-1;
+          }
         }else{
-        $cont_pre = $cont_pre-1;
+          echo('No hay una presion cargada
+          ');
+          $cont_pre = $cont_pre-1;
         }
       }
     }

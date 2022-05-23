@@ -50,6 +50,13 @@ function validacion(postData){
     $('#ContTipAcc').append("<div id='TexErrorIncompleto' style='color: red'>Este campo es obligatorio</div>"); //Crea el mensaje de advertencia de campo incompleto
     b = false;
   }  
+  //console.log(postData.cuenca);
+  if(postData.cuenca=='... Seleccione una cuenca ...')
+  {      
+    CambiarClass($('#sel_cuenca'), "form-select", "form-select is-invalid"); //Si el campo está vacío, cambia la clase del input de "form-control" a "form control is-invalid"
+    $('#ContCuenAcc').append("<div id='TexErrorIncompleto' style='color: red'>Este campo es obligatorio</div>"); //Crea el mensaje de advertencia de campo incompleto
+    b = false;
+  }
   return b;
 }
 
@@ -84,11 +91,15 @@ $(function(){
 
   //Cerrar Formulario Alta y relevamiento 
   $('#close_btn_add').on('click', function(){
+    CambiarClass($('#nombre'), "form-control is-invalid", "form-control"); 
+    CambiarClass($('#tipo'), "form-control is-invalid", "form-control");
+    CambiarClass($('#sel_cuenca'), "form-select is-invalid", "form-select");
+    $('div').remove('#TexErrorIncompleto');
     $('#form_add').hide();
-    $('#form_add2').hide();
+    //$('#form_add2').hide();
   });
   $('#close_btn_add2').on('click', function(){
-    $('#form_add').hide();
+    //$('#form_add').hide();
     $('#form_add2').hide();
   });
   
@@ -260,9 +271,11 @@ $(function(){
       });
     } 
     else{
-      if(postData.nombre != '' && postData.tipo != ''){          
+      if(postData.nombre != '' && postData.tipo != '' && postData.cuenca != "... Seleccione una cuenca ..."){          
+        console.log ("llama al PHP");
+        console.log (postData);
         $.post('php/alta.php', postData, (response) => {
-          //console.log(response);
+          console.log(response);
           //console.log(postData);
           //$('#form_add').trigger('reset');
           e.preventDefault();
@@ -280,6 +293,7 @@ $(function(){
       }
       else
       { 
+        //console.log ("No entra a la carga del accidente");
         validacion(postData)}        
       }
   });
@@ -488,7 +502,7 @@ $(function(){
     }
 
     for (var i=0; i<=x_prop; i++){
-      if ($('#sel_propietario'+i.toString()).val() === '... agregue un propietario ...'){
+      if ($('#sel_propietario'+i.toString()).val() === '... Seleccione un propietario ...'){
         CambiarClass($('#sel_propietario'+i.toString()), "form-select", "form-select is-invalid"); //Si el campo está vacío, cambia la clase del input de "form-control" a "form control is-invalid"
         $('#DivPropComp'+i.toString()).append("<div id='TexErrorIncompleto' style='color: red'>Este campo es obligatorio</div>"); //Crea el mensaje de advertencia de campo incompleto
       }else{
@@ -497,9 +511,9 @@ $(function(){
     }
     var arrayProp = new Array();
 
-    if ($('#nom_comp').val() !== '' && $('#sel_propietario').val() !== '... agregue un propietario ...'){
+    if ($('#nom_comp').val() !== '' && $('#sel_propietario').val() !== '... Seleccione un propietario ...'){
       for (var i=0; i<=x_prop; i++){
-        if ($('#sel_propietario'+i.toString()).val() !== '... agregue un propietario ...'){
+        if ($('#sel_propietario'+i.toString()).val() !== '... Seleccione un propietario ...'){
           arrayProp.push($("#sel_propietario"+i.toString()+" option:selected").text());
           //console.log($('#sel_propietario'+i.toString()+' option:selected').text());
       }
@@ -1108,7 +1122,7 @@ function carga_form_alta_p(){
     success: function (response) {            
       if(!response.error) {
         let datos = JSON.parse(response);
-        let template0 = '';
+        let template0 = '<option>... Seleccione una presión ...</option>';
         datos['presiones'].forEach(dato => {
           var val= true;
           antpre.forEach(e =>{
@@ -1142,7 +1156,7 @@ function carga_form_alta_cu(){
         //console.log(response);
         let datos = JSON.parse(response);
         //console.log(datos);
-        let template1 = '';
+        let template1 = '<option>... Seleccione una cuenca ...</option>';
         datos['cuencas'].forEach(dato => {
           template1 += `
           <option>${dato.nombre_cuenca}</option>
@@ -1166,7 +1180,7 @@ function carga_form_alta_co(){
         //  console.log(response);
           let datos = JSON.parse(response);
         //  console.log(datos);
-          let template2 = '';
+          let template2 = '<option>... Seleccione un complejo ...</option>';
           datos['complejos'].forEach(dato => {template2 += `<option>${dato.nombre_complejo}</option>` });                    
           $('#sel_complejo').html(template2);    
       }
@@ -1190,7 +1204,7 @@ function carga_form_alta_pers(){
     success: function (response) {             
       if(!response.error) {
         let datos = JSON.parse(response);
-        let template3 = '';          
+        let template3 = '<option>... Seleccione una persona ...</option>';          
         datos['persona'].forEach(dato => {
           var val= true;
           antpers.forEach(e =>{
@@ -1230,7 +1244,7 @@ function carga_form_alta_fa(){
     success: function (response) {
       if(!response.error) {
         let datos = JSON.parse(response);
-        let template4 = '';    
+        let template4 = `<option>... Seleccione una fauna ...</option>`;    
         datos['faunas'].forEach(dato => {
           var val= true;
           antfau.forEach(e =>{
@@ -1270,7 +1284,7 @@ function carga_form_alta_fl(){
     success: function (response) {     
       if(!response.error) {
         let datos = JSON.parse(response);
-        let template5 = '';
+        let template5 = `<option>... Seleccione una flora ...</option>`;
                        
         datos['floras'].forEach(dato => {
           var val= true;
@@ -1306,7 +1320,7 @@ function carga_form_alta_propie(){
           //console.log(response);
           let datos = JSON.parse(response);
           //console.log(datos);
-          let template6 = `<option>... agregue un propietario ...</option>`;
+          let template6 = `<option>... Seleccione un propietario ...</option>`;
           datos['propietarios'].forEach(dato => {template6 += `<option>${dato.nom_prop}</option>` });  
           //console.log(template6);    
           /*for (var i = 0; i <= x_prop; i++) {
