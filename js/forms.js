@@ -1395,10 +1395,18 @@ function carga_form_alta_propie(){
   });
 };
 
+
+
+
+
+
+
 ////////////////////////////////
 
-//-------------------------------------------------//
-//--------------------Modificar--------------------------//
+//=========================================================//
+//=========================================================//
+//----------------------Modificar--------------------------//
+//=========================================================//
     
 $('#btn_modif').on('click', function(){
   $('#form_modif').show();
@@ -1406,6 +1414,7 @@ $('#btn_modif').on('click', function(){
   $('#form_modal').css({'background':'#DEFEAE'});
   update = false; 
   
+  //- accidentes geograficos -//
   $('#btn_maccidente').on('click',function(){
     var postData= {
       accidente:true,
@@ -1418,6 +1427,7 @@ $('#btn_modif').on('click', function(){
     });
   })
 
+  //- complejos -//
   $('#btn_mcomplejo').on('click',function(){
     var postData= {
       complejo:true,
@@ -1428,6 +1438,79 @@ $('#btn_modif').on('click', function(){
       $("#myTable").html(response);
     });
   })
+
+  //- cuencas -//
+  $('#btn_mcuenca').on('click',function(){
+    var postData= {
+      cuenca:true,
+    }
+    $('#ContTable').css({'visibility':'visible'});
+    $.post('php/modificar.php', postData, (response) => {
+      console.log(response);  
+      $("#myTable").html(response);
+    });
+  })
+
+  //- relevamiento -//
+  $('#btn_mrelevamiento').on('click',function(){
+    var postData= {
+      relevamiento:true,
+    }
+    $('#ContTable').css({'visibility':'visible'});
+    $.post('php/modificar.php', postData, (response) => {
+      console.log(response);  
+      $("#myTable").html(response);
+    });
+  })
+
+  //- fauna -//
+  $('#btn_mfauna').on('click',function(){
+    var postData= {
+      fauna:true,
+    }
+    $('#ContTable').css({'visibility':'visible'});
+    $.post('php/modificar.php', postData, (response) => {
+      console.log(response);  
+      $("#myTable").html(response);
+    });
+  })
+
+  //- flora -//
+  $('#btn_mflora').on('click',function(){
+    var postData= {
+      flora:true,
+    }
+    $('#ContTable').css({'visibility':'visible'});
+    $.post('php/modificar.php', postData, (response) => {
+      console.log(response);  
+      $("#myTable").html(response);
+    });
+  })
+
+  //- presioness -//
+  $('#btn_mpresiones').on('click',function(){
+    var postData= {
+      presion:true,
+    }
+    $('#ContTable').css({'visibility':'visible'});
+    $.post('php/modificar.php', postData, (response) => {
+      console.log(response);  
+      $("#myTable").html(response);
+    });
+  })
+
+  //- personas -//
+  $('#btn_mpersonas').on('click',function(){
+    var postData= {
+      persona:true,
+    }
+    $('#ContTable').css({'visibility':'visible'});
+    $.post('php/modificar.php', postData, (response) => {
+      console.log(response);  
+      $("#myTable").html(response);
+    });
+  })
+
 });           
 
 
