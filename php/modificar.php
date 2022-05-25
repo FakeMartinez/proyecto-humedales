@@ -27,7 +27,7 @@ if (isset($_POST['accidente'])){
       $suport = '';
       foreach($Fil as $Col){
          if ($C == 0){ //ID
-            $cosa = $cosa."<td style='width:70px; min-width: 70px;'>$Col</td>";
+            $cosa = $cosa."<td id='IDAcc$F' style='width:70px; min-width: 70px;'>$Col</td>";
          }else{
             if ($C == 1){ //Nombre
                //$cosa = $cosa."<td style='width:225px; min-width: 225px;'><input value=$Col></input></td>";
@@ -51,11 +51,11 @@ if (isset($_POST['accidente'])){
                               foreach ($nomcomple as $NCom){
                                  foreach($NCom as $NC){
                                     //echo ("nomcomple:". $NC);
-                                    $cosa = $cosa."<td id='IDCom$F' style='width:225px; min-width: 225px;'>$NC</td>";
+                                    $cosa = $cosa."<td style='width:225px; min-width: 225px;'>$NC</td>";
                                  }
                               }
                            }else{
-                              $cosa = $cosa."<td id='IDCom$F' style='width:225px; min-width: 225px;'>-</td>";
+                              $cosa = $cosa."<td style='width:225px; min-width: 225px;'>-</td>";
                            }
                         }else{
                            if ($C == 6){//Id_cuenca
@@ -65,11 +65,11 @@ if (isset($_POST['accidente'])){
                                  foreach ($nomcomple as $NCom){
                                     foreach($NCom as $NC){
                                        //echo ("nomcomple:". $NC);
-                                       $cosa = $cosa."<td id='IDCom$F' style='width:225px; min-width: 225px;'>$NC</td>";
+                                       $cosa = $cosa."<td style='width:225px; min-width: 225px;'>$NC</td>";
                                     }
                                  }
                               }else{
-                                 $cosa = $cosa."<td id='IDCom$F' style='width:225px; min-width: 225px;'>-</td>";
+                                 $cosa = $cosa."<td style='width:225px; min-width: 225px;'>-</td>";
                               }
                            }                                                
                         }
@@ -111,11 +111,11 @@ if (isset($_POST['complejo'])){
       $cosa = $cosa."<td style='width:25px; min-width: 25px;'><button style='background: orange;position: relative;float: right;'>||</button></td>";
       foreach($Fil as $Col){
          if ($C == 0){//ID
-            $cosa = $cosa."<td>$Col</td>";
+            $cosa = $cosa."<td id='IDCom$F' >$Col</td>";
          }else
          {
             if ($C == 1){ //Nombre
-               $cosa = $cosa."<td id='IDCom$F' style='width:70px; min-width: 70px;'>'$Col'</td>";
+               $cosa = $cosa."<td style='width:70px; min-width: 70px;'>'$Col'</td>";
 
                $IdComp = mysqli_query($connect, "SELECT Id_complejo FROM complejo WHERE Nombre_complejo='$Col'");
 
@@ -206,6 +206,191 @@ if (isset($_POST['cuenca'])){
 }else
 {}
 
+//===========================================================================================
+//Para Relevamiento
+if (isset($_POST['relevamiento'])){
+   $Consulta = "SELECT * FROM relevamiento";
+   $resulta = mysqli_query($connect, $Consulta);
+   $cosa = "
+      <table>
+         <tr style='height:40px'>
+            <td style='width:50px; min-width: 50px;'></td> 
+            <td style='width:70px; min-width: 70px;'>ID</td> <!---->
+            <td style='width:300px; min-width: 300px;'>Accidente geográfico</td>  <!--id-->
+            <td style='width:300px; min-width: 300px;'>Fecha</td> <!---->
+
+            <td style='width:300px; min-width: 300px;'>Conductividad</td> <!---->
+            <td style='width:300px; min-width: 300px;'>Ancho</td> <!---->
+            <td style='width:300px; min-width: 300px;'>Oxigeno Disuelto</td> <!---->
+            <td style='width:300px; min-width: 300px;'>Calidad de agua</td> <!---->
+            <td style='width:300px; min-width: 300px;'>Diversidad vegetal</td> <!---->
+            <td style='width:300px; min-width: 300px;'>Régimen hidrológico</td> <!---->
+            <td style='width:300px; min-width: 300px;'>Turbidez del agua</td> <!---->
+            <td style='width:300px; min-width: 300px;'>Largo</td> <!---->
+            <td style='width:300px; min-width: 300px;'>PH</td> <!---->
+            <td style='width:300px; min-width: 300px;'>Color</td> <!---->
+            <td style='width:300px; min-width: 300px;'>Fuente</td> <!---->
+            <td style='width:300px; min-width: 300px;'>Tiempo de permanencia</td> <!---->
+            <td style='width:300px; min-width: 300px;'>Superficie</td> <!---->
+            <td style='width:300px; min-width: 300px;'>Temperatura de agua</td> <!---->
+
+            <td style='width:300px; min-width: 300px;'>Relevadores</td>  <!--bus-->
+            <td style='width:300px; min-width: 300px;'>Observaciones</td>  <!---->
+            <td style='width:300px; min-width: 300px;'>Fauna</td> <!--bus-->
+            <td style='width:300px; min-width: 300px;'>Flora</td> <!--bus-->
+         </tr>";
+   $C= 0;
+   $F= 0;
+   foreach($resulta as $Fil){
+      $cosa = $cosa."<tr style='height:80px'>";
+      $cosa = $cosa."<td style='width:25px; min-width: 25px;'><button style='background: orange;position: relative;float: right;'>||</button></td>";
+      $suportNomRel ="<td>";
+      $suportObserv ="";
+      $suportFauna ="<td>";
+      $suportFlora ="<td>";
+      foreach($Fil as $Col){
+         if ($C == 0){//ID
+            $cosa = $cosa."<td id='IDRel$F'>$Col</td>";
+
+            // Relevadores
+            $IDsReleva = mysqli_query($connect, "SELECT Id_miembro FROM investiga WHERE Id_rel = $Col");
+            foreach ($IDsReleva as $IDsRel){
+               foreach ($IDsRel as $IDsR){
+                  $IDPers = mysqli_query($connect, "SELECT Id_persona FROM miembro WHERE Id_miembro = $IDsR");
+                  foreach ($IDPers as $IDPe){
+                     foreach ($IDPe as $IDP){
+                        $NomRelev= mysqli_query($connect, "SELECT Nombre_persona FROM persona WHERE Id_persona = $IDP");
+                        foreach ($NomRelev as $NomRel){
+                           foreach ($NomRel as $NR){
+                              $suportNomRel = $suportNomRel."► $NR<br>";
+                           }
+                        }
+                     }
+                  }
+               }
+            }
+            $suportNomRel = $suportNomRel."</td>";
+           // Fauna
+           $IDsFauna = mysqli_query($connect, "SELECT Id_fauna FROM contiene_fauna WHERE Id_rel = $Col");
+           foreach ($IDsFauna as $IDsFau){
+              foreach ($IDsFau as $IDF){
+                  $NomFauna = mysqli_query($connect, "SELECT Nombre_coloquial FROM fauna WHERE Id_fauna = $IDF");
+                  foreach($NomFauna as $NomFau){
+                     foreach ($NomFau as $NF){
+                        $suportFauna = $suportFauna."► $NF<br>";
+                     }
+                  }
+              }
+           }
+           $suportFauna  = $suportFauna ."</td>";
+           // Flora
+           $IDsFlora = mysqli_query($connect, "SELECT Id_flora FROM contiene_flora WHERE Id_rel = $Col");
+           foreach ($IDsFlora as $IDsFlo){
+              foreach ($IDsFlo as $IDFl){
+                  $NomFlora = mysqli_query($connect, "SELECT Nombre_coloquial FROM flora WHERE Id_flora = $IDFl");
+                  foreach($NomFlora as $NomFlo){
+                     foreach ($NomFlo as $NFl){
+                        $suportFlora = $suportFlora."► $NFl<br>";
+                     }
+                  }
+              }
+           }
+           $suportFlora  = $suportFlora ."</td>";
+
+
+         }else
+         {
+            if ($C == 1){ //Accidente geográfico
+               $nomAcc = mysqli_query($connect, "SELECT Nombre FROM accidente_geografico WHERE Id_acc = $Col");
+               foreach ($nomAcc as $noAc){
+                  foreach ($noAc as $nA){
+                     $cosa = $cosa."<td style='width:70px; min-width: 70px;'>'$nA'</td>";
+                  }
+               }
+            }else
+            {
+               if ($C == 2){ //Fecha
+                  $cosa = $cosa."<td style='width:70px; min-width: 70px;'>'$Col'</td>";
+               }else{
+                  if ($C == 3){ //Conductividad
+                     $cosa = $cosa."<td style='width:70px; min-width: 70px;'>'$Col'</td>";
+                  }else{
+                     if ($C == 4){ //Ancho
+                        $cosa = $cosa."<td style='width:70px; min-width: 70px;'>'$Col'</td>";
+                     }else{
+                        if ($C == 5){ //Oxigeno disuelto
+                           $cosa = $cosa."<td style='width:70px; min-width: 70px;'>'$Col'</td>";
+                        }else{
+                           if ($C == 6){ //Calidad de agua
+                              $cosa = $cosa."<td style='width:70px; min-width: 70px;'>'$Col'</td>";
+                           }else{
+                              if ($C == 7){ //Diversidad vegetal
+                                 $cosa = $cosa."<td style='width:70px; min-width: 70px;'>'$Col'</td>";
+                              }else{
+                                 if ($C == 8){ //Régimen hidrologico
+                                    $cosa = $cosa."<td style='width:70px; min-width: 70px;'>'$Col'</td>";
+                                 }else{
+                                    if ($C == 9){ //Turbidez del agua
+                                       $cosa = $cosa."<td style='width:70px; min-width: 70px;'>'$Col'</td>";
+                                    }else{
+                                       if ($C == 10){ //Largo
+                                          $cosa = $cosa."<td style='width:70px; min-width: 70px;'>'$Col'</td>";
+                                       }else{
+                                          if ($C == 11){ //PH
+                                             $cosa = $cosa."<td style='width:70px; min-width: 70px;'>'$Col'</td>";
+                                          }else{
+                                             if ($C == 12){ //Color
+                                                $cosa = $cosa."<td style='width:70px; min-width: 70px;'>'$Col'</td>";
+                                             }else{
+                                                if ($C == 13){ //Fuente
+                                                   $cosa = $cosa."<td style='width:70px; min-width: 70px;'>'$Col'</td>";
+                                                }else{
+                                                   if ($C == 14){ //Tiempo de permanencia
+                                                      $cosa = $cosa."<td style='width:70px; min-width: 70px;'>'$Col'</td>";
+                                                   }else{
+                                                      if ($C == 15){ //Superficie
+                                                         $cosa = $cosa."<td style='width:70px; min-width: 70px;'>'$Col'</td>";
+                                                      }else{
+                                                         if ($C == 16){ //Temperatura del agua
+                                                            $cosa = $cosa."<td style='width:70px; min-width: 70px;'>'$Col'</td>";
+                                                         }else{
+                                                            if ($C == 17){ //Observaciones
+                                                               $suportObserv = $suportObserv."<td style='height: inherit; overflow: auto; width:425px; min-width: 425px;'><div style='height: inherit;'>$Col</div></td>";
+                                                            }else{}
+                                                         }
+                                                      }
+                                                   }
+                                                }
+                                             }
+                                          }
+                                       }
+                                    }
+                                 }
+                              }
+                           }
+                        }
+                     }
+                  }
+               }
+            }
+         }
+
+         $C++;
+      }
+      $cosa = $cosa.$suportNomRel;
+      $cosa = $cosa.$suportObserv;
+      $cosa = $cosa.$suportFauna;
+      $cosa = $cosa.$suportFlora;
+      $cosa = $cosa."</tr>";
+      $C=0;
+      $F= 1;
+   }
+   $cosa = $cosa."</table>";
+   echo $cosa;
+}else
+{}
+
+
 
 //===========================================================================================
 //Para Fauna
@@ -230,7 +415,7 @@ if (isset($_POST['fauna'])){
 
       foreach($Fil as $Col){
          if ($C == 0){//ID
-            $cosa = $cosa."<td id='IDCue$F'>$Col</td>";
+            $cosa = $cosa."<td id='IDFau$F'>$Col</td>";
          }else
          {
             if ($C == 1){ //Nombre coloquial
@@ -280,7 +465,7 @@ if (isset($_POST['flora'])){
 
       foreach($Fil as $Col){
          if ($C == 0){//ID
-            $cosa = $cosa."<td id='IDCue$F'>$Col</td>";
+            $cosa = $cosa."<td id='IDFlo$F'>$Col</td>";
          }else
          {
             if ($C == 1){ //Nombre coloquial
@@ -328,7 +513,7 @@ if (isset($_POST['presion'])){
 
       foreach($Fil as $Col){
          if ($C == 0){//ID
-            $cosa = $cosa."<td id='IDCue$F'>$Col</td>";
+            $cosa = $cosa."<td id='IDPre$F'>$Col</td>";
          }else
          {
             if ($C == 1){ //Tipo (o nombre)
@@ -375,7 +560,7 @@ if (isset($_POST['persona'])){
       $suport;
       foreach($Fil as $Col){
          if ($C == 0){//ID-DNI-CUIL-CUIT
-            $cosa = $cosa."<td id='IDCue$F'>$Col</td>";
+            $cosa = $cosa."<td id='IDPer$F'>$Col</td>";
 
            
             //Comprobar si es propietario

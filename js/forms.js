@@ -1487,7 +1487,7 @@ $('#btn_modif').on('click', function(){
     });
   })
 
-  //- presioness -//
+  //- presiones -//
   $('#btn_mpresiones').on('click',function(){
     var postData= {
       presion:true,
