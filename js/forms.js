@@ -275,7 +275,7 @@ $(function(){
     } 
     else{
       if(postData.nombre != '' && postData.tipo != '' && postData.cuenca != "... Seleccione una cuenca ..."){          
-        console.log ("llama al PHP");
+        //console.log ("llama al PHP");
         console.log (postData);
         CambiarClass($('#nombre'), "form-control is-invalid", "form-control"); 
         CambiarClass($('#tipo'), "form-control is-invalid", "form-control");
@@ -363,13 +363,15 @@ $(function(){
   
     while(x_fau>=0){
       console.log('sel_fauna.form-select '.concat(x_fau.toString()));
-      Object.defineProperty(postData, 'fauna'+ x_fau.toString(),{
-        value:$('#sel_fauna.form-select.'.concat(x_fau.toString())).val(),
-        writable: true,
-        enumerable: true,
-        configurable: true
-        
-      }); 
+      if ($('#sel_fauna.form-select.'.concat(x_fau.toString())).val() != "... Seleccione una fauna ..."){
+        Object.defineProperty(postData, 'fauna'+ x_fau.toString(),{
+          value:$('#sel_fauna.form-select.'.concat(x_fau.toString())).val(),
+          writable: true,
+          enumerable: true,
+          configurable: true
+          
+        }); 
+      }
       //postData.presion.concat(x.toString()) = $('#sel_presion.form-select '.concat(x.toString())).val()
       x_fau = x_fau-1;
     }
@@ -379,12 +381,14 @@ $(function(){
 //    console.log("====================================================================");
     while(x_flo>=0){
       console.log('sel_flora.form-select '.concat(x_flo.toString()));
-      Object.defineProperty(postData, 'flora'+ x_flo.toString(),{
-        value:$('#sel_flora.form-select.'.concat(x_flo.toString())).val(),
-        writable: true,
-        enumerable: true,
-        configurable: true
-      }); 
+      if ($('#sel_flora.form-select.'.concat(x_flo.toString())).val() != "... Seleccione una flora ..."){
+        Object.defineProperty(postData, 'flora'+ x_flo.toString(),{
+          value:$('#sel_flora.form-select.'.concat(x_flo.toString())).val(),
+          writable: true,
+          enumerable: true,
+          configurable: true
+        }); 
+      }
       x_flo = x_flo-1;
     }
     
