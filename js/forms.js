@@ -33,6 +33,10 @@ function CloseMensImag (){
   //getElementById("MensErrorImag").remove();
 }
 
+function deletesHTML(ID){ //Se le pasa la ID del elemento para borrarlo
+  $('#'+ID).hide();
+  $('#'+ID).remove();
+}
 
 function validacion(postData){
   //console.log('entro a la funcion validacion');
