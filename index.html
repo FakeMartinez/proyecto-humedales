@@ -316,7 +316,8 @@
                 </div>
 
                 <!-- cuenca -->
-                <div class="form-group">
+
+                <div class="form-group" id="ContCuenAcc">
                   <legend class="mt-4">Cuenca</legend>
                   <select class="form-select" id="sel_cuenca">
                     <option>Seleccione Cuenca...</option>
@@ -944,26 +945,26 @@
          </button>
        </div>
 
-       <div class="modal-body">
+
+       <div class="modal-body" style="padding: 0px">
          <div class="row p-4"> 
-
-        <fieldset> <!-- Formulario -->
           <form id="form-imagen" enctype="multipart/form-data">
-           <!-- Imagen -->
-           <div class="form-group">
-             <label for="formFile" class="form-label mt-4">Cargar Imagen</label>
-             <input class="form-control" type="file" id="Newimg">
-           </div>
-
-         </fieldset>
-         <div class="modal-footer">
-                 <input type="hidden" id="form_imagen_id">
-                 <button type="submit" class="btn btn-primary btn-block text-center">
-                   Guardar imagen
-                 </button>
-           </form>
+          <fieldset> <!-- Formulario -->
+            <!-- Imagen -->
+            <div class="form-group" style="margin-bottom: 2rem;" id="ContenedorInputImgForm">
+              <label for="formFile" class="form-label mt-4">Cargar Imagen</label>
+              <input class="form-control" type="file" id="Newimg">
+            </div>
+            
+          </fieldset>
+          <div class="modal-footer">
+            <input type="hidden" id="form_imagen_id">
+            <button type="submit" class="btn btn-primary btn-block text-center" >
+              Guardar imagen
+            </button>
+          </form>
          </div>
-       </div>
+        </div>
      </div>
    </div>
  </div>
@@ -1026,17 +1027,18 @@
         <div class="row p-4">
 
         <fieldset id="res_img"> <!-- Formulario -->
-        <div class="card"  style="width: 18rem;">
-        <img class="card-img-top" src="images/default-avatar.png">
-        </div>
-        <input class="form-control" type="file" id="img_xy">
+          <div class="card"  style="width: 18rem;">
+            <img class="card-img-top" src="images/default-avatar.png">
+          </div>
+          <input class="form-control" type="file" id="img_xy">
         </fieldset>
+
         <div class="modal-footer">
-                <input type="hidden" id="form_cuenca_id">
-                <button type="submit" class="btn btn-primary btn-block text-center" id="sub_img">
-                  Buscar Coordenadas
-                </button>
-          </form>
+          <input type="hidden" id="form_cuenca_id">
+          <button type="submit" class="btn btn-primary btn-block text-center" id="sub_img">
+            Buscar Coordenadas
+          </button>
+        </form>
         </div>
         
       </div>
@@ -1178,6 +1180,7 @@
             <input type="checkbox" class="form-check-input" id="CheckAcc" value="Accidente Geográfico" style="border-radius: 10px;"> Accidentes Geográficos
           </label>
         </div>
+
 
         <div class="form-check form-switch" style="left: 5px;">
           <label class="form-check-label">
