@@ -67,10 +67,11 @@
         <div class="close" style="cursor:pointer;" id="closeBtn">x</div>
    
         <h3 id="h_name" class="card-header"></h3>
+        <div id="rele">Relevamiento</div>
         <div class="card-body">
-    
+          <!--
           <h5 id="h_lat" class="card-title">Latitud: </h5>
-          <h5 id="h_lng" class="card-title">Longitud: </h5>
+          <h5 id="h_lng" class="card-title">Longitud: </h5>-->
     
           <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
             <button type="button" class="btn btn-info">Opciones</button>
@@ -84,7 +85,8 @@
           </div>
     
         </div>
-        <ul class="list-group list-group-flush">
+        <ul class="list-group list-group-flush" id="data_list">
+          <!--
           <li id="h_cuenca" class="list-group-item">Cuenca: </li>
           <li id="h_complejo" class="list-group-item">Complejo: </li>
           <li id="h_fuente" class="list-group-item">Fuente: </li>
@@ -92,7 +94,7 @@
           <li id="h_div" class="list-group-item">Diversidad Vegetal: </li>
           <li id="h_reg" class="list-group-item">Regimen Hidrologico: </li>
           <li id="h_agua" class="list-group-item">Calidad del agua: </li>
-          <li id="h_presion" class="list-group-item">Presion: </li>
+          <li id="h_presion" class="list-group-item">Presion: </li>-->
     
           <li class="list-group-item"> 
             <div class="accordion-item">
@@ -314,6 +316,7 @@
                 </div>
 
                 <!-- cuenca -->
+
                 <div class="form-group" id="ContCuenAcc">
                   <legend class="mt-4">Cuenca</legend>
                   <select class="form-select" id="sel_cuenca">
@@ -942,6 +945,7 @@
          </button>
        </div>
 
+
        <div class="modal-body" style="padding: 0px">
          <div class="row p-4"> 
           <form id="form-imagen" enctype="multipart/form-data">
@@ -1176,6 +1180,7 @@
             <input type="checkbox" class="form-check-input" id="CheckAcc" value="Accidente Geográfico" style="border-radius: 10px;"> Accidentes Geográficos
           </label>
         </div>
+
 
         <div class="form-check form-switch" style="left: 5px;">
           <label class="form-check-label">

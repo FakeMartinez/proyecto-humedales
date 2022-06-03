@@ -3,6 +3,7 @@
   require('conexion.php');
 
 
+
 //Carga de Accidente_Geografico
 if(isset($_POST['nombre'])) {  
   $ExisteNombre = false;
@@ -380,6 +381,7 @@ if (!$qp) {
   $q_pers =  mysqli_query($connect,"SELECT Nombre_persona FROM persona join miembro on persona.Id_persona = miembro.Id_persona");    // solo los miembros del proyecto de la tabla persona
 
 
+
   $json1 = array();
   $json2 = array();
   $json3 = array();
@@ -393,6 +395,7 @@ if (!$qp) {
       'nombre_cuenca' => $row['Nombre_cuenca']
     ]);
   };
+
 
   while($row = mysqli_fetch_array($q_comp)) {
     array_push($json2, [
@@ -447,6 +450,7 @@ if (!$qp) {
   $jsonstring = json_encode($jsons);
 
   echo $jsonstring;
+
 //}
 
 
@@ -456,5 +460,5 @@ if (!$qp) {
  
       
     
-  
+
 ?>

@@ -28,10 +28,12 @@ function CambiarClass(Objeto, ClassActual, ClassNueva){
   $(Objeto).addClass(ClassNueva);   //agrega el nuevo class al elemento HTML
 };
 
+
 function CloseMensImag (){
   $("#MensErrorImag").remove();
   //getElementById("MensErrorImag").remove();
 }
+
 
 
 function validacion(postData){
@@ -50,6 +52,7 @@ function validacion(postData){
     $('#ContTipAcc').append("<div id='TexErrorIncompleto' style='color: red'>Este campo es obligatorio</div>"); //Crea el mensaje de advertencia de campo incompleto
     b = false;
   }  
+
   //console.log(postData.cuenca);
   if(postData.cuenca=='... Seleccione una cuenca ...')
   {      
@@ -57,6 +60,7 @@ function validacion(postData){
     $('#ContCuenAcc').append("<div id='TexErrorIncompleto' style='color: red'>Este campo es obligatorio</div>"); //Crea el mensaje de advertencia de campo incompleto
     b = false;
   }
+
   return b;
 }
 
@@ -91,6 +95,7 @@ $(function(){
 
   //Cerrar Formulario Alta y relevamiento 
   $('#close_btn_add').on('click', function(){
+
     CambiarClass($('#nombre'), "form-control is-invalid", "form-control"); 
     CambiarClass($('#tipo'), "form-control is-invalid", "form-control");
     CambiarClass($('#sel_cuenca'), "form-select is-invalid", "form-select");
@@ -103,6 +108,7 @@ $(function(){
   });
   $('#close_btn_add2').on('click', function(){
     //$('#form_add').hide();
+
     $('#form_add2').hide();
   });
   
@@ -229,7 +235,9 @@ $(function(){
     $('#form_propietario_add').hide();
   })
 
+
   
+
 
 
   //////////////////////Formulario Alta Acc////////////////////////
@@ -288,9 +296,11 @@ $(function(){
           e.preventDefault();
           if (response != "existe"){
             if (NewRelev){
+              add_geo();
               NewRelev=false;
               from2();
             }else{
+              add_geo(); // Llamada a la funcion para guardar geometria 
               CambiarClass($('#nombre'), "form-control is-invalid", "form-control"); 
               CambiarClass($('#tipo'), "form-control is-invalid", "form-control");
               CambiarClass($('#sel_cuenca'), "form-select is-invalid", "form-select");
@@ -309,6 +319,7 @@ $(function(){
       }
       else
       { 
+
         //console.log ("No entra a la carga del accidente");
         validacion(postData)}        
       }
@@ -723,16 +734,19 @@ $('#form_propietario_add').submit(e => {
   });
 */
 
+
 //=====================================================================================
 //=====================================================================================
 //=====================================================================================
 //                FORM IMAGEN
 //______________________________________________________________________________________
+
 $('#form-imagen').submit(e => {
   e.preventDefault();
   var formData = new FormData();
   var files = $('#Newimg')[0].files[0];
   formData.append('file',files);
+
 console.log(files);
     $.ajax({
       url: 'php/CargaImagenes.php',
@@ -870,7 +884,9 @@ console.log(files);
 
 
       //$('#form_add').trigger('reset');
+
       
+
     }
 })});
 
@@ -1135,6 +1151,7 @@ function carga_form_alta_p(){
     antpre[x] = $('#sel_presion.form-select.'+ x.toString()).val();
     x--;
   }
+
 /*
   const VerifData = {
     Cargar: true
@@ -1174,7 +1191,7 @@ function carga_form_alta_p(){
 }
 
 // ----------------CUENCA-----------------  //
-function carga_form_alta_cu(){
+
 /*
   const VerifData = {
     Cargar: "cargar",

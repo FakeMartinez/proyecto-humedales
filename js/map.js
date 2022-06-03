@@ -45,12 +45,16 @@ var osmUrl = //'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
         },
         draw: {
             polygon: {
-                allowIntersection: false,
+                allowIntersection: true,
                 showArea: true
+            },
+            circle:false,
+            rectangle:false
             }
         }
-    }));
+    ));
 
+ var postData;
 
     //::::::::::::::::::::::::MARCAR_MAPA::::::::::::::::::::::::
     myMap.on(L.Draw.Event.CREATED, function (event) {
@@ -82,33 +86,41 @@ var osmUrl = //'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
         drawnItems.addLayer(layer);
 
         $('#cancel_marcar').on('click', function(){
-            //llamar formulario "CARGAR_ACC"
-            //guardar datos del formulario
+         
+            $('#form_add').show();
+            $('#t_form.modal-title').html('Alta Accidente Geografico');
+            $('#form_modal').css({'background':'#DEFEAE'});
+            $('#ID_humedal').val('');
+            $('#nombre').val('');
+            update = false;   
+            carga_form_alta_cu();
+            carga_form_alta_co();
+            carga_form_alta_p();
+            carga_form_alta_fa();
+            carga_form_alta_fl();
+            carga_form_alta_pers();
+          
+            $('#form_add').submit(e => {
+              postData = {
+                type: event.layer.toGeoJSON().geometry.type,
+                coors: event.layer.toGeoJSON().geometry.coordinates,
+                nom: $('#nombre').val()};
+              });
 
-            const postData = {
-              type: event.layer.toGeoJSON().geometry.type,
-              coors: event.layer.toGeoJSON().geometry.coordinates
-            
-            };
-            
-            L.marker([ubi[1], ubi[0]], {icon: L.AwesomeMarkers.icon({
-              icon: 'tint', 
-              prefix: 'fa', 
-              markerColor: 'blue'}) 
-             }).addTo(myMap);
-
-          /*Guardar Objeto en BD (PERERO)
-          $.post('php/geometry.php', postData, (response) => {
-            console.log(postData);
-            console.log(response);
-            
-          });*/
           //////////////////////////////
           $("#msj_marcar_mapa").hide();
        
     });
+    
+
 
  });
+
+ function add_geo(){
+  $.post('php/geometry.php', postData, (response) => {
+    console.log(postData);
+    console.log(response);
+    });}
 /*
  L.marker([-30.7628, -57.9567], {icon: L.AwesomeMarkers.icon({
   icon: 'tint', 
@@ -215,9 +227,41 @@ function estilo_monumentos (tipo) {
   };
 };
 
+function highlightFeature(e) {
+  var layer = e.target;
+
+  layer.setStyle({
+      weight: 3,
+      dashArray: '',
+      fillOpacity: 0.5
+  });
+
+  if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+      layer.bringToFront();
+  }
+
+}
+var obj;
+
+function resetHighlight(e) {
+obj.resetStyle(e.target);
+}
+
+function zoomToFeature(e) {
+myMap.fitBounds(e.target.getBounds());
+}
+
+function onEachFeature(feature, layer) {
+layer.on({
+    mouseover: highlightFeature,
+    mouseout: resetHighlight,
+    click: zoomToFeature
+});
+}
+
   
 ///------------000--------------------//SELECCIONAR_ACC//-------------000-------------------///
-var obj;
+$(document).ready(function() { //Me aseguro que los eventos esten cargados
 $.ajax({
   url:   'php/cons_lug_interes.php', //Archivo PHP con los datos
   type:  'GET',
@@ -256,6 +300,7 @@ if(single.type=="POINT"){
 
   }});
 
+})//----->>>>
  //Eventos asociados a los Lugares de interes 
 
   $(document).on('mouseover','#btnDropLg',function(){
@@ -409,36 +454,7 @@ function tabla(id){
 		//popup.setContent('Descripción: '+ e.target.options.properties).openOn(myMap);
 	};
 
-  function highlightFeature(e) {
-    var layer = e.target;
 
-    layer.setStyle({
-        weight: 3,
-        dashArray: '',
-        fillOpacity: 0.5
-    });
-
-    if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
-        layer.bringToFront();
-    }
-
-}
-
-function resetHighlight(e) {
-  obj.resetStyle(e.target);
-}
-
-function zoomToFeature(e) {
-  myMap.fitBounds(e.target.getBounds());
-}
-
-function onEachFeature(feature, layer) {
-  layer.on({
-      mouseover: highlightFeature,
-      mouseout: resetHighlight,
-      click: zoomToFeature
-  });
-}
   
 
 var info;  //Variable para la capa de control
@@ -474,19 +490,21 @@ data.forEach(function(i){
 
 rele();
 function rele(){
-  
-  var i = ($("#sel_frel").val())-1;
-  console.log(data[i]);
+  var rel = ($("#sel_frel").val());
   $('#data_list').html('');
-for (const key in data[i]) {
-    if(data[i][key]!==''){
-      console.log(key);
-      $('#h_name').html(data[i]['nombre']);
-      $('#data_list').append('<li class="list-group-item">'+key+': '+data[i][key]+'</li>');
+  data.forEach(function(i){
+    if(i['id_rel']==rel){
+      for (const key in i) {
+        if(i[key]!=='' && i[key]!==null && key!=='fecha' && key!=='id_acc' && key !=='id_rel'){
+          console.log(key);
+          $('#h_name').html(i['nombre']);
+          $('#data_list').append('<li class="list-group-item">'+key+': '+i[key]+'</li>');
+        }
+      };
     }
-  };
-
+  });
 }
+
 $('#closeBtn').on('click', function(){
   $('#info').hide();
   $('#myMap').css({'width': '100%'});
