@@ -1191,7 +1191,7 @@ function carga_form_alta_p(){
 }
 
 // ----------------CUENCA-----------------  //
-
+function carga_form_alta_cu(){
 /*
   const VerifData = {
     Cargar: "cargar",

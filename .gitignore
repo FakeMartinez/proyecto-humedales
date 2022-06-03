@@ -5,5 +5,5 @@ package-lock.json
 package.json
 desktop.ini
 index.php
-
+*.xlsx
 *.png
