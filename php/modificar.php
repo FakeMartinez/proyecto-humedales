@@ -33,6 +33,14 @@ if (isset($_POST['CargarSelectsAcc'])){
 }
 
 
+
+//Modificar datos en BD
+if (isset($_POST['ModiAcc'])){
+   
+   
+}
+
+
 //===========================================================================================
 //Para Accidentes 
 if (isset($_POST['accidente'])){

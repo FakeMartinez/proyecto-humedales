@@ -1,3 +1,5 @@
+var CantPres= 0;
+
 function ModifData(Fil, Id, trs){
     //getElementById()
   //console.log(Fil);
@@ -13,9 +15,9 @@ function ModifData(Fil, Id, trs){
   //console.log("==========");
   
   if (Id.id.substring(0,5) == "IDAcc"){
-    console.log("Modificar un accidente");
+    //console.log("Modificar un accidente");
     IdAcc = parseInt(Id.innerText);
-    console.log("   ID del accidente:"+IdAcc);
+    //console.log("   ID del accidente:"+IdAcc);
     NewForm = 
     "<div id='formModifData' class='modal' role='document' style='background: rgba(0,0,0,0.8);'>"+
         "<div class='modal-dialog modal-lg' style='display: inline-table;'>"+
@@ -44,27 +46,27 @@ function ModifData(Fil, Id, trs){
       if (i==0){
       }
       if (i==1){
-        console.log("ID: "+tds[i].innerText);
+        //console.log("ID: "+tds[i].innerText);
         var IDa = tds[i].innerText;
       }
       if (i==2){
-        console.log("Nombre: "+tds[i].innerText);
+        //console.log("Nombre: "+tds[i].innerText);
         var IDn = tds[i].innerText;
       }
       if (i==3){
-        console.log("Tipo: "+tds[i].innerText);
+        //console.log("Tipo: "+tds[i].innerText);
         var IDt = tds[i].innerText;
       }
       if (i==4){
-        console.log("Complejo: "+tds[i].innerText);
+        //console.log("Complejo: "+tds[i].innerText);
         var IDco = tds[i].innerText;
       }
       if (i==5){
-        console.log("Cuenca: "+tds[i].innerText);
+        //console.log("Cuenca: "+tds[i].innerText);
         var IDcu = tds[i].innerText;
       }
       if (i==6){
-        console.log("presiones: "+tds[i].innerText);
+        //console.log("presiones: "+tds[i].innerText);
         IDp = new Array;  //Es necesario definirlo como un nuevo array, pero luego hay que limpiar cada direccion, cada contenedor del aray empieza con 'undefined' como dato
         p = -1;
         var Pres = tds[i].innerText.replace(/(\r\n|\n|\r)/gm, "");
@@ -82,7 +84,7 @@ function ModifData(Fil, Id, trs){
   
       }
       if (i==7){
-        console.log("Descripcion: "+tds[i].innerText);
+        //console.log("Descripcion: "+tds[i].innerText);
         var IDd = tds[i].innerText;
       }
     }
@@ -96,15 +98,15 @@ function ModifData(Fil, Id, trs){
     "<div style=' width: 50%; padding-left: 20px;'>"+
         "<div style=' height: 50px; font-size: 20px; margin-bottom: 20px;'>"+
             "<a style='font-weight: bold; color: grey; font-size: 20px; height: 25px;'>Nombre Accidente: </a>" +
-            "<input type='text' class='form-control' style='background: #e2e2e2; color:black; width: 50%; height: 25px;' value="+IDn+"><br><br><br>" + 
+            "<input type='text' id='InpModNombre' class='form-control' style='background: #e2e2e2; color:black; width: 50%; height: 25px;' value="+IDn+"><br><br><br>" + 
         "</div>"+
         "<div style=' height: 50px; font-size: 20px; margin-bottom: 20px;'>"+
             "<a style='font-weight: bold; color: grey; font-size: 20px; height: 25px;'>Tipo Accidente: </a>" +
-            "<input type='text' class='form-control' style='background: #e2e2e2; color:black; width: 50%; height: 25px;' value="+IDt+"><br><br><br>" +
+            "<input type='text' id='InpModTipo' class='form-control' style='background: #e2e2e2; color:black; width: 50%; height: 25px;' value="+IDt+"><br><br><br>" +
         "</div>"+
         "<div style=' height: 50px; font-size: 20px; margin-bottom: 20px;'>"+
             "<a style='font-weight: bold; color: grey;'>Cuenca Accidente: </a>" +
-            "<select id='modifCuen' class='form-select' style='background: #e2e2e2; color:black; width: 50%; min-width: 230px; padding: 0px; padding-left: 24px;'>" +
+            "<select id='SelModCuen' class='form-select' style='background: #e2e2e2; color:black; width: 50%; min-width: 230px; padding: 0px; padding-left: 24px;'>" +
                 "<option>"+IDcu+" 1</option>"+
                 "<option>"+IDcu+" 2</option>"+
                 "<option>"+IDcu+" 3</option>"+
@@ -112,7 +114,7 @@ function ModifData(Fil, Id, trs){
         "</div>"+
         "<div style=' height: 50px; font-size: 20px; margin-bottom: 20px;'>"+
             "<a style='font-weight: bold; color: grey;'>Complejo Accidente: </a>"+
-            "<select id='modifComp' class='form-select' style='background: #e2e2e2; color:black; width: 50%; min-width: 230px; padding: 0px; padding-left: 24px;'>" +
+            "<select id='SelModComp' class='form-select' style='background: #e2e2e2; color:black; width: 50%; min-width: 230px; padding: 0px; padding-left: 24px;'>" +
                 "<option>"+IDco+" 1</option>"+
                 "<option>"+IDco+" 2</option>"+
                 "<option>"+IDco+" 3</option>"+
@@ -123,17 +125,18 @@ function ModifData(Fil, Id, trs){
         "<a style='font-weight: bold; color: grey; font-size: 20px;'>presiones: </a><br>";
 
     for (i=0 ; i<IDp.length; i++){
-      data = data+"<select id='modifPres"+i+"' class='form-select' style='background: #e2e2e2; color:black; width: 50%; min-width: 230px; padding: 0px; padding-left: 24px;'>"+
+      data = data+"<select id='SelModPres"+i+"' class='form-select' style='background: #e2e2e2; color:black; width: 50%; min-width: 230px; padding: 0px; padding-left: 24px;'>"+
                       "<option>"+IDp[i]+" 1</option>"+
                       "<option>"+IDp[i]+" 2</option>"+
                       "<option>"+IDp[i]+" 3</option>"+
                   "<select><br>";
+      CantPres++;
     }
     data = data+"</div><br>"+
     "</section>"+
     "<div style=' text-align: -webkit-center; width: 50%; height: 200px;>"+
         "<a style='font-weight: bold; color: grey; font-size: 20px;'>Descripcion Accidente: </a><br>" +
-        "<textarea class='form-control' style='background: #e2e2e2; color:black; width: 400px; height: 200px; min-height: 100px; max-height: 225px;''>"+IDd+"</textarea><br><br><br>"+
+        "<textarea id='TextModDesc' class='form-control' style='background: #e2e2e2; color:black; width: 400px; height: 200px; min-height: 100px; max-height: 225px;''>"+IDd+"</textarea><br><br><br>"+
     "</div>";
    
     $("#dataModif").html(data);
@@ -171,14 +174,14 @@ function ModifData(Fil, Id, trs){
       for (i=0; i<IDp.length;i++){
         pPr=0;
         datos['presiones'].forEach(dato => {
-          console.log("dato.tipo_presion:| "+dato.tipo_presion);
-          console.log("IDp["+i+"]:| "+IDp[i]/*.substring(10)*/);
+          //console.log("dato.tipo_presion:| "+dato.tipo_presion);
+          //console.log("IDp["+i+"]:| "+IDp[i]/*.substring(10)*/);
           if (dato.tipo_presion == IDp[i]/*.substring(10)*/){
             contpPr[i] = pPr;
-            console.log("contpPr["+i+"]"+contpPr[i]);
-            console.log("pPr"+pPr);
-            console.log("dato.tipo_presion"+dato.tipo_presion);
-            console.log("IDp["+i+"]"+IDp[i]/*.substring(10)*/);
+            //console.log("contpPr["+i+"]"+contpPr[i]);
+            //console.log("pPr"+pPr);
+            //console.log("dato.tipo_presion"+dato.tipo_presion);
+            //console.log("IDp["+i+"]"+IDp[i]/*.substring(10)*/);
           }else{
             pPr++;
           }
@@ -186,15 +189,15 @@ function ModifData(Fil, Id, trs){
         
       }
   
-      $('#modifCuen').html(tempCuen);
-      document.getElementById('modifCuen').options.item(contpCu).selected = 'selected';
+      $('#SelModCuen').html(tempCuen);
+      document.getElementById('SelModCuen').options.item(contpCu).selected = 'selected';
   
-      $('#modifComp').html(tempComp);
-      document.getElementById('modifComp').options.item(contpCo).selected = 'selected';
+      $('#SelModComp').html(tempComp);
+      document.getElementById('SelModComp').options.item(contpCo).selected = 'selected';
   
       for (i=0; i<IDp.length; i++){
-        $('#modifPres'+i).html(tempPres);
-        document.getElementById('modifPres'+i).options.item(contpPr[i]).selected = 'selected';
+        $('#SelModPres'+i).html(tempPres);
+        document.getElementById('SelModPres'+i).options.item(contpPr[i]).selected = 'selected';
       }
   
       
@@ -250,8 +253,8 @@ function CargarModificaciones(){
                 "</p>"+
 
                 "<div style=' display: flex; align-content: space-between; flex-direction: row; justify-content: space-between; width: 104%;'>"+
-                    "<div><button type='button' style=' background-color: #aa5b59;' class='btn btn-danger'>Rechazar Cambios</button></div>"+
-                    "<div><button type='button' style=' background-color: #5b9e72;' class='btn btn-success'>Aceptar Cambios</button></div>"+
+                    "<div><button type='button' style=' background-color: #aa5b59;' class='btn btn-danger' onclick='CerrarAlerta();'>Rechazar Cambios</button></div>"+
+                    "<div><button type='button' style=' background-color: #5b9e72;' class='btn btn-success' onclick='ConfirmarAlerta();'>Aceptar Cambios</button></div>"+
                 "</div>"+
             "</div>";
         "</div>"+
@@ -260,6 +263,47 @@ function CargarModificaciones(){
 
     $("body").append(warning);
     $("#MarcoWarning").show();
+}
+
+function CerrarAlerta(){
+  $("#MarcoWarning").hide();
+  $("#MarcoWarning").remove();
+}
+
+function ConfirmarAlerta(){
+  //$("#MarcoWarning").hide();
+  //$("#MarcoWarning").remove();
+
+  //console.log("entra1");
+  var Presiones = new Array();
+  //console.log("entra2");
+  //console.log("CantPres: "+CantPres);
+  for (i=0; i<CantPres; i++){
+    //console.log("entra3."+i);
+    Presiones.push($('#SelModPres'+i+' option:selected').text());
+    //console.log($('#SelModPres'+i+' option:selected').text());
+  };
+  console.log("entra4");
+  console.log(Presiones);
+  
+  const postData = {
+    nombreAccidente: $('#InpModNombre').val(),
+    nombreTipo: $('#InpModTipo').val(),
+    nombreCuenca: $('#SelModCuen').val(),
+    nombreCompleja: $('#SelModComp').val(),
+    nombrePresion: Presiones,
+    nombreDescripcion: $('#TextModDesc').val(),
+    ModiAcc : true,
+ };
+
+  //console.log(postData);
+
+  $.post('php/modificar.php', postData, (response) => {
+    console.log(response);
+    
+  });
+  
+
 }
 
 $(function(){
