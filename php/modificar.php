@@ -36,8 +36,76 @@ if (isset($_POST['CargarSelectsAcc'])){
 
 //Modificar datos en BD
 if (isset($_POST['ModiAcc'])){
+   /*echo("Entra a modificar datos
+   ");*/
+   $IdAcc=$_POST['IdAccidente'];
+   $NomAcc=$_POST['NombreAccidente'];
+   $TipoAcc=$_POST['TipoAccidente'];
+   $CuenAcc=$_POST['CuencaAccidente'];
+   $CompAcc=$_POST['ComplejaAccidente'];
+   $PresAcc=$_POST['PresionAccidente'];
+   $DescAcc=$_POST['DescripcionAccidente'];
    
+   /*echo("SELECT Id_cuenca FROM cuenca WHERE Nombre_cuenca='$CuenAcc'
+   ");*/
    
+   $ResIDCuen=mysqli_query($connect,"SELECT Id_cuenca FROM cuenca WHERE Nombre_cuenca='$CuenAcc'");
+  /* echo("SELECT Id_complejo FROM complejo WHERE Nombre_complejo='$CompAcc'
+   ");*/
+   $ResIDComp=mysqli_query($connect,"SELECT Id_complejo FROM complejo WHERE Nombre_complejo='$CompAcc'");
+
+   /*echo("obtuvo los resultados de las consultas de cuenca y complejo
+   ");*/
+   foreach($ResIDCuen as $IDCue){
+      foreach($IDCue as $IC){
+         $IDCuen = $IC;
+      }
+   }
+   foreach($ResIDComp as $IDCom){
+      foreach($IDCom as $IC){
+         $IDComp = $IC;
+      }
+   }
+   /*echo("Lo transformó a variables a los datos
+   ");*/
+
+   $ConsulUpdate = "UPDATE accidente_geografico SET Nombre='$NomAcc', Tipo='$TipoAcc', Id_cuenca='$IDCuen', Id_complejo='$IDComp', Descripcion='$DescAcc' WHERE Id_acc = $IdAcc";
+   /*echo("$ConsulUpdate
+   ");*/
+   mysqli_query($connect, $ConsulUpdate);
+   
+   /*echo("Hace el UPDATE del accidente
+   ");*/
+
+   //Consulta para obtener todas las IDs de las relaciones de presiones y cuencas pertenecientes a esta cuenca
+   $Contiene_presiones = mysqli_query($connect,"SELECT IDR FROM contiene_presiones WHERE Id_acc=$IdAcc");
+   // Se borran todas las relaciones presion cuenca de la cuenca a modificar
+   foreach($Contiene_presiones as $Cont_Pres){
+      foreach($Cont_Pres as $CoPr){
+         mysqli_query($connect,"DELETE FROM contiene_presiones WHERE IDR = $CoPr");
+      }
+   }
+   /*echo("Primera parte de las relaciones accidente presiones hecha
+   ");*/
+   //Se crean todas las nuevas relaciones presion cuenca de esta cuenca a modificar.
+   //Se buscan las IDs de las presiones del accidente
+   foreach($PresAcc as $PreAcc){
+      /*echo("SELECT Id_presiones FROM presiones WHERE Tipo_presiones='$PreAcc'
+");*/
+      $ResIDPres=mysqli_query($connect,"SELECT Id_presiones FROM presiones WHERE Tipo_presiones='$PreAcc'");
+      //Teniendo la ID ahora se crea la relacion presion accidente
+      foreach($ResIDPres as $IDPre){
+         foreach($IDPre as $IDP){
+            /*echo("INSERT into contiene_presiones (Id_acc, Id_presiones) VALUES ($IdAcc, $IDP)
+");*/
+            mysqli_query($connect,"INSERT into contiene_presiones (Id_acc, Id_presiones) VALUES ($IdAcc, $IDP)");
+            /*echo("==========================================================================
+");*/
+            }
+         }
+   }
+   /*echo("Fin de ejecucion
+   ");*/
 }
 
 

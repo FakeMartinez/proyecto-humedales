@@ -1,7 +1,104 @@
 var CantPres= 0;
+var IDp = new Array;  //Es necesario definirlo como un nuevo array, pero luego hay que limpiar cada direccion, cada contenedor del array empieza con 'undefined' como dato
+
+function quitarPresion(IDSelect,BtnQuit,Contenedor,Pos){
+  //console.log("antes de quitar CantPres:"+CantPres);
+  if (CantPres == 0){
+    
+  }
+  else{
+    console.log(Contenedor.id+ " || ContBtnSelPres"+(CantPres-1));
+    if (Contenedor.id == ("ContBtnSelPres"+(CantPres-1))){
+      //console.log("entra");
+      ButAdd = "<button id='BtnNewRelPresComp' type='button' class='btn btn-success' style='height: 25px; width: 25px; padding: 0px;' onclick='AñadirPresion("+(CantPres-1)+");'> <i class='fa-solid fa-plus'></i> </button>";
+      //console.log("codifica el boton");
+      //console.log(ButAdd);
+      console.log("ContBtnSelPres"+(CantPres-2));
+      $("#ContBtnSelPres"+(CantPres-2)).append(ButAdd);
+      console.log("creó el boton");
+      //console.log("#"+BtnQuit.id);
+      $("#"+BtnQuit.id).remove();
+      //console.log("#"+IDSelect.id);
+      $("#"+IDSelect.id).remove();
+      $("#"+Contenedor.id).remove();
+      if (CantPres == 1){
+        $("#ContPadrePres").append("<button id='BtnNewRelPresComp' type='button' class='btn btn-success' style='height: 25px; width: 25px; padding: 0px;' onclick='AñadirPresion("+(0)+");'> <i class='fa-solid fa-plus'></i> </button>");
+      }
+    }else
+    {
+      console.log("entra a la parte de cambiar IDs");
+      $("#"+BtnQuit.id).remove();
+      //console.log("#"+IDSelect.id);
+      $("#"+IDSelect.id).remove();
+      $("#"+Contenedor.id).remove();
+      for (i=Pos; i<CantPres; i++){
+        $("#ContBtnSelPres"+(i+1)).attr("id","ContBtnSelPres"+i);
+        $("#BtnQuitPres"+(i+1)).attr("id","BtnQuitPres"+i);
+        console.log("hace el attr para cambiar la funcion");
+        $("#BtnQuitPres"+(i)).attr("onclick","quitarPresion(SelModPres"+i+",BtnQuitPres"+i+",ContBtnSelPres"+i+","+i+");");
+        $("#SelModPres"+(i+1)).attr("id","SelModPres"+i);
+        if (i==CantPres-1){
+          console.log("newButton en "+i);
+          $("#BtnNewRelPresComp").remove();
+          $("#ContBtnSelPres"+(i-1)).append("<button id='BtnNewRelPresComp' type='button' class='btn btn-success' style='height: 25px; width: 25px; padding: 0px;' onclick='AñadirPresion("+(i)+");'> <i class='fa-solid fa-plus'></i> </button>");
+        }
+      }
+
+    }
+    CantPres--;
+  }
+
+  
+ console.log("despues de quitar CantPres:"+CantPres);
+}
+
+function AñadirPresion(NID){
+  $("#BtnNewRelPresComp").remove();
+  appendSelect = 
+  "<div id='ContBtnSelPres"+NID+"' style='display:flex; margin-bottom: 15px;'>"+
+    "<button id='BtnQuitPres"+NID+"' type='button' class='btn btn-danger' style='height: 25px; width: 25px; padding: 0px;' onclick='quitarPresion(SelModPres"+NID+",BtnQuitPres"+NID+",ContBtnSelPres"+NID+","+NID+");'> X </button>"+
+      "<select id='SelModPres"+NID+"' class='form-select' style='background: #e2e2e2; color:black; width: 50%; min-width: 230px; padding: 0px; padding-left: 24px;'>"+
+        "<option>"+IDp[NID]+" 1</option>"+
+        "<option>"+IDp[NID]+" 2</option>"+
+        "<option>"+IDp[NID]+" 3</option>"+
+      "<select>"+
+      "<button id='BtnNewRelPresComp' type='button' class='btn btn-success' style='height: 25px; width: 25px; padding: 0px;' onclick='AñadirPresion("+(NID+1)+");'> <i class='fa-solid fa-plus'></i> </button>";
+  $("#ContPadrePres").append(appendSelect);
+  CantPres++;
+  tempPres='';
+  contpPr = new Array;
+  const postData = {CargarSelectsAcc: true,}   
+  $.post('php/modificar.php', postData, (response) => {
+    let datos = JSON.parse(response);
+
+    datos['presiones'].forEach(dato => {
+      tempPres +=`<option>${dato.tipo_presion}</option>` 
+    });
+      
+    for (i=0; i<CantPres;i++){
+      pPr=0;
+      datos['presiones'].forEach(dato => {
+        if (dato.tipo_presion == IDp[i]){
+          contpPr[i] = pPr;
+         }else{
+          pPr++;
+         }
+      });        
+    }
+    
+    for (i=0; i<CantPres; i++){
+      $('#SelModPres'+i).html(tempPres);
+      document.getElementById('SelModPres'+i).options.item(contpPr[i]).selected = 'selected';
+    }
+
+  });
+  console.log("ahora CantPres:"+CantPres);
+}
 
 function ModifData(Fil, Id, trs){
-    //getElementById()
+  CantPres= 0;
+  IDp = new Array;
+  //getElementById()
   //console.log(Fil);
   //console.log(Id);
   //console.log(parseInt(Id.innerText));
@@ -15,6 +112,9 @@ function ModifData(Fil, Id, trs){
   //console.log("==========");
   
   if (Id.id.substring(0,5) == "IDAcc"){
+
+    var Data= 1;
+
     //console.log("Modificar un accidente");
     IdAcc = parseInt(Id.innerText);
     //console.log("   ID del accidente:"+IdAcc);
@@ -23,7 +123,7 @@ function ModifData(Fil, Id, trs){
         "<div class='modal-dialog modal-lg' style='display: inline-table;'>"+
             "<div class='modal-content' style='width: 92vmax; left: 3vmax; border: 2px solid #343a40;'>"+
                 "<div class='modal-header'  style='background:#343a40; color:lightgrey;'>"+
-                    "<h5 class='modal-title' style='color:lightgrey;'>Modificar accidente "+IdAcc+" </h5>"+
+                    "<h5 class='modal-title' style='color:lightgrey;'>Modificar accidente <a id='TitModId'class='modal-title' style='color:lightgrey;'>"+IdAcc+"</a></h5>"+
                     "<button type='button' style='color:lightgrey; background: #343a40; border: 0px;' onclick='deletesHTML(`formModifData`);' data-bs-dismiss='modal' aria-label='Close'>"+
                         "<i class='fa-solid fa-x' style='color:lightgrey;'></i>"+
                     "</button>"+
@@ -31,7 +131,7 @@ function ModifData(Fil, Id, trs){
                 "<div id='dataModif' class='modal-body'>"+
                 "</div>"+
                 "<div class='modal-body' style=' align-self: flex-end;'>"+
-                    "<button id='CargarModif' type='button' class='btn btn-primary' onclick='CargarModificaciones();'>Confirmar Modificación</button>"+
+                    "<button id='CargarModif' type='button' class='btn btn-primary' onclick='CargarModificaciones("+Data+");'>Confirmar Modificación</button>"+
                   /*  "<button type='button' style='color:lightgrey; background: #343a40; border: 0px;' onclick='deletesHTML(`formModifData`);' data-bs-dismiss='modal' aria-label='Close'>"+
                         "Confirmar Modificación"+
                     "</button>"+*/
@@ -67,7 +167,7 @@ function ModifData(Fil, Id, trs){
       }
       if (i==6){
         //console.log("presiones: "+tds[i].innerText);
-        IDp = new Array;  //Es necesario definirlo como un nuevo array, pero luego hay que limpiar cada direccion, cada contenedor del aray empieza con 'undefined' como dato
+       
         p = -1;
         var Pres = tds[i].innerText.replace(/(\r\n|\n|\r)/gm, "");
         for (j=0 ; j<Pres.length; j++){
@@ -89,11 +189,7 @@ function ModifData(Fil, Id, trs){
       }
     }
     data =  
-    "<div style='text-align: center; height: 50px; font-size: 20px;'>"+
-        "<a style='font-weight: bold; color: black;'>Id Accidente: </a>" +
-        "<input style=' width: 60px; text-align: end;' value="+IDa+"><br><br><br>" + 
-    "</div>"+
-    "<br><br>"+
+   
     "<section style='display: flex;'>"+
     "<div style=' width: 50%; padding-left: 20px;'>"+
         "<div style=' height: 50px; font-size: 20px; margin-bottom: 20px;'>"+
@@ -121,24 +217,32 @@ function ModifData(Fil, Id, trs){
             "</select><br><br><br>" + 
         "</div>"+
     "</div>"+
-        "<div style=' width: 50%; padding-left: 20px;'>"+
+        "<div id='ContPadrePres' style=' width: 50%; padding-left: 20px;'>"+
         "<a style='font-weight: bold; color: grey; font-size: 20px;'>presiones: </a><br>";
 
     for (i=0 ; i<IDp.length; i++){
-      data = data+"<select id='SelModPres"+i+"' class='form-select' style='background: #e2e2e2; color:black; width: 50%; min-width: 230px; padding: 0px; padding-left: 24px;'>"+
-                      "<option>"+IDp[i]+" 1</option>"+
-                      "<option>"+IDp[i]+" 2</option>"+
-                      "<option>"+IDp[i]+" 3</option>"+
-                  "<select><br>";
+      data = data+"<div id='ContBtnSelPres"+i+"' style='display:flex; margin-bottom: 15px;'>"+
+                    "<button id='BtnQuitPres"+i+"' type='button' class='btn btn-danger' style='height: 25px; width: 25px; padding: 0px;' onclick='quitarPresion(SelModPres"+i+",BtnQuitPres"+i+",ContBtnSelPres"+i+","+i+");'> X </button>"+
+                    "<select id='SelModPres"+i+"' class='form-select' style='background: #e2e2e2; color:black; width: 50%; min-width: 230px; padding: 0px; padding-left: 24px;'>"+
+                        "<option>"+IDp[i]+" 1</option>"+
+                        "<option>"+IDp[i]+" 2</option>"+
+                        "<option>"+IDp[i]+" 3</option>"+
+                    "<select>";
+                 
+      if(i == (IDp.length-1)){
+        data = data+"<button id='BtnNewRelPresComp' type='button' class='btn btn-success' style='height: 25px; width: 25px; padding: 0px;' onclick='AñadirPresion("+(i+1)+");'> <i class='fa-solid fa-plus'></i> </button>";
+      }
+      data = data+"</div>";
       CantPres++;
     }
+  
     data = data+"</div><br>"+
     "</section>"+
     "<div style=' text-align: -webkit-center; width: 50%; height: 200px;>"+
         "<a style='font-weight: bold; color: grey; font-size: 20px;'>Descripcion Accidente: </a><br>" +
         "<textarea id='TextModDesc' class='form-control' style='background: #e2e2e2; color:black; width: 400px; height: 200px; min-height: 100px; max-height: 225px;''>"+IDd+"</textarea><br><br><br>"+
     "</div>";
-   
+    console.log("ahora CantPres:"+CantPres);
     $("#dataModif").html(data);
     tempCuen = '';
     tempComp = '';
@@ -185,8 +289,7 @@ function ModifData(Fil, Id, trs){
           }else{
             pPr++;
           }
-        });
-        
+        });        
       }
   
       $('#SelModCuen').html(tempCuen);
@@ -200,7 +303,7 @@ function ModifData(Fil, Id, trs){
         document.getElementById('SelModPres'+i).options.item(contpPr[i]).selected = 'selected';
       }
   
-      
+    
     });
   
     
@@ -237,7 +340,7 @@ function ModifData(Fil, Id, trs){
 
 
 
-function CargarModificaciones(){
+function CargarModificaciones(Data){
     //console.log("ABDALULULUSSSSSS");
     warning = 
 "<div id='MarcoWarning' class='modal' role='document' style='background: rgba(0,0,0,0.8);'>"+
@@ -254,7 +357,7 @@ function CargarModificaciones(){
 
                 "<div style=' display: flex; align-content: space-between; flex-direction: row; justify-content: space-between; width: 104%;'>"+
                     "<div><button type='button' style=' background-color: #aa5b59;' class='btn btn-danger' onclick='CerrarAlerta();'>Rechazar Cambios</button></div>"+
-                    "<div><button type='button' style=' background-color: #5b9e72;' class='btn btn-success' onclick='ConfirmarAlerta();'>Aceptar Cambios</button></div>"+
+                    "<div><button type='button' style=' background-color: #5b9e72;' class='btn btn-success' onclick='ConfirmarAlerta("+Data+");'>Aceptar Cambios</button></div>"+
                 "</div>"+
             "</div>";
         "</div>"+
@@ -270,7 +373,7 @@ function CerrarAlerta(){
   $("#MarcoWarning").remove();
 }
 
-function ConfirmarAlerta(){
+function ConfirmarAlerta(Data){
   //$("#MarcoWarning").hide();
   //$("#MarcoWarning").remove();
 
@@ -287,30 +390,36 @@ function ConfirmarAlerta(){
   console.log(Presiones);
   
   const postData = {
-    nombreAccidente: $('#InpModNombre').val(),
-    nombreTipo: $('#InpModTipo').val(),
-    nombreCuenca: $('#SelModCuen').val(),
-    nombreCompleja: $('#SelModComp').val(),
-    nombrePresion: Presiones,
-    nombreDescripcion: $('#TextModDesc').val(),
+    IdAccidente:$('#TitModId').text(),
+    NombreAccidente: $('#InpModNombre').val(),
+    TipoAccidente: $('#InpModTipo').val(),
+    CuencaAccidente: $('#SelModCuen').val(),
+    ComplejaAccidente: $('#SelModComp').val(),
+    PresionAccidente: Presiones,
+    DescripcionAccidente: $('#TextModDesc').val(),
     ModiAcc : true,
  };
 
-  //console.log(postData);
+  console.log(postData);
 
   $.post('php/modificar.php', postData, (response) => {
     console.log(response);
+    CerrarAlerta();
+    deletesHTML("formModifData");
+
+    if (Data == 1){
+      var postData2= {
+        accidente:true,
+      }
+    }
     
+    $('#ContTable').css({'visibility':'visible'});
+    
+    $.post('php/modificar.php', postData2, (response) => {
+      console.log(response);  
+      $("#myTable").html(response);
+    });
   });
   
 
 }
-
-$(function(){
-
-    $('#CargarModif').on('click',function(){
-        console.log("ABDALULULUSSSSSS2");
-
-
-    });
-});
