@@ -3,15 +3,17 @@
 include('conexion.php');
 
 //Cargar Selects Accidente
-if (isset($_POST['CargarSelectsAcc'])){
+if (isset($_POST['CargarSelects'])){
    $q_cuenca = mysqli_query($connect,"SELECT Nombre_cuenca FROM cuenca");
    $q_comp = mysqli_query($connect,"SELECT Nombre_complejo FROM complejo");
    $q_presion = mysqli_query($connect,"SELECT Tipo_presiones FROM presiones");
+   $q_propie = mysqli_query($connect,"SELECT Nombre_persona FROM persona");
 
    $cue = array();
    $com = array();
    $pre = array();
-
+   $per = array();
+   
    while($row = mysqli_fetch_array($q_cuenca)) {
       array_push($cue, ['nombre_cuenca' => $row['Nombre_cuenca']]);
       //pone en el siguiente elemento del array $cue, con la clave nombre_cuenca, el dato Nombre_cuenca del $q_cuenca
@@ -22,12 +24,17 @@ if (isset($_POST['CargarSelectsAcc'])){
    while($row = mysqli_fetch_array($q_presion)) {
       array_push($pre, ['tipo_presion' => $row['Tipo_presiones']]);
     };
+   while($row = mysqli_fetch_array($q_propie)) {
+      array_push($per, ['nom_prop' => $row['Nombre_persona']]);
+    };
 
     $cosa = [
       "cuencas"=> $cue,
       "complejos"=> $com,
       "presiones"=> $pre,
+      "personas"=> $per,
     ];
+
     $jsoncosa = json_encode($cosa);
    echo ($jsoncosa);
 }
@@ -78,36 +85,173 @@ if (isset($_POST['ModiAcc'])){
    ");*/
 
    //Consulta para obtener todas las IDs de las relaciones de presiones y cuencas pertenecientes a esta cuenca
-   $Contiene_presiones = mysqli_query($connect,"SELECT IDR FROM contiene_presiones WHERE Id_acc=$IdAcc");
+   $Contiene_presiones = mysqli_query($connect,"SELECT Id_presiones FROM contiene_presiones WHERE Id_acc=$IdAcc");
+
+//=======================================================================================
    // Se borran todas las relaciones presion cuenca de la cuenca a modificar
+   $CondDelet = true;
    foreach($Contiene_presiones as $Cont_Pres){
-      foreach($Cont_Pres as $CoPr){
-         mysqli_query($connect,"DELETE FROM contiene_presiones WHERE IDR = $CoPr");
-      }
-   }
-   /*echo("Primera parte de las relaciones accidente presiones hecha
-   ");*/
-   //Se crean todas las nuevas relaciones presion cuenca de esta cuenca a modificar.
-   //Se buscan las IDs de las presiones del accidente
-   foreach($PresAcc as $PreAcc){
-      /*echo("SELECT Id_presiones FROM presiones WHERE Tipo_presiones='$PreAcc'
-");*/
-      $ResIDPres=mysqli_query($connect,"SELECT Id_presiones FROM presiones WHERE Tipo_presiones='$PreAcc'");
-      //Teniendo la ID ahora se crea la relacion presion accidente
-      foreach($ResIDPres as $IDPre){
-         foreach($IDPre as $IDP){
-            /*echo("INSERT into contiene_presiones (Id_acc, Id_presiones) VALUES ($IdAcc, $IDP)
-");*/
-            mysqli_query($connect,"INSERT into contiene_presiones (Id_acc, Id_presiones) VALUES ($IdAcc, $IDP)");
-            /*echo("==========================================================================
-");*/
+      foreach($Cont_Pres as $CoPr){ //Obtiene las IDs de las presiones de contiene_presiones del accidente a modificar
+         $Nom_Presion = mysqli_query($connect,"SELECT Tipo_presiones FROM presiones WHERE Id_presiones=$CoPr");
+         foreach($Nom_Presion as $Nom_Pres){
+            foreach($Nom_Pres as $NoPr){ //Obtengo el Nombre de la presion
+               $CondDelet = true;
+               for($i=0; $i<count($PresAcc);$i++){ //Se pasan por cada uno de las presiones asignadas en los selects
+                  if($PresAcc[$i] == $NoPr){ //se comprueba que la presion del select en [i] no coinsida con el apuntado en la BD. Si coincide entonces no lo va a borrar de la BD 
+                     //Desconfirma el DELETE
+                     $CondDelet=false;
+                  }
+               }
+               if ($CondDelet){ //si $CondDelet es verdadero, borra
+                  //Borra el dato de la BD
+                  $Id_presion = mysqli_query($connect,"SELECT Id_presiones FROM presiones WHERE Tipo_presiones='$NoPr'");
+                  foreach($Id_presion as $Id_pres){
+                     foreach($Id_pres as $IdPr){
+                        mysqli_query($connect,"DELETE FROM contiene_presiones WHERE Id_acc = $IdAcc and Id_presiones=$IdPr");
+                     }
+                  }
+               }else{
+                  //no borra datos
+               }
             }
          }
+         
+      }
    }
-   /*echo("Fin de ejecucion
-   ");*/
+echo("termina el DELETE");
+//=======================================================================================
+   //Se crean todas las nuevas relaciones de propietario de este complejo a modificar.
+   //Se buscan las IDs de las personas
+   $CondInsert = true;
+   for($i=0; $i<count($PresAcc);$i++){
+      $CondInsert = true;
+      foreach($Contiene_presiones as $Cont_pres){
+         foreach($Cont_pres as $CoPr){ //Apunta a cada una de las IDs de las presiones encontradas en Contiene_presiones
+            //Obtiene el nombre(tipo) de cada una de las IDs de $Cont_pres
+            $Tipo_Presion = mysqli_query($connect,"SELECT Tipo_presiones FROM presiones WHERE Id_presiones=$CoPr");
+            foreach($Tipo_Presion as $Tipo_Pres){
+               foreach($Tipo_Pres as $TiPr){ // Aputa a cada tipo obtenido con la consulta
+echo($PresAcc[$i]."=".$TiPr."
+");                 
+                  if($PresAcc[$i] == $TiPr){ // Si el tipo en $TiPr coinside con el tipo en $PresAcc en [i] entonces asigna false al Insert. Lo que indica que no se debe cargar esta presion a la BD porque ya está cargada
+                     //desconfirma la insercion
+                     $CondInsert = false;
+echo("encuentra coinsidencia
+");
+echo("====
+");
+                  }else{
+echo("====
+");
+                  }
+               }
+            }
+         }
+      }
+      if ($CondInsert){
+         //inserta
+echo("Entra al insertar
+");
+         $Suport = $PresAcc[$i];
+echo("Suport".$Suport."
+");
+echo("SELECT Id_presiones FROM presiones WHERE Tipo_presiones='$Suport'
+");
+         $Id_Presion = mysqli_query($connect,"SELECT Id_presiones FROM presiones WHERE Tipo_presiones='$Suport'");
+echo("Hace nueva consulta
+");
+         foreach($Id_Presion as $Id_Pre){
+            foreach($Id_Pre as $IdPr){
+               echo("Se hace la insercion del nuevo dato");
+               mysqli_query($connect,"INSERT into contiene_presiones (Id_acc, Id_presiones) VALUES ($IdAcc, $IdPr)");
+            }
+         }
+      }else{
+         //No inserta
+      }
+   }
+
+// FIN MODIFICACION DE ACCIDENTES GEOGRAFICOS
 }
 
+if (isset($_POST['ModiComp'])){
+   
+   $IdCom=$_POST['IdComplejo'];
+   $NomCom=$_POST['NombreComplejo'];
+   $PropCom=$_POST['PropietariosComplejo'];
+
+
+   $ConsulUpdate = "UPDATE complejo SET Nombre_complejo='$NomCom' WHERE Id_complejo = $IdCom";
+   mysqli_query($connect, $ConsulUpdate);
+
+   //Consulta para obtener todas las IDs de las relaciones de persona y complejo para definir los propietarios de este complejo
+   $Contiene_propietarios = mysqli_query($connect,"SELECT Id_persona FROM propietario WHERE Id_complejo=$IdCom");
+
+//=======================================================================================
+   // Se borran todas las relaciones presion cuenca de la cuenca a modificar
+   $CondDelet = true;
+   foreach($Contiene_propietarios as $Cont_Prop){
+      foreach($Cont_Prop as $CoPr){
+         $Nom_propie = mysqli_query($connect,"SELECT Nombre_persona FROM persona WHERE Id_persona=$CoPr");
+         foreach($Nom_propie as $Nom_prop){
+            foreach($Nom_prop as $NoPr){
+               $CondDelet = true;
+               for($i=0; $i<count($PropCom);$i++){
+                  if($PropCom[$i] == $NoPr){
+                     //Confirma el DELETE
+                     $CondDelet=false;
+                  }
+               }
+               if ($CondDelet){
+                  //Borra el dato de la BD
+                  $Id_persona = mysqli_query($connect,"SELECT Id_persona FROM persona WHERE Nombre_persona='$NoPr'");
+                  foreach($Id_persona as $Id_per){
+                     foreach($Id_per as $IdPe){
+                        mysqli_query($connect,"DELETE FROM propietario WHERE Id_persona = $IdPe and Id_complejo=$IdCom");
+                     }
+                  }
+               }else{
+                  //no borra datos
+               }
+            }
+         }
+         
+      }
+   }
+//=======================================================================================
+   //Se crean todas las nuevas relaciones de propietario de este complejo a modificar.
+   //Se buscan las IDs de las personas
+   $CondInsert = true;
+   for($i=0; $i<count($PropCom);$i++){
+      $CondInsert = true;
+      foreach($Contiene_propietarios as $Cont_Prop){
+         foreach($Cont_Prop as $CoPr){
+            $Nom_propie = mysqli_query($connect,"SELECT Nombre_persona FROM persona WHERE Id_persona=$CoPr");
+            foreach($Nom_propie as $Nom_prop){
+               foreach($Nom_prop as $NoPr){
+                  if($PropCom[$i] == $NoPr){
+                     //desconfirma la insercion
+                     $CondInsert = false;
+                  }
+               }
+            }
+         }
+      }
+      if ($CondInsert){
+         //inserta
+         $Suport = $PropCom[$i];
+         $Id_persona = mysqli_query($connect,"SELECT Id_persona FROM persona WHERE Nombre_persona='$Suport'");
+         foreach($Id_persona as $Id_per){
+            foreach($Id_per as $IdPe){
+               mysqli_query($connect,"INSERT into propietario (Id_persona, Id_complejo) VALUES ($IdPe, $IdCom)");
+            }
+         }
+      }else{
+         //No inserta
+      }
+   }
+// FIN MODIFICACION DE COMPLEJOS
+}
 
 //===========================================================================================
 //Para Accidentes 
@@ -232,8 +376,8 @@ if (isset($_POST['complejo'])){
    $C= 0;
    $F= 0;
    foreach($resulta as $Fil){
-      $cosa = $cosa."<tr style='height:40px'>";
-      $cosa = $cosa."<td style='width:25px; min-width: 25px;'><button id='Mcom$F' onclick='ModifData($F, IDCom$F);' type='button' style='background: orange;position: relative;float: right;'><i class='fa-solid fa-pen'></button></td>";
+      $cosa = $cosa."<tr id='tr$F' style='height:40px'>";
+      $cosa = $cosa."<td style='width:25px; min-width: 25px;'><button id='Mcom$F' onclick='ModifData($F, IDCom$F, tr$F);' type='button' style='background: orange;position: relative;float: right;'><i class='fa-solid fa-pen'></button></td>";
       foreach($Fil as $Col){
          if ($C == 0){//ID
             $cosa = $cosa."<td id='IDCom$F'>$Col</td>";
@@ -297,8 +441,8 @@ if (isset($_POST['cuenca'])){
    $C= 0;
    $F= 0;
    foreach($resulta as $Fil){
-      $cosa = $cosa."<tr style='height:40px'>";
-      $cosa = $cosa."<td style='width:25px; min-width: 25px;'><button id='Mcue$F' onclick='ModifData($F, IDCue$F);' type='button' style='background: orange;position: relative;float: right;'><i class='fa-solid fa-pen'></button></td>";
+      $cosa = $cosa."<tr id='tr$F' style='height:40px'>";
+      $cosa = $cosa."<td style='width:25px; min-width: 25px;'><button id='Mcue$F' onclick='ModifData($F, IDCue$F, tr$F);' type='button' style='background: orange;position: relative;float: right;'><i class='fa-solid fa-pen'></button></td>";
 
       foreach($Fil as $Col){
          if ($C == 0){//ID
@@ -365,8 +509,8 @@ if (isset($_POST['relevamiento'])){
    $C= 0;
    $F= 0;
    foreach($resulta as $Fil){
-      $cosa = $cosa."<tr style='height:80px'>";
-      $cosa = $cosa."<td style='width:25px; min-width: 25px;'><button id='Mrele$F' onclick='ModifData($F, IDRel$F);' type='button' style='background: orange;position: relative;float: right;'><i class='fa-solid fa-pen'></button></td>";
+      $cosa = $cosa."<tr id='tr$F' style='height:80px'>";
+      $cosa = $cosa."<td style='width:25px; min-width: 25px;'><button id='Mrele$F' onclick='ModifData($F, IDRel$F, tr$F);' type='button' style='background: orange;position: relative;float: right;'><i class='fa-solid fa-pen'></button></td>";
       $suportNomRel ="<td>";
       $suportObserv ="";
       $suportFauna ="<td>";
@@ -531,8 +675,8 @@ if (isset($_POST['fauna'])){
    $C= 0;
    $F= 0;
    foreach($resulta as $Fil){
-      $cosa = $cosa."<tr style='height:80px'>";
-      $cosa = $cosa."<td style='width:25px; min-width: 25px;'><button id='Mfau$F' onclick='ModifData($F, IDFau$F);' type='button' style='background: orange;position: relative;float: right;'><i class='fa-solid fa-pen'></button></td>";
+      $cosa = $cosa."<tr id='tr$F' style='height:80px'>";
+      $cosa = $cosa."<td style='width:25px; min-width: 25px;'><button id='Mfau$F' onclick='ModifData($F, IDFau$F, tr$F);' type='button' style='background: orange;position: relative;float: right;'><i class='fa-solid fa-pen'></button></td>";
 
       foreach($Fil as $Col){
          if ($C == 0){//ID
@@ -581,8 +725,8 @@ if (isset($_POST['flora'])){
    $C= 0;
    $F= 0;
    foreach($resulta as $Fil){
-      $cosa = $cosa."<tr style='height:80px'>";
-      $cosa = $cosa."<td style='width:25px; min-width: 25px;'><button id='Mflo$F' onclick='ModifData($F, IDFlo$F);' type='button' style='background: orange;position: relative;float: right;'><i class='fa-solid fa-pen'></button></td>";
+      $cosa = $cosa."<tr id='tr$F' style='height:80px'>";
+      $cosa = $cosa."<td style='width:25px; min-width: 25px;'><button id='Mflo$F' onclick='ModifData($F, IDFlo$F, tr$F);' type='button' style='background: orange;position: relative;float: right;'><i class='fa-solid fa-pen'></button></td>";
 
       foreach($Fil as $Col){
          if ($C == 0){//ID
@@ -629,8 +773,8 @@ if (isset($_POST['presion'])){
    $C= 0;
    $F= 0;
    foreach($resulta as $Fil){
-      $cosa = $cosa."<tr style='height:80px'>";
-      $cosa = $cosa."<td style='width:25px; min-width: 25px;'><button id='Mpre$F' onclick='ModifData($F, IDPre$F);' type='button' style='background: orange;position: relative;float: right;'><i class='fa-solid fa-pen'></button></td>";
+      $cosa = $cosa."<tr id='tr$F' style='height:80px'>";
+      $cosa = $cosa."<td style='width:25px; min-width: 25px;'><button id='Mpre$F' onclick='ModifData($F, IDPre$F, tr$F);' type='button' style='background: orange;position: relative;float: right;'><i class='fa-solid fa-pen'></button></td>";
 
       foreach($Fil as $Col){
          if ($C == 0){//ID
@@ -677,7 +821,7 @@ if (isset($_POST['persona'])){
    $F= 0;
    foreach($resulta as $Fil){
       $cosa = $cosa."<tr id='tr$F' style='height:80px'>";
-      $cosa = $cosa."<td style='width:25px; min-width: 25px;'><button id='Mper$F' onclick='ModifData($F, IDPer$F);' type='button' style='background: orange;position: relative;float: right;'><i class='fa-solid fa-pen'></button></td>";
+      $cosa = $cosa."<td style='width:25px; min-width: 25px;'><button id='Mper$F' onclick='ModifData($F, IDPer$F, tr$F);' type='button' style='background: orange;position: relative;float: right;'><i class='fa-solid fa-pen'></button></td>";
       $suport;
       foreach($Fil as $Col){
          if ($C == 0){//ID-DNI-CUIL-CUIT
