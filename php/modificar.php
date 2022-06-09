@@ -8,11 +8,13 @@ if (isset($_POST['CargarSelects'])){
    $q_comp = mysqli_query($connect,"SELECT Nombre_complejo FROM complejo");
    $q_presion = mysqli_query($connect,"SELECT Tipo_presiones FROM presiones");
    $q_propie = mysqli_query($connect,"SELECT Nombre_persona FROM persona");
+   $q_rol = mysqli_query($connect,"SELECT descripcion FROM rol");
 
    $cue = array();
    $com = array();
    $pre = array();
    $per = array();
+   $rol = array();
    
    while($row = mysqli_fetch_array($q_cuenca)) {
       array_push($cue, ['nombre_cuenca' => $row['Nombre_cuenca']]);
@@ -27,12 +29,16 @@ if (isset($_POST['CargarSelects'])){
    while($row = mysqli_fetch_array($q_propie)) {
       array_push($per, ['nom_prop' => $row['Nombre_persona']]);
     };
+   while($row = mysqli_fetch_array($q_rol)) {
+      array_push($rol, ['tipo' => $row['descripcion']]);
+    };
 
     $cosa = [
       "cuencas"=> $cue,
       "complejos"=> $com,
       "presiones"=> $pre,
       "personas"=> $per,
+      "roles"=> $rol,
     ];
 
     $jsoncosa = json_encode($cosa);
@@ -43,8 +49,6 @@ if (isset($_POST['CargarSelects'])){
 
 //Modificar datos en BD
 if (isset($_POST['ModiAcc'])){
-   /*echo("Entra a modificar datos
-   ");*/
    $IdAcc=$_POST['IdAccidente'];
    $NomAcc=$_POST['NombreAccidente'];
    $TipoAcc=$_POST['TipoAccidente'];
@@ -52,17 +56,10 @@ if (isset($_POST['ModiAcc'])){
    $CompAcc=$_POST['ComplejaAccidente'];
    $PresAcc=$_POST['PresionAccidente'];
    $DescAcc=$_POST['DescripcionAccidente'];
-   
-   /*echo("SELECT Id_cuenca FROM cuenca WHERE Nombre_cuenca='$CuenAcc'
-   ");*/
-   
+     
    $ResIDCuen=mysqli_query($connect,"SELECT Id_cuenca FROM cuenca WHERE Nombre_cuenca='$CuenAcc'");
-  /* echo("SELECT Id_complejo FROM complejo WHERE Nombre_complejo='$CompAcc'
-   ");*/
    $ResIDComp=mysqli_query($connect,"SELECT Id_complejo FROM complejo WHERE Nombre_complejo='$CompAcc'");
 
-   /*echo("obtuvo los resultados de las consultas de cuenca y complejo
-   ");*/
    foreach($ResIDCuen as $IDCue){
       foreach($IDCue as $IC){
          $IDCuen = $IC;
@@ -73,21 +70,15 @@ if (isset($_POST['ModiAcc'])){
          $IDComp = $IC;
       }
    }
-   /*echo("Lo transformó a variables a los datos
-   ");*/
 
    $ConsulUpdate = "UPDATE accidente_geografico SET Nombre='$NomAcc', Tipo='$TipoAcc', Id_cuenca='$IDCuen', Id_complejo='$IDComp', Descripcion='$DescAcc' WHERE Id_acc = $IdAcc";
-   /*echo("$ConsulUpdate
-   ");*/
+
    mysqli_query($connect, $ConsulUpdate);
    
-   /*echo("Hace el UPDATE del accidente
-   ");*/
-
    //Consulta para obtener todas las IDs de las relaciones de presiones y cuencas pertenecientes a esta cuenca
    $Contiene_presiones = mysqli_query($connect,"SELECT Id_presiones FROM contiene_presiones WHERE Id_acc=$IdAcc");
 
-//=======================================================================================
+ //=======================================================================================
    // Se borran todas las relaciones presion cuenca de la cuenca a modificar
    $CondDelet = true;
    foreach($Contiene_presiones as $Cont_Pres){
@@ -118,8 +109,7 @@ if (isset($_POST['ModiAcc'])){
          
       }
    }
-echo("termina el DELETE");
-//=======================================================================================
+   //=======================================================================================
    //Se crean todas las nuevas relaciones de propietario de este complejo a modificar.
    //Se buscan las IDs de las personas
    $CondInsert = true;
@@ -131,18 +121,10 @@ echo("termina el DELETE");
             $Tipo_Presion = mysqli_query($connect,"SELECT Tipo_presiones FROM presiones WHERE Id_presiones=$CoPr");
             foreach($Tipo_Presion as $Tipo_Pres){
                foreach($Tipo_Pres as $TiPr){ // Aputa a cada tipo obtenido con la consulta
-echo($PresAcc[$i]."=".$TiPr."
-");                 
                   if($PresAcc[$i] == $TiPr){ // Si el tipo en $TiPr coinside con el tipo en $PresAcc en [i] entonces asigna false al Insert. Lo que indica que no se debe cargar esta presion a la BD porque ya está cargada
                      //desconfirma la insercion
                      $CondInsert = false;
-echo("encuentra coinsidencia
-");
-echo("====
-");
                   }else{
-echo("====
-");
                   }
                }
             }
@@ -150,19 +132,11 @@ echo("====
       }
       if ($CondInsert){
          //inserta
-echo("Entra al insertar
-");
          $Suport = $PresAcc[$i];
-echo("Suport".$Suport."
-");
-echo("SELECT Id_presiones FROM presiones WHERE Tipo_presiones='$Suport'
-");
          $Id_Presion = mysqli_query($connect,"SELECT Id_presiones FROM presiones WHERE Tipo_presiones='$Suport'");
-echo("Hace nueva consulta
-");
+
          foreach($Id_Presion as $Id_Pre){
             foreach($Id_Pre as $IdPr){
-               echo("Se hace la insercion del nuevo dato");
                mysqli_query($connect,"INSERT into contiene_presiones (Id_acc, Id_presiones) VALUES ($IdAcc, $IdPr)");
             }
          }
@@ -187,7 +161,7 @@ if (isset($_POST['ModiComp'])){
    //Consulta para obtener todas las IDs de las relaciones de persona y complejo para definir los propietarios de este complejo
    $Contiene_propietarios = mysqli_query($connect,"SELECT Id_persona FROM propietario WHERE Id_complejo=$IdCom");
 
-//=======================================================================================
+   //=======================================================================================
    // Se borran todas las relaciones presion cuenca de la cuenca a modificar
    $CondDelet = true;
    foreach($Contiene_propietarios as $Cont_Prop){
@@ -218,7 +192,7 @@ if (isset($_POST['ModiComp'])){
          
       }
    }
-//=======================================================================================
+   //=======================================================================================
    //Se crean todas las nuevas relaciones de propietario de este complejo a modificar.
    //Se buscan las IDs de las personas
    $CondInsert = true;
@@ -252,6 +226,112 @@ if (isset($_POST['ModiComp'])){
    }
 // FIN MODIFICACION DE COMPLEJOS
 }
+
+if (isset($_POST['ModiCue'])){
+   $IdCue=$_POST['IdCuenca'];
+   $NomCue=$_POST['NombreCuenca'];
+   $SuperCue=$_POST['SuperficieCuenca'];
+   $TipoCue=$_POST['TipoCuenca'];
+
+   $ConsulUpdate = "UPDATE cuenca SET Nombre_cuenca='$NomCue', Superficie='$SuperCue', Tipo_cuenca='$TipoCue' WHERE Id_cuenca = $IdCue";
+
+   mysqli_query($connect, $ConsulUpdate);
+ 
+// FIN MODIFICACION DE CUENCAS
+}
+
+
+if (isset($_POST['ModiFau'])){
+   $IdFau=$_POST['IdFau'];
+   $NomColFau=$_POST['NombreColFau'];
+   $NomCienFau=$_POST['NombreCienFau'];
+   $DescripFau=$_POST['DescripcionFau'];
+
+   $ConsulUpdate = "UPDATE fauna SET Nombre_coloquial='$NomColFau', Nombre_científico='$NomCienFau', Descripción='$DescripFau' WHERE Id_fauna = $IdFau";
+
+   mysqli_query($connect, $ConsulUpdate);
+ 
+// FIN MODIFICACION DE FAUNA
+}
+
+if (isset($_POST['ModiFlo'])){
+   $IdFlo=$_POST['IdFlo'];
+   $NomColFlo=$_POST['NombreColFlo'];
+   $NomCienFlo=$_POST['NombreCienFlo'];
+   $DescripFlo=$_POST['DescripcionFlo'];
+
+   $ConsulUpdate = "UPDATE flora SET Nombre_coloquial='$NomColFlo', Nombre_científico='$NomCienFlo', Descripcion='$DescripFlo' WHERE Id_flora = $IdFlo";
+
+   mysqli_query($connect, $ConsulUpdate);
+ 
+// FIN MODIFICACION DE FLORA
+}
+
+if (isset($_POST['ModiPres'])){
+   $IdPre=$_POST['IdPres'];
+   $TipPre=$_POST['TipoPres'];
+   $ObsPre=$_POST['ObservacionPres'];
+
+   $ConsulUpdate = "UPDATE presiones SET Tipo_presiones='$TipPre', Observacion='$ObsPre' WHERE Id_presiones = $IdPre";
+ //echo ($ConsulUpdate);
+   mysqli_query($connect, $ConsulUpdate);
+ 
+// FIN MODIFICACION DE FLORA
+}
+
+if (isset($_POST['ModiPers'])){
+   $IdPersona=$_POST['IdPersona'];
+   $NombrePers=$_POST['NombrePersona'];
+   $CorreoPers=$_POST['CorreoPersona'];
+   $telPers=$_POST['telefonoPersona'];
+   $direPers=$_POST['direccionPersona'];
+
+   $RolesPers=$_POST['RolesPersona'];
+   $PropiPers=$_POST['PropiedadesPersona'];
+
+   /*
+
+   $ConsulUpdate = "UPDATE persona SET Nombre_persona='$NombrePers', Correo='$CorreoPers', Teléfono='$telPers', Dirección='$direPers' WHERE Id_persona = $IdPersona";
+   //echo ($ConsulUpdate);
+   mysqli_query($connect, $ConsulUpdate);
+   
+   */
+   $IdsPersMiembro = mysqli_query($connect,"SELECT Id_Persona FROM miembro");
+   foreach($IdsPersMiembro as $IdPeMi){
+      foreach($IdPeMi as $IdPM){
+         if ($IdPM == $IdPersona){
+            $IdMiem=mysqli_query($connect,"SELECT Id_miembro FROM miembro WHERE Id_Persona=$IdPM");
+            foreach($IdMiem as $IdMi){
+               foreach ($IdMi as $IM){
+                  if (!empty($RolesPers)){ // Comprueba si se le está asignando algún rol
+                     echo("RolesPers tiene almenos un dato");
+                  }else{
+                     mysqli_query($connect,"DELETE FROM tiene_rol WHERE Id_miembro=$IM");
+                  }
+                  mysqli_query($connect,"SELECT Id_rol FROM tiene_rol WHERE Id_miembro=$IM");
+               }
+            }
+
+         }
+      }
+   }
+  
+   //se comprueba que la pesona es miembro
+
+   //desasignacion de roles
+   $q_rol = mysqli_query($connect,"SELECT descripcion FROM rol"); //Obtengo todos los roles disponibles
+   foreach($q_rol as $rol) {
+      foreach($rol as $r){
+
+      }
+   }
+
+// FIN MODIFICACION DE FLORA
+}
+
+
+
+
 
 //===========================================================================================
 //Para Accidentes 
@@ -822,16 +902,55 @@ if (isset($_POST['persona'])){
    foreach($resulta as $Fil){
       $cosa = $cosa."<tr id='tr$F' style='height:80px'>";
       $cosa = $cosa."<td style='width:25px; min-width: 25px;'><button id='Mper$F' onclick='ModifData($F, IDPer$F, tr$F);' type='button' style='background: orange;position: relative;float: right;'><i class='fa-solid fa-pen'></button></td>";
-      $suport;
+      $suport='<td>';
+      $EsProp = false;
+      $EsMiem = false;
       foreach($Fil as $Col){
          if ($C == 0){//ID-DNI-CUIL-CUIT
             $cosa = $cosa."<td id='IDPer$F'>$Col</td>";
 
-           
+           //Comprobar si es Miembro de proyecto
+           $IdMiembro = mysqli_query($connect, "SELECT Id_miembro FROM miembro WHERE Id_Persona = $Col");
+           //echo("escribe1");
+           foreach ($IdMiembro as $IdMiem){
+              foreach ($IdMiem as $IM){$EsMiem=true;}
+           }
+           if ($EsMiem){
+              $suport= $suport."<div style='text-decoration-line: underline;'>Miembro del proyecto</div>";
+           }
+            // echo("escribe2");
+           foreach ($IdMiembro as $IdMiem){
+              foreach ($IdMiem as $IM){    
+                 //echo("escribe3");     
+                 $cons1 = "SELECT Id_rol FROM tiene_rol WHERE Id_miembro = $IM";        
+                 //echo($cons1);    
+                 $IdRol = mysqli_query($connect,$cons1 );
+                 //echo("escribe4");
+                 foreach ($IdRol as $IdRo){
+                    foreach ($IdRo as $IR){
+                       $cons2 = "SELECT descripcion FROM rol WHERE Id_rol = $IR";
+                       //echo($cons2);
+                       $Rol = mysqli_query($connect, $cons2);
+                       foreach ($Rol as $Ro){
+                          foreach ($Ro as $R){
+                             $suport=$suport."► $R<br>";
+                          }
+                       }
+                    }
+                 }
+              }
+           }
+
             //Comprobar si es propietario
             $IdComplejo = mysqli_query($connect, "SELECT Id_complejo FROM propietario WHERE Id_persona = $Col");
             foreach ($IdComplejo as $IdCom){
-               foreach ($IdCom as $IC){$suport= "<td><div style='text-decoration-line: underline;'>Propietario</div>";}
+               foreach ($IdCom as $IC){$EsProp = true;}
+            }
+            if ($EsProp){
+               if($EsMiem){
+                  $suport= $suport."<br>";
+               }
+               $suport= $suport."<div style='text-decoration-line: underline;'>Propietario</div>";
             }
             foreach ($IdComplejo as $IdCom){
                foreach ($IdCom as $IC){                  
@@ -844,34 +963,7 @@ if (isset($_POST['persona'])){
                }
             }
 
-            //Comprobar si es Miembro de proyecto
-            $IdMiembro = mysqli_query($connect, "SELECT Id_miembro FROM miembro WHERE Id_Persona = $Col");
-            //echo("escribe1");
-            foreach ($IdMiembro as $IdMiem){
-               foreach ($IdMiem as $IM){$suport= "<td><div style='text-decoration-line: underline;'>Miembro del proyecto</div>";}
-            }
-           // echo("escribe2");
-            foreach ($IdMiembro as $IdMiem){
-               foreach ($IdMiem as $IM){    
-                  //echo("escribe3");     
-                  $cons1 = "SELECT Id_rol FROM tiene_rol WHERE Id_miembro = $IM";        
-                  //echo($cons1);    
-                  $IdRol = mysqli_query($connect,$cons1 );
-                  //echo("escribe4");
-                  foreach ($IdRol as $IdRo){
-                     foreach ($IdRo as $IR){
-                        $cons2 = "SELECT descripcion FROM rol WHERE Id_rol = $IR";
-                        //echo($cons2);
-                        $Rol = mysqli_query($connect, $cons2);
-                        foreach ($Rol as $Ro){
-                           foreach ($Ro as $R){
-                              $suport=$suport."► $R<br>";
-                           }
-                        }
-                     }
-                  }
-               }
-            }
+            
             
             $suport = $suport."</td>";
          }else
