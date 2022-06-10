@@ -1,6 +1,12 @@
 var CantPres= 0;
 var CantProp= 0;
+var CantReles= 0;
+var CantFau= 0;
+var CantFlo= 0;
 var IDp = new Array;  //Es necesario definirlo como un nuevo array, pero luego hay que limpiar cada direccion, cada contenedor del array empieza con 'undefined' como dato
+var IDFau = new Array;
+var IDFlo = new Array;
+var IDRels = new Array;
 var CantRol = 0;
 var CantPropie = 0;
 var Propies = new Array;
@@ -184,7 +190,7 @@ function AñadirPropietario(NID){
   });
   console.log("ahora CantProp:"+CantProp);
 }
-
+//================================================
 function quitarPropiedad(IDSelect,BtnQuit,Contenedor,Pos){
   //console.log("antes de quitar CantPres:"+CantPres);
   if (CantPropie == 0){
@@ -277,14 +283,258 @@ function AñadirPropiedad(NID){
 
   console.log("ahora CantProp:"+CantPropie);
 }
+//================================================
 
+function quitarRelevadores(IDSelect,BtnQuit,Contenedor,Pos){
+//console.log("antes de quitar CantPres:"+CantPres);
+if (CantReles == 0){
+    
+}
+else{
+  //console.log(Contenedor.id+ " || ContBtnSelProp"+(CantReles-1));
+  if (Contenedor.id == ("ContBtnSelRele"+(CantReles-1))){
+    ButAdd = "<button id='BtnNewRele' type='button' class='btn btn-success' style='height: 25px; width: 25px; padding: 0px;' onclick='AñadirRelevadores("+(CantReles-1)+");'> <i class='fa-solid fa-plus'></i> </button>";
+    //console.log("ContBtnSelProp"+(CantReles-2));
+    $("#ContBtnSelRele"+(CantReles-2)).append(ButAdd);
+    //console.log("creó el boton");
+    //console.log("#"+BtnQuit.id);
+    $("#"+BtnQuit.id).remove();
+    //console.log("#"+IDSelect.id);
+    $("#"+IDSelect.id).remove();
+    $("#"+Contenedor.id).remove();
+    if (CantReles == 1){
+      $("#ContPadreReles").append("<button id='BtnNewRele' type='button' class='btn btn-success' style='height: 25px; width: 25px; padding: 0px;' onclick='AñadirRelevadores("+(0)+");'> <i class='fa-solid fa-plus'></i> </button>");
+    }
+  }else
+  {
+    //console.log("entra a la parte de cambiar IDs");
+    $("#"+BtnQuit.id).remove();
+    //console.log("#"+IDSelect.id);
+    $("#"+IDSelect.id).remove();
+    $("#"+Contenedor.id).remove();
+    for (i=Pos; i<CantReles; i++){
+      $("#ContBtnSelRele"+(i+1)).attr("id","ContBtnSelRele"+i);
+      $("#BtnQuitRele"+(i+1)).attr("id","BtnQuitRele"+i);
+      //console.log("hace el attr para cambiar la funcion");
+      $("#BtnQuitRele"+(i)).attr("onclick","quitarRelevadores(SelModRele"+i+",BtnQuitRele"+i+",ContBtnSelRele"+i+","+i+");");
+      $("#SelModRele"+(i+1)).attr("id","SelModRele"+i);
+      if (i==CantReles-1){
+        //console.log("newButton en "+i);
+        $("#BtnNewRele").remove();
+        $("#ContBtnSelRele"+(i-1)).append("<button id='BtnNewRele' type='button' class='btn btn-success' style='height: 25px; width: 25px; padding: 0px;' onclick='AñadirRelevadores("+(i)+");'> <i class='fa-solid fa-plus'></i> </button>");
+      }
+    }
+  }
+  CantReles--;
+}
+console.log("despues de quitar CantReles:"+CantReles);
+}
+
+function AñadirRelevadores(NID){
+  $("#BtnNewRele").remove();
+  appendSelect = 
+  "<div id='ContBtnSelRele"+NID+"' style='display:flex; margin-bottom: 15px;'>"+
+    "<button id='BtnQuitRele"+NID+"' type='button' class='btn btn-danger' style='height: 25px; width: 25px; padding: 0px;' onclick='quitarRelevadores(SelModRele"+NID+",BtnQuitRele"+NID+",ContBtnSelRele"+NID+","+NID+");'> X </button>"+
+      "<select id='SelModRele"+NID+"' class='form-select' style='background: #e2e2e2; color:black; width: 50%; min-width: 230px; padding: 0px; padding-left: 24px;'>"+
+        "<option>"+IDRels[NID]+" 1</option>"+
+        "<option>"+IDRels[NID]+" 2</option>"+
+        "<option>"+IDRels[NID]+" 3</option>"+
+      "<select>"+
+      "<button id='BtnNewRele' type='button' class='btn btn-success' style='height: 25px; width: 25px; padding: 0px;' onclick='AñadirRelevadores("+(NID+1)+");'> <i class='fa-solid fa-plus'></i> </button>";
+  $("#ContPadreReles").append(appendSelect);
+  CantReles++;
+  tempRel='';
+  contpPr = new Array;
+  const postData = {CargarSelects: true,}   
+  $.post('php/modificar.php', postData, (response) => {
+    let datos= JSON.parse(response);
+    datos['miembros'].forEach(dato => {
+      tempRel +=`<option>${dato.miembro}</option>` 
+    });
+    for (i=0; i<CantReles;i++){
+      pRel=0;
+      datos['miembros'].forEach(dato => {
+        if (dato.miembro == IDRels[i]){
+          contpRel[i] = pRel;
+        }else{
+          pRel++;
+        }
+      });        
+    }
+    for (i=0; i<CantReles; i++){
+      $('#SelModRele'+i).html(tempRel);
+      document.getElementById('SelModRele'+i).options.item(contpRel[i]).selected = 'selected';
+    }
+  });
+  console.log("ahora CantReles:"+CantReles);
+}
+//================================================
+
+function quitarFauna(IDSelect,BtnQuit,Contenedor,Pos){
+  //console.log("antes de quitar CantPres:"+CantPres);
+  if (CantFau == 0){
+      
+  }
+  else{
+    //console.log(Contenedor.id+ " || ContBtnSelProp"+(CantFau-1));
+    if (Contenedor.id == ("ContBtnSelFau"+(CantFau-1))){
+      ButAdd = "<button id='BtnNewFau' type='button' class='btn btn-success' style='height: 25px; width: 25px; padding: 0px;' onclick='AñadirFauna("+(CantFau-1)+");'> <i class='fa-solid fa-plus'></i> </button>";
+      $("#ContBtnSelFau"+(CantFau-2)).append(ButAdd);
+      $("#"+BtnQuit.id).remove();
+      $("#"+IDSelect.id).remove();
+      $("#"+Contenedor.id).remove();
+      if (CantFau == 1){
+        $("#ContPadreFau").append("<button id='BtnNewFau' type='button' class='btn btn-success' style='height: 25px; width: 25px; padding: 0px;' onclick='AñadirFauna("+(0)+");'> <i class='fa-solid fa-plus'></i> </button>");
+      }
+    }else
+    {
+      $("#"+BtnQuit.id).remove();
+      $("#"+IDSelect.id).remove();
+      $("#"+Contenedor.id).remove();
+      for (i=Pos; i<CantFau; i++){
+        $("#ContBtnSelFau"+(i+1)).attr("id","ContBtnSelFau"+i);
+        $("#BtnQuitFau"+(i+1)).attr("id","BtnQuitFau"+i);
+        $("#BtnQuitFau"+(i)).attr("onclick","quitarFauna(SelModFau"+i+",BtnQuitFau"+i+",ContBtnSelFau"+i+","+i+");");
+        $("#SelModFau"+(i+1)).attr("id","SelModFau"+i);
+        if (i==CantFau-1){
+          $("#BtnNewFau").remove();
+          $("#ContBtnSelFau"+(i-1)).append("<button id='BtnNewFau' type='button' class='btn btn-success' style='height: 25px; width: 25px; padding: 0px;' onclick='AñadirFauna("+(i)+");'> <i class='fa-solid fa-plus'></i> </button>");
+        }
+      }
+    }
+    CantFau--;
+  }
+  console.log("despues de quitar CantFau:"+CantFau);
+  }
+  
+function AñadirFauna(NID){
+    $("#BtnNewFau").remove();
+    appendSelect = 
+    "<div id='ContBtnSelFau"+NID+"' style='display:flex; margin-bottom: 15px;'>"+
+      "<button id='BtnQuitFau"+NID+"' type='button' class='btn btn-danger' style='height: 25px; width: 25px; padding: 0px;' onclick='quitarFauna(SelModFau"+NID+",BtnQuitFau"+NID+",ContBtnSelFau"+NID+","+NID+");'> X </button>"+
+        "<select id='SelModFau"+NID+"' class='form-select' style='background: #e2e2e2; color:black; width: 50%; min-width: 230px; padding: 0px; padding-left: 24px;'>"+
+          "<option>"+IDFau[NID]+" 1</option>"+
+          "<option>"+IDFau[NID]+" 2</option>"+
+          "<option>"+IDFau[NID]+" 3</option>"+
+        "<select>"+
+        "<button id='BtnNewFau' type='button' class='btn btn-success' style='height: 25px; width: 25px; padding: 0px;' onclick='AñadirFauna("+(NID+1)+");'> <i class='fa-solid fa-plus'></i> </button>";
+    $("#ContPadreFau").append(appendSelect);
+    CantFau++;
+    tempFau='';
+    contpFau = new Array;
+    const postData = {CargarSelects: true,}   
+    $.post('php/modificar.php', postData, (response) => {
+      let datos= JSON.parse(response);
+      datos['fauna'].forEach(dato => {
+        tempFau +=`<option>${dato.fauna}</option>` 
+      });
+      for (i=0; i< CantFau;i++){
+        pPr=0;
+        datos['fauna'].forEach(dato => {
+          if (dato.fauna == IDFau[i]){
+            contpFau[i] = pPr;
+          }else{
+            pPr++;
+          }
+        });        
+      }
+      for (i=0; i< CantFau; i++){
+        $('#SelModFau'+i).html(tempFau);
+        document.getElementById('SelModFau'+i).options.item(contpFau[i]).selected = 'selected';
+      }
+    });
+    console.log("ahora CantFau:"+ CantFau);
+  }
+  
+//================================================
+
+function quitarFlora(IDSelect,BtnQuit,Contenedor,Pos){
+  //console.log("antes de quitar CantFlo:"+CantFlo);
+  if (CantFlo == 0){
+      
+  }
+  else{
+    //console.log(Contenedor.id+ " || ContBtnSelProp"+(CantFlo-1));
+    if (Contenedor.id == ("ContBtnSelFlo"+(CantFlo-1))){
+      ButAdd = "<button id='BtnNewFlo' type='button' class='btn btn-success' style='height: 25px; width: 25px; padding: 0px;' onclick='AñadirFlora("+(CantFlo-1)+");'> <i class='fa-solid fa-plus'></i> </button>";
+      $("#ContBtnSelFlo"+(CantFlo-2)).append(ButAdd);
+      $("#"+BtnQuit.id).remove();
+      $("#"+IDSelect.id).remove();
+      $("#"+Contenedor.id).remove();
+      if (CantFlo == 1){
+        $("#ContPadreFlo").append("<button id='BtnNewFlo' type='button' class='btn btn-success' style='height: 25px; width: 25px; padding: 0px;' onclick='AñadirFlora("+(0)+");'> <i class='fa-solid fa-plus'></i> </button>");
+      }
+    }else
+    {
+      $("#"+BtnQuit.id).remove();
+      $("#"+IDSelect.id).remove();
+      $("#"+Contenedor.id).remove();
+      for (i=Pos; i<CantFlo; i++){
+        $("#ContBtnSelFlo"+(i+1)).attr("id","ContBtnSelFlo"+i);
+        $("#BtnQuitFlo"+(i+1)).attr("id","BtnQuitFlo"+i);
+        $("#BtnQuitFlo"+(i)).attr("onclick","quitarFlora(SelModFlo"+i+",BtnQuitFlo"+i+",ContBtnSelFlo"+i+","+i+");");
+        $("#SelModFlo"+(i+1)).attr("id","SelModFlo"+i);
+        if (i==CantFlo-1){
+          $("#BtnNewFlo").remove();
+          $("#ContBtnSelFlo"+(i-1)).append("<button id='BtnNewFlo' type='button' class='btn btn-success' style='height: 25px; width: 25px; padding: 0px;' onclick='AñadirFlora("+(i)+");'> <i class='fa-solid fa-plus'></i> </button>");
+        }
+      }
+    }
+    CantFlo--;
+  }
+  console.log("despues de quitar CantFlo:"+CantFlo);
+  }
+  
+  function AñadirFlora(NID){
+    $("#BtnNewFlo").remove();
+    appendSelect = 
+    "<div id='ContBtnSelFlo"+NID+"' style='display:flex; margin-bottom: 15px;'>"+
+      "<button id='BtnQuitFlo"+NID+"' type='button' class='btn btn-danger' style='height: 25px; width: 25px; padding: 0px;' onclick='quitarFlora(SelModFlo"+NID+",BtnQuitFlo"+NID+",ContBtnSelFlo"+NID+","+NID+");'> X </button>"+
+        "<select id='SelModFlo"+NID+"' class='form-select' style='background: #e2e2e2; color:black; width: 50%; min-width: 230px; padding: 0px; padding-left: 24px;'>"+
+          "<option>"+IDFlo[NID]+" 1</option>"+
+          "<option>"+IDFlo[NID]+" 2</option>"+
+          "<option>"+IDFlo[NID]+" 3</option>"+
+        "<select>"+
+        "<button id='BtnNewFlo' type='button' class='btn btn-success' style='height: 25px; width: 25px; padding: 0px;' onclick='AñadirFlora("+(NID+1)+");'> <i class='fa-solid fa-plus'></i> </button>";
+    $("#ContPadreFlo").append(appendSelect);
+    CantFlo++;
+    tempFlo='';
+    contpFlo = new Array;
+    const postData = {CargarSelects: true,}   
+    $.post('php/modificar.php', postData, (response) => {
+      let datos= JSON.parse(response);
+      datos['flora'].forEach(dato => {
+        tempFlo +=`<option>${dato.flora}</option>` 
+      });
+      for (i=0; i< CantFlo;i++){
+        pPr=0;
+        datos['flora'].forEach(dato => {
+          if (dato.flora == IDFlo[i]){
+            contpFlo[i] = pPr;
+          }else{
+            pPr++;
+          }
+        });        
+      }
+      for (i=0; i< CantFlo; i++){
+        $('#SelModFlo'+i).html(tempFlo);
+        document.getElementById('SelModFlo'+i).options.item(contpFlo[i]).selected = 'selected';
+      }
+    });
+    console.log("ahora CantFlo:"+ CantFlo);
+  }
 
 function ModifData(Fil, Id, trs){
   CantPres= 0;
   CantProp= 0;
+  CantReles = 0;
+  CantFau= 0;
+  CantFlo= 0;
   IDp = new Array;
-
-console.log(trs);
+  IDFlo = new Array;
+  IDFau = new Array;
+  IDRels = new Array;
+  console.log(trs);
 
   var tds = trs.childNodes;
 
@@ -598,6 +848,10 @@ console.log(trs);
       data = data+"</div>";
       CantProp++;
     }
+    if(IDp.length == 0){
+      data = data+"<button id='BtnNewRelPropComp' type='button' class='btn btn-success' style='height: 25px; width: 25px; padding: 0px;' onclick='AñadirPropietario("+(0)+");'> <i class='fa-solid fa-plus'></i> </button>";
+     
+    }
   
    
     console.log("ahora CantProp:"+CantProp);
@@ -726,7 +980,541 @@ console.log(trs);
 //======================================================================================
   // SE VAN A MODIFICAR RELEVAMIENTOS
   if (Id.id.substring(0,5) == "IDRel"){
-    console.log("Modificar un relevamiento");
+    /* Datas = (Significado)
+    Data=1 : Accidentes geograficos
+    Data=2 Complejos
+    Data=3 Cuencas
+    Data=4 Relevamientos
+    Data=5 Fauna
+    Data=6 Flora
+    Data=7 Presiones
+    Data=8 Personas */
+    var Data= 4;
+
+    IdRel = parseInt(Id.innerText);
+    // _________CREA TODA LA VENTANA DONDE SE MOSTRARAN LOS CAMPOS A MODIFICAR_________
+    NewForm = 
+    "<div id='formModifData' class='modal' role='document' style='background: rgba(0,0,0,0.8);'>"+
+        "<div class='modal-dialog modal-lg' style='display: inline-table;'>"+
+            "<div class='modal-content' style='width: 92vmax; left: 3vmax; border: 2px solid #343a40;'>"+
+                "<div class='modal-header'  style='background:#343a40; color:lightgrey;'>"+
+                    "<h5 class='modal-title' style='color:lightgrey;'>Modificar relevamiento <a id='TitModId'class='modal-title' style='color:lightgrey;'>"+IdRel+"</a></h5>"+
+                    "<button type='button' style='color:lightgrey; background: #343a40; border: 0px;' onclick='deletesHTML(`formModifData`);' data-bs-dismiss='modal' aria-label='Close'>"+
+                        "<i class='fa-solid fa-x' style='color:lightgrey;'></i>"+
+                    "</button>"+
+                "</div>"+
+                "<div id='dataModif' class='modal-body'>"+
+                "</div>"+
+                "<div class='modal-body' style=' align-self: flex-end;'>"+
+                    "<button id='CargarModif' type='button' class='btn btn-primary' onclick='CargarModificaciones("+Data+");'>Confirmar Modificación</button>"+
+                  /*  "<button type='button' style='color:lightgrey; background: #343a40; border: 0px;' onclick='deletesHTML(`formModifData`);' data-bs-dismiss='modal' aria-label='Close'>"+
+                        "Confirmar Modificación"+
+                    "</button>"+*/
+                "</div>"+
+            "</div>"+
+        "</div>"+
+    "</div>";
+    $("body").append(NewForm);
+    $("#formModifData").show();
+  
+     // _________EXTRAE EN VARIABLES LOS DISTINTOS CAMPOS DE DATOS_________
+    for (i=0; i< tds.length; i++){
+      if (i==0){ //Contiene el botón
+      }
+      if (i==1){
+        var IDr = tds[i].innerText;
+      }
+      if (i==2){ //relevamiento del Accidente 
+        var IDAcc = tds[i].innerText;
+      }
+      if (i==3){ // Fecha del relevamiento
+        var IDFecha = tds[i].innerText;
+      }
+      if (i==4){ //Conductividad
+        var IDConduc = tds[i].innerText;
+      }
+      if (i==5){ //Ancho
+        var IDAnch = tds[i].innerText;
+      }
+      if (i==6){ // Oxigeno Disuelto
+        var IDOxgD = tds[i].innerText;
+      }
+      if (i==7){ // Calidad del Agua
+        var IDCalAg = tds[i].innerText;
+      }
+      if (i==8){ // Diversidad Vegetal
+        var IDDivVeg = tds[i].innerText;
+      }
+      if (i==9){ // Regimen hidrologico
+        var IDRegHid = tds[i].innerText;
+      }
+      if (i==10){ //Turbides del agua
+        var IDTurbAgua = tds[i].innerText;
+      }
+      if (i==11){ //Largo
+        var IDLar = tds[i].innerText;
+      }
+      if (i==12){
+        var IDPH = tds[i].innerText;
+      }
+      if (i==13){
+        var IDCol = tds[i].innerText;
+      }
+      if (i==14){
+        var IDFuen = tds[i].innerText;
+      }
+      if (i==15){
+        var IDTiemPer = tds[i].innerText;
+      }
+      if (i==16){
+        var IDSup= tds[i].innerText;
+      }
+      if (i==17){
+        var IDTempAg = tds[i].innerText;
+      }
+      if (i==18){//Relevadores
+        p = -1;
+        var Relevads = tds[i].innerText.replace(/(\r\n|\n|\r)/gm, "");
+        for (j=0 ; j<Relevads.length; j++){
+          if (Relevads[j] != "►" && Relevads[j]!= ""){
+            IDRels[p] =IDRels[p]+Relevads[j];
+          }else{
+            j++;
+            p++;
+            IDRels[p]=''; // Esto vacía el espacio "p" en el array "IDRels" para que no contenga un dato "undefined"
+          }
+        }
+        console.log(IDRels);
+      }
+      if (i==19){ //Observaciones
+        var IDObs = tds[i].innerText;
+      }
+      if (i==20){ // Fauna
+        p = -1;
+        var Faunas = tds[i].innerText.replace(/(\r\n|\n|\r)/gm, "");
+        for (j=0 ; j<Faunas.length; j++){
+          if (Faunas[j] != "►" && Faunas[j]!= ""){
+            IDFau[p] = IDFau[p]+Faunas[j];
+          }else{
+            j++;
+            p++;
+            IDFau[p]=''; // Esto vacía el espacio "p" en el array "IDFau" para que no contenga un dato "undefined"
+          }
+        }
+      }
+      if (i==21){ //Flora
+        p = -1;
+        var Floras = tds[i].innerText.replace(/(\r\n|\n|\r)/gm, "");
+        for (j=0 ; j<Floras.length; j++){
+          if (Floras[j] != "►" && Floras[j]!= ""){
+            IDFlo[p] = IDFlo[p]+Floras[j];
+          }else{
+            j++;
+            p++;
+            IDFlo[p]=''; // Esto vacía el espacio "p" en el array "IDFau" para que no contenga un dato "undefined"
+          }
+        }
+      }
+     
+    }
+
+// ______________ SE CREAN TODOS LSO CAMPOS DE DATOS QUE SE PERMITIRAN MODIFICAR SOBRE ESTE OBJETO A MODIFICAR _____________________
+    data =  
+    "<section style='display: flex;'>"+
+          "<div style=' height: 50px; font-size: 20px; margin-left: 100px; margin-bottom: 20px; width: 50%;'>"+
+              "<a style='font-weight: bold; color: grey; font-size: 20px; height: 25px;'>Accidente Geográfico: </a>" +
+              "<div style='background: #e2e2e2; color:black; width: 50%; max-width: 250px; height: 25px; text-align: center;'>"+IDAcc+"</div><br><br><br>" + 
+          "</div>"+
+          "<div style=' height: 50px; font-size: 20px; margin-bottom: 20px; width: 50%;'>"+
+              "<a style='font-weight: bold; color: grey; font-size: 20px; height: 25px;'>Fecha del relevamiento: </a>" +
+              "<input type='date' id='InpModFecha' class='form-control' style='background: #e2e2e2; color:black; width: 175px; height: 25px;' value="+IDFecha+" min='2018-01-01' max='2022-12-31'><br><br><br>" + 
+          "</div>"+
+    "</section><br><br>"+
+    "<section style='display: flex;'>"+
+      "<div style=' width: 37%; padding-left: 50px;'>"+
+        "<div style=' height: 50px; font-size: 20px; margin-bottom: 20px;'>"+
+            "<a style='font-weight: bold; color: grey; font-size: 20px; height: 25px;'>Conductividad: </a>" +
+            "<input type='text' id='InpModConductividad' class='form-control' style='background: #e2e2e2; color:black; width: 50%; height: 25px;' value="+IDConduc+"><br><br><br>" +
+        "</div>"+
+        "<div style=' height: 50px; font-size: 20px; margin-bottom: 20px;'>"+
+            "<a style='font-weight: bold; color: grey; font-size: 20px; height: 25px;'>Ancho: </a>" +
+            "<input type='text' id='InpModAncho' class='form-control' style='background: #e2e2e2; color:black; width: 50%; height: 25px;' value="+IDAnch+"><br><br><br>" +
+        "</div>"+
+        "<div style=' height: 50px; font-size: 20px; margin-bottom: 20px;'>"+
+            "<a style='font-weight: bold; color: grey; font-size: 20px; height: 25px;'>Largo: </a>" +
+            "<input type='text' id='InpModLargo' class='form-control' style='background: #e2e2e2; color:black; width: 50%; height: 25px;' value="+IDLar+"><br><br><br>" +
+        "</div>"+
+        "<div style=' height: 50px; font-size: 20px; margin-bottom: 20px;'>"+
+            "<a style='font-weight: bold; color: grey; font-size: 20px; height: 25px;'>Superficie: </a>" +
+            "<input type='text' id='InpModSuper' class='form-control' style='background: #e2e2e2; color:black; width: 50%; height: 25px;' value="+IDSup+"><br><br><br>" +
+        "</div>"+
+        "<div style=' height: 50px; font-size: 20px; margin-bottom: 20px;'>"+
+            "<a style='font-weight: bold; color: grey; font-size: 20px; height: 25px;'>Oxigeno Disuelto: </a>" +
+            "<input type='text' id='InpModOxigDis' class='form-control' style='background: #e2e2e2; color:black; width: 50%; height: 25px;' value="+IDOxgD+"><br><br><br>" +
+        "</div>"+
+        "<div style=' height: 50px; font-size: 20px; margin-bottom: 20px;'>"+
+            "<a style='font-weight: bold; color: grey; font-size: 20px; height: 25px;'>Turbidez del agua: </a>" +
+            "<input type='text' id='InpModTurbAgua' class='form-control' style='background: #e2e2e2; color:black; width: 50%; height: 25px;' value="+IDTurbAgua+"><br><br><br>" +
+        "</div>"+
+        "<div style=' height: 50px; font-size: 20px; margin-bottom: 20px;'>"+
+            "<a style='font-weight: bold; color: grey; font-size: 20px; height: 25px;'>PH del agua: </a>" +
+            "<input type='text' id='InpModPH' class='form-control' style='background: #e2e2e2; color:black; width: 50%; height: 25px;' value="+IDPH+"><br><br><br>" +
+        "</div>"+
+        "<div style=' height: 50px; font-size: 20px; margin-bottom: 20px;'>"+
+            "<a style='font-weight: bold; color: grey; font-size: 20px; height: 25px;'>Color del agua: </a>" +
+            "<input type='text' id='InpModColor' class='form-control' style='background: #e2e2e2; color:black; width: 50%; height: 25px;' value="+IDCol+"><br><br><br>" +
+        "</div>"+
+        "<div style=' height: 50px; font-size: 20px; margin-bottom: 20px;'>"+
+            "<a style='font-weight: bold; color: grey; font-size: 20px; height: 25px;'>Temperatura del agua: </a>" +
+            "<input type='text' id='InpModTempAg' class='form-control' style='background: #e2e2e2; color:black; width: 50%; height: 25px;' value="+IDTempAg+"><br><br><br>" +
+        "</div>"+
+      "</div>"+
+      "<div style=' width: 37%; padding-left: 20px;'>"+
+        "<div  id='RadioModCaliAgua style='height: 50px; font-size: 20px; margin-bottom: 20px;'>"+
+          "<a style='font-weight: bold; color: grey; font-size: 20px; height: 25px;'>Calidad del Agua: </a>" +
+            "<div class='form-check'>"+
+              "<label class='form-check-label'>";
+              ///console.log("IDCalAg: "+IDCalAg);
+              if(IDCalAg=="Conservado"){
+                //console.log("Checked1");
+                data = data + "<input type='radio' class='form-check-input' name='opAgua' id='agua_op0' value='Conservado' checked=''>";
+              }else{
+                //console.log("UnChecked1");
+                data = data + "<input type='radio' class='form-check-input' name='opAgua' id='agua_op0' value='Conservado'>";
+              }
+              data = data + 
+                "Conservado"+
+              "</label>"+
+            "</div>"+
+            "<div class='form-check'>"+
+              "<label class='form-check-label'>";
+              if(IDCalAg=="Alterado"){
+                //console.log("Checked2");
+                data = data + "<input type='radio' class='form-check-input' name='opAgua' id='agua_op1' value='Alterado' checked=''>";
+              }else{
+                ///console.log("UnChecked2");
+                data = data + "<input type='radio' class='form-check-input' name='opAgua' id='agua_op1' value='Alterado'>";
+              }
+              data = data + 
+                "Alterado"+
+              "</label>"+
+            "</div>"+
+            "<div class='form-check'>"+
+              "<label class='form-check-label'>";
+              if(IDCalAg=="Muy Alterado"){
+                //console.log("Checked3");
+                data = data + "<input type='radio' class='form-check-input' name='opAgua' id='agua_op2' value='Muy Alterado' checked=''>";
+              }else{
+                //console.log("UnChecked3");
+                data = data + "<input type='radio' class='form-check-input' name='opAgua' id='agua_op2' value='Muy Alterado'>";
+              }
+              data = data + 
+                "Muy Alterado"+
+              "</label>"+
+            "</div>"+
+        "</div>"+
+        "<div  id='RadioModDivVeg style='height: 50px; font-size: 20px; margin-bottom: 20px;'>"+
+          "<a style='font-weight: bold; color: grey; font-size: 20px; height: 25px;'>Diversidad Vegetal: </a>" +
+            "<div class='form-check'>"+
+              "<label class='form-check-label'>";
+              //console.log("IDDivVeg: "+IDDivVeg);
+              if(IDDivVeg=="Conservado"){
+                //console.log("Checked1");
+                data = data + "<input type='radio' class='form-check-input' name='opDivVeg' id='Veg_op0' value='Conservado' checked=''>";
+              }else{
+                //console.log("UnChecked1");
+                data = data + "<input type='radio' class='form-check-input' name='opDivVeg' id='Veg_op0' value='Conservado'>";
+              }
+              data = data + 
+                "Conservado"+
+              "</label>"+
+            "</div>"+
+            "<div class='form-check'>"+
+              "<label class='form-check-label'>";
+              if(IDDivVeg=="Alterado"){
+                //console.log("Checked2");
+                data = data + "<input type='radio' class='form-check-input' name='opDivVeg' id='Veg_op1' value='Alterado' checked=''>";
+              }else{
+                //console.log("UnChecked2");
+                data = data + "<input type='radio' class='form-check-input' name='opDivVeg' id='Veg_op1' value='Alterado'>";
+              }
+              data = data + 
+                "Alterado"+
+              "</label>"+
+            "</div>"+
+            "<div class='form-check'>"+
+              "<label class='form-check-label'>";
+              if(IDDivVeg=="Muy Alterado"){
+                //console.log("Checked3");
+                data = data + "<input type='radio' class='form-check-input' name='opDivVeg' id='Veg_op2' value='Muy Alterado' checked=''>";
+              }else{
+                //console.log("UnChecked3");
+                data = data + "<input type='radio' class='form-check-input' name='opDivVeg' id='Veg_op2' value='Muy Alterado'>";
+              }
+              data = data + 
+                "Muy Alterado"+
+              "</label>"+
+            "</div>"+
+        "</div>"+
+        "<div  id='RadioModRegHid style='height: 50px; font-size: 20px; margin-bottom: 20px;'>"+
+          "<a style='font-weight: bold; color: grey; font-size: 20px; height: 25px;'>Régimen Hidrológico: </a>" +
+            "<div class='form-check'>"+
+              "<label class='form-check-label'>";
+              //console.log("IDRegHid: "+IDRegHid);
+              if(IDRegHid=="Conservado"){
+                //console.log("Checked1");
+                data = data + "<input type='radio' class='form-check-input' name='opRegHid' id='RegHid_op0' value='Conservado' checked=''>";
+              }else{
+                //console.log("UnChecked1");
+                data = data + "<input type='radio' class='form-check-input' name='opRegHid' id='RegHid_op0' value='Conservado'>";
+              }
+              data = data + 
+                "Conservado"+
+              "</label>"+
+            "</div>"+
+            "<div class='form-check'>"+
+              "<label class='form-check-label'>";
+              if(IDRegHid=="Alterado"){
+                //console.log("Checked2");
+                data = data + "<input type='radio' class='form-check-input' name='opRegHid' id='RegHid_op1' value='Alterado' checked=''>";
+              }else{
+                //console.log("UnChecked2");
+                data = data + "<input type='radio' class='form-check-input' name='opRegHid' id='RegHid_op1' value='Alterado'>";
+              }
+              data = data + 
+                "Alterado"+
+              "</label>"+
+            "</div>"+
+            "<div class='form-check'>"+
+              "<label class='form-check-label'>";
+              if(IDRegHid=="Muy Alterado"){
+                //console.log("Checked3");
+                data = data + "<input type='radio' class='form-check-input' name='opRegHid' id='RegHid_op2' value='Muy Alterado' checked=''>";
+              }else{
+                //console.log("UnChecked3");
+                data = data + "<input type='radio' class='form-check-input' name='opRegHid' id='RegHid_op2' value='Muy Alterado'>";
+              }
+              data = data + 
+                "Muy Alterado"+
+              "</label>"+
+            "</div>"+
+        "</div>"+
+        "<div  id='RadioModTiemPer style='height: 50px; font-size: 20px; margin-bottom: 20px;'>"+
+          "<a style='font-weight: bold; color: grey; font-size: 20px; height: 25px;'>Tiempo de permanencia: </a>" +
+            "<div class='form-check'>"+
+              "<label class='form-check-label'>";
+              //console.log("IDTiemPer: "+IDTiemPer);
+              if(IDTiemPer=="Permanente"){
+                //console.log("Checked1");
+                data = data + "<input type='radio' class='form-check-input' name='opTiemPer' id='TiemPer_op0' value='Permanente' checked=''>";
+              }else{
+                //console.log("UnChecked1");
+                data = data + "<input type='radio' class='form-check-input' name='opTiemPer' id='TiemPer_op0' value='Permanente'>";
+              }
+              data = data + 
+                "Permanente"+
+              "</label>"+
+            "</div>"+
+            "<div class='form-check'>"+
+              "<label class='form-check-label'>";
+              if(IDTiemPer=="Temporal"){
+                //console.log("Checked2");
+                data = data + "<input type='radio' class='form-check-input' name='opTiemPer' id='TiemPer_op1' value='Temporal' checked=''>";
+              }else{
+                //console.log("UnChecked2");
+                data = data + "<input type='radio' class='form-check-input' name='opTiemPer' id='TiemPer_op1' value='Temporal'>";
+              }
+              data = data + 
+                "Temporal"+
+              "</label>"+
+            "</div>"+
+        "</div>"+
+        "<div  id='RadioModFuente style='height: 50px; font-size: 20px; margin-bottom: 20px;'>"+
+          "<a style='font-weight: bold; color: grey; font-size: 20px; height: 25px;'>Fuente: </a>" +
+            "<div class='form-check'>"+
+              "<label class='form-check-label'>";
+              //console.log("IDFuen: "+IDFuen);
+              if(IDFuen=="Natural"){
+                //console.log("Checked1");
+                data = data + "<input type='radio' class='form-check-input' name='opFuente' id='Fuente_op0' value='Natural' checked=''>";
+              }else{
+                //console.log("UnChecked1");
+                data = data + "<input type='radio' class='form-check-input' name='opFuente' id='Fuente_op0' value='Natural'>";
+              }
+              data = data + 
+                "Natural"+
+              "</label>"+
+            "</div>"+
+            "<div class='form-check'>"+
+              "<label class='form-check-label'>";
+              if(IDFuen=="Artificial"){
+                //console.log("Checked2");
+                data = data + "<input type='radio' class='form-check-input' name='opFuente' id='Fuente_op1' value='Artificial' checked=''>";
+              }else{
+                //console.log("UnChecked2");
+                data = data + "<input type='radio' class='form-check-input' name='opFuente' id='Fuente_op1' value='Artificial'>";
+              }
+              data = data + 
+                "Artificial"+
+              "</label>"+
+            "</div>"+
+        "</div>"+
+    "</div>"+
+    "<div>"+
+      "<div id='ContPadreReles' style=' width: 100%; padding-left: 20px; height: 165px; overflow-x: auto;'>"+
+        "<a style='font-weight: bold; color: grey; font-size: 20px;'>Relevadores: </a><br>";
+
+    for (i=0 ; i<IDRels.length; i++){
+      data = data+"<div id='ContBtnSelRele"+i+"' style='display:flex; margin-bottom: 15px;'>"+
+                    "<button id='BtnQuitRele"+i+"' type='button' class='btn btn-danger' style='height: 25px; width: 25px; padding: 0px;' onclick='quitarRelevadores(SelModRele"+i+",BtnQuitRele"+i+",ContBtnSelRele"+i+","+i+");'> X </button>"+
+                    "<select id='SelModRele"+i+"' class='form-select' style='background: #e2e2e2; color:black; width: 50%; min-width: 230px; padding: 0px; padding-left: 24px;'>"+
+                        "<option>"+IDRels[i]+" 1</option>"+
+                        "<option>"+IDRels[i]+" 2</option>"+
+                        "<option>"+IDRels[i]+" 3</option>"+
+                    "<select>";
+                 
+      if(i == (IDRels.length-1)){
+        data = data+"<button id='BtnNewRele' type='button' class='btn btn-success' style='height: 25px; width: 25px; padding: 0px;' onclick='AñadirRelevadores("+(i+1)+");'> <i class='fa-solid fa-plus'></i> </button>";
+      }
+      data = data+"</div>";
+      CantReles++;
+    }
+    if(IDFau.length ==0){
+      data = data+"<button id='BtnNewRele' type='button' class='btn btn-success' style='height: 25px; width: 25px; padding: 0px;' onclick='AñadirRelevadores("+(0)+");'> <i class='fa-solid fa-plus'></i> </button>";
+    }
+    data = data+"</div><br>"+
+    "<div id='ContPadreFau' style=' width: 100%; padding-left: 20px; height: 165px; overflow-x: auto;'>"+
+        "<a style='font-weight: bold; color: grey; font-size: 20px;'>Fauna: </a><br>";
+    for (i=0 ; i<IDFau.length; i++){
+      data = data+"<div id='ContBtnSelFau"+i+"' style='display:flex; margin-bottom: 15px;'>"+
+                    "<button id='BtnQuitFau"+i+"' type='button' class='btn btn-danger' style='height: 25px; width: 25px; padding: 0px;' onclick='quitarFauna(SelModFau"+i+",BtnQuitFau"+i+",ContBtnSelFau"+i+","+i+");'> X </button>"+
+                    "<select id='SelModFau"+i+"' class='form-select' style='background: #e2e2e2; color:black; width: 50%; min-width: 230px; padding: 0px; padding-left: 24px;'>"+
+                        "<option>"+IDFau[i]+" 1</option>"+
+                        "<option>"+IDFau[i]+" 2</option>"+
+                        "<option>"+IDFau[i]+" 3</option>"+
+                    "<select>";
+                 
+      if(i == (IDFau.length-1)){
+        data = data+"<button id='BtnNewFau' type='button' class='btn btn-success' style='height: 25px; width: 25px; padding: 0px;' onclick='AñadirFauna("+(i+1)+");'> <i class='fa-solid fa-plus'></i> </button>";
+      }
+      data = data+"</div>";
+      CantFau++;
+    }
+    if(IDFau.length ==0){
+      data = data+"<button id='BtnNewFau' type='button' class='btn btn-success' style='height: 25px; width: 25px; padding: 0px;' onclick='AñadirFauna("+(0)+");'> <i class='fa-solid fa-plus'></i> </button>";
+    }
+    data = data+"</div><br>"+
+    "<div id='ContPadreFlo' style=' width: 100%; padding-left: 20px; height: 165px; overflow-x: auto;'>"+
+        "<a style='font-weight: bold; color: grey; font-size: 20px;'>Flora: </a><br>";
+    for (i=0 ; i<IDFlo.length; i++){
+      data = data+"<div id='ContBtnSelFlo"+i+"' style='display:flex; margin-bottom: 15px;'>"+
+                    "<button id='BtnQuitFlo"+i+"' type='button' class='btn btn-danger' style='height: 25px; width: 25px; padding: 0px;' onclick='quitarFlora(SelModFlo"+i+",BtnQuitFlo"+i+",ContBtnSelFlo"+i+","+i+");'> X </button>"+
+                    "<select id='SelModFlo"+i+"' class='form-select' style='background: #e2e2e2; color:black; width: 50%; min-width: 230px; padding: 0px; padding-left: 24px;'>"+
+                        "<option>"+IDFlo[i]+" 1</option>"+
+                        "<option>"+IDFlo[i]+" 2</option>"+
+                        "<option>"+IDFlo[i]+" 3</option>"+
+                    "<select>";
+                 
+      if(i == (IDFlo.length-1)){
+        data = data+"<button id='BtnNewFlo' type='button' class='btn btn-success' style='height: 25px; width: 25px; padding: 0px;' onclick='AñadirFlora("+(i+1)+");'> <i class='fa-solid fa-plus'></i> </button>";
+      }
+      data = data+"</div>";
+      CantFlo++;
+    }
+    if(IDFlo.length ==0){
+      data = data+"<button id='BtnNewFlo' type='button' class='btn btn-success' style='height: 25px; width: 25px; padding: 0px;' onclick='AñadirFlora("+(0)+");'> <i class='fa-solid fa-plus'></i> </button>";
+    }
+ 
+    
+  
+    data = data+"</div></div><br>"+
+    "</section>"+
+    "<div style=' text-align: -webkit-center; width: 50%; height: 200px;>"+
+        "<a style='font-weight: bold; color: grey; font-size: 20px;'>Observaciones: </a><br>" +
+        "<textarea id='TextModObser' class='form-control' style='background: #e2e2e2; color:black; width: 400px; height: 200px; min-height: 100px; max-height: 225px;''>"+IDObs+"</textarea><br><br><br>"+
+    "</div>";
+    console.log("ahora CantReles:"+CantReles);
+    $("#dataModif").html(data);
+   
+    // _____________ SE CARGAN TODAS LAS OPCIONES DE DATOS DESDE LA BASE DE DATOS EN LOS SELECTS DE LA VENTANA DE MODIFICACION _____________________
+    tempRel = '';
+    tempFau = '';
+    tempFlo = '';
+    pRel=0;
+    pFau=0;
+    pFlo=0;
+    contpRel = new Array;
+    contpFau = new Array;
+    contpFlo = new Array;
+    contpPr = new Array;
+
+    // _____________ SE CARGAN TODAS LAS OPCIONES DE DATOS DESDE LA BASE DE DATOS EN LOS SELECTS DE LA VENTANA DE MODIFICACION _____________________
+    const postData = {CargarSelects: true,}   
+    $.post('php/modificar.php', postData, (response) => {
+      let datos = JSON.parse(response);
+
+      datos['miembros'].forEach(dato => {
+        tempRel +=`<option>${dato.miembro}</option>` 
+      });
+      for (i=0; i<IDRels.length;i++){
+        pRel=0;
+        datos['miembros'].forEach(dato => {
+          if (dato.miembro == IDRels[i]){
+            contpRel[i] = pRel;
+          }else{
+            pRel++;
+          }
+        });        
+      }
+
+      datos['fauna'].forEach(dato => {
+        tempFau +=`<option>${dato.fauna}</option>` 
+      });
+      for (i=0; i<IDFau.length;i++){
+        pFau=0;
+        datos['fauna'].forEach(dato => {
+          if (dato.fauna == IDFau[i]){
+            contpFau[i] = pFau;
+          }else{
+            pFau++;
+          }
+        });        
+      }
+  
+      datos['flora'].forEach(dato => {
+        tempFlo +=`<option>${dato.flora}</option>` 
+      });
+      for (i=0; i<IDFlo.length;i++){
+        pFlo=0;
+        datos['flora'].forEach(dato => {
+          if (dato.flora == IDFlo[i]){
+            contpFlo[i] = pFlo;
+          }else{
+            pFlo++;
+          }
+        });        
+      }
+
+      for (i=0; i<IDRels.length; i++){
+        $('#SelModRele'+i).html(tempRel);
+        document.getElementById('SelModRele'+i).options.item(contpRel[i]).selected = 'selected';
+      }
+
+      for (i=0; i<IDFau.length; i++){
+        $('#SelModFau'+i).html(tempFau);
+        document.getElementById('SelModFau'+i).options.item(contpFau[i]).selected = 'selected';
+      }
+
+      for (i=0; i<IDFlo.length; i++){
+        $('#SelModFlo'+i).html(tempFlo);
+        document.getElementById('SelModFlo'+i).options.item(contpFlo[i]).selected = 'selected';
+      }
+
+      
+  
+    });
+  
+    //__________ TERMINA LA CREACION DE TODA LA VENTANA DE MODIFICACION DE DATOS DE ESTE OBJETO (Accidentes) _________________
   }
   
 //======================================================================================
@@ -1084,7 +1872,7 @@ console.log(trs);
             "<input type='text' id='InpModTelefono' class='form-control' style='background: #e2e2e2; color:black; width: 90%; height: 25px;' value="+IDTel+"><br><br><br>" +
         "</div>"+
         "<div style=' height: 50px; font-size: 20px; margin-bottom: 20px;'>"+
-            "<a style='font-weight: bold; color: grey; font-size: 20px; height: 25px;'>Teléfono: </a>" +
+            "<a style='font-weight: bold; color: grey; font-size: 20px; height: 25px;'>Dirección: </a>" +
             "<input type='text' id='InpModDireccion' class='form-control' style='background: #e2e2e2; color:black; width: 90%; height: 25px;' value="+IDDir+"><br><br><br>" +
         "</div>"+
     "</div>"+
@@ -1092,7 +1880,7 @@ console.log(trs);
       
     "</div>";
  
-
+/*
     var data2 = "";
     var roling = "";
     const postDataCheck = {CargarSelects: true,}   
@@ -1128,10 +1916,10 @@ console.log(trs);
 
     });
   
-    
+    */
     
     data = data + 
-    "</div>"+
+    "</div>"+/*
     "<div id='ContPadreProp' style=' width: 40%; padding-left: 20px; height: 280px; overflow-x: auto;'>"+
         "<a style='font-weight: bold; color: grey; font-size: 15px;'>Propiedades: </a><br>";
 
@@ -1151,13 +1939,13 @@ console.log(trs);
         data = data+"<button id='BtnNewRelProp' type='button' class='btn btn-success' style='height: 20px; width: 20px; padding: 0px;' onclick='AñadirPropiedad("+(i+1)+");'> <i class='fa-solid fa-plus'></i> </button>";
       }
       data = data+"</div>";
-    }
+    }*/
     "</section>";
     $("#dataModif").html(data);
 
 
 
-
+/*
     tempComp = '';
     contPropie = new Array;
 
@@ -1185,7 +1973,7 @@ console.log(trs);
         document.getElementById('SelModProp'+i).options.item(contPropie[i]).selected = 'selected';
       }
 
-    });
+    });*/
     //__________ TERMINA LA CREACION DE TODA LA VENTANA DE MODIFICACION DE DATOS DE ESTE OBJETO (personas) _________________
   }
   };
@@ -1331,6 +2119,91 @@ function ConfirmarAlerta(Data){
       break;
 
     case 4: //relevamientos
+      var Relev = new Array();
+      var Faun = new Array();
+      var Flor = new Array();
+      var count = 0;
+     
+      for (i=0; i<CantReles; i++){
+        Relev.push($('#SelModRele'+i+' option:selected').text());
+      };
+      for (i=0; i<CantFau; i++){
+        Faun.push($('#SelModFau'+i+' option:selected').text());
+      };
+      for (i=0; i<CantFlo; i++){
+        Flor.push($('#SelModFlo'+i+' option:selected').text());
+      };
+
+
+      for (i=0; i<3; i++){
+        console.log(document.getElementById('agua_op'+i));
+        if (document.getElementById('agua_op'+i).checked){
+          CaliAgua=document.getElementById('agua_op'+i).value;
+        }
+        if (document.getElementById('Veg_op'+i).checked){
+          DivVeg=document.getElementById('Veg_op'+i).value;
+        }
+        if (document.getElementById('RegHid_op'+i).checked){
+          RegHid=document.getElementById('RegHid_op'+i).value;
+        }
+      };
+     
+      for (i=0; i<2; i++){
+        if (document.getElementById('Fuente_op'+i).checked){
+          Fue=document.getElementById('Fuente_op'+i).value;
+        }
+        if (document.getElementById('TiemPer_op'+i).checked){
+          TiemPer=document.getElementById('TiemPer_op'+i).value;
+        }
+      };
+      
+    
+      const postData4 = {
+        IdRel:$('#TitModId').text(),
+        FechaRel: $('#InpModFecha').val(),
+        ConductividadRel: $('#InpModConductividad').val(),
+        AnchoRel: $('#InpModAncho').val(),
+        LargoRel: $('#InpModLargo').val(),
+        SuperficieRel: $('#InpModSuper').val(),
+        OxigenoDisueltoRel: $('#InpModOxigDis').val(),
+        TurvidesAguaRel: $('#InpModTurbAgua').val(),
+        PHRel: $('#InpModPH').val(),
+        ColorAguaRel: $('#InpModColor').val(),
+        TemperaturaAguaRel: $('#InpModTempAg').val(),
+        ObservacionRel: $('#TextModObser').val(),
+        
+        CalidadAgua: CaliAgua,
+        DiversidadVegetal: DivVeg,
+        RegimenHidro: RegHid,
+        TiempoPermanencia: TiemPer,
+        Fuente: Fue,
+        
+        Relevadores:Relev,
+        Fauna:Faun,
+        Flora:Flor,
+
+        ModiRele: true,
+      };
+
+      console.log(postData4);
+
+      $.post('php/modificar.php', postData4, (response) => {
+        console.log(response);
+        
+        CerrarAlerta();
+        deletesHTML("formModifData");
+
+        var postData4_2= {
+          relevamiento:true,
+        }
+      
+        $('#ContTable').css({'visibility':'visible'});
+      
+        $.post('php/modificar.php', postData4_2, (response) => {
+          console.log(response);  
+          $("#myTable").html(response);
+        });
+      });
       break;
 
     case 5: //Faunas     
@@ -1420,7 +2293,7 @@ function ConfirmarAlerta(Data){
       break;
 
     case 8: //Personas
-      var Roles = new Array();
+      /*var Roles = new Array();
       var count = 0;
       var Test = true;
       while (Test){
@@ -1439,7 +2312,7 @@ function ConfirmarAlerta(Data){
       for (i=0;i<CantPropie;i++){
         Propiedades.push($('#SelModProp'+i+' option:selected').text());
       }
-      
+      */
   
     
       const postData8 = {
@@ -1448,8 +2321,8 @@ function ConfirmarAlerta(Data){
         CorreoPersona: $('#InpModCorreo').val(),
         telefonoPersona: $('#InpModTelefono').val(),
         direccionPersona: $('#InpModDireccion').val(),
-        RolesPersona: Roles,
-        PropiedadesPersona: Propiedades,
+        //RolesPersona: Roles,
+        //PropiedadesPersona: Propiedades,
         ModiPers : true,
       };
 

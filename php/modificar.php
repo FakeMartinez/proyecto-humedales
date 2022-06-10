@@ -9,13 +9,20 @@ if (isset($_POST['CargarSelects'])){
    $q_presion = mysqli_query($connect,"SELECT Tipo_presiones FROM presiones");
    $q_propie = mysqli_query($connect,"SELECT Nombre_persona FROM persona");
    $q_rol = mysqli_query($connect,"SELECT descripcion FROM rol");
+   $q_fauna = mysqli_query($connect,"SELECT Nombre_coloquial FROM fauna");
+   $q_flora =  mysqli_query($connect,"SELECT Nombre_coloquial FROM flora");
+   $q_miembro =  mysqli_query($connect,"SELECT Id_Persona FROM miembro");
+
 
    $cue = array();
    $com = array();
    $pre = array();
    $per = array();
    $rol = array();
-   
+   $fau = array();
+   $flo = array();
+   $miem = array();
+
    while($row = mysqli_fetch_array($q_cuenca)) {
       array_push($cue, ['nombre_cuenca' => $row['Nombre_cuenca']]);
       //pone en el siguiente elemento del array $cue, con la clave nombre_cuenca, el dato Nombre_cuenca del $q_cuenca
@@ -32,6 +39,23 @@ if (isset($_POST['CargarSelects'])){
    while($row = mysqli_fetch_array($q_rol)) {
       array_push($rol, ['tipo' => $row['descripcion']]);
     };
+   while($row = mysqli_fetch_array($q_fauna)) {
+      array_push($fau, ['fauna' => $row['Nombre_coloquial']]);
+   };
+   while($row = mysqli_fetch_array($q_flora)) {
+      array_push($flo, ['flora' => $row['Nombre_coloquial']]);
+   };
+
+   foreach($q_miembro as $q_miem){
+      foreach($q_miem as $m){
+         $personaMiem =  mysqli_query($connect,"SELECT Nombre_persona FROM persona WHERE Id_persona= $m");
+         while($row = mysqli_fetch_array($personaMiem)) {
+            array_push($miem, ['miembro' => $row['Nombre_persona']]);
+         };
+      } 
+   }
+  
+
 
     $cosa = [
       "cuencas"=> $cue,
@@ -39,6 +63,9 @@ if (isset($_POST['CargarSelects'])){
       "presiones"=> $pre,
       "personas"=> $per,
       "roles"=> $rol,
+      "fauna"=> $fau,
+      "flora"=> $flo,
+      "miembros" => $miem,
     ];
 
     $jsoncosa = json_encode($cosa);
@@ -240,6 +267,287 @@ if (isset($_POST['ModiCue'])){
 // FIN MODIFICACION DE CUENCAS
 }
 
+if (isset($_POST['ModiRele'])){
+   $IdRel=$_POST['IdRel'];
+   $FechaRel=$_POST['FechaRel'];
+   $ConducRel=$_POST['ConductividadRel'];
+   $AnchoRel=$_POST['AnchoRel'];
+   $LargoRel=$_POST['LargoRel'];
+   $SuperRel=$_POST['SuperficieRel'];
+   $OxDisRel=$_POST['OxigenoDisueltoRel'];
+   $TurAguaRel=$_POST['TurvidesAguaRel'];
+   $PHRel=$_POST['PHRel'];
+   $ColAgRel=$_POST['ColorAguaRel'];
+   $TempAgRel=$_POST['TemperaturaAguaRel'];
+   $ObsRel=$_POST['ObservacionRel'];
+
+   $CaliAgua=$_POST['CalidadAgua'];
+   $DivVeg=$_POST['DiversidadVegetal'];
+   $RegHid=$_POST['RegimenHidro'];
+   $TiemPerm=$_POST['TiempoPermanencia'];
+   $Fuente=$_POST['Fuente'];
+
+   //Arrays
+   $Rels=$_POST['Relevadores']; //investiga
+   $Fauna=$_POST['Fauna']; //contiene fauna
+   $Flora=$_POST['Flora']; //contiene flora
+     
+
+   //UPDATE Tabla Relevamiento
+   $ConsulUpdate = "UPDATE relevamiento 
+                           SET Fecha = '$FechaRel',
+                               Conductividad = $ConducRel, 
+                               Ancho = $AnchoRel, 
+                               O2_disuelto = $OxDisRel, 
+                               Calidad_de_H2O = '$CaliAgua',
+                               Diversidad_vegetal = '$DivVeg', 
+                               Regimen_hidrológico = '$RegHid',
+                               Turbidez = '$TurAguaRel',
+                               Largo = $LargoRel,
+                               pH = $PHRel,
+                               Color = '$ColAgRel',
+                               Fuente = '$Fuente',
+                               Tiempo = '$TiemPerm',
+                               Superficie = $SuperRel,
+                               Temperatura_H2O = $TempAgRel,
+                               Observaciones = '$ObsRel'
+                           WHERE Id_rel = $IdRel";
+
+
+   mysqli_query($connect, $ConsulUpdate);
+   // DELETE e INSERT de la tabla investiga
+   //Consulta para obtener todas las IDs de los miembros en las relaciones investiga pertenecientes a este relevamiento
+   $Investiga = mysqli_query($connect,"SELECT Id_miembro FROM investiga WHERE Id_rel=$IdRel");
+   //=======================================================================================
+   // Se borran todas las relaciones miembro relevamiento del relevamiento a modificar
+   $CondDeletRels = true;
+   foreach($Investiga as $Investi){
+      foreach($Investi as $Inv){ //Obtiene las IDs de los miembros de investiga
+         $Id_Personas = mysqli_query($connect,"SELECT Id_persona FROM miembro WHERE Id_miembro=$Inv");
+         foreach($Id_Personas as $IdPersona){
+            foreach($IdPersona as $IdP){ //Obtengo la Id de la persona de la tabla miembro
+               $Nombre_Personas = mysqli_query($connect,"SELECT Nombre_persona FROM persona WHERE Id_persona=$IdP");
+               foreach($Nombre_Personas as $NombrePersona){
+                  foreach($NombrePersona as $NoPe){
+                     $CondDeletRels = true;
+                     if (!empty($Rels)){ // Comprueba si se le está asignando algún rol
+                        for($i=0; $i<count($Rels);$i++){ //Se pasan por cada uno de los relevadores asignados en los selects
+                           if($Rels[$i] == $NoPe){ //se comprueba que el nombre del relevador del select en [i] no coinsida con el apuntado en la BD. Si coincide entonces no lo va a borrar de la BD 
+                              //Desconfirma el DELETE
+                              $CondDeletRels=false;
+                           }
+                        }
+                     }
+                     if ($CondDeletRels){ //si $CondDeletRels es verdadero, borra
+                        //Borra el dato de la BD
+                        $Id_Persona = mysqli_query($connect,"SELECT Id_persona FROM persona WHERE Nombre_persona='$NoPe'");
+                        foreach($Id_Persona as $IdPers){
+                           foreach($IdPers as $IdPe){
+                              $Id_miembro = mysqli_query($connect,"SELECT Id_miembro FROM miembro WHERE Id_persona=$IdPe");
+                              foreach($Id_miembro as $Idmiem){
+                                 foreach($Idmiem as $IdMi){
+                                    mysqli_query($connect,"DELETE FROM investiga WHERE Id_rel=$IdRel and Id_miembro=$IdMi");
+                                 }
+                              }
+                           }
+                        }
+                     }else{
+                        //no borra datos
+                     }
+                  } 
+               }
+            }
+         }
+      }
+   }
+   //=======================================================================================
+   //Se crean todas las nuevas relaciones de propietario de este complejo a modificar.
+   //Se buscan las IDs de las personas
+   $CondInsertRels = true;
+   for($i=0; $i<count($Rels);$i++){
+      $CondInsertRels = true;
+      foreach($Investiga as $Inves){
+         foreach($Inves as $Inv){ //Apunta a cada una de las IDs de los miembros encontrados en la tabla investiga
+            //Obtiene la id de la persona de cada una de las IDs de de miembros
+            $Id_Personas = mysqli_query($connect,"SELECT Id_persona FROM miembro WHERE Id_miembro=$Inv");
+            foreach($Id_Personas as $IdPersona){
+               foreach($IdPersona as $IdPers){ // Aputa a cada Id de persona obtenido con la consulta
+                  $Nombre_Personas = mysqli_query($connect,"SELECT Nombre_persona FROM persona WHERE Id_persona=$IdPers");
+                  foreach($Nombre_Personas as $NomPer){
+                     foreach($NomPer as $NP){
+                        if($Rels[$i] == $NP){ // Si el nombre en $NP coinside con el tipo en $Rels en [i] entonces asigna false al Insert. Lo que indica que no se debe cargar este relevador a la BD porque ya está cargada
+                           //desconfirma la insercion
+                           $CondInsertRels = false;
+                        }else{
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      }
+      if ($CondInsertRels){
+         //inserta
+         $Suport = $Rels[$i];
+         $Id_Persona = mysqli_query($connect,"SELECT Id_persona FROM persona WHERE Nombre_persona='$Suport'");
+         foreach($Id_Persona as $Id_Per){
+            foreach($Id_Per as $IdPe){
+               $Id_miembro = mysqli_query($connect,"SELECT Id_miembro FROM miembro WHERE Id_persona=$IdPe");
+               foreach($Id_miembro as $Idmiem){
+                  foreach($Idmiem as $IdM){
+                     mysqli_query($connect,"INSERT into investiga (Id_miembro, Id_rel) VALUES ($IdM, $IdRel)");
+                  }
+               }
+            }
+         }
+      }else{
+         //No inserta
+      }
+   }
+
+   // DELETE e INSERT de la tabla contiene fauna
+   //Consulta para obtener todas las IDs de la fauna en las relaciones contiene_fauna pertenecientes a este relevamiento
+   $Cont_fauna = mysqli_query($connect,"SELECT Id_fauna FROM contiene_fauna WHERE Id_rel=$IdRel");
+   //=======================================================================================
+   // Se borran todas las relaciones miembro relevamiento del relevamiento a modificar
+   $CondDeletFau = true;
+   foreach($Cont_fauna as $Confau){
+      foreach($Confau as $Cf){ //Obtiene las IDs de las faunas de contiene fauna
+         $Nombre_Faunas = mysqli_query($connect,"SELECT Nombre_coloquial FROM fauna WHERE Id_fauna=$Cf");
+         foreach($Nombre_Faunas as $NombreFauna){
+            foreach($NombreFauna as $NoFa){ //Obtengo los nombres de la fauna de la tabla fauna
+               $CondDeletFau = true;
+               if (!empty($Fauna)){ // Comprueba si se le está vacío
+                  for($i=0; $i<count($Fauna);$i++){ //Se pasan por cada uno de los animales asignados en los selects
+                     if($Fauna[$i] == $NoFa){ //se comprueba que el nombre del animal del select en [i] no coinsida con el apuntado en la BD. Si coincide entonces no lo va a borrar de la BD 
+                        //Desconfirma el DELETE
+                        $CondDeletFau=false;
+                     }
+                  }
+               }
+               if ($CondDeletFau){ //si $CondDeletFau es verdadero, borra
+                  //Borra el dato de la BD
+                  $Id_Faunas = mysqli_query($connect,"SELECT Id_fauna FROM fauna WHERE Nombre_coloquial='$NoFa'");
+                     foreach($Id_Faunas as $IdFauna){
+                        foreach($IdFauna as $IdFa){
+                           mysqli_query($connect,"DELETE FROM contiene_fauna WHERE Id_rel=$IdRel and Id_fauna=$IdFa");
+                        }
+                     }
+               }else{
+                  //no borra datos
+               }
+            }
+         }
+      }
+   }
+   //=======================================================================================
+   //Se crean todas las nuevas relaciones de propietario de este complejo a modificar.
+   //Se buscan las IDs de las personas
+   $CondInsertFau = true;         
+   for($i=0; $i<count($Fauna);$i++){
+      $CondInsertFau = true;         
+      foreach($Cont_fauna as $ContFau){      
+         foreach($ContFau as $CF){ //Apunta a cada una de las IDs de los miembros encontrados en la tabla investiga
+            //Obtiene la id de la persona de cada una de las IDs de de miembros
+            $Nombre_Fauna = mysqli_query($connect,"SELECT Nombre_coloquial FROM fauna WHERE Id_fauna=$CF");
+            foreach($Nombre_Fauna as $NomFauna){
+               foreach($NomFauna as $NF){ // Aputa a cada Id de persona obtenido con la consulta
+                  if($Fauna[$i] ==  $NF){ // Si el nombre en $NP coinside con el tipo en $Rels en [i] entonces asigna false al Insert. Lo que indica que no se debe cargar este relevador a la BD porque ya está cargada
+                     //desconfirma la insercion
+                     $CondInsertFau = false;
+                  }else{
+                  }
+               }
+            }
+         }
+      }
+      if ($CondInsertFau){
+         //inserta
+         $Suport = $Fauna[$i];
+         $Id_fauna = mysqli_query($connect,"SELECT Id_fauna FROM fauna WHERE Nombre_coloquial='$Suport'");
+         foreach($Id_fauna as $Idfau){
+            foreach($Idfau as $IdF){
+               mysqli_query($connect,"INSERT into contiene_fauna (Id_fauna, Id_rel) VALUES ($IdF, $IdRel)");
+            }
+         }
+      }else{
+         //No inserta
+      }
+   }
+
+    // DELETE e INSERT de la tabla contiene flora
+   //Consulta para obtener todas las IDs de la fauna en las relaciones contiene_fauna pertenecientes a este relevamiento
+   $Cont_flora = mysqli_query($connect,"SELECT Id_flora FROM contiene_flora WHERE Id_rel=$IdRel");
+
+   //=======================================================================================
+   // Se borran todas las relaciones miembro relevamiento del relevamiento a modificar
+   $CondDeletFlo = true;
+   foreach($Cont_flora as $Conflo){
+      foreach($Conflo as $Cf){ //Obtiene las IDs de las floras de contiene fauna
+         $Nombre_Floras = mysqli_query($connect,"SELECT Nombre_coloquial FROM flora WHERE Id_flora=$Cf");
+         foreach($Nombre_Floras as $NombreFlora){
+            foreach($NombreFlora as $NoFl){ //Obtengo los nombres de la fauna de la tabla fauna
+               $CondDeletFlo = true;
+               if (!empty($Flora)){ // Comprueba si se le está vacío
+                  for($i=0; $i<count($Flora);$i++){ //Se pasan por cada uno de los animales asignados en los selects
+                     if($$Flora[$i] == $NoFl){ //se comprueba que el nombre del animal del select en [i] no coinsida con el apuntado en la BD. Si coincide entonces no lo va a borrar de la BD 
+                        //Desconfirma el DELETE
+                        $CondDeletFlo=false;
+                     }
+                  }
+               }
+               if ($CondDeletFlo){ //si $CondDeletFau es verdadero, borra
+                  //Borra el dato de la BD
+                  $Id_Floras = mysqli_query($connect,"SELECT Id_flora FROM flora WHERE Nombre_coloquial='$NoFl'");
+                     foreach($Id_Floras as $IdFlora){
+                        foreach($IdFlora as $IdFl){
+                           mysqli_query($connect,"DELETE FROM contiene_flora WHERE Id_rel=$IdRel and Id_flora=$IdFl");
+                        }
+                     }
+               }else{
+                  //no borra datos
+               }
+            }
+         }
+      }
+   }
+   //=======================================================================================
+   //Se crean todas las nuevas relaciones de propietario de este complejo a modificar.
+   //Se buscan las IDs de las personas
+   $CondInsertFlo = true;
+   for($i=0; $i<count($Flora);$i++){
+      $CondInsertFlo = true;
+      foreach($Cont_flora as $ContFlo){
+         foreach($ContFlo as $CF){ //Apunta a cada una de las IDs de los miembros encontrados en la tabla investiga
+            //Obtiene la id de la persona de cada una de las IDs de de miembros
+            $Nombre_Flora = mysqli_query($connect,"SELECT Nombre_coloquial FROM flora WHERE Id_flora=$CF");
+            foreach($Nombre_Flora as $NomFlora){
+               foreach($NomFlora as $NF){ // Aputa a cada Id de persona obtenido con la consulta
+                  if($Flora[$i] ==  $NF){ // Si el nombre en $NP coinside con el tipo en $Rels en [i] entonces asigna false al Insert. Lo que indica que no se debe cargar este relevador a la BD porque ya está cargada
+                     //desconfirma la insercion
+                     $CondInsertFlo = false;
+                  }else{
+                  }
+               }
+            }
+         }
+      }
+      if ($CondInsertFlo){
+         //inserta
+         $Suport = $Flora[$i];
+         $Id_flora = mysqli_query($connect,"SELECT Id_flora FROM flora WHERE Nombre_coloquial='$Suport'");
+         foreach($Id_flora as $Idflo){
+            foreach($Idflo as $IdF){
+               mysqli_query($connect,"INSERT into contiene_flora (Id_flora, Id_rel) VALUES ($IdF, $IdRel)");
+            }
+         }
+      }else{
+         //No inserta
+      }
+   }
+
+// FIN MODIFICACION DE RELEVAMIENTO
+}
 
 if (isset($_POST['ModiFau'])){
    $IdFau=$_POST['IdFau'];
@@ -286,16 +594,16 @@ if (isset($_POST['ModiPers'])){
    $telPers=$_POST['telefonoPersona'];
    $direPers=$_POST['direccionPersona'];
 
-   $RolesPers=$_POST['RolesPersona'];
-   $PropiPers=$_POST['PropiedadesPersona'];
+   //$RolesPers=$_POST['RolesPersona'];
+   //$PropiPers=$_POST['PropiedadesPersona'];
 
-   /*
+   
 
-   $ConsulUpdate = "UPDATE persona SET Nombre_persona='$NombrePers', Correo='$CorreoPers', Teléfono='$telPers', Dirección='$direPers' WHERE Id_persona = $IdPersona";
+   $ConsulUpdate = "UPDATE persona SET Nombre_persona='$NombrePers', Correo='$CorreoPers', Teléfono=$telPers, Dirección='$direPers' WHERE Id_persona = $IdPersona";
    //echo ($ConsulUpdate);
    mysqli_query($connect, $ConsulUpdate);
-   
-   */
+   echo("hecha consulta");
+   /*
    $IdsPersMiembro = mysqli_query($connect,"SELECT Id_Persona FROM miembro");
    foreach($IdsPersMiembro as $IdPeMi){
       foreach($IdPeMi as $IdPM){
@@ -314,17 +622,17 @@ if (isset($_POST['ModiPers'])){
 
          }
       }
-   }
+   }*/
   
    //se comprueba que la pesona es miembro
-
+/*
    //desasignacion de roles
    $q_rol = mysqli_query($connect,"SELECT descripcion FROM rol"); //Obtengo todos los roles disponibles
    foreach($q_rol as $rol) {
       foreach($rol as $r){
 
       }
-   }
+   }*/
 
 // FIN MODIFICACION DE FLORA
 }
@@ -464,7 +772,7 @@ if (isset($_POST['complejo'])){
          }else
          {
             if ($C == 1){ //Nombre
-               $cosa = $cosa."<td style='width:70px; min-width: 70px;'>'$Col'</td>";
+               $cosa = $cosa."<td style='width:70px; min-width: 70px;'>$Col</td>";
 
                $IdComp = mysqli_query($connect, "SELECT Id_complejo FROM complejo WHERE Nombre_complejo='$Col'");
 
@@ -530,14 +838,14 @@ if (isset($_POST['cuenca'])){
          }else
          {
             if ($C == 1){ //Nombre
-               $cosa = $cosa."<td style='width:70px; min-width: 70px;'>'$Col'</td>";
+               $cosa = $cosa."<td style='width:70px; min-width: 70px;'>$Col</td>";
             }else
             {
                if ($C == 2){ //Superficie
-                  $cosa = $cosa."<td style='width:70px; min-width: 70px;'>'$Col'</td>";
+                  $cosa = $cosa."<td style='width:70px; min-width: 70px;'>$Col</td>";
                }else{
                   if ($C == 3){ //Tipo
-                     $cosa = $cosa."<td style='width:70px; min-width: 70px;'>'$Col'</td>";
+                     $cosa = $cosa."<td style='width:70px; min-width: 70px;'>$Col</td>";
                   }
                }
             }
@@ -651,55 +959,55 @@ if (isset($_POST['relevamiento'])){
                $nomAcc = mysqli_query($connect, "SELECT Nombre FROM accidente_geografico WHERE Id_acc = $Col");
                foreach ($nomAcc as $noAc){
                   foreach ($noAc as $nA){
-                     $cosa = $cosa."<td style='width:70px; min-width: 70px;'>'$nA'</td>";
+                     $cosa = $cosa."<td style='width:70px; min-width: 70px;'>$nA</td>";
                   }
                }
             }else
             {
                if ($C == 2){ //Fecha
-                  $cosa = $cosa."<td style='width:70px; min-width: 70px;'>'$Col'</td>";
+                  $cosa = $cosa."<td style='width:70px; min-width: 70px;'>$Col</td>";
                }else{
                   if ($C == 3){ //Conductividad
-                     $cosa = $cosa."<td style='width:70px; min-width: 70px;'>'$Col'</td>";
+                     $cosa = $cosa."<td style='width:70px; min-width: 70px;'>$Col</td>";
                   }else{
                      if ($C == 4){ //Ancho
-                        $cosa = $cosa."<td style='width:70px; min-width: 70px;'>'$Col'</td>";
+                        $cosa = $cosa."<td style='width:70px; min-width: 70px;'>$Col</td>";
                      }else{
                         if ($C == 5){ //Oxigeno disuelto
-                           $cosa = $cosa."<td style='width:70px; min-width: 70px;'>'$Col'</td>";
+                           $cosa = $cosa."<td style='width:70px; min-width: 70px;'>$Col</td>";
                         }else{
                            if ($C == 6){ //Calidad de agua
-                              $cosa = $cosa."<td style='width:70px; min-width: 70px;'>'$Col'</td>";
+                              $cosa = $cosa."<td style='width:70px; min-width: 70px;'>$Col</td>";
                            }else{
                               if ($C == 7){ //Diversidad vegetal
-                                 $cosa = $cosa."<td style='width:70px; min-width: 70px;'>'$Col'</td>";
+                                 $cosa = $cosa."<td style='width:70px; min-width: 70px;'>$Col</td>";
                               }else{
                                  if ($C == 8){ //Régimen hidrologico
-                                    $cosa = $cosa."<td style='width:70px; min-width: 70px;'>'$Col'</td>";
+                                    $cosa = $cosa."<td style='width:70px; min-width: 70px;'>$Col</td>";
                                  }else{
                                     if ($C == 9){ //Turbidez del agua
-                                       $cosa = $cosa."<td style='width:70px; min-width: 70px;'>'$Col'</td>";
+                                       $cosa = $cosa."<td style='width:70px; min-width: 70px;'>$Col</td>";
                                     }else{
                                        if ($C == 10){ //Largo
-                                          $cosa = $cosa."<td style='width:70px; min-width: 70px;'>'$Col'</td>";
+                                          $cosa = $cosa."<td style='width:70px; min-width: 70px;'>$Col</td>";
                                        }else{
                                           if ($C == 11){ //PH
-                                             $cosa = $cosa."<td style='width:70px; min-width: 70px;'>'$Col'</td>";
+                                             $cosa = $cosa."<td style='width:70px; min-width: 70px;'>$Col</td>";
                                           }else{
                                              if ($C == 12){ //Color
-                                                $cosa = $cosa."<td style='width:70px; min-width: 70px;'>'$Col'</td>";
+                                                $cosa = $cosa."<td style='width:70px; min-width: 70px;'>$Col</td>";
                                              }else{
                                                 if ($C == 13){ //Fuente
-                                                   $cosa = $cosa."<td style='width:70px; min-width: 70px;'>'$Col'</td>";
+                                                   $cosa = $cosa."<td style='width:70px; min-width: 70px;'>$Col</td>";
                                                 }else{
                                                    if ($C == 14){ //Tiempo de permanencia
-                                                      $cosa = $cosa."<td style='width:70px; min-width: 70px;'>'$Col'</td>";
+                                                      $cosa = $cosa."<td style='width:70px; min-width: 70px;'>$Col</td>";
                                                    }else{
                                                       if ($C == 15){ //Superficie
-                                                         $cosa = $cosa."<td style='width:70px; min-width: 70px;'>'$Col'</td>";
+                                                         $cosa = $cosa."<td style='width:70px; min-width: 70px;'>$Col</td>";
                                                       }else{
                                                          if ($C == 16){ //Temperatura del agua
-                                                            $cosa = $cosa."<td style='width:70px; min-width: 70px;'>'$Col'</td>";
+                                                            $cosa = $cosa."<td style='width:70px; min-width: 70px;'>$Col</td>";
                                                          }else{
                                                             if ($C == 17){ //Observaciones
                                                                $suportObserv = $suportObserv."<td style='height: inherit; overflow: auto; width:425px; min-width: 425px;'><div style='height: inherit;'>$Col</div></td>";
