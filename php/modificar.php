@@ -650,11 +650,11 @@ if (isset($_POST['accidente'])){
       <table>
          <tr style='height:40px'>
             <td style='width:50px; min-width: 50px;'></td> 
-            <td style='width:70px; min-width: 70px;'>ID</td> 
+            <td style='visibility: hidden;max-width: 1px; overflow-x: hidden;'>ID</td> 
             <td style='width:225px; min-width: 225px;'>Nombre</td>
-            <td style='width:225px; min-width: 225px;'>Tipo</td>
-            <!--<td style='width:225px; min-width: 225px;'>objeto_geo</td>-->
-            <td style='width:225px; min-width: 225px;'>id_complejo</td>
+            <td style='width:225px; min-width: 225px;'>Tipo</td>".
+            /*<td style='width:225px; min-width: 225px;'>objeto_geo</td>*/
+            "<td style='width:225px; min-width: 225px;'>id_complejo</td>
             <td style='width:225px; min-width: 225px;'>Id_cuenca</td>
             <td style='width:225px; min-width: 225px;'>Presiones</td>
             <td style='width:225px; min-width: 225px;'>Descripcion</td>
@@ -668,7 +668,7 @@ if (isset($_POST['accidente'])){
       $suportPres = '';
       foreach($Fil as $Col){
          if ($C == 0){ //ID
-            $cosa = $cosa."<td id='IDAcc$F' style='width:70px; min-width: 70px;'>$Col</td>";
+            $cosa = $cosa."<td id='IDAcc$F' style='visibility: hidden;max-width: 1px; overflow-x: hidden;'>$Col</td>";
 
             //buscar presiones
             $IdsPres=mysqli_query($connect, "SELECT Id_presiones FROM contiene_presiones WHERE Id_acc=$Col");
@@ -757,7 +757,7 @@ if (isset($_POST['complejo'])){
       <table>
          <tr style='height:40px'>
             <td style='width:50px; min-width: 50px;'></td> 
-            <td style='width:70px; min-width: 70px;'>ID</td> 
+            <td style='visibility: hidden; max-width: 1px; overflow-x: hidden;'>ID</td> 
             <td style='width:300px; min-width: 300px;'>Nombre</td>
             <td style='width:300px; min-width: 300px;'>Propietario</td>
          </tr>";
@@ -768,7 +768,7 @@ if (isset($_POST['complejo'])){
       $cosa = $cosa."<td style='width:25px; min-width: 25px;'><button id='Mcom$F' onclick='ModifData($F, IDCom$F, tr$F);' type='button' style='background: orange;position: relative;float: right;'><i class='fa-solid fa-pen'></button></td>";
       foreach($Fil as $Col){
          if ($C == 0){//ID
-            $cosa = $cosa."<td id='IDCom$F'>$Col</td>";
+            $cosa = $cosa."<td id='IDCom$F' style='visibility: hidden; max-width: 1px; overflow-x: hidden;'>$Col</td>";
          }else
          {
             if ($C == 1){ //Nombre
@@ -821,7 +821,7 @@ if (isset($_POST['cuenca'])){
       <table>
          <tr style='height:40px'>
             <td style='width:50px; min-width: 50px;'></td> 
-            <td style='width:70px; min-width: 70px;'>ID</td> 
+            <td style='visibility: hidden; max-width: 1px; overflow-x: hidden;'>ID</td> 
             <td style='width:300px; min-width: 300px;'>Nombre</td>
             <td style='width:300px; min-width: 300px;'>Superficie</td>
             <td style='width:300px; min-width: 300px;'>Tipo</td>
@@ -834,7 +834,7 @@ if (isset($_POST['cuenca'])){
 
       foreach($Fil as $Col){
          if ($C == 0){//ID
-            $cosa = $cosa."<td id='IDCue$F'>$Col</td>";
+            $cosa = $cosa."<td id='IDCue$F'style='visibility: hidden;max-width: 1px; overflow-x: hidden;'>$Col</td>";
          }else
          {
             if ($C == 1){ //Nombre
@@ -870,7 +870,7 @@ if (isset($_POST['relevamiento'])){
       <table>
          <tr style='height:40px'>
             <td style='width:50px; min-width: 50px;'></td> 
-            <td style='width:70px; min-width: 70px;'>ID</td> <!---->
+            <td style='visibility: hidden;max-width: 1px; overflow-x: hidden;'>ID</td> <!---->
             <td style='width:300px; min-width: 300px;'>Accidente geográfico</td>  <!--id-->
             <td style='width:300px; min-width: 300px;'>Fecha</td> <!---->
 
@@ -905,7 +905,7 @@ if (isset($_POST['relevamiento'])){
       $suportFlora ="<td>";
       foreach($Fil as $Col){
          if ($C == 0){//ID
-            $cosa = $cosa."<td id='IDRel$F'>$Col</td>";
+            $cosa = $cosa."<td id='IDRel$F' style='visibility: hidden;max-width: 1px; overflow-x: hidden;'>$Col</td>";
 
             // Relevadores
             $IDsReleva = mysqli_query($connect, "SELECT Id_miembro FROM investiga WHERE Id_rel = $Col");
@@ -1054,7 +1054,7 @@ if (isset($_POST['fauna'])){
       <table>
          <tr style='height:40px'>
             <td style='width:50px; min-width: 50px;'></td> 
-            <td style='width:70px; min-width: 70px;'>ID</td> 
+            <td style='visibility: hidden;max-width: 1px; overflow-x: hidden;'>ID</td> 
             <td style='width:300px; min-width: 300px;'>Nombre Coloquial</td>
             <td style='width:300px; min-width: 300px;'>Nombre Científico</td>
             <td style='width:300px; min-width: 300px;'>Descripción</td>
@@ -1068,7 +1068,7 @@ if (isset($_POST['fauna'])){
 
       foreach($Fil as $Col){
          if ($C == 0){//ID
-            $cosa = $cosa."<td id='IDFau$F'>$Col</td>";
+            $cosa = $cosa."<td id='IDFau$F' style='visibility: hidden;max-width: 1px; overflow-x: hidden;'>$Col</td>";
          }else
          {
             if ($C == 1){ //Nombre coloquial
@@ -1104,7 +1104,7 @@ if (isset($_POST['flora'])){
       <table>
          <tr style='height:40px'>
             <td style='width:50px; min-width: 50px;'></td> 
-            <td style='width:70px; min-width: 70px;'>ID</td> 
+            <td style='visibility: hidden;max-width: 1px; overflow-x: hidden;'>ID</td> 
             <td style='width:300px; min-width: 300px;'>Nombre Coloquial</td>
             <td style='width:300px; min-width: 300px;'>Nombre Científico</td>
             <td style='width:300px; min-width: 300px;'>Descripción</td>
@@ -1118,7 +1118,7 @@ if (isset($_POST['flora'])){
 
       foreach($Fil as $Col){
          if ($C == 0){//ID
-            $cosa = $cosa."<td id='IDFlo$F'>$Col</td>";
+            $cosa = $cosa."<td id='IDFlo$F'style='visibility: hidden;max-width: 1px; overflow-x: hidden;'>$Col</td>";
          }else
          {
             if ($C == 1){ //Nombre coloquial
@@ -1154,7 +1154,7 @@ if (isset($_POST['presion'])){
       <table>
          <tr style='height:40px'>
             <td style='width:50px; min-width: 50px;'></td> 
-            <td style='width:70px; min-width: 70px;'>ID</td> 
+            <td style='visibility: hidden;max-width: 1px; overflow-x: hidden;'>ID</td> 
             <td style='width:300px; min-width: 300px;'>Tipo</td>
             <td style='width:300px; min-width: 300px;'>Observaciones</td>
          </tr>";
@@ -1166,7 +1166,7 @@ if (isset($_POST['presion'])){
 
       foreach($Fil as $Col){
          if ($C == 0){//ID
-            $cosa = $cosa."<td id='IDPre$F'>$Col</td>";
+            $cosa = $cosa."<td id='IDPre$F' style='visibility: hidden;max-width: 1px; overflow-x: hidden;'>$Col</td>";
          }else
          {
             if ($C == 1){ //Tipo (o nombre)
