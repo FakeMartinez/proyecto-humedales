@@ -668,7 +668,7 @@ if (isset($_POST['accidente'])){
       $suportPres = '';
       foreach($Fil as $Col){
          if ($C == 0){ //ID
-            $cosa = $cosa."<td id='IDAcc$F' style='visibility: hidden;max-width: 1px; overflow-x: hidden;'>$Col</td>";
+            $cosa = $cosa."<td id='IDAcc$F' style='visibility: visible; color: transparent;max-width: 1px; overflow-x: hidden;'>$Col</td>";
 
             //buscar presiones
             $IdsPres=mysqli_query($connect, "SELECT Id_presiones FROM contiene_presiones WHERE Id_acc=$Col");
@@ -768,7 +768,7 @@ if (isset($_POST['complejo'])){
       $cosa = $cosa."<td style='width:25px; min-width: 25px;'><button id='Mcom$F' onclick='ModifData($F, IDCom$F, tr$F);' type='button' style='background: orange;position: relative;float: right;'><i class='fa-solid fa-pen'></button></td>";
       foreach($Fil as $Col){
          if ($C == 0){//ID
-            $cosa = $cosa."<td id='IDCom$F' style='visibility: hidden; max-width: 1px; overflow-x: hidden;'>$Col</td>";
+            $cosa = $cosa."<td id='IDCom$F' style='visibility: visible; color: transparent; max-width: 1px; overflow-x: hidden;'>$Col</td>";
          }else
          {
             if ($C == 1){ //Nombre
@@ -834,7 +834,7 @@ if (isset($_POST['cuenca'])){
 
       foreach($Fil as $Col){
          if ($C == 0){//ID
-            $cosa = $cosa."<td id='IDCue$F'style='visibility: hidden;max-width: 1px; overflow-x: hidden;'>$Col</td>";
+            $cosa = $cosa."<td id='IDCue$F'style='visibility: visible; color: transparent; max-width: 1px; overflow-x: hidden;'>$Col</td>";
          }else
          {
             if ($C == 1){ //Nombre
@@ -905,7 +905,7 @@ if (isset($_POST['relevamiento'])){
       $suportFlora ="<td>";
       foreach($Fil as $Col){
          if ($C == 0){//ID
-            $cosa = $cosa."<td id='IDRel$F' style='visibility: hidden;max-width: 1px; overflow-x: hidden;'>$Col</td>";
+            $cosa = $cosa."<td id='IDRel$F' style='visibility: visible;color: transparent; max-width: 1px; overflow-x: hidden;'>$Col</td>";
 
             // Relevadores
             $IDsReleva = mysqli_query($connect, "SELECT Id_miembro FROM investiga WHERE Id_rel = $Col");
@@ -1068,7 +1068,7 @@ if (isset($_POST['fauna'])){
 
       foreach($Fil as $Col){
          if ($C == 0){//ID
-            $cosa = $cosa."<td id='IDFau$F' style='visibility: hidden;max-width: 1px; overflow-x: hidden;'>$Col</td>";
+            $cosa = $cosa."<td id='IDFau$F' style='visibility: visible; color: transparent; max-width: 1px; overflow-x: hidden;'>$Col</td>";
          }else
          {
             if ($C == 1){ //Nombre coloquial
@@ -1118,7 +1118,7 @@ if (isset($_POST['flora'])){
 
       foreach($Fil as $Col){
          if ($C == 0){//ID
-            $cosa = $cosa."<td id='IDFlo$F'style='visibility: hidden;max-width: 1px; overflow-x: hidden;'>$Col</td>";
+            $cosa = $cosa."<td id='IDFlo$F'style='visibility: visible; color: transparent; max-width: 1px; overflow-x: hidden;'>$Col</td>";
          }else
          {
             if ($C == 1){ //Nombre coloquial
@@ -1166,7 +1166,7 @@ if (isset($_POST['presion'])){
 
       foreach($Fil as $Col){
          if ($C == 0){//ID
-            $cosa = $cosa."<td id='IDPre$F' style='visibility: hidden;max-width: 1px; overflow-x: hidden;'>$Col</td>";
+            $cosa = $cosa."<td id='IDPre$F' style='visibility: visible; color: transparent; max-width: 1px; overflow-x: hidden;'>$Col</td>";
          }else
          {
             if ($C == 1){ //Tipo (o nombre)

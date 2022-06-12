@@ -12,6 +12,48 @@ var CantPropie = 0;
 var Propies = new Array;
 var Rol = new Array;
 
+
+
+function MostrarFormulario(op){
+  console.log(op);
+  switch (op){
+    case 1: //cuenca
+      $('#form_cuenca_add').show();
+      //document.getElementById("form_presion_add").style.zIndex=1000;
+      document.getElementById("formModifData").style.zIndex=100;
+      document.getElementById("form_modif").style.zIndex=10;
+    break;
+    case 2: //complejo
+      $('#form_complejo_add').show();
+      //document.getElementById("form_presion_add").style.zIndex=1000;
+      document.getElementById("formModifData").style.zIndex=100;
+      document.getElementById("form_modif").style.zIndex=10;
+    break;
+    case 3: //presiones
+      $('#form_presion_add').show();
+      //document.getElementById("form_presion_add").style.zIndex=1000;
+      document.getElementById("formModifData").style.zIndex=100;
+      document.getElementById("form_modif").style.zIndex=10;
+
+      break;
+    case 4: //fauna
+      $('#form_fauna_add').show();
+      //document.getElementById("form_presion_add").style.zIndex=1000;
+      document.getElementById("formModifData").style.zIndex=100;
+      document.getElementById("form_modif").style.zIndex=10;
+      break;
+    case 5: //flora
+      $('#form_flora_add').show();
+      //document.getElementById("form_presion_add").style.zIndex=1000;
+      document.getElementById("formModifData").style.zIndex=100;
+      document.getElementById("form_modif").style.zIndex=10;
+      break;
+
+  }
+  
+}
+
+
 function quitarPresion(IDSelect,BtnQuit,Contenedor,Pos){
   //console.log("antes de quitar CantPres:"+CantPres);
   if (CantPres == 0){
@@ -524,6 +566,8 @@ function quitarFlora(IDSelect,BtnQuit,Contenedor,Pos){
     console.log("ahora CantFlo:"+ CantFlo);
   }
 
+
+
 function ModifData(Fil, Id, trs){
   CantPres= 0;
   CantProp= 0;
@@ -550,6 +594,7 @@ function ModifData(Fil, Id, trs){
     Data=7 Presiones
     Data=8 Personas */
     var Data= 1;
+    var mod=1;
 
     //console.log("Modificar un accidente");
     IdAcc = parseInt(Id.innerText);
@@ -640,7 +685,7 @@ function ModifData(Fil, Id, trs){
             "<input type='text' id='InpModTipo' class='form-control' style='background: #e2e2e2; color:black; width: 50%; height: 25px;' value="+IDt+"><br><br><br>" +
         "</div>"+
         "<div style=' height: 50px; font-size: 20px; margin-bottom: 20px;'>"+
-            "<a style='font-weight: bold; color: grey;'>Cuenca del Accidente Geográfico: </a>" +
+            "<a style='font-weight: bold; color: grey;'>Cuenca del Accidente Geográfico: <button id='Mper$F' class='btn btn-success' onclick='MostrarFormulario("+1+");' type='button' style=' height: 25px; width: 25px; padding: 0px; font-size: 15px; color: #343a40; border-radius: 25px;'><i class='fa-solid fa-pen'></i></button></a>" +
             "<select id='SelModCuen' class='form-select' style='background: #e2e2e2; color:black; width: 50%; min-width: 230px; padding: 0px; padding-left: 24px;'>" +
                 "<option>"+IDcu+" 1</option>"+
                 "<option>"+IDcu+" 2</option>"+
@@ -648,7 +693,7 @@ function ModifData(Fil, Id, trs){
             "</select><br><br><br>"+
         "</div>"+
         "<div style=' height: 50px; font-size: 20px; margin-bottom: 20px;'>"+
-            "<a style='font-weight: bold; color: grey;'>Complejo del Accidente Geográfico: </a>"+
+            "<a style='font-weight: bold; color: grey;'>Complejo del Accidente Geográfico: <button id='Mper$F' class='btn btn-success' onclick='MostrarFormulario("+2+");' type='button' style=' height: 25px; width: 25px; padding: 0px; font-size: 15px; color: #343a40; border-radius: 25px;'><i class='fa-solid fa-pen'></i></button></a>"+
             "<select id='SelModComp' class='form-select' style='background: #e2e2e2; color:black; width: 50%; min-width: 230px; padding: 0px; padding-left: 24px;'>" +
                 "<option>"+IDco+" 1</option>"+
                 "<option>"+IDco+" 2</option>"+
@@ -657,7 +702,7 @@ function ModifData(Fil, Id, trs){
         "</div>"+
     "</div>"+
         "<div id='ContPadrePres' style=' width: 50%; padding-left: 20px; height: 280px; overflow-x: auto;'>"+
-        "<a style='font-weight: bold; color: grey; font-size: 20px;'>Presiones del Accidente Geográfico: </a><br>";
+        "<a style='font-weight: bold; color: grey; font-size: 20px;'>Presiones del Accidente Geográfico: <button id='Mper$F' class='btn btn-success' onclick='MostrarFormulario("+3+");' type='button' style=' height: 25px; width: 25px; padding: 0px; font-size: 15px; color: #343a40; border-radius: 25px;'><i class='fa-solid fa-pen'></i></button></a>";
 
     for (i=0 ; i<IDp.length; i++){
       data = data+"<div id='ContBtnSelPres"+i+"' style='display:flex; margin-bottom: 15px;'>"+
@@ -674,6 +719,9 @@ function ModifData(Fil, Id, trs){
       data = data+"</div>";
       CantPres++;
     }
+    if(IDp.length ==0){
+      data = data+"<br><button id='BtnNewRelPresComp' type='button' class='btn btn-success' style='height: 25px; width: 25px; padding: 0px;' onclick='AñadirPresion("+(0)+");'> <i class='fa-solid fa-plus'></i> </button>";
+    }
   
     data = data+"</div><br>"+
     "</section>"+
@@ -689,6 +737,8 @@ function ModifData(Fil, Id, trs){
     pCu=0;
     pCo=0;
     pPr=0;
+    contpCu = -10;
+    contpCo = -10;
     contpPr = new Array;
 
     // _____________ SE CARGAN TODAS LAS OPCIONES DE DATOS DESDE LA BASE DE DATOS EN LOS SELECTS DE LA VENTANA DE MODIFICACION _____________________
@@ -719,23 +769,27 @@ function ModifData(Fil, Id, trs){
       for (i=0; i<IDp.length;i++){
         pPr=0;
         datosAcc['presiones'].forEach(dato => {
-          //console.log("dato.tipo_presion:| "+dato.tipo_presion);
-          //console.log("IDp["+i+"]:| "+IDp[i]/*.substring(10)*/);
-          if (dato.tipo_presion == IDp[i]/*.substring(10)*/){
+          if (dato.tipo_presion == IDp[i]){
             contpPr[i] = pPr;
-            //console.log("contpPr["+i+"]"+contpPr[i]);
-            //console.log("pPr"+pPr);
-            //console.log("dato.tipo_presion"+dato.tipo_presion);
-            //console.log("IDp["+i+"]"+IDp[i]/*.substring(10)*/);
           }else{
             pPr++;
           }
         });        
       }
   
-      $('#SelModCuen').html(tempCuen);
-      document.getElementById('SelModCuen').options.item(contpCu).selected = 'selected';
-  
+      
+      if (contpCu ==-10){
+        tempCuen = "<option>... Seleccione una cuenca ...</option>"+ tempCuen;
+        contpCu=0;
+      }
+
+        $('#SelModCuen').html(tempCuen);
+        document.getElementById('SelModCuen').options.item(contpCu).selected = 'selected';
+     
+        if (contpCo ==-10){
+          tempComp = "<option>... Seleccione un complejo ...</option>"+ tempComp;
+          contpCo=0;
+        }
       $('#SelModComp').html(tempComp);
       document.getElementById('SelModComp').options.item(contpCo).selected = 'selected';
   
@@ -1379,12 +1433,12 @@ function ModifData(Fil, Id, trs){
       data = data+"</div>";
       CantReles++;
     }
-    if(IDFau.length ==0){
+    if(IDRels.length ==0){
       data = data+"<button id='BtnNewRele' type='button' class='btn btn-success' style='height: 25px; width: 25px; padding: 0px;' onclick='AñadirRelevadores("+(0)+");'> <i class='fa-solid fa-plus'></i> </button>";
     }
     data = data+"</div><br>"+
     "<div id='ContPadreFau' style=' width: 100%; padding-left: 20px; height: 165px; overflow-x: auto;'>"+
-        "<a style='font-weight: bold; color: grey; font-size: 20px;'>Fauna: </a><br>";
+        "<a style='font-weight: bold; color: grey; font-size: 20px;'>Fauna: <button id='Mper$F' class='btn btn-success' onclick='MostrarFormulario("+4+");' type='button' style=' height: 25px; width: 25px; padding: 0px; font-size: 15px; color: #343a40; border-radius: 25px;'><i class='fa-solid fa-pen'></i></button></a><br>";
     for (i=0 ; i<IDFau.length; i++){
       data = data+"<div id='ContBtnSelFau"+i+"' style='display:flex; margin-bottom: 15px;'>"+
                     "<button id='BtnQuitFau"+i+"' type='button' class='btn btn-danger' style='height: 25px; width: 25px; padding: 0px;' onclick='quitarFauna(SelModFau"+i+",BtnQuitFau"+i+",ContBtnSelFau"+i+","+i+");'> X </button>"+
@@ -1405,7 +1459,7 @@ function ModifData(Fil, Id, trs){
     }
     data = data+"</div><br>"+
     "<div id='ContPadreFlo' style=' width: 100%; padding-left: 20px; height: 165px; overflow-x: auto;'>"+
-        "<a style='font-weight: bold; color: grey; font-size: 20px;'>Flora: </a><br>";
+        "<a style='font-weight: bold; color: grey; font-size: 20px;'>Flora: <button id='Mper$F' class='btn btn-success' onclick='MostrarFormulario("+5+");' type='button' style=' height: 25px; width: 25px; padding: 0px; font-size: 15px; color: #343a40; border-radius: 25px;'><i class='fa-solid fa-pen'></i></button></a><br>";
     for (i=0 ; i<IDFlo.length; i++){
       data = data+"<div id='ContBtnSelFlo"+i+"' style='display:flex; margin-bottom: 15px;'>"+
                     "<button id='BtnQuitFlo"+i+"' type='button' class='btn btn-danger' style='height: 25px; width: 25px; padding: 0px;' onclick='quitarFlora(SelModFlo"+i+",BtnQuitFlo"+i+",ContBtnSelFlo"+i+","+i+");'> X </button>"+
