@@ -663,7 +663,7 @@ if (isset($_POST['accidente'])){
    $F= 0;
    foreach($resulta as $Fil){
       $cosa = $cosa."<tr id='tr$F' style='height: 80px;'>";
-      $cosa = $cosa."<td style='width:25px; min-width: 25px;'><button id='Macc$F' onclick='ModifData($F, IDAcc$F, tr$F);' type='button' style='background: orange;position: relative;float: right;'><i class='fa-solid fa-pen'></i></button></td>";
+      $cosa = $cosa."<td style='width:25px; min-width: 25px;'><button id='Macc$F' onclick='ModifData($F, IDAcc$F, tr$F);' type='button' class='btn btn-warning' style='background: orange; height: 30px; width: 30px; padding: 0px; border-radius: 5px; border: 1px solid #9d6500;'><i class='fa-solid fa-pen'></i></button></td>";
       $suport = '';
       $suportPres = '';
       foreach($Fil as $Col){
@@ -765,7 +765,7 @@ if (isset($_POST['complejo'])){
    $F= 0;
    foreach($resulta as $Fil){
       $cosa = $cosa."<tr id='tr$F' style='height:40px'>";
-      $cosa = $cosa."<td style='width:25px; min-width: 25px;'><button id='Mcom$F' onclick='ModifData($F, IDCom$F, tr$F);' type='button' style='background: orange;position: relative;float: right;'><i class='fa-solid fa-pen'></button></td>";
+      $cosa = $cosa."<td style='width:25px; min-width: 25px;'><button id='Mcom$F' onclick='ModifData($F, IDCom$F, tr$F);' type='button' class='btn btn-warning' style='background: orange; height: 30px; width: 30px; padding: 0px; border-radius: 5px; border: 1px solid #9d6500;'><i class='fa-solid fa-pen'></button></td>";
       foreach($Fil as $Col){
          if ($C == 0){//ID
             $cosa = $cosa."<td id='IDCom$F' style='visibility: visible; color: transparent; max-width: 1px; overflow-x: hidden;'>$Col</td>";
@@ -830,7 +830,7 @@ if (isset($_POST['cuenca'])){
    $F= 0;
    foreach($resulta as $Fil){
       $cosa = $cosa."<tr id='tr$F' style='height:40px'>";
-      $cosa = $cosa."<td style='width:25px; min-width: 25px;'><button id='Mcue$F' onclick='ModifData($F, IDCue$F, tr$F);' type='button' style='background: orange;position: relative;float: right;'><i class='fa-solid fa-pen'></button></td>";
+      $cosa = $cosa."<td style='width:25px; min-width: 25px;'><button id='Mcue$F' onclick='ModifData($F, IDCue$F, tr$F);' type='button'class='btn btn-warning' style='background: orange; height: 30px; width: 30px; padding: 0px; border-radius: 5px; border: 1px solid #9d6500;'><i class='fa-solid fa-pen'></button></td>";
 
       foreach($Fil as $Col){
          if ($C == 0){//ID
@@ -898,7 +898,7 @@ if (isset($_POST['relevamiento'])){
    $F= 0;
    foreach($resulta as $Fil){
       $cosa = $cosa."<tr id='tr$F' style='height:80px'>";
-      $cosa = $cosa."<td style='width:25px; min-width: 25px;'><button id='Mrele$F' onclick='ModifData($F, IDRel$F, tr$F);' type='button' style='background: orange;position: relative;float: right;'><i class='fa-solid fa-pen'></button></td>";
+      $cosa = $cosa."<td style='width:25px; min-width: 25px;'><button id='Mrele$F' onclick='ModifData($F, IDRel$F, tr$F);' type='button' class='btn btn-warning' style='background: orange; height: 30px; width: 30px; padding: 0px; border-radius: 5px; border: 1px solid #9d6500;'><i class='fa-solid fa-pen'></button></td>";
       $suportNomRel ="<td>";
       $suportObserv ="";
       $suportFauna ="<td>";
@@ -1064,7 +1064,7 @@ if (isset($_POST['fauna'])){
    $F= 0;
    foreach($resulta as $Fil){
       $cosa = $cosa."<tr id='tr$F' style='height:80px'>";
-      $cosa = $cosa."<td style='width:25px; min-width: 25px;'><button id='Mfau$F' onclick='ModifData($F, IDFau$F, tr$F);' type='button' style='background: orange;position: relative;float: right;'><i class='fa-solid fa-pen'></button></td>";
+      $cosa = $cosa."<td style='width:25px; min-width: 25px;'><button id='Mfau$F' onclick='ModifData($F, IDFau$F, tr$F);' type='button' class='btn btn-warning' style='background: orange; height: 30px; width: 30px; padding: 0px; border-radius: 5px; border: 1px solid #9d6500;'><i class='fa-solid fa-pen'></button></td>";
 
       foreach($Fil as $Col){
          if ($C == 0){//ID
@@ -1114,7 +1114,7 @@ if (isset($_POST['flora'])){
    $F= 0;
    foreach($resulta as $Fil){
       $cosa = $cosa."<tr id='tr$F' style='height:80px'>";
-      $cosa = $cosa."<td style='width:25px; min-width: 25px;'><button id='Mflo$F' onclick='ModifData($F, IDFlo$F, tr$F);' type='button' style='background: orange;position: relative;float: right;'><i class='fa-solid fa-pen'></button></td>";
+      $cosa = $cosa."<td style='width:25px; min-width: 25px;'><button id='Mflo$F' onclick='ModifData($F, IDFlo$F, tr$F);' type='button' class='btn btn-warning' style='background: orange; height: 30px; width: 30px; padding: 0px; border-radius: 5px; border: 1px solid #9d6500;'><i class='fa-solid fa-pen'></button></td>";
 
       foreach($Fil as $Col){
          if ($C == 0){//ID
@@ -1162,7 +1162,7 @@ if (isset($_POST['presion'])){
    $F= 0;
    foreach($resulta as $Fil){
       $cosa = $cosa."<tr id='tr$F' style='height:80px'>";
-      $cosa = $cosa."<td style='width:25px; min-width: 25px;'><button id='Mpre$F' onclick='ModifData($F, IDPre$F, tr$F);' type='button' style='background: orange;position: relative;float: right;'><i class='fa-solid fa-pen'></button></td>";
+      $cosa = $cosa."<td style='width:25px; min-width: 25px;'><button id='Mpre$F' onclick='ModifData($F, IDPre$F, tr$F);' class='btn btn-warning' style='background: orange; height: 30px; width: 30px; padding: 0px; border-radius: 5px; border: 1px solid #9d6500;' type='button'><i class='fa-solid fa-pen'></button></td>";
 
       foreach($Fil as $Col){
          if ($C == 0){//ID
@@ -1209,7 +1209,7 @@ if (isset($_POST['persona'])){
    $F= 0;
    foreach($resulta as $Fil){
       $cosa = $cosa."<tr id='tr$F' style='height:80px'>";
-      $cosa = $cosa."<td style='width:25px; min-width: 25px;'><button id='Mper$F' onclick='ModifData($F, IDPer$F, tr$F);' type='button' style='background: orange;position: relative;float: right;'><i class='fa-solid fa-pen'></button></td>";
+      $cosa = $cosa."<td style='width:25px; min-width: 25px;'><button id='Mper$F' class='btn btn-warning' style='background: orange; height: 30px; width: 30px; padding: 0px; border-radius: 5px; border: 1px solid #9d6500;' onclick='ModifData($F, IDPer$F, tr$F);' type='button'><i class='fa-solid fa-pen'></button></td>";
       $suport='<td>';
       $EsProp = false;
       $EsMiem = false;
