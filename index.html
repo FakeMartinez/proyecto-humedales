@@ -13,6 +13,9 @@
   <link rel="stylesheet" href="css/wbootstrap.css">
   <link rel="stylesheet" href="css/bootstrap-icons.css">
 
+
+  <script src="https://kit.fontawesome.com/c3a32bb4c5.js" crossorigin="anonymous"></script>
+
    <!--al vincular un documento css y jss se pone ?v=<?php echo time(); ? para indicarle una version al archivo y que se actualice siempre al ejecutarlo en el navegador-->
 
     <!--Para no guardar caché y que los documentos que se cargan se carguen actualizados siempre-->
@@ -22,19 +25,21 @@
     <meta http-equiv="Pragma" content="no-cache">
 </head>
 
-<body>
+<body style="overflow-y: hidden;">
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <a class="navbar-brand" href="#">Humedal App</a>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="height: 10vh; font-size: 1.5vh; padding: 0px; padding-left: 1vh;">
+      <a class="navbar-brand" href="#" style="font-size: 3vh; margin-right: 3vh;"><co style="color:greenyellow;font-family: cursive;">W</co><co style="color: #caff7b; font-family: cursive;">I</co><co style="color: #e0ffb1;font-family: cursive;">S</co>
+        <div style="font-size: 1vh; letter-spacing: 0.1vh;">wetlands inventory system</div>
+      </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <button type="button" class="btn btn-success" id="btn_add">Accidente geografico</button>
-      <button type="button" class="btn btn-warning" id="btn_img_xy">Obtener Coordenadas</button>
-      <button type="button" class="btn btn-warning" id="btn_modif">Modificar</button>
-      <a class="nav-link dropdown-toggle" id="tools" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" style="color: #d3d3d3;">Herramientas</a>
+      <button type="button" class="btn btn-success" id="btn_add" style="height: 5vh; font-size: 1.5vh; width: 20vh; padding: 0px; margin: 0.1vh;">Accidente geografico</button>
+      <button type="button" class="btn btn-warning" id="btn_img_xy" style="height: 5vh; font-size: 1.5vh; width: 20vh; padding: 0px; margin: 0.1vh;">Obtener Coordenadas</button>
+      <button type="button" class="btn btn-warning" id="btn_modif" style="height: 5vh; font-size: 1.5vh; width: 15vh; padding: 0px; margin: 0.1vh;">Modificar</button>
+      <a class="nav-link dropdown-toggle" id="tools" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" style="color: #d3d3d3; padding: 0px; margin-left: 3vh; letter-spacing: 0.1vh;">Herramientas</a>
       <div class="dropdown-menu" id="tools_op">
         <a class="dropdown-item" href="https://facu52da.users.earthengine.app/view/humedales">Imagenes Satelitales</a>
         <button class="dropdown-item" id="Filtrador">Filtrar los humedales</button>
@@ -47,8 +52,8 @@
 
         <ul class="navbar-nav ml-auto">
           <form class="form-inline my-2 my-lg-0">
-          <input name="search" id="search" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-success my-2 my-sm-0" type="submit">Buscar</button>
+          <input name="search" id="search" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" style="height: 4vh; width: 25vh; font-size: 2vh; padding: 0px; padding-left: 1vh; margin: 0vh; margin-right: 1vh!important;">
+            <button class="btn btn-success my-2 my-sm-0" type="submit" style="height: 4vh; width: 10vh; font-size: 1.5vh; padding: 0vh; margin: 1vh;">Buscar</button>
             <!--<div class="card my col-md-6" id="task-result"  style="height: 45px; width: 98px; display:block; "></div>-->
           </form>
       </div>
@@ -56,9 +61,9 @@
 
 
 
- <div id= "contenido_principal" class="contenido" style="height: 600px;">
+ <div id= "contenido_principal" class="contenido" style="min-height: 100%; min-width: 100%;">
 
- <div id="myMap" style="height: 100%; width: 80%; float: left; z-index: 0;">
+ <div id="myMap" style="height: 100vh; min-width: 100%; float: left; z-index: 0; position:'relative'; outline:'none'">
  <div class="info leaflet-control" id="task-result" style="display:block; float:right; position: absolute; left: 989px"></div>
 </div>
     <!------------------------Cuadro de Info------------------------------------->
@@ -287,6 +292,7 @@
    <script src="js/data_geojson.js"></script> 
    <script src="js/forms.js"></script>
    <script src="js/Filtro.js"></script>
+   <script src="js/Modificacion.js"></script>
 
 <!---------------Formulario Alta Accidente Geografico--------------------------->
   <div class="modal" role="document" id="form_add" style="background: rgba(0,0,0,0.8);">
@@ -1067,7 +1073,14 @@
     </div>
   </div>
 </div>
-<!------------------------------------------------------------------------------------>
+
+<!--========================================================================================-->
+<!--========================================================================================-->
+<!--========================================================================================-->
+<!--========================================================================================-->
+<!--========================================================================================-->
+<!--========================================================================================-->
+<!--========================================================================================-->
 <!-------------------------------------MODIFICAR------------------------------------------->
 
  <div class="modal" role="document" id="form_modif" style="background: rgba(0,0,0,0.8);">
@@ -1086,13 +1099,14 @@
           <form id="task-formodif">
             <div id="contenedor">
               <div style="width: 210px;">
-                <button type="button" class="btn btn-success btn-block" id="btn_maccidente" style="width: 200px;">Accidente</button>
-                <button type="button" class="btn btn-success btn-block" id="btn_mcomplejo" style="width: 200px;">Complejo</button>
-                <button type="button" class="btn btn-success btn-block" id="btn_mcuenca" style="width: 200px;">Cuenca</button>
-                <button type="button" class="btn btn-success btn-block" id="btn_mrelevamiento" style="width: 200px;">Relevamiento</button>
-                <button type="button" class="btn btn-success btn-block" id="btn_mfauna" style="width: 200px;">Fauna</button>
-                <button type="button" class="btn btn-success btn-block" id="btn_mflora" style="width: 200px;">Flora</button>
-                <button type="button" class="btn btn-success btn-block" id="btn_mpresiones" style="width: 200px;">Persona</button>
+<!-- Accidentes --><button type="button" class="btn btn-success btn-block" id="btn_maccidente" style="width: 200px;">Accidente</button>
+<!-- Complejos --><button type="button" class="btn btn-success btn-block" id="btn_mcomplejo" style="width: 200px;">Complejo</button>
+<!-- Cuencas --><button type="button" class="btn btn-success btn-block" id="btn_mcuenca" style="width: 200px;">Cuenca</button>
+<!-- Relevamientos --><button type="button" class="btn btn-success btn-block" id="btn_mrelevamiento" style="width: 200px;">Relevamiento</button>
+<!-- Fauna --><button type="button" class="btn btn-success btn-block" id="btn_mfauna" style="width: 200px;">Fauna</button>
+<!-- Flora --><button type="button" class="btn btn-success btn-block" id="btn_mflora" style="width: 200px;">Flora</button>
+<!-- Presiones --><button type="button" class="btn btn-success btn-block" id="btn_mpresiones" style="width: 200px;">Presiones</button>
+<!-- Personas --><button type="button" class="btn btn-success btn-block" id="btn_mpersonas" style="width: 200px;">Personas</button>
               </div>
               <div id="ContTable" style="width: 69vmax; height: 385px; visibility: hidden; overflow: auto;" class="TablaMod"> 
                 <!--<table id="myTable" class="table table-dark">-->
@@ -1111,6 +1125,21 @@
     </div>
    </div>
   </div>  
+<!--
+  <div id='formModifData' class='modal' role='document' style='background: rgba(0,0,0,0.8);'> 
+    <div class='modal-dialog modal-lg' style='display: inline-table;'>
+      <div class='modal-content' style='width: 92vmax; left: 3vmax;'>
+        <div class='modal-header'>|
+          <h5 class='modal-title'>Modificar accidente "+IdAcc+" </h5>
+          <button type='button' onclick='deletesHTML("formModifData");' class='btn-close' data-bs-dismiss='modal' aria-label='Close'>
+            <span aria-hidden='true'></span>
+          </button>
+          |
+        </div>
+        <div class='modal-body'>||</div>
+      </div>
+    </div>
+  </div>-->
   <!------------------------------------------------------------------------->
 
  

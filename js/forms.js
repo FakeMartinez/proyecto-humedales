@@ -34,6 +34,10 @@ function CloseMensImag (){
   //getElementById("MensErrorImag").remove();
 }
 
+function deletesHTML(ID){ //Se le pasa la ID del elemento para borrarlo
+  $('#'+ID).hide();
+  $('#'+ID).remove();
+}
 
 
 function validacion(postData){
@@ -637,7 +641,7 @@ $('#form_propietario_add').submit(e => {
 
   //////////////////Form presion/////////////////////
   $('#form-presion').submit(e => {
-    e.preventDefault();                         //para que es preventDefault();
+    e.preventDefault();                         
     //console.log ("Entra a la carga de presion");
     $('div').remove('#TexErrorIncompleto'); 
 
@@ -658,7 +662,8 @@ $('#form_propietario_add').submit(e => {
       console.log(response);                               //Si se comenta, no se va a escribir ningún echo del php en la consola de la pagina ¡OJO!    
       //$('#form_add').trigger('reset');
       e.preventDefault();
-      carga_form_alta_p();    //definido en linea *357
+      console.log("llama al carga_form_alta_p");
+      carga_form_alta_p();   
       $('#form_presion_add').hide();    //oculta eñ formulario add presion
       $('#tipo_presion').val('');
       $('#obs_presion').val('');
@@ -1185,7 +1190,33 @@ function carga_form_alta_p(){
           $('#btn_presion_hum').hide();
           max_pre = (datos['presiones'].length-1);   
         }  
-       }              
+
+        var conta=0;
+        var cond=true;
+        while(cond){
+          //console.log("entra al while");
+          //console.log("SelModPres"+conta.toString());
+          console.log(document.getElementById("SelModPres"+conta.toString()));
+          //console.log(!!document.getElementById("SelModPres"+conta.toString()));
+          if(!!document.getElementById("SelModPres"+conta.toString())){
+            //console.log("existe la ID: SelModPres"+conta.toString());
+            //console.log("template0: "+template0);
+            //document.getElementById("SelModPres"+conta.toString()).innerHTML(template0);
+            $('#SelModPres'+conta.toString()).html(template0.slice(49));  
+           
+            //console.log(contpPr[conta]);
+            document.getElementById('SelModPres'+conta.toString()).options.item(contpPr[conta]).selected = 'selected';
+            conta++;
+            if (conta==1000){
+              cond=false;
+            }
+          }else{
+            //console.log(!!document.getElementById("SelModPres"+conta.toString()));
+            //console.log("termina la ejecución");
+            cond=false;
+          }
+        }
+      }              
     }
   });
 }
@@ -1216,6 +1247,12 @@ function carga_form_alta_cu(){
         });
                   
         $('#sel_cuenca').html(template1);
+
+        console.log(document.getElementById("SelModCuen"));
+        if(!!document.getElementById("SelModCuen")){
+          $('#SelModCuen').html(template1.slice(46));  
+          document.getElementById('SelModCuen').options.item(contpCu).selected = 'selected';
+        }
       }            
     }
   });
@@ -1241,7 +1278,13 @@ function carga_form_alta_co(){
           let template2 = '<option>... Seleccione un complejo ...</option>';
           datos['complejos'].forEach(dato => {template2 += `<option>${dato.nombre_complejo}</option>` });                    
           $('#sel_complejo').html(template2);    
-      }
+          
+          console.log(document.getElementById("SelModComp"));
+          if(!!document.getElementById("SelModComp")){
+            $('#SelModComp').html(template2.slice(47));  
+            document.getElementById('SelModComp').options.item(contpCo).selected = 'selected';
+          }
+        }
     }
   });
 };
@@ -1334,6 +1377,23 @@ function carga_form_alta_fa(){
           $('#btn_fauna_hum').hide();
           max_fauna = (datos['faunas'].length-1); 
         }  
+
+        var conta=0;
+        var cond=true;
+        while(cond){
+          console.log(document.getElementById("SelModFau"+conta.toString()));
+          if(!!document.getElementById("SelModFau"+conta.toString())){
+            $('#SelModFau'+conta.toString()).html(template4.slice(45));  
+      
+            document.getElementById('SelModFau'+conta.toString()).options.item(contpFau[conta]).selected = 'selected';
+            conta++;
+            if (conta==1000){
+              cond=false;
+            }
+          }else{
+            cond=false;
+          }
+        }
       }        
     }
   });
@@ -1384,6 +1444,24 @@ function carga_form_alta_fl(){
           $('#btn_flora_hum').hide();
           max_flora = (datos['floras'].length-1);
         }  
+
+        var conta=0;
+        var cond=true;
+        while(cond){
+          console.log(document.getElementById("SelModFlo"+conta.toString()));
+          if(!!document.getElementById("SelModFlo"+conta.toString())){
+            $('#SelModFlo'+conta.toString()).html(template5.slice(45));  
+
+            document.getElementById('SelModFlo'+conta.toString()).options.item(contpFlo[conta]).selected = 'selected';
+            conta++;
+            if (conta==1000){
+              cond=false;
+            }
+          }else{
+
+            cond=false;
+          }
+        }
       }                
     }                       
   });
@@ -1416,10 +1494,18 @@ function carga_form_alta_propie(){
   });
 };
 
+
+
+
+
+
+
 ////////////////////////////////
 
-//-------------------------------------------------//
-//--------------------Modificar--------------------------//
+//=========================================================//
+//=========================================================//
+//----------------------Modificar--------------------------//
+//=========================================================//
     
 $('#btn_modif').on('click', function(){
   $('#form_modif').show();
@@ -1427,6 +1513,7 @@ $('#btn_modif').on('click', function(){
   $('#form_modal').css({'background':'#DEFEAE'});
   update = false; 
   
+  //- accidentes geograficos -//
   $('#btn_maccidente').on('click',function(){
     var postData= {
       accidente:true,
@@ -1439,6 +1526,7 @@ $('#btn_modif').on('click', function(){
     });
   })
 
+  //- complejos -//
   $('#btn_mcomplejo').on('click',function(){
     var postData= {
       complejo:true,
@@ -1449,6 +1537,79 @@ $('#btn_modif').on('click', function(){
       $("#myTable").html(response);
     });
   })
+
+  //- cuencas -//
+  $('#btn_mcuenca').on('click',function(){
+    var postData= {
+      cuenca:true,
+    }
+    $('#ContTable').css({'visibility':'visible'});
+    $.post('php/modificar.php', postData, (response) => {
+      console.log(response);  
+      $("#myTable").html(response);
+    });
+  })
+
+  //- relevamiento -//
+  $('#btn_mrelevamiento').on('click',function(){
+    var postData= {
+      relevamiento:true,
+    }
+    $('#ContTable').css({'visibility':'visible'});
+    $.post('php/modificar.php', postData, (response) => {
+      console.log(response);  
+      $("#myTable").html(response);
+    });
+  })
+
+  //- fauna -//
+  $('#btn_mfauna').on('click',function(){
+    var postData= {
+      fauna:true,
+    }
+    $('#ContTable').css({'visibility':'visible'});
+    $.post('php/modificar.php', postData, (response) => {
+      console.log(response);  
+      $("#myTable").html(response);
+    });
+  })
+
+  //- flora -//
+  $('#btn_mflora').on('click',function(){
+    var postData= {
+      flora:true,
+    }
+    $('#ContTable').css({'visibility':'visible'});
+    $.post('php/modificar.php', postData, (response) => {
+      console.log(response);  
+      $("#myTable").html(response);
+    });
+  })
+
+  //- presiones -//
+  $('#btn_mpresiones').on('click',function(){
+    var postData= {
+      presion:true,
+    }
+    $('#ContTable').css({'visibility':'visible'});
+    $.post('php/modificar.php', postData, (response) => {
+      console.log(response);  
+      $("#myTable").html(response);
+    });
+  })
+
+  //- personas -//
+  $('#btn_mpersonas').on('click',function(){
+    var postData= {
+      persona:true,
+    }
+    $('#ContTable').css({'visibility':'visible'});
+    $.post('php/modificar.php', postData, (response) => {
+      console.log(response);  
+      $("#myTable").html(response);
+    });
+  })
+
 });           
 
 
