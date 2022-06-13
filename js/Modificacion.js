@@ -678,11 +678,11 @@ function ModifData(Fil, Id, trs){
     "<div style=' width: 50%; padding-left: 20px;'>"+
         "<div style=' height: 50px; font-size: 20px; margin-bottom: 20px;'>"+
             "<a style='font-weight: bold; color: grey; font-size: 20px; height: 25px;'>Nombre del Accidente Geográfico: </a>" +
-            "<input type='text' id='InpModNombre' class='form-control' style='background: #e2e2e2; color:black; width: 50%; height: 25px;' value="+IDn+"><br><br><br>" + 
+            "<input type='text' id='InpModNombre' class='form-control' style='background: #e2e2e2; color:black; width: 50%; height: 25px;' value='"+IDn+"'><br><br><br>" + 
         "</div>"+
         "<div style=' height: 50px; font-size: 20px; margin-bottom: 20px;'>"+
             "<a style='font-weight: bold; color: grey; font-size: 20px; height: 25px;'>Tipo de Accidente Geográfico: </a>" +
-            "<input type='text' id='InpModTipo' class='form-control' style='background: #e2e2e2; color:black; width: 50%; height: 25px;' value="+IDt+"><br><br><br>" +
+            "<input type='text' id='InpModTipo' class='form-control' style='background: #e2e2e2; color:black; width: 50%; height: 25px;' value='"+IDt+"'><br><br><br>" +
         "</div>"+
         "<div style=' height: 50px; font-size: 20px; margin-bottom: 20px;'>"+
             "<a style='font-weight: bold; color: grey;'>Cuenca del Accidente Geográfico: <button id='Mper$F' class='btn btn-success' onclick='MostrarFormulario("+1+");' type='button' style=' height: 25px; width: 25px; padding: 0px; font-size: 15px; color: #343a40; border-radius: 25px;'><i class='fa-solid fa-pen'></i></button></a>" +
@@ -854,8 +854,9 @@ function ModifData(Fil, Id, trs){
         var IDComp = tds[i].innerText;
       }
       if (i==2){
-        //console.log("Nombre: "+tds[i].innerText);
+        console.log("Nombre: "+tds[i].innerText);
         var IDnomb = tds[i].innerText;
+        console.log("IDnomb: "+IDnomb);
       }
       if (i==3){
         p = -1;
@@ -881,7 +882,7 @@ function ModifData(Fil, Id, trs){
     "<div style=' width: 50%; padding-left: 20px;'>"+
         "<div style=' height: 50px; font-size: 20px; margin-bottom: 20px;'>"+
             "<a style='font-weight: bold; color: grey; font-size: 20px; height: 25px;'>Nombre del Complejo: </a>" +
-            "<input type='text' id='InpModNombre' class='form-control' style='background: #e2e2e2; color:black; width: 50%; height: 25px;' value="+IDnomb+"><br><br><br>" + 
+            "<input type='text' id='InpModNombre' class='form-control' style='background: #e2e2e2; color:black; width: 50%; height: 25px;' value='"+IDnomb+"'><br><br><br>" + 
         "</div>"+
     "</div>"+
         "<div id='ContPadreProp' style=' width: 50%; padding-left: 20px; height: 280px; overflow-x: auto;'>"+
@@ -907,7 +908,7 @@ function ModifData(Fil, Id, trs){
      
     }
   
-   
+   console.log(data);
     console.log("ahora CantProp:"+CantProp);
     $("#dataModif").html(data);
     tempProp = '';
@@ -1013,15 +1014,15 @@ function ModifData(Fil, Id, trs){
       "<div style=' width: 50%; padding-left: 20px;'>"+
         "<div style=' height: 50px; font-size: 20px; margin-bottom: 20px;'>"+
             "<a style='font-weight: bold; color: grey; font-size: 20px; height: 25px;'>Nombre de Cuenca: </a>" +
-            "<input type='text' id='InpModNombre' class='form-control' style='background: #e2e2e2; color:black; width: 50%; height: 25px;' value="+IDNom+"><br><br><br>" + 
+            "<input type='text' id='InpModNombre' class='form-control' style='background: #e2e2e2; color:black; width: 50%; height: 25px;' value='"+IDNom+"'><br><br><br>" + 
         "</div>"+
         "<div style=' height: 50px; font-size: 20px; margin-bottom: 20px;'>"+
             "<a style='font-weight: bold; color: grey; font-size: 20px; height: 25px;'>Superficie de Cuenca: </a>" +
-            "<input type='text' id='InpModSup' class='form-control' style='background: #e2e2e2; color:black; width: 50%; height: 25px;' value="+IDSup+"><br><br><br>" +
+            "<input type='text' id='InpModSup' class='form-control' style='background: #e2e2e2; color:black; width: 50%; height: 25px;' value='"+IDSup+"'><br><br><br>" +
         "</div>"+
         "<div style=' height: 50px; font-size: 20px; margin-bottom: 20px;'>"+
             "<a style='font-weight: bold; color: grey; font-size: 20px; height: 25px;'>Tipo de Cuenca: </a>" +
-            "<input type='text' id='InpModTipo' class='form-control' style='background: #e2e2e2; color:black; width: 50%; height: 25px;' value="+IDTip+"><br><br><br>" +
+            "<input type='text' id='InpModTipo' class='form-control' style='background: #e2e2e2; color:black; width: 50%; height: 25px;' value='"+IDTip+"'><br><br><br>" +
         "</div>"+
       "</div>"+
     "</section>";
@@ -1181,46 +1182,46 @@ function ModifData(Fil, Id, trs){
           "</div>"+
           "<div style=' height: 50px; font-size: 20px; margin-bottom: 20px; width: 50%;'>"+
               "<a style='font-weight: bold; color: grey; font-size: 20px; height: 25px;'>Fecha del relevamiento: </a>" +
-              "<input type='date' id='InpModFecha' class='form-control' style='background: #e2e2e2; color:black; width: 175px; height: 25px;' value="+IDFecha+" min='2018-01-01' max='2022-12-31'><br><br><br>" + 
+              "<input type='date' id='InpModFecha' class='form-control' style='background: #e2e2e2; color:black; width: 175px; height: 25px;' value='"+IDFecha+"' min='2018-01-01' max='2022-12-31'><br><br><br>" + 
           "</div>"+
     "</section><br><br>"+
     "<section style='display: flex;'>"+
       "<div style=' width: 37%; padding-left: 50px;'>"+
         "<div style=' height: 50px; font-size: 20px; margin-bottom: 20px;'>"+
             "<a style='font-weight: bold; color: grey; font-size: 20px; height: 25px;'>Conductividad: </a>" +
-            "<input type='text' id='InpModConductividad' class='form-control' style='background: #e2e2e2; color:black; width: 50%; height: 25px;' value="+IDConduc+"><br><br><br>" +
+            "<input type='text' id='InpModConductividad' class='form-control' style='background: #e2e2e2; color:black; width: 50%; height: 25px;' value='"+IDConduc+"'><br><br><br>" +
         "</div>"+
         "<div style=' height: 50px; font-size: 20px; margin-bottom: 20px;'>"+
             "<a style='font-weight: bold; color: grey; font-size: 20px; height: 25px;'>Ancho: </a>" +
-            "<input type='text' id='InpModAncho' class='form-control' style='background: #e2e2e2; color:black; width: 50%; height: 25px;' value="+IDAnch+"><br><br><br>" +
+            "<input type='text' id='InpModAncho' class='form-control' style='background: #e2e2e2; color:black; width: 50%; height: 25px;' value='"+IDAnch+"'><br><br><br>" +
         "</div>"+
         "<div style=' height: 50px; font-size: 20px; margin-bottom: 20px;'>"+
             "<a style='font-weight: bold; color: grey; font-size: 20px; height: 25px;'>Largo: </a>" +
-            "<input type='text' id='InpModLargo' class='form-control' style='background: #e2e2e2; color:black; width: 50%; height: 25px;' value="+IDLar+"><br><br><br>" +
+            "<input type='text' id='InpModLargo' class='form-control' style='background: #e2e2e2; color:black; width: 50%; height: 25px;' value='"+IDLar+"'><br><br><br>" +
         "</div>"+
         "<div style=' height: 50px; font-size: 20px; margin-bottom: 20px;'>"+
             "<a style='font-weight: bold; color: grey; font-size: 20px; height: 25px;'>Superficie: </a>" +
-            "<input type='text' id='InpModSuper' class='form-control' style='background: #e2e2e2; color:black; width: 50%; height: 25px;' value="+IDSup+"><br><br><br>" +
+            "<input type='text' id='InpModSuper' class='form-control' style='background: #e2e2e2; color:black; width: 50%; height: 25px;' value='"+IDSup+"'><br><br><br>" +
         "</div>"+
         "<div style=' height: 50px; font-size: 20px; margin-bottom: 20px;'>"+
             "<a style='font-weight: bold; color: grey; font-size: 20px; height: 25px;'>Oxigeno Disuelto: </a>" +
-            "<input type='text' id='InpModOxigDis' class='form-control' style='background: #e2e2e2; color:black; width: 50%; height: 25px;' value="+IDOxgD+"><br><br><br>" +
+            "<input type='text' id='InpModOxigDis' class='form-control' style='background: #e2e2e2; color:black; width: 50%; height: 25px;' value='"+IDOxgD+"'><br><br><br>" +
         "</div>"+
         "<div style=' height: 50px; font-size: 20px; margin-bottom: 20px;'>"+
             "<a style='font-weight: bold; color: grey; font-size: 20px; height: 25px;'>Turbidez del agua: </a>" +
-            "<input type='text' id='InpModTurbAgua' class='form-control' style='background: #e2e2e2; color:black; width: 50%; height: 25px;' value="+IDTurbAgua+"><br><br><br>" +
+            "<input type='text' id='InpModTurbAgua' class='form-control' style='background: #e2e2e2; color:black; width: 50%; height: 25px;' value='"+IDTurbAgua+"'><br><br><br>" +
         "</div>"+
         "<div style=' height: 50px; font-size: 20px; margin-bottom: 20px;'>"+
             "<a style='font-weight: bold; color: grey; font-size: 20px; height: 25px;'>PH del agua: </a>" +
-            "<input type='text' id='InpModPH' class='form-control' style='background: #e2e2e2; color:black; width: 50%; height: 25px;' value="+IDPH+"><br><br><br>" +
+            "<input type='text' id='InpModPH' class='form-control' style='background: #e2e2e2; color:black; width: 50%; height: 25px;' value='"+IDPH+"'><br><br><br>" +
         "</div>"+
         "<div style=' height: 50px; font-size: 20px; margin-bottom: 20px;'>"+
             "<a style='font-weight: bold; color: grey; font-size: 20px; height: 25px;'>Color del agua: </a>" +
-            "<input type='text' id='InpModColor' class='form-control' style='background: #e2e2e2; color:black; width: 50%; height: 25px;' value="+IDCol+"><br><br><br>" +
+            "<input type='text' id='InpModColor' class='form-control' style='background: #e2e2e2; color:black; width: 50%; height: 25px;' value='"+IDCol+"'><br><br><br>" +
         "</div>"+
         "<div style=' height: 50px; font-size: 20px; margin-bottom: 20px;'>"+
             "<a style='font-weight: bold; color: grey; font-size: 20px; height: 25px;'>Temperatura del agua: </a>" +
-            "<input type='text' id='InpModTempAg' class='form-control' style='background: #e2e2e2; color:black; width: 50%; height: 25px;' value="+IDTempAg+"><br><br><br>" +
+            "<input type='text' id='InpModTempAg' class='form-control' style='background: #e2e2e2; color:black; width: 50%; height: 25px;' value='"+IDTempAg+"'><br><br><br>" +
         "</div>"+
       "</div>"+
       "<div style=' width: 37%; padding-left: 20px;'>"+
@@ -1638,11 +1639,11 @@ function ModifData(Fil, Id, trs){
       "<div style=' width: 300px; padding-left: 20px;'>"+
           "<div style=' height: 50px; font-size: 20px; margin-bottom: 20px;'>"+
               "<a style='font-weight: bold; color: grey; font-size: 20px; height: 25px;'>Nombre Coloquial: </a>" +
-              "<input type='text' id='InpModNombreCol' class='form-control' style='background: #e2e2e2; color:black; width: 250px; height: 25px;' value="+IDNomCol+"><br><br><br>" + 
+              "<input type='text' id='InpModNombreCol' class='form-control' style='background: #e2e2e2; color:black; width: 250px; height: 25px;' value='"+IDNomCol+"'><br><br><br>" + 
           "</div>"+
           "<div style=' height: 50px; font-size: 20px; margin-bottom: 20px;'>"+
               "<a style='font-weight: bold; color: grey; font-size: 20px; height: 25px;'>Nombre Científico: </a>" +
-              "<input type='text' id='InpModNombreCien' class='form-control' style='background: #e2e2e2; color:black; width: 250px; height: 25px;' value="+IDNomCie+"><br><br><br>" +
+              "<input type='text' id='InpModNombreCien' class='form-control' style='background: #e2e2e2; color:black; width: 250px; height: 25px;' value='"+IDNomCie+"'><br><br><br>" +
           "</div>"+
       "</div>"+
       "<div style=' text-align: -webkit-center; width: 50%; height: 200px;>"+
@@ -1722,11 +1723,11 @@ function ModifData(Fil, Id, trs){
       "<div style=' width: 300px; padding-left: 20px;'>"+
           "<div style=' height: 50px; font-size: 20px; margin-bottom: 20px;'>"+
               "<a style='font-weight: bold; color: grey; font-size: 20px; height: 25px;'>Nombre Coloquial: </a>" +
-              "<input type='text' id='InpModNombreCol' class='form-control' style='background: #e2e2e2; color:black; width: 250px; height: 25px;' value="+IDNomCol+"><br><br><br>" + 
+              "<input type='text' id='InpModNombreCol' class='form-control' style='background: #e2e2e2; color:black; width: 250px; height: 25px;' value='"+IDNomCol+"'><br><br><br>" + 
           "</div>"+
           "<div style=' height: 50px; font-size: 20px; margin-bottom: 20px;'>"+
               "<a style='font-weight: bold; color: grey; font-size: 20px; height: 25px;'>Nombre Científico: </a>" +
-              "<input type='text' id='InpModNombreCien' class='form-control' style='background: #e2e2e2; color:black; width: 250px; height: 25px;' value="+IDNomCie+"><br><br><br>" +
+              "<input type='text' id='InpModNombreCien' class='form-control' style='background: #e2e2e2; color:black; width: 250px; height: 25px;' value='"+IDNomCie+"'><br><br><br>" +
           "</div>"+
       "</div>"+
       "<div style=' text-align: -webkit-center; width: 50%; height: 200px;>"+
@@ -1796,7 +1797,7 @@ function ModifData(Fil, Id, trs){
       "<div style=' width: 300px; padding-left: 20px;'>"+
           "<div style=' height: 50px; font-size: 20px; margin-bottom: 20px;'>"+
               "<a style='font-weight: bold; color: grey; font-size: 20px; height: 25px;'>Tipo de presión: </a>" +
-              "<input type='text' id='InpModTipo' class='form-control' style='background: #e2e2e2; color:black; width: 250px; height: 25px;' value="+IDTipo+"><br><br><br>" + 
+              "<input type='text' id='InpModTipo' class='form-control' style='background: #e2e2e2; color:black; width: 250px; height: 25px;' value='"+IDTipo+"'><br><br><br>" + 
           "</div>"+
       "</div>"+
       "<div style=' text-align: -webkit-center; width: 50%; height: 200px;>"+
@@ -1915,19 +1916,19 @@ function ModifData(Fil, Id, trs){
     "<div style=' width: 40%; padding-left: 20px;'>"+
         "<div style=' height: 50px; font-size: 20px; margin-bottom: 20px;'>"+
             "<a style='font-weight: bold; color: grey; font-size: 20px; height: 25px;'>Nombre de la persona: </a>" +
-            "<input type='text' id='InpModNombre' class='form-control' style='background: #e2e2e2; color:black; width: 90%; height: 25px;' value="+IDnom+"><br><br><br>" + 
+            "<input type='text' id='InpModNombre' class='form-control' style='background: #e2e2e2; color:black; width: 90%; height: 25px;' value='"+IDnom+"'><br><br><br>" + 
         "</div>"+
         "<div style=' height: 50px; font-size: 20px; margin-bottom: 20px;'>"+
             "<a style='font-weight: bold; color: grey; font-size: 20px; height: 25px;'>Correo: </a>" +
-            "<input type='text' id='InpModCorreo' class='form-control' style='background: #e2e2e2; color:black; width: 90%; height: 25px;' value="+IDCorr+"><br><br><br>" +
+            "<input type='text' id='InpModCorreo' class='form-control' style='background: #e2e2e2; color:black; width: 90%; height: 25px;' value='"+IDCorr+"'><br><br><br>" +
         "</div>"+
         "<div style=' height: 50px; font-size: 20px; margin-bottom: 20px;'>"+
             "<a style='font-weight: bold; color: grey; font-size: 20px; height: 25px;'>Teléfono: </a>" +
-            "<input type='text' id='InpModTelefono' class='form-control' style='background: #e2e2e2; color:black; width: 90%; height: 25px;' value="+IDTel+"><br><br><br>" +
+            "<input type='text' id='InpModTelefono' class='form-control' style='background: #e2e2e2; color:black; width: 90%; height: 25px;' value='"+IDTel+"'><br><br><br>" +
         "</div>"+
         "<div style=' height: 50px; font-size: 20px; margin-bottom: 20px;'>"+
             "<a style='font-weight: bold; color: grey; font-size: 20px; height: 25px;'>Dirección: </a>" +
-            "<input type='text' id='InpModDireccion' class='form-control' style='background: #e2e2e2; color:black; width: 90%; height: 25px;' value="+IDDir+"><br><br><br>" +
+            "<input type='text' id='InpModDireccion' class='form-control' style='background: #e2e2e2; color:black; width: 90%; height: 25px;' value='"+IDDir+"'><br><br><br>" +
         "</div>"+
     "</div>"+
     "<div id='ContPadreRol' style=' width: 20%; padding: 0px; height: 280px;'>"+
@@ -2384,7 +2385,7 @@ function ConfirmarAlerta(Data){
 
       $.post('php/modificar.php', postData8, (response) => {
         console.log(response);
-        /*
+        
         CerrarAlerta();
         deletesHTML("formModifData");
 
@@ -2397,7 +2398,7 @@ function ConfirmarAlerta(Data){
         $.post('php/modificar.php', postData8_2, (response) => {
           console.log(response);  
           $("#myTable").html(response);
-        });*/
+        });
       });
     break;
   }

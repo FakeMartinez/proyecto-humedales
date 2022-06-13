@@ -1072,11 +1072,11 @@ if (isset($_POST['fauna'])){
          }else
          {
             if ($C == 1){ //Nombre coloquial
-               $cosa = $cosa."<td style='width:70px; min-width: 70px;'>'$Col'</td>";
+               $cosa = $cosa."<td style='width:70px; min-width: 70px;'>$Col</td>";
             }else
             {
                if ($C == 2){ //Nombre científico
-                  $cosa = $cosa."<td style='width:70px; min-width: 70px;'>'$Col'</td>";
+                  $cosa = $cosa."<td style='width:70px; min-width: 70px;'>$Col</td>";
                }else{
                   if ($C == 3){ //Descripcion
                      $cosa = $cosa."<td style='height: inherit; overflow: auto; width:425px; min-width: 425px;'><div style='height: inherit;'>$Col</div></td>";
@@ -1122,11 +1122,11 @@ if (isset($_POST['flora'])){
          }else
          {
             if ($C == 1){ //Nombre coloquial
-               $cosa = $cosa."<td style='width:70px; min-width: 70px;'>'$Col'</td>";
+               $cosa = $cosa."<td style='width:70px; min-width: 70px;'>$Col</td>";
             }else
             {
                if ($C == 2){ //Nombre científico
-                  $cosa = $cosa."<td style='width:70px; min-width: 70px;'>'$Col'</td>";
+                  $cosa = $cosa."<td style='width:70px; min-width: 70px;'>$Col</td>";
                }else{
                   if ($C == 3){ //Descripcion
                      $cosa = $cosa."<td style='height: inherit; overflow: auto; width:425px; min-width: 425px;'><div style='height: inherit;'>$Col</div></td>";
@@ -1170,7 +1170,7 @@ if (isset($_POST['presion'])){
          }else
          {
             if ($C == 1){ //Tipo (o nombre)
-               $cosa = $cosa."<td style='width:70px; min-width: 70px;'>'$Col'</td>";
+               $cosa = $cosa."<td style='width:70px; min-width: 70px;'>$Col</td>";
             }else
             {
                if ($C == 2){ //Observaciones
@@ -1277,17 +1277,17 @@ if (isset($_POST['persona'])){
          }else
          {
             if ($C == 1){ //Nombre
-               $cosa = $cosa."<td style='width:70px; min-width: 70px;'>'$Col'</td>";
+               $cosa = $cosa."<td style='width:70px; min-width: 70px;'>$Col</td>";
             }else
             {
                if ($C == 2){ //Correo
-                  $cosa = $cosa."<td style='width:70px; min-width: 70px;'>'$Col'</td>";
+                  $cosa = $cosa."<td style='width:70px; min-width: 70px;'>$Col</td>";
                }else{
                   if ($C == 3){ //Teléfono
-                     $cosa = $cosa."<td style='width:70px; min-width: 70px;'>'$Col'</td>";
+                     $cosa = $cosa."<td style='width:70px; min-width: 70px;'>$Col</td>";
                   }else{
                      if ($C == 4){ //Dirección
-                        $cosa = $cosa."<td style='width:70px; min-width: 70px;'>'$Col'</td>";
+                        $cosa = $cosa."<td style='width:70px; min-width: 70px;'>$Col</td>";
                      }else{
                      }
                   }
