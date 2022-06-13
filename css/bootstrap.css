@@ -10181,3 +10181,109 @@ th {
 .card-title, .card-header {
   color: inherit;
 }
+
+
+/*=================================================================================================*/
+/*======================================== AÑADIDO Gabriel ========================================*/
+
+.pI {
+  border: 5px solid black;
+  width: 215px;
+  height: 213px;
+  padding: 2px;
+
+  margin: center;
+  position: relative;
+  
+}
+.pI .pI2{
+  margin: auto;
+  text-align: center;
+  padding: 0px;
+  color: #7b7b7b;
+  text-shadow: #999999 0px 0px 10px;
+  font-size: 40px;
+  position: absolute;
+  right: 0px;
+  background-color: transparent;
+  width: 40px;
+  height: 40px;
+  border: 0px;
+}
+  
+.pI .pI2:hover{   /* :active indica que si es activado el elemento cambia el estilo, solo cuando es activado*/
+  color: #2e2d2d;
+  text-shadow: #999999 0px 0px 10px;
+}
+
+.ContenedorImgCarg
+{
+  height: 232px;
+  width: 717px;
+  overflow-y: hidden;
+}
+.ContenedorImgCarg:empty /* {:empty} sirbe para dar estilo cuando el objeto no tiene elementos hijos */
+{
+  height: 1px;
+  width: 717px;
+}
+.error
+{
+  
+box-shadow:  0 0 10px rgba(0, 0, 0, 0.3);
+color : #fff ;
+background-color: red;
+display: none;  
+font-size: 14px;
+margin-top: -80px;
+margin-left: 340px;
+padding: 10px;
+position: absolute;
+}
+
+#contenedor {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+#contenedor > div {
+  width: 50%;
+}
+
+.TablaMod
+{
+  background: #343a40;
+  width: 100%;
+  height: 100%;
+  color: white;
+ 
+  text-align: center;
+}
+.TablaMod tr{
+  border-bottom: 2px solid grey;
+}
+
+.Info{
+  position: relative;
+    padding-top: 1rem;
+    height: 20px;
+    width: 20px;
+    font-size: 20px;
+    padding: 0px;
+    /*top: 5px;*/
+    left: 5px;
+    color: #fff;
+    text-align: center;
+    font-weight: 700;
+    line-height: 1;
+    
+}
+
+.bg-info{
+  font-size: 15px;
+  width: 15px;
+  height: 15px;
+  padding-top: 1px;
+  padding-left: 1px;
+}

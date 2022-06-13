@@ -207,6 +207,8 @@ myMap.on('draw:created', function(e) {
   drawnItems.addLayer(layer);
 });
 */
+var obj;
+
 function colorPuntos(d) { 
   return d == "Sin Definir" ? 'red' : 
   d == "Humedal" ? 'blue' : 
@@ -241,7 +243,7 @@ function highlightFeature(e) {
   }
 
 }
-var obj;
+
 
 function resetHighlight(e) {
 obj.resetStyle(e.target);
@@ -254,7 +256,7 @@ myMap.fitBounds(e.target.getBounds());
 function onEachFeature(feature, layer) {
 layer.on({
     mouseover: highlightFeature,
-    mouseout: resetHighlight,
+    //mouseout: resetHighlight,
     click: zoomToFeature
 });
 }
@@ -491,16 +493,95 @@ data.forEach(function(i){
 rele();
 function rele(){
   var rel = ($("#sel_frel").val());
+  var presiones = "";
+  var faunas = "";
+  var floras = "";
+
+
+
   $('#data_list').html('');
+  
   data.forEach(function(i){
     if(i['id_rel']==rel){
       for (const key in i) {
-        if(i[key]!=='' && i[key]!==null && key!=='fecha' && key!=='id_acc' && key !=='id_rel'){
+        if(key=="presion"){
+          i['presion'].forEach(function(e){presiones = presiones + ' ' + e['tipo_presion']});
+        }
+        if(key=="fauna"){
+          $('#data_list').append('<div class="accordion" id="seccionFauna">'+
+  '<div class="accordion-item" id="headFauna">'+
+  '<h2 class="accordion-header">'+
+    '<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">'+
+      'Fauna'+
+    '</button>'+
+  '</h2></div>');
+
+          i['fauna'].forEach(function(e){
+
+            
+            $('#headFauna').append('<div class="accordion-body">'+
+            '<div class="card-body"><h5 class="card-title">'+e['Nombre_coloquial']+'</h5>'+
+              '<h6 class="card-subtitle text-muted">'+e['Nombre_cientifico']+'</h6></div>'+
+                '<img src='+e['img_fauna']+ ' width="100" height="100">'+
+            '<div class="card-body"><p class="card-text" id="styleADD" style="font-size: 14px">'+e['Descripcion']+'</p></div></div>');
+          });
+        }
+
+        if(key=="flora"){
+
+          $('#data_list').append('<div class="accordion" id="seccionFlora">'+
+          '<div class="accordion-item">'+
+          '<h2 class="accordion-header" id="headFlora">'+
+            '<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">'+
+              'Flora'+
+            '</button>'+
+          '</h2></div>');
+
+          i['flora'].forEach(function(e){
+            //floras = floras + ' ' + e['Nombre_coloquial']
+            $('#headFlora').append('<div class="accordion-body">'+
+            '<div class="card-body"><h5 class="card-title">'+e['Nombre_coloquial']+'</h5>'+
+              '<h6 class="card-subtitle text-muted">'+e['Nombre_cientifico']+'</h6></div>'+
+                '<img src='+e['img_flora']+ ' width="100" height="100">'+
+            '<div class="card-body"> <p class="card-text" id="styleADD" style="font-size: 14px">'+e['Descripcion']+'</p> </div> </div>');
+          });
+          
+        }
+
+        if(key=="img"){
+
+          $('#data_list').append('<div class="accordion" id="seccionImg">'+
+          '<div class="accordion-item">'+
+          '<h2 class="accordion-header" id="headImg">'+
+            '<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">'+
+              'Imagenes'+
+            '</button>'+
+          '</h2></div>');
+
+          i['img'].forEach(function(e){
+            //floras = floras + ' ' + e['Nombre_coloquial']
+            $('#headImg').append('<div class="accordion-body">'+
+            '<div class="card-body"><h5 class="card-title"></h5>'+
+              '<h6 class="card-subtitle text-muted"></h6></div>'+
+                '<img src='+e['img_rel']+ ' width="100" height="100">'+
+            '<div class="card-body"> <p class="card-text" id="styleADD" style="font-size: 14px">'+e['Descripcion']+'</p> </div> </div>');
+          });
+          
+        }
+
+        //$('#styleADD').css("font-size", "30px");
+
+
+        if(i[key]!=='' && i[key]!==null && key!=='fecha' && key!=='id_acc' && key !=='id_rel' && key !=='presion' && key !=='fauna' && key !=='flora' && key !=='img'){
           console.log(key);
           $('#h_name').html(i['nombre']);
           $('#data_list').append('<li class="list-group-item">'+key+': '+i[key]+'</li>');
         }
       };
+      $('#data_list').append('<li class="list-group-item">'+'Presiones: '+ presiones +'</li>');
+
+      //$('#data_list').append('<li class="list-group-item">'+'Fauna: '+ faunas +'</li>');
+      //$('#data_list').append('<li class="list-group-item">'+'Flora: '+ floras +'</li>');
     }
   });
 }
