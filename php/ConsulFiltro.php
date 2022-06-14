@@ -40,6 +40,8 @@ $Presiones = $_POST['OBPresiones'];
 $Faunas = $_POST['OBFaunas'];
 $Floras = $_POST['OBFloras'];
 
+$TipAcc = $_POST['OBTipAcc'];
+
 
 //========================================================================
 //========================================================================
@@ -341,7 +343,7 @@ if ($Floras){
 }
 
 if ($Interes){
-  $ConsultInte = "SELECT Id_acc FROM accidente_geografico WHERE tipo='Interes'";
+  $ConsultInte = "SELECT Id_acc FROM accidente_geografico WHERE tipo='Punto de Interés'";
   echo "
   ========================================
   ";
@@ -359,19 +361,20 @@ if ($Interes){
 
   foreach($resultadoFinal as $ResFi){
     foreach($ResFi as $RF){
-      echo $RF, "
+      echo "Id_acc:", $RF, "
   ";
     }
   }
 }
 
 if ($Acc){
+
   if ($Cuenca || $Complejo){
     $ConsultAcc = "SELECT ConRel.Id_acc FROM (";
     $ConsultAcc = $ConsultAcc.$ConsultAc.") as ConRel";
     if ($Presiones){
       $ConsultAcc = $ConsultAcc." INNER JOIN (";
-      $ConsultAcc = $ConsultAcc.$consulP.") as ConPre on ConRel.Id_acc=ConPre.Id_acc WHERE Tipo <> 'Interes'";
+      $ConsultAcc = $ConsultAcc.$consulP.") as ConPre on ConRel.Id_acc=ConPre.Id_acc";
     }
     /*
 SELECT ConRel.Id_acc 
@@ -393,16 +396,16 @@ FROM (SELECT *
        WHERE Id_presiones=12
       ) as T2 on T1.Id_acc=T2.Id_acc
      ) as ConPre on ConRel.Id_acc=ConPre.Id_acc
-WHERE Tipo <> 'Interes'
+WHERE Tipo <> 'Punto de Interés'
 */
   }else{
     if ($Presiones){
       
       $ConsultAcc = "SELECT AC.Id_acc FROM accidente_geografico as AC INNER JOIN (";
  
-      $ConsultAcc = $ConsultAcc.$consulP.") as R1 on AC.Id_acc=R1.Id_acc WHERE AC.Tipo <> 'Interes'";   
+      $ConsultAcc = $ConsultAcc.$consulP.") as R1 on AC.Id_acc=R1.Id_acc";   
     }else{
-      $ConsultAcc = "SELECT Id_acc FROM accidente_geografico WHERE Tipo <> 'Interes'";
+      $ConsultAcc = "SELECT Id_acc FROM accidente_geografico";
     }
 /*
 SELECT ConRel.Id_acc 
@@ -411,9 +414,34 @@ FROM accidente_geografico as AC INNER JOIN (SELECT T0.Id_acc
                                                   FROM contiene_presiones 
                                                   WHERE Id_presiones=10) as T0
                                            ) as R1 on AC.Id_acc=R1.Id_acc
-WHERE AC.Tipo <> 'Interes'
+WHERE AC.Tipo <> 'Punto de Interés'
 */
   }
+  $ConsultAcc = $ConsultAcc." WHERE Tipo <> 'Punto de Interés'";
+  $comp = $_POST['OBTipAccChecado'];
+  echo  $comp."
+  ";
+  if($comp=='true'){
+    $ExTip=0;
+    if ($TipAcc){
+      $ConsultAcc = $ConsultAcc." and ";
+      foreach ($TipAcc as $TA){
+        $ConsultAcc = $ConsultAcc."Tipo = '$TA'";
+        if (array_key_exists($ExTip+1, $TipAcc)){
+          $ConsultAcc = $ConsultAcc." or ";
+        }
+        $ExTip++;
+      }
+    }else{
+      $ConsultAcc = $ConsultAcc." and Tipo = '' ";
+    }
+   
+  }
+  
+ echo $_POST['OBTipAccChecado']."
+ ";
+
+
   echo "
   ========================================
   ";
@@ -431,7 +459,7 @@ WHERE AC.Tipo <> 'Interes'
 
   foreach($resultadoFinal as $ResFi){
     foreach($ResFi as $RF){
-      echo $RF, "
+      echo "Id_acc: ",$RF, "
   ";
     }
   }
@@ -489,8 +517,8 @@ if ($Humedal){
           $ConsultH = $ConsultH."where not exists (select * from relevamiento as R2 where R1.Id_acc = R2.Id_acc and R1.Fecha < R2.Fecha)";  
         }else{
           $ConsultH = 
-"SELECT R1.Id_acc 
-  from relevamiento as R1 INNER join (SELECT Id_acc 
+"SELECT R2.Id_acc 
+  from relevamiento as R1 RIGHT outer join (SELECT Id_acc 
                                       from accidente_geografico 
                                       where Tipo='humedal') as R2 on R1.Id_acc=R2.Id_acc 
   WHERE not exists (select * from relevamiento as R2 where R1.Id_acc = R2.Id_acc and R1.Fecha < R2.Fecha)";
@@ -516,7 +544,7 @@ if ($Humedal){
 
   foreach($resultadoFinal as $ResFi){
     foreach($ResFi as $RF){
-      echo $RF, "
+      echo "Id_acc: ",$RF, "
   ";
     }
   }

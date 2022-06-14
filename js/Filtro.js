@@ -47,7 +47,7 @@ function DisCheckODF(e, cont, contPadre){
         document.getElementById(cont).style.visibility = "visible";
         document.getElementById(cont).style.height = "60px";
         
-        if (cont == "FiltroFauna" || cont == "FiltroFlora" || cont == "FiltroPresiones")
+        if (cont == "FiltroFauna" || cont == "FiltroFlora" || cont == "FiltroPresiones" || cont == "FiltroTipAcc")
         {
             $(contPadre).css({'height':'90px'});
             //document.getElementById(contPadre).style.height = "90px";
@@ -175,10 +175,17 @@ $(function(){
     $('#FiltroPuntos').on('change', (event) => {
         //console.log(event.target.value);
         if ($('#CheckAcc').prop('checked') || $('#CheckHume').prop('checked')){
+            if($('#CheckAcc').prop('checked')){
+                $('#DivTipAccidente').css({"visibility":"visible", "height":"60px"});
+            }
             $('#divCuenca').css({"visibility":"visible", "height":"60px"});
             $('#divComplejo').css({"visibility":"visible", "height":"60px"});
             $('#divPresion').css({"visibility":"visible", "height":"60px"});
         }else{            
+            $('#DivTipAccidente').css({"visibility":"hidden"});
+            $('#CheckTipoAcc').prop("checked", false);
+            DisCheckODF('CheckTipoAcc', 'FiltroTipAcc');
+
             $('#divCuenca').css({"visibility":"hidden"});
             $('#CheckCuenca').prop("checked", false);
             DisCheckODF('CheckCuenca', 'FiltroInputCuenca');
@@ -204,8 +211,14 @@ $(function(){
             $('#divTiempoPerma').css({"visibility":"visible", "height":"60px"});
             $('#divFauna').css({"visibility":"visible", "height":"60px"});
             $('#divFlora').css({"visibility":"visible", "height":"60px"});
+
+           
         }else{            
             if (!$('#CheckAcc').prop('checked')){
+                $('#DivTipAccidente').css({"visibility":"hidden", "height":"0px"});
+                $('#CheckTipoAcc').prop("checked", false);
+                DisCheckODF('CheckTipoAcc', 'FiltroTipAcc');
+
                 $('#divCuenca').css({"visibility":"hidden", "height":"0px"});
                 $('#CheckCuenca').prop("checked", false);
                 DisCheckODF('CheckCuenca', 'FiltroInputCuenca');
@@ -251,6 +264,9 @@ $(function(){
     })
     $('#FiltroPuntos').on('change', (event) => {
         //console.log(event.target.value);
+        ObtenerDatosFiltro();
+    })
+    $('#FiltroTipAcc').on('change', (event) => {
         ObtenerDatosFiltro();
     })
     $('#SelectCuenca').on('change', (event) => {
@@ -303,6 +319,30 @@ function ObtenerDatosFiltro(){
     }
 
     console.log("==============")
+    //  TipoAcc
+    if($('#CheckTipoAcc').prop('checked')){
+        TipAccChecado = true;
+        var CheckTiposAcc = $('#FiltroTipAcc').find('input');
+        var Tipos = new Array();
+        for (var i=0; CheckTiposAcc.length > i; i++){
+            if (CheckTiposAcc[i].checked){
+                Tipos.push(CheckTiposAcc[i].value); 
+            }
+        }
+        //console.log(Tipos);
+        $('#DivTipAccidente').css({"height":"165px"});
+        $('#FiltroTipAcc').css({"height":"90px"});
+    }else{
+        TipAccChecado = false;
+        if ($('#CheckAcc').prop('checked')){
+            $('#DivTipAccidente').css({"height":"60px"});
+            $('#FiltroTipAcc').css({"height":"90px"});
+        }else{
+            $('#DivTipAccidente').css({"height":"0px"});
+            $('#FiltroTipAcc').css({"height":"0px"});
+        }
+    }
+
     //  Cuenca
     if ($('#CheckCuenca').prop('checked')){
         //console.log('Cuenca ',$('#FiltroInputCuenca option:selected').text());
@@ -473,6 +513,7 @@ function ObtenerDatosFiltro(){
         }
     }
 
+
     var postData = {
         OBInteres : Interes,
         OBAccidente : Accidente,
@@ -487,6 +528,9 @@ function ObtenerDatosFiltro(){
         OBPresiones : Presiones,
         OBFaunas : Faunas,
         OBFloras : Floras,
+
+        OBTipAcc : Tipos,
+        OBTipAccChecado : TipAccChecado,
     }
 
     console.log(postData);  
