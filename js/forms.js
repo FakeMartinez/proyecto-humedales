@@ -35,6 +35,7 @@ function CloseMensImag (){
 }
 
 function deletesHTML(ID){ //Se le pasa la ID del elemento para borrarlo
+  console.log("Borra el elemento HTML con la ID:"+ID);
   $('#'+ID).hide();
   $('#'+ID).remove();
 }
@@ -238,10 +239,6 @@ $(function(){
     CambiarClass($('#Dire_Prop'), "form-control is-invalid", "form-control");
     $('#form_propietario_add').hide();
   })
-
-
-  
-
 
 
   //////////////////////Formulario Alta Acc////////////////////////
@@ -1494,12 +1491,6 @@ function carga_form_alta_propie(){
   });
 };
 
-
-
-
-
-
-
 ////////////////////////////////
 
 //=========================================================//
@@ -1612,4 +1603,105 @@ $('#btn_modif').on('click', function(){
 
 });           
 
+function AbrirPestañaEarthEngine(){
 
+  console.log("Controla si ya existe la Pestaña");
+  if (!!document.getElementById('DivPrincipalEarthEngine')){
+    console.log("si existe la Pestaña EarthEngine");
+    MinimizarPestañaHTML('DivPrincipalEarthEngine','mapHeartEngine')
+  }else{
+    console.log("no existe la Pestaña EarthEngine");
+    console.log("Abriendo Pestaña EarthEngine");
+
+  PestañaEarthEngine = 
+    "<div id='DivPrincipalEarthEngine' style=' height: 90%; width: 100%;position: absolute; padding-top: 0px; padding-left: 5px; padding-right: 5px; padding-bottom: 5px; background: #343a40; border: 2px solid greenyellow;'>"+
+      "<div style=' display: flex; flex-direction: row-reverse; border-bottom: 2px solid greenyellow;'>"+
+        "<button id='CerrarEarthEngine' onclick='deletesHTML(`DivPrincipalEarthEngine`);' type='button' class='btn btn-danger' style='height: 23px; width: 23px; padding: 0px; margin: 2px; border-radius: 5px; border: 2px solid lightcoral; font-size: 12px;'>"+
+          "<i class='fa-solid fa-x' style='color:lightgrey;'></i>"+
+        "</button>"+  
+        "<button id='ExpandirEarthEngine' onclick='ExpandirPestañaHTML(`DivPrincipalEarthEngine`,`mapHeartEngine`);' type='button' class='btn btn-info' style='height: 23px; width: 23px; padding: 0px; margin: 2px; border-radius: 5px; border: 2px solid lightskyblue; font-size: 12px;'>"+
+          "<i class='fa-solid fa-expand'></i>"+
+        "</button>"+
+        "<button id='MinimizarEarthEngine' onclick='MinimizarPestañaHTML(`DivPrincipalEarthEngine`,`mapHeartEngine`);' type='button' class='btn btn-info' style='height: 23px; width: 23px; padding: 0px; margin: 2px; border-radius: 5px; border: 2px solid lightskyblue; font-size: 12px;'>"+
+          "<i class='fa-solid fa-window-minimize'></i>"+
+        "</button>"+
+      "</div>"+
+      "<iframe id='mapHeartEngine' style='height: 96%; margin-top: 3px;"+
+                    "width: 100%;'"+
+                "src='https://facu52da.users.earthengine.app/view/humedales'>"+
+      "</iframe>"+
+    "</div>";
+  $('#contenido_principal').append(PestañaEarthEngine);
+  console.log("Pestaña EarthEngine Abierta");
+  }
+  $('#tools_op').hide();
+  VisibleTool = false;
+}
+
+function MinimizarPestañaHTML(Padre,iframe){
+  if(document.getElementById(iframe).style.visibility == 'hidden'){
+    document.getElementById(iframe).style.visibility='visible';
+    document.getElementById(Padre).style.bottom='0px';
+    document.getElementById(Padre).style.height='90%';
+    document.getElementById(Padre).style.width='100%';
+    document.getElementById(Padre).style.paddingTop='0px';
+    document.getElementById(Padre).style.paddingLeft='5px';
+    document.getElementById(Padre).style.paddingRight='5px';
+    document.getElementById(Padre).style.paddingBottom='5px';
+  
+    document.getElementById('CerrarEarthEngine').style.margin='2px';
+  
+    document.getElementById('ExpandirEarthEngine').style.margin='2px';
+    document.getElementById('ExpandirEarthEngine').innerHTML="<i class='fa-solid fa-expand'></i>";
+
+    document.getElementById('MinimizarEarthEngine').style.margin='2px';
+    document.getElementById('MinimizarEarthEngine').innerHTML="<i class='fa-solid fa-window-minimize'></i>";
+  }else{
+    document.getElementById(iframe).style.visibility='hidden';
+    document.getElementById(Padre).style.bottom='0px';
+    document.getElementById(Padre).style.top='';
+    document.getElementById(Padre).style.height='3%';
+    document.getElementById(Padre).style.width='10%';
+    document.getElementById(Padre).style.padding='0px';
+  
+    document.getElementById('CerrarEarthEngine').style.margin='0px';
+    document.getElementById('CerrarEarthEngine').style.marginLeft='2px';
+    document.getElementById('CerrarEarthEngine').style.marginRight='2px';
+
+    document.getElementById('ExpandirEarthEngine').style.margin='0px';
+    document.getElementById('ExpandirEarthEngine').style.marginLeft='2px';
+    document.getElementById('ExpandirEarthEngine').style.marginRight='2px';
+    document.getElementById('ExpandirEarthEngine').innerHTML="<i class='fa-solid fa-expand'></i>";
+  
+    document.getElementById('MinimizarEarthEngine').style.margin='0px';
+    document.getElementById('MinimizarEarthEngine').style.marginRight='2px';
+    document.getElementById('MinimizarEarthEngine').innerHTML="<i class='fa-regular fa-window-maximize'></i>";
+  }
+}
+
+function ExpandirPestañaHTML(Padre,iframe){
+
+  if(document.getElementById(Padre).style.height=='100%'){
+    document.getElementById(Padre).style.top='';
+    document.getElementById(Padre).style.height='90%';
+    document.getElementById('ExpandirEarthEngine').innerHTML="<i class='fa-solid fa-expand'></i>";
+  }else{
+    document.getElementById(Padre).style.top='0px';
+    document.getElementById(Padre).style.height='100%';
+    document.getElementById(iframe).style.visibility='visible';
+    document.getElementById(Padre).style.bottom='0px';
+    document.getElementById(Padre).style.width='100%';
+    document.getElementById(Padre).style.padding='5px';
+  
+    document.getElementById('CerrarEarthEngine').style.margin='2px';
+  
+    document.getElementById('ExpandirEarthEngine').style.margin='2px';
+    document.getElementById('ExpandirEarthEngine').innerHTML="<i class='fa-solid fa-compress'></i>";
+
+    document.getElementById('MinimizarEarthEngine').style.margin='2px';
+    document.getElementById('MinimizarEarthEngine').innerHTML="<i class='fa-solid fa-window-minimize'></i>";
+  }
+    
+
+    
+}

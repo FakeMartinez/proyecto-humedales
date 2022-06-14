@@ -76,6 +76,11 @@ $(function(){
         $('#CheckAcc').prop("checked", false);
         $('#CheckHume').prop("checked", false);
 
+
+        $('#CheckTipoAcc').prop("checked", false);
+        DisCheckODF('CheckTipoAcc', 'FiltroTipAcc');
+        DisCheckODF('CheckCuenca', 'FiltroInputCuenca', '#DivTipAccidente');
+
         $('#CheckCuenca').prop("checked", false);
         DisCheckODF('CheckCuenca', 'FiltroInputCuenca', '#divCuenca');
 
