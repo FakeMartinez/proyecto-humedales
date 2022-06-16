@@ -34,11 +34,13 @@ function CloseMensImag (){
   //getElementById("MensErrorImag").remove();
 }
 
+
 function deletesHTML(ID){ //Se le pasa la ID del elemento para borrarlo
   console.log("Borra el elemento HTML con la ID:"+ID);
   $('#'+ID).hide();
   $('#'+ID).remove();
 }
+
 
 
 function validacion(postData){
@@ -1219,6 +1221,12 @@ function carga_form_alta_p(){
 }
 
 // ----------------CUENCA-----------------  //
+
+/*
+  const VerifData = {
+    Cargar: "cargar",
+  }
+*/
 function carga_form_alta_cu(){
 /*
   const VerifData = {
