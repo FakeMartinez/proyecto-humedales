@@ -182,15 +182,20 @@ $(function(){
         if ($('#CheckAcc').prop('checked') || $('#CheckHume').prop('checked')){
             if($('#CheckAcc').prop('checked')){
                 $('#DivTipAccidente').css({"visibility":"visible", "height":"60px"});
+            }else{
+                $('#DivTipAccidente').css({"visibility":"hidden"});
+                $('#CheckTipoAcc').prop("checked", false);
+                DisCheckODF('CheckTipoAcc', 'FiltroTipAcc');
             }
             $('#divCuenca').css({"visibility":"visible", "height":"60px"});
             $('#divComplejo').css({"visibility":"visible", "height":"60px"});
             $('#divPresion').css({"visibility":"visible", "height":"60px"});
-        }else{            
-            $('#DivTipAccidente').css({"visibility":"hidden"});
-            $('#CheckTipoAcc').prop("checked", false);
-            DisCheckODF('CheckTipoAcc', 'FiltroTipAcc');
-
+        }else{     
+            if(!$('#CheckAcc').prop('checked'))  {
+                $('#DivTipAccidente').css({"visibility":"hidden"});
+                $('#CheckTipoAcc').prop("checked", false);
+                DisCheckODF('CheckTipoAcc', 'FiltroTipAcc');
+            }     
             $('#divCuenca').css({"visibility":"hidden"});
             $('#CheckCuenca').prop("checked", false);
             DisCheckODF('CheckCuenca', 'FiltroInputCuenca');
