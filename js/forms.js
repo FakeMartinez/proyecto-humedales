@@ -53,7 +53,7 @@ function validacion(postData){
     $('#ContNomAcc').append("<div id='TexErrorIncompleto' style='color: red'>Este campo es obligatorio</div>"); //Crea el mensaje de advertencia de campo incompleto
     b = false;
   }  
-  if(postData.tipo=='')
+  if(postData.tipo=='... Seleccione Tipo ...')
   {      
     CambiarClass($('#tipo'), "form-control", "form-control is-invalid"); //Si el campo está vacío, cambia la clase del input de "form-control" a "form control is-invalid"
     $('#ContTipAcc').append("<div id='TexErrorIncompleto' style='color: red'>Este campo es obligatorio</div>"); //Crea el mensaje de advertencia de campo incompleto
@@ -108,7 +108,7 @@ $(function(){
     CambiarClass($('#sel_cuenca'), "form-select is-invalid", "form-select");
     $('div').remove('#TexErrorIncompleto');
     $('#nombre').val('');
-    $('#tipo').val('');
+    document.getElementById('tipo').options.item(0).selected = 'selected';
     $('#descripcion').val('');
     $('#form_add').hide();
     //$('#form_add2').hide();
@@ -260,18 +260,19 @@ $(function(){
     }
     console.log(postData);  
     
-    while(x_pre>=0)
+    var suport = x_pre;
+    while(suport>=0)
     {
       //console.log('sel_presion.form-select '.concat(x_pre.toString()));
-      Object.defineProperty(postData, 'presiones'+ x_pre.toString(),
+      Object.defineProperty(postData, 'presiones'+ suport.toString(),
       {
-        value:$('#sel_presion.form-select.'.concat(x_pre.toString())).val(),
+        value:$('#sel_presion.form-select.'.concat(suport.toString())).val(),
         writable: true,
         enumerable: true,
         configurable: true
       }); 
       //postData.presion.concat(x.toString()) = $('#sel_presion.form-select '.concat(x.toString())).val()
-      x_pre = x_pre-1;
+      suport = suport-1;
     }
     e.preventDefault();
     //console.log(update);
@@ -285,7 +286,7 @@ $(function(){
       });
     } 
     else{
-      if(postData.nombre != '' && postData.tipo != '' && postData.cuenca != "... Seleccione una cuenca ..."){          
+      if(postData.nombre != '' && postData.tipo != '... Seleccione Tipo ...' && postData.cuenca != "... Seleccione una cuenca ..."){          
         //console.log ("llama al PHP");
         console.log (postData);
         CambiarClass($('#nombre'), "form-control is-invalid", "form-control"); 
@@ -304,15 +305,23 @@ $(function(){
               from2();
             }else{
               add_geo(); // Llamada a la funcion para guardar geometria 
-              CambiarClass($('#nombre'), "form-control is-invalid", "form-control"); 
-              CambiarClass($('#tipo'), "form-control is-invalid", "form-control");
-              CambiarClass($('#sel_cuenca'), "form-select is-invalid", "form-select");
-              $('div').remove('#TexErrorIncompleto');
-              $('#form_add').hide();
-              $('#nombre').val('');
-              $('#tipo').val('');
-              $('#descripcion').val('');
+
             }
+            CambiarClass($('#nombre'), "form-control is-invalid", "form-control"); 
+            CambiarClass($('#tipo'), "form-control is-invalid", "form-control");
+            CambiarClass($('#sel_cuenca'), "form-select is-invalid", "form-select");
+            $('div').remove('#TexErrorIncompleto');
+            $('#form_add').hide();
+            $('#nombre').val('');
+            document.getElementById('tipo').options.item(0).selected = 'selected';
+            $('#descripcion').val('');
+            console.log(" antes de establecer a 0, x_pre "+ x_pre );
+            while (x_pre > 0){
+              $('#sel_presion.form-select.'+ x_pre.toString()).remove();
+              x_pre =  x_pre-1;
+            }
+            $('#btn_presion_dhum').remove();
+            console.log(" despues de establecer a 0, x_pre "+ x_pre );
           }else{
             console.log("ERROR AL CARGAR ====== O: O: NOMBRE YA UTILIZADO O: O: ======");
             CambiarClass($('#nombre'), "form-control", "form-control is-invalid");
@@ -331,6 +340,8 @@ $(function(){
   $('#form_add2').submit(e => {
     //console.log("Comienza el submit del Form2");
     e.preventDefault();    
+    deletesHTML('TexErrorIncompleto');
+    CambiarClass($('#sel_miembro.form-select.0'), "form-select is-invalid", "form-select"); 
     var postData = {     
       nom: $('#nombre').val(),  
 
@@ -359,27 +370,28 @@ $(function(){
       //
       //
     }
-    while(x_pre>=0){
-      console.log('sel_presion.form-select '.concat(x_pre.toString()));
-      Object.defineProperty(postData, 'presion'+ x_pre.toString(),{
-        value:$('#sel_presion.form-select.'.concat(x_pre.toString())).val(),
+    var suportpre = x_pre;
+    while(suportpre>=0){
+      console.log('sel_presion.form-select '.concat(suportpre.toString()));
+      Object.defineProperty(postData, 'presion'+ suportpre.toString(),{
+        value:$('#sel_presion.form-select.'.concat(suportpre.toString())).val(),
         writable: true,
         enumerable: true,
         configurable: true
       }); 
       //postData.presion.concat(x.toString()) = $('#sel_presion.form-select '.concat(x.toString())).val()
-      x_pre = x_pre-1;
+      suportpre = suportpre-1;
 
     }          
 
     console.log(postData);
        
-  
-    while(x_fau>=0){
-      console.log('sel_fauna.form-select '.concat(x_fau.toString()));
-      if ($('#sel_fauna.form-select.'.concat(x_fau.toString())).val() != "... Seleccione una fauna ..."){
-        Object.defineProperty(postData, 'fauna'+ x_fau.toString(),{
-          value:$('#sel_fauna.form-select.'.concat(x_fau.toString())).val(),
+    var suportfau = x_fau;
+    while(suportfau>=0){
+      console.log('sel_fauna.form-select '.concat(suportfau.toString()));
+      if ($('#sel_fauna.form-select.'.concat(suportfau.toString())).val() != "... Seleccione una fauna ..."){
+        Object.defineProperty(postData, 'fauna'+ suportfau.toString(),{
+          value:$('#sel_fauna.form-select.'.concat(suportfau.toString())).val(),
           writable: true,
           enumerable: true,
           configurable: true
@@ -387,64 +399,83 @@ $(function(){
         }); 
       }
       //postData.presion.concat(x.toString()) = $('#sel_presion.form-select '.concat(x.toString())).val()
-      x_fau = x_fau-1;
+      suportfau = suportfau-1;
     }
 //    console.log("====================================================================");
 //    console.log("postData.x_fau");
 //    console.log(postData.cont_fau);
 //    console.log("====================================================================");
-    while(x_flo>=0){
-      console.log('sel_flora.form-select '.concat(x_flo.toString()));
-      if ($('#sel_flora.form-select.'.concat(x_flo.toString())).val() != "... Seleccione una flora ..."){
-        Object.defineProperty(postData, 'flora'+ x_flo.toString(),{
-          value:$('#sel_flora.form-select.'.concat(x_flo.toString())).val(),
+    var suportflo = x_flo;
+    while(suportflo>=0){
+      console.log('sel_flora.form-select '.concat(suportflo.toString()));
+      if ($('#sel_flora.form-select.'.concat(suportflo.toString())).val() != "... Seleccione una flora ..."){
+        Object.defineProperty(postData, 'flora'+ suportflo.toString(),{
+          value:$('#sel_flora.form-select.'.concat(suportflo.toString())).val(),
           writable: true,
           enumerable: true,
           configurable: true
         }); 
       }
-      x_flo = x_flo-1;
+      suportflo = suportflo-1;
     }
-    
-    while(x_pers>=0){
-      console.log('sel_miembro.form-select '.concat(x_pers.toString()));
-      Object.defineProperty(postData, 'persona'+ x_pers.toString(),{
-        value:$('#sel_miembro.form-select.'.concat(x_pers.toString())).val(),
+    var suportpers = x_pers;
+    while(suportpers>=0){
+      console.log('sel_miembro.form-select '.concat(suportpers.toString()));
+      Object.defineProperty(postData, 'persona'+ suportpers.toString(),{
+        value:$('#sel_miembro.form-select.'.concat(suportpers.toString())).val(),
         writable: true,
         enumerable: true,
         configurable: true
       }); 
-      x_pers = x_pers-1;
+      suportpers = suportpers-1;
     }
           
     e.preventDefault();
                 
-    if (update != false){
-      $.post('php/carga.php', postData, (response) => {
-        console.log(response);
-        e.preventDefault();    
-      });
-    }else
-    {
-       /*if(validacion(postData) == true){     
-        
-        
-      } */
-      console.log("Correcto");
-      $.post('php/alta.php', postData, (response) => {
-        console.log("sale del PHP");
-        console.log(postData);
-        console.log(response);
-        //$('#form_add').trigger('reset');
-        e.preventDefault();
-        $('#form_add2').hide();
-        $('#nombre').val('');
-        $('#tipo').val('');
-        $('#descripcion').val('');
-      });
-     
+   
+      if(postData.persona0!='... Seleccione una persona ...'){
+        //console.log("Correcto");
+        $.post('php/alta.php', postData, (response) => {
+          console.log("sale del PHP");
+          console.log(postData);
+          console.log(response);
+          //$('#form_add').trigger('reset');
+          e.preventDefault();
+          $('#form_add2').hide();
+          $('#nombre').val('');
+          $('#tipo').val('');
+          $('#descripcion').val('');
+          console.log(" antes de establecer a 0, x_fau "+ x_fau);
+          while (x_fau > 0){
+            $('#sel_fauna.form-select.'+ x_fau.toString()).remove();
+            x_fau =  x_fau-1;
+          }
+          $('#btn_fauna_dhum').remove();
+          console.log(" despues de establecer a 0, x_fau "+ x_fau);
+
+          console.log(" antes de establecer a 0, x_flo "+ x_flo);
+          while (x_flo > 0){
+            $('#sel_flora.form-select.'+ x_flo.toString()).remove();
+            x_flo =  x_flo-1;
+          }
+          $('#btn_flora_dhum').remove();
+          console.log(" despues de establecer a 0, x_flo "+ x_flo);
+
+          console.log(" antes de establecer a 0, x_pers "+ x_pers);
+          while (x_pers > 0){
+            $('#sel_miembro.form-select.'+ x_pers.toString()).remove();
+            x_pers =  x_pers-1;
+          }
+          $('#btn_miembro_dhum').remove();
+          console.log(" despues de establecer a 0, x_pers "+ x_pers);
+
+        });
+      }else{
+        CambiarClass($('#sel_miembro.form-select.0'), "form-select", "form-select is-invalid"); //Si el campo está vacío, cambia la clase del input de "form-control" a "form control is-invalid"
+        $('#contMiems').append("<div id='TexErrorIncompleto' style='color: red'>Este campo es obligatorio</div>"); //Crea el mensaje de advertencia de campo incompleto
+      }
     }
-  });
+  );
 
   ////////////////////////////////////////////////////////////////
   //$(document).on('click','#btn_brel', form2()); 
@@ -458,11 +489,15 @@ $(function(){
     $('#largo').val('');
     $('#Conductividad').val('');
     $('#pH').val('');
-    $('#o2disuelto').val('');
+    $('#O2disuelto').val('');
     $('#Turbidez').val('');
     $('#Color').val('');
     $('#Temperatura').val('');
     $('#obs').val('');   
+
+    carga_form_alta_fa();
+    carga_form_alta_fl();
+    carga_form_alta_pers();
   }
       
   //////////////////Form cuenca/////////////////////
@@ -1031,7 +1066,7 @@ console.log(files);
  
     $('#btn_presion_dhum').remove();
     $('#input_presion').append(add);   
-    
+    console.log('x_pre: '+x_pre)
     carga_form_alta_p();
     
     $('#btn_presion_dhum').on('click', function(){
@@ -1039,6 +1074,9 @@ console.log(files);
       x_pre = x_pre-1;
       if (max_pre != x_pre){
         $('#btn_presion_hum').show();
+      }
+      if(x_pre == 0){
+        $('#btn_presion_dhum').remove();
       }
     });
     
@@ -1069,6 +1107,9 @@ console.log(files);
       if (max_fauna != x_fau){
         $('#btn_fauna_hum').show();
       }
+      if(x_fau <= 0){
+        $('#btn_fauna_dhum').remove();
+      }
     });
   });
   //-----------------------------------------------------------------------
@@ -1094,9 +1135,12 @@ console.log(files);
     $('#btn_flora_dhum').on('click', function(){
       $('#sel_flora.form-select.'+ x_flo.toString()).remove();
       x_flo = x_flo-1;
-      if (max_flora != x_flo){
+      if (max_flora !=  x_flo){
         $('#btn_flora_hum').show(); 
       } 
+      if( x_flo <= 0){
+        $('#btn_flora_dhum').remove();
+      }
     });
   });
 
@@ -1124,6 +1168,9 @@ console.log(files);
       if (max_miembro != x_pers){
         $('#btn_miebro_hum').show(); 
       }
+      if(x_pers <= 0){
+        $('#btn_miembro_dhum').remove();
+      }
     });
   });
 
@@ -1131,11 +1178,13 @@ console.log(files);
 });
 
 $('#btn_add').on('click', function(){
+  console.log('x_pre: '+x_pre);
   $('#form_add').show();
   $('#t_form.modal-title').html('Alta Accidente Geografico');
   $('#form_modal').css({'background':'#DEFEAE'});
   $('#ID_humedal').val('');
   $('#nombre').val('');
+  document.getElementById('tipo').options.item(0).selected = 'selected';
   update = false;   
   carga_form_alta_cu();
   carga_form_alta_co();

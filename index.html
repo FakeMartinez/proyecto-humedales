@@ -321,7 +321,18 @@
                 <!-- Tipo -->
                 <div class="form-group" id="ContTipAcc">
                   <legend class="mt-4">Tipo</legend>
-                  <input type="text" id="tipo" name="tipo" placeholder="Tipo de accidente geografico" class="form-control"> 
+                  <!--<input type="text" id="tipo" name="tipo" placeholder="Tipo de accidente geografico" class="form-control"> -->
+                  <select class="form-select" id="tipo">
+                    <option>... Seleccione Tipo ...</option>
+                    <option>Humedal</option>
+                    <option>Lago</option>
+                    <option>Pantano</option>
+                    <option>Río</option>
+                    <option>Arroyo</option>
+                    <option>Cascada</option>
+                    <option>Laguna</option>
+                    <option>Manantial</option>
+                  </select>
                 </div>
 
                 <!-- cuenca -->
@@ -349,7 +360,7 @@
                   <button type="button" class="btn btn-success" id="btn_presion_hum">+</button>
                   <button type="button" class="btn btn-success" id="btn_presion_add">Añadir Nueva Presion</button>
                        
-                  <div class="from-group"> <!-- Parte que se agrega-->
+                  <div class="from-group" style="margin-bottom:1rem;"> <!-- Parte que se agrega-->
                     <select class="form-select 0" id="sel_presion">
                       <option>Tipo de presion...</option>
                       <option>Complejo 2</option>
@@ -438,7 +449,7 @@
                 </div>
                 <div class="form-check">
                   <label class="form-check-label">
-                    <input type="radio" class="form-check-input" name="optionsTiempo" id="tiempo_op2" value="Temporal" checked="">
+                    <input type="radio" class="form-check-input" name="optionsTiempo" id="tiempo_op2" value="Temporal">
                       Temporal
                   </label>
                 </div>          
@@ -453,13 +464,13 @@
                 </div>
                 <div class="form-check">
                   <label class="form-check-label">
-                    <input type="radio" class="form-check-input" name="optionsAgua" id="agua_op2" value="Alterado" checked="">
+                    <input type="radio" class="form-check-input" name="optionsAgua" id="agua_op2" value="Alterado">
                       Alterado
                   </label>
                 </div>
                 <div class="form-check">
                   <label class="form-check-label">
-                    <input type="radio" class="form-check-input" name="optionsAgua" id="agua_op3" value="Muy Alterado" checked="">
+                    <input type="radio" class="form-check-input" name="optionsAgua" id="agua_op3" value="Muy Alterado">
                       Muy Alterado
                   </label>
                 </div>
@@ -504,13 +515,13 @@
                 </div>
                 <div class="form-check">
                   <label class="form-check-label">
-                    <input type="radio" class="form-check-input" name="optionsReg" id="reg_op2" value="Alterado" checked="">
+                    <input type="radio" class="form-check-input" name="optionsReg" id="reg_op2" value="Alterado">
                       Alterado
                   </label>
                 </div>
                 <div class="form-check">
                   <label class="form-check-label">
-                    <input type="radio" class="form-check-input" name="optionsReg" id="reg_op3" value="Muy Alterado" checked="">
+                    <input type="radio" class="form-check-input" name="optionsReg" id="reg_op3" value="Muy Alterado">
                       Muy Alterado
                   </label>
                 </div>
@@ -525,13 +536,13 @@
                 </div>
                 <div class="form-check">
                   <label class="form-check-label">
-                    <input type="radio" class="form-check-input" name="optionsDV" id="dv_op2" value="Alterado" checked="">
+                    <input type="radio" class="form-check-input" name="optionsDV" id="dv_op2" value="Alterado">
                       Alterado
                   </label>
                 </div>
                 <div class="form-check">
                   <label class="form-check-label">
-                    <input type="radio" class="form-check-input" name="optionsDV" id="dv_op3" value="Muy Alterado" checked="">
+                    <input type="radio" class="form-check-input" name="optionsDV" id="dv_op3" value="Muy Alterado">
                       Muy Alterado
                   </label>
                 </div>
@@ -543,7 +554,7 @@
                   <button type="button" class="btn btn-success" id="btn_fauna_hum">+</button>
                   <button type="button" class="btn btn-success" id="btn_fauna_add">Añadir Nueva Fauna</button>
                   <div class="from-group"> <!-- Parte que se agrega-->
-                    <select class="form-select 0" id="sel_fauna">
+                    <select class="form-select 0" id="sel_fauna" style="margin-bottom:1rem;">
                       <option>Seleccione Fauna...</option>
                       <option>Complejo 2</option>
                       <option>Complejo 3</option>
@@ -559,7 +570,7 @@
                   <button type="button" class="btn btn-success" id="btn_flora_hum">+</button>
                   <button type="button" class="btn btn-success" id="btn_flora_add">Añadir Nueva Flora</button>
                   <div class="from-group"> <!-- Parte que se agrega-->
-                    <select class="form-select 0" id="sel_flora">
+                    <select class="form-select 0" id="sel_flora" style="margin-bottom:1rem;">
                       <option>Seleccione Flora...</option>
                       <option>Complejo 2</option>
                       <option>Complejo 3</option>
@@ -575,8 +586,8 @@
                   <button type="button" class="btn btn-success" id="btn_miembro_hum">+</button>
                   <button type="button" class="btn btn-success" id="btn_miembro_add">Añadir otro miembro</button>
                 
-                  <div class="from-group"> <!-- Parte que se agrega-->
-                    <select class="form-select 0" id="sel_miembro">
+                  <div class="from-group" id="contMiems"> <!-- Parte que se agrega-->
+                    <select class="form-select 0" id="sel_miembro" style="margin-bottom:1rem;">
                       <option>Miembro ...</option>
                       <option>Miembro 2</option>
                       <option>Miembro 3</option>

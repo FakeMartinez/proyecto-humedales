@@ -655,8 +655,8 @@ if (isset($_POST['accidente'])){
             <td style='width:225px; min-width: 225px;'>Nombre</td>
             <td style='width:225px; min-width: 225px;'>Tipo</td>".
             /*<td style='width:225px; min-width: 225px;'>objeto_geo</td>*/
-            "<td style='width:225px; min-width: 225px;'>id_complejo</td>
-            <td style='width:225px; min-width: 225px;'>Id_cuenca</td>
+            "<td style='width:225px; min-width: 225px;'>complejo</td>
+            <td style='width:225px; min-width: 225px;'>cuenca</td>
             <td style='width:225px; min-width: 225px;'>Presiones</td>
             <td style='width:225px; min-width: 225px;'>Descripcion</td>
          </tr>";
@@ -760,7 +760,7 @@ if (isset($_POST['complejo'])){
             <td style='width:50px; min-width: 50px;'></td> 
             <td style='visibility: hidden; max-width: 1px; overflow-x: hidden;'>ID</td> 
             <td style='width:300px; min-width: 300px;'>Nombre</td>
-            <td style='width:300px; min-width: 300px;'>Propietario</td>
+            <td style='width:300px; min-width: 300px;'>Propietario/s</td>
          </tr>";
    $C= 0;
    $F= 0;

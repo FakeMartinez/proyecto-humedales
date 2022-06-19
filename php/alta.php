@@ -3,9 +3,10 @@
   require('conexion.php');
 
 
-
+  
 //Carga de Accidente_Geografico
 if(isset($_POST['nombre'])) {  
+
   $ExisteNombre = false;
   $NombresGuardados = mysqli_query($connect,"SELECT Nombre from accidente_geografico"); 
   foreach ($NombresGuardados as $NombresG){
@@ -125,57 +126,44 @@ mysqli_query($connect,"INSERT into imagen (Id_humedal,PATH) VALUES ('$add_id','$
 
 if(isset($_POST['fecha'])) 
 {          
-//  echo ("entra al cargar relevamiento");
-$nomb=$_POST['nom'];
-//  echo "busca el nombre $nomb en la base de datos
-//  ";
-$Id_acc = -10;
-$aux =  mysqli_query($connect,"SELECT Id_acc FROM accidente_geografico where accidente_geografico.Nombre=  '$nomb'");
-foreach ($aux as $au){
-foreach($au as $A){
-  echo $A;
-  $Id_acc = $A;
-}
-}
-//  echo $Id_acc;
-//  echo "Mostra la fecha obtenida ";
-//  echo ($_POST['fecha']);
-//  echo "
-//  ";
 
+  $nomb=$_POST['nom'];
+  $Id_acc = -10;
+  $aux =  mysqli_query($connect,"SELECT Id_acc FROM accidente_geografico where accidente_geografico.Nombre=  '$nomb'");
+  foreach ($aux as $au){
+    foreach($au as $A){
+      echo $A;
+      $Id_acc = $A;
+    }
+  }
 
-$add_fecha = $_POST['fecha'];
-$add_conductividad = $_POST['conductividad'];
-$add_ancho = $_POST['ancho'];
-$add_o2disuelto = $_POST['o2disuelto'];
-$add_calidad_agua = $_POST['calidad_agua'];
-$add_diversidad_vegetal = $_POST['diversidad_vegetal'];
-$add_obs = $_POST['obs'];
-$add_regimen_hidrologico = $_POST['regimen_hidrologico'];
-$add_turbidez = $_POST['turbidez'];
-$add_largo = $_POST['largo'];
-$add_pH = $_POST['pH'];
-$add_color = $_POST['color'];
-$add_fuente = $_POST['fuente'];
-$add_tiempo = $_POST['tiempo'];
-$add_temperatrura = $_POST['temperatura'];
-$cont_fau = $_POST['cont_fau'];
-$cont_flo = $_POST['cont_flo'];
-$cont_pers = $_POST['cont_pers'];
+  $add_fecha = $_POST['fecha'];
+  $add_conductividad = $_POST['conductividad'];
+  $add_ancho = $_POST['ancho'];
+  $add_o2disuelto = $_POST['o2disuelto'];
+  $add_calidad_agua = $_POST['calidad_agua'];
+  $add_diversidad_vegetal = $_POST['diversidad_vegetal'];
+  $add_obs = $_POST['obs'];
+  $add_regimen_hidrologico = $_POST['regimen_hidrologico'];
+  $add_turbidez = $_POST['turbidez'];
+  $add_largo = $_POST['largo'];
+  $add_pH = $_POST['pH'];
+  $add_color = $_POST['color'];
+  $add_fuente = $_POST['fuente'];
+  $add_tiempo = $_POST['tiempo'];
+  $add_temperatrura = $_POST['temperatura'];
+  $cont_fau = $_POST['cont_fau'];
+  $cont_flo = $_POST['cont_flo'];
+  $cont_pers = $_POST['cont_pers'];
 
-$query1 = "INSERT into relevamiento (Id_acc, Fecha, Conductividad, Ancho, O2_disuelto, Calidad_de_H2O, Diversidad_Vegetal, Observaciones, Regimen_hidrológico, turbidez, Largo, ph, Color, Fuente, Tiempo, Temperatura_H2O) 
-VALUES 
-('$Id_acc', '$add_fecha', '$add_conductividad', '$add_ancho', '$add_o2disuelto', '$add_calidad_agua', '$add_diversidad_vegetal', '$add_obs', '$add_regimen_hidrologico', '$add_turbidez', '$add_largo', '$add_pH', '$add_color', '$add_fuente', '$add_tiempo', '$add_temperatrura')"; 
-/*  echo "
-=====CONSULTA=====
-$query1 
-";*/
+  $query1 = "INSERT into relevamiento (Id_acc, Fecha, Conductividad, Ancho, O2_disuelto, Calidad_de_H2O, Diversidad_Vegetal, Observaciones, Regimen_hidrológico, turbidez, Largo, ph, Color, Fuente, Tiempo, Temperatura_H2O) 
+                    VALUES ('$Id_acc', '$add_fecha', '$add_conductividad', '$add_ancho', '$add_o2disuelto', '$add_calidad_agua', '$add_diversidad_vegetal', '$add_obs', '$add_regimen_hidrologico', '$add_turbidez', '$add_largo', '$add_pH', '$add_color', '$add_fuente', '$add_tiempo', '$add_temperatrura')"; 
 
-$result = mysqli_query($connect, $query1);
+  $result = mysqli_query($connect, $query1);
 
-if (!$result) {
-die('Query Error'.mysqli_error($connect));
-}
+  if (!$result) {
+    die('Query Error'.mysqli_error($connect));
+  }
 
 //////////////////////////////////////////////
 
@@ -183,186 +171,141 @@ die('Query Error'.mysqli_error($connect));
 
 
 // Se obtiene la consulta para obtener el Id del relevamiento
-$ConsIdRele = "SELECT Id_rel FROM relevamiento where Id_acc= '$Id_acc' and Fecha = '$add_fecha'";
-/*  echo "
-=====Consulta Id_Rel=====
-$ConsIdRele
-";*/
+  $ConsIdRele = "SELECT Id_rel FROM relevamiento where Id_acc= '$Id_acc' and Fecha = '$add_fecha'";
 
 // Se obtiene el Id del relevamiento
-$Id_Rel =  mysqli_query($connect, $ConsIdRele);
+  $Id_Rel =  mysqli_query($connect, $ConsIdRele);
 
-foreach($Id_Rel as $IdRel){
-foreach($IdRel as $IDR){
-/*
-  echo "
-====== ID_Rel =====
-$IDR
-  ";*/
-  $IDRe =$IDR;
-}
-}
-/*  echo "
-====== ID_Rel =====
-$IDRe
-"; 
-*/  
-//Se obtienen las IDs de las faunas 
-while ($cont_fau >= 0) {
-$fauna = $_POST["fauna$cont_fau"];
-/*    echo "  
-  $fauna
-";*/
-$queryFau = "SELECT Id_fauna FROM fauna WHERE Nombre_coloquial= '$fauna'";
-/*    echo "
-=====Consulta Id_faunas=====
-$query022222
-";*/
+  foreach($Id_Rel as $IdRel){
+    foreach($IdRel as $IDR){
 
-$IdFau = mysqli_query($connect,$queryFau);
-/*
-foreach ($q_id as $ID){
-  foreach ($ID as $I){
-    echo "
-    =====Id_faunas=====
-    $I
-    ";
-  }
-}*/
-  
-if (!$IdFau) {
-  echo "HA SURGIDO UN ERROR EN LA CONSULTA";
-  die('Query Error'.mysqli_error($connect));
-}
-/*    echo "
-===___===___===___===___===___===___===___===___
-";*/
-/* Esto devuelve un array, por eso no puede realizar una consulta luego, $b contiene un array al finalizar.
-* Una consulta siempre devuelve un array que contiene otro array, por ende se necesita realizar 2 bucles para obtener el dato
-while($row = mysqli_fetch_array($q_id)) {
-  echo $b;
-  $b = ($row['Id_fauna']);
-};*/
-foreach ($IdFau as $ID){
-  foreach ($ID as $I){
-/*        echo "
-=====Id_faunas=====
-$I
-    ";*/
-    //echo ("???".$I."???");
-    $ConsFaRe = "INSERT into contiene_fauna (Id_rel, Id_fauna) VALUES ('$IDRe','$I')";
-/*        echo "
-=====Consulta Fauna relevamiento=====
-$Cons
-    ";*/
-    $qp = mysqli_query($connect,$ConsFaRe);
-
-    if (!$qp) 
-    {
-      echo "HA SURGIDO UN ERROR EN LA CONSULTA";
-      die('Query Error'.mysqli_error($connect));
-    } else
-    {
-/*          echo "
-se descuenta 1 de cont_fau| ahora cont_fau contiene: ". $cont_fau;*/
-      $cont_fau = $cont_fau-1;
+      $IDRe =$IDR;
     }
   }
-}   
+
+//Se obtienen las IDs de las faunas 
+if (isset($_POST["fauna0"])){
+  while ($cont_fau >= 0) {
+    $fauna = $_POST["fauna$cont_fau"];
+
+    $queryFau = "SELECT Id_fauna FROM fauna WHERE Nombre_coloquial= '$fauna'";
+
+    $IdFau = mysqli_query($connect,$queryFau);
+    
+    if (!$IdFau) {
+      echo "HA SURGIDO UN ERROR EN LA CONSULTA";
+      die('Query Error'.mysqli_error($connect));
+    }
+
+    foreach ($IdFau as $ID){
+      foreach ($ID as $I){
+        $ConsFaRe = "INSERT into contiene_fauna (Id_rel, Id_fauna) VALUES ('$IDRe','$I')";
+        $qp = mysqli_query($connect,$ConsFaRe);
+
+        if (!$qp) 
+        {
+          echo "HA SURGIDO UN ERROR EN LA CONSULTA";
+          die('Query Error'.mysqli_error($connect));
+        }else{
+          $cont_fau = $cont_fau-1;
+        }
+      }
+    }   
+  }
 }
+  
 //////////////////////////////////////////////
 
 /////////////////////Relevamiento_flora//////////////////////////
-while ($cont_flo >= 0) {
-// echo "Entra al contiene flora";
-$flora = $_POST["flora$cont_flo"];
+if (isset($_POST["flora0"])){
+  while ($cont_flo >= 0) {
+    $flora = $_POST["flora$cont_flo"];
 
-// Crea consulta de id de flora
-$queryFlo = "SELECT Id_flora FROM flora WHERE Nombre_coloquial = '$flora'";
-/*    echo "
-==== Consulta ID_Flora
-$queryFlo
-";*/
+    // Crea consulta de id de flora
+    $queryFlo = "SELECT Id_flora FROM flora WHERE Nombre_coloquial = '$flora'";
 
-// obtiene id de flora
-$IdFlo = mysqli_query($connect,$queryFlo);
-//echo "Hace la consulta";
-foreach ($IdFlo as $ID){
-  foreach ($ID as $I){
-/*        echo "
-=====Id_flora=====
-$I
-    ";*/
-  }
-}
+    // obtiene id de flora
+    $IdFlo = mysqli_query($connect,$queryFlo);
+    //echo "Hace la consulta";
 
-
-if (!$IdFlo) {
-  echo "ERROR";
-  die('Query Error'.mysqli_error($connect));
-}
-
-foreach ($IdFlo as $ID){
-  foreach ($ID as $I){
-    $ConsFlRe = "INSERT into contiene_flora (Id_rel, Id_flora) VALUES ('$IDRe','$I')";
-/*        echo "
-==== Consulta Flora relevamiento ===
-$ConsFlRe
-    ";        */
-    $qp = mysqli_query($connect, $ConsFlRe);
-    if (!$qp) 
-    {
+    if (!$IdFlo) {
+      echo "ERROR";
       die('Query Error'.mysqli_error($connect));
-    }else
-    {
-      $cont_flo = $cont_flo-1;
+    }
+
+    foreach ($IdFlo as $ID){
+      foreach ($ID as $I){
+        $ConsFlRe = "INSERT into contiene_flora (Id_rel, Id_flora) VALUES ('$IDRe','$I')";
+
+        $qp = mysqli_query($connect, $ConsFlRe);
+        if (!$qp) 
+        {
+          die('Query Error'.mysqli_error($connect));
+        }else
+        {
+          $cont_flo = $cont_flo-1;
+        }
+      }
     }
   }
-}
 }
 
 ///////////////////////////////////////////////////////////////////
 //////////////////////Relevamiento_miembro/////////////////////////
-$d = array();
-$e = array();
-while ($cont_pers >= 0) {
-$persona = $_POST["persona$cont_pers"];
+  $d = array();
+  $e = array();
+  if (isset($_POST["persona0"])){
+    while ($cont_pers >= 0) {
+      $persona = $_POST["persona$cont_pers"];
 
-$q_id = mysqli_query($connect,"SELECT Id_persona FROM persona where Nombre_persona = '$persona'");
+      echo'
+      Se prepara para obtener la Id de la persona
+      ';
+      $q_id = mysqli_query($connect,"SELECT Id_persona FROM persona where Nombre_persona = '$persona'");
+      echo'
+      Consulta $q_id hecha
+      ';
+      if (!$q_id) {
+        die('Query Error'.mysqli_error($connect));
+      }
 
+      while($row = mysqli_fetch_array($q_id)) {
+        $d = ($row['Id_persona']);
+      };
 
-if (!$q_id) {
-  die('Query Error'.mysqli_error($connect));
+      echo'
+      Se prepara para obtener la Id del miembro
+      ';
+      $q_id_miembro = mysqli_query($connect,"SELECT Id_miembro FROM miembro where Id_persona = $d");
+      echo'
+      Consulta $q_id_miembro
+      ';
+      if (!$q_id_miembro) {
+        die('Query Error'.mysqli_error($connect));
+      }
+
+      while($row = mysqli_fetch_array($q_id_miembro)) {
+        $e = ($row['Id_miembro']);
+      };
+
+      echo'
+      Se prepara para insertar en investiga
+      ';
+      $qp = mysqli_query($connect,"INSERT into investiga (Id_rel, Id_miembro) VALUES ('$IDRe','$e')");
+      echo'
+      Consulta  $qp
+      ';
+      if (!$qp) {
+        die('Query Error'.mysqli_error($connect));
+      }else{
+        $cont_pers = $cont_pers-1;
+      echo'
+      Consulta $cont_pers - 1
+      ';
+      }
+    }
+  }
 }
-
-while($row = mysqli_fetch_array($q_id)) {
-  $d = ($row['Id_persona']);
-};
-
-$q_id_miembro = mysqli_query($connect,"SELECT Id_miembro FROM miembro where Id_persona = $d");
-
-if (!$q_id_miembro) {
-  die('Query Error'.mysqli_error($connect));
-}
-
-while($row = mysqli_fetch_array($q_id_miembro)) {
-  $e = ($row['Id_miembro']);
-};
-$qp = mysqli_query($connect,"INSERT into investiga (Id_rel, Id_miembro) VALUES ('$IDRe','$e')");
-
-if (!$qp) {
-  die('Query Error'.mysqli_error($connect));
-}else{
-  $cont_pers = $cont_pers-1;
-}
-}
-
-
-
-
-
-}
-
 
 
 
