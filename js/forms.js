@@ -1764,5 +1764,5 @@ function ExpandirPestañaHTML(Padre,iframe){
 }
 
 function AbrirVentana(){
-  window.open('https://facu52da.users.earthengine.app/view/humedales' , 'ventana1' , 'width=2000px,height=2000px,scrollbars=NO');
+  window.open('https://facu52da.users.earthengine.app/view/visualizarmapa' , 'ventana1' , 'width=2000px,height=2000px,scrollbars=NO');
 }

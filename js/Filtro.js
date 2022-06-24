@@ -544,9 +544,38 @@ function ObtenerDatosFiltro(){
     }
 
     console.log(postData);  
-
+    limpiarMapaDefault(); //Ejecuta la funcion de limpiar el mapa por defecto
+    limpiarMapaBackup(); //Ejecuta la funcion de limpiar el mapa con el backup de los marcadores
     $.post('php/ConsulFiltro.php', postData, (response) => {
         console.log(response);
         
-      });
+/*
+        if(!response.error) {
+            console.log("1");
+         
+            //if (task.objeto!="null") {
+                let tasks = JSON.parse(response);
+                console.log("2");
+            console.log(tasks);
+            
+            let template = '';
+            tasks.forEach(task => {
+             var obj = L.geoJSON(JSON.parse(task.objeto), {
+               id:task.id,
+             }).bindPopup('<p>'+ task.id + '</p>');
+
+             marker.push(obj);
+             obj.on('click', onClick2);
+             myMap.addLayer(obj);
+
+             template += `
+              <a href="#" class="task-item ${task.id}"></a>
+            ` });
+
+         $('#task-result').show();
+         $('#task-result').html(template);
+            //}
+            
+
+}*/});
 }

@@ -3,21 +3,21 @@
 include('conexion.php');
 
 function act($connect,$q){
-  echo"dentro del act||||||";
+  //echo"dentro del act||||||";
     $result = mysqli_query($connect, $q);
-    echo"hecha la consulta|||||||";
+    //echo"hecha la consulta|||||||";
     if (!$result) {
-      echo "ERROR EN LA CARGA";
+      //echo "ERROR EN LA CARGA";
       die('Query Error'.mysqli_error($connect));
     }
-    echo "Task Added Successfully";   
+    //echo "Task Added Successfully";   
 };
 function rec($connect,$q)
 {
   $result = mysqli_query($connect, $q);
  
     if (!$result) {
-      echo "ERROR EN LA CARGA";
+      //echo "ERROR EN LA CARGA";
       die('Query Error'.mysqli_error($connect));
     }
     $dato=mysqli_fetch_array($result);
@@ -344,7 +344,7 @@ if ($Floras){
 
 if ($Interes){
   $ConsultInte = "SELECT Id_acc FROM accidente_geografico WHERE tipo='Punto de Interés'";
-  echo "
+  /*echo "
   ========================================
   ";
   echo "Puntos de Interes";
@@ -356,13 +356,13 @@ if ($Interes){
   ========================================
   ";
   echo "Resultados:
-  ";
+  ";*/
   $resultadoFinal = mysqli_query($connect,$ConsultInte);
 
   foreach($resultadoFinal as $ResFi){
     foreach($ResFi as $RF){
-      echo "Id_acc:", $RF, "
-  ";
+ //     echo "Id_acc:", $RF, "
+  //";
     }
   }
 }
@@ -419,8 +419,8 @@ WHERE AC.Tipo <> 'Punto de Interés'
   }
   $ConsultAcc = $ConsultAcc." WHERE Tipo <> 'Punto de Interés'";
   $comp = $_POST['OBTipAccChecado'];
-  echo  $comp."
-  ";
+ // echo  $comp."
+ // ";
   if($comp=='true'){
     $ExTip=0;
     if ($TipAcc){
@@ -435,13 +435,11 @@ WHERE AC.Tipo <> 'Punto de Interés'
     }else{
       $ConsultAcc = $ConsultAcc." and Tipo = '' ";
     }
-   
   }
-  
+
+ /* 
  echo $_POST['OBTipAccChecado']."
  ";
-
-
   echo "
   ========================================
   ";
@@ -454,13 +452,26 @@ WHERE AC.Tipo <> 'Punto de Interés'
   ========================================
   ";
   echo "Resultados:
-  ";
+  ";*/
+
   $resultadoFinal = mysqli_query($connect,$ConsultAcc);
 
   foreach($resultadoFinal as $ResFi){
     foreach($ResFi as $RF){
       echo "Id_acc: ",$RF, "
-  ";
+ ";
+  /*
+      $ConsGeo=mysqli_query($connect,"SELECT Id_acc, ST_AsGeoJSON(objeto_geo) as objeto FROM accidente_geografico WHERE Id_acc = $RF");
+      $c = 0;
+      foreach($ConsGeo as $CG){
+        $json[$c]=[
+          'id' =>$CG['Id_acc'],
+          'objeto'=>$CG['objeto']
+        ];
+        $c=$c+1;
+
+        
+      }*/
     }
   }
 }
@@ -527,7 +538,7 @@ if ($Humedal){
       }
     }
   }
-  echo "
+ /* echo "
   ========================================
   ";
   echo "Humedal";
@@ -539,13 +550,13 @@ if ($Humedal){
   ========================================
   ";
   echo "Resultados:
-  ";
+  ";*/
   $resultadoFinal = mysqli_query($connect,$ConsultH);
 
   foreach($resultadoFinal as $ResFi){
     foreach($ResFi as $RF){
-      echo "Id_acc: ",$RF, "
-  ";
+      //echo "Id_acc: ",$RF, "
+  //";
     }
   }
 }
