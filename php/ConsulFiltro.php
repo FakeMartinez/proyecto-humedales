@@ -2,6 +2,10 @@
 
 include('conexion.php');
 
+$PuntInt = array();
+$Accid = array();
+$Hume = array();
+
 function act($connect,$q){
   //echo"dentro del act||||||";
     $result = mysqli_query($connect, $q);
@@ -357,15 +361,26 @@ if ($Interes){
   ";
   echo "Resultados:
   ";*/
+    // PONE EN UN ARRAY TODOS LOS RESULTADOS DE PUNTOS DE INTERES COINCIDENTES
   $resultadoFinal = mysqli_query($connect,$ConsultInte);
-
+  $i=0;
   foreach($resultadoFinal as $ResFi){
     foreach($ResFi as $RF){
- //     echo "Id_acc:", $RF, "
+      //$PuntInt[$i] = $RF;
+      //echo "Id_acc:", $RF, "
   //";
+      $ConsGeo=mysqli_query($connect,"SELECT Id_acc, ST_AsGeoJSON(objeto_geo) as objeto FROM accidente_geografico WHERE Id_acc = $RF");
+      foreach($ConsGeo as $CG){
+        $PuntInt[$i]=[
+          'id' =>$CG['Id_acc'],
+          'objeto'=>$CG['objeto'],
+        ];        
+      }
     }
+    $i++;
   }
 }
+
 
 if ($Acc){
 
@@ -453,27 +468,28 @@ WHERE AC.Tipo <> 'Punto de Interés'
   ";
   echo "Resultados:
   ";*/
-
+  // PONE EN UN ARRAY TODOS LOS RESULTADOS DE ACCIDENTES COINCIDENTES
   $resultadoFinal = mysqli_query($connect,$ConsultAcc);
-
+  $i = 0;
+  //echo $ConsultAcc;
   foreach($resultadoFinal as $ResFi){
     foreach($ResFi as $RF){
-      echo "Id_acc: ",$RF, "
- ";
-  /*
-      $ConsGeo=mysqli_query($connect,"SELECT Id_acc, ST_AsGeoJSON(objeto_geo) as objeto FROM accidente_geografico WHERE Id_acc = $RF");
-      $c = 0;
+      //$Accid[$i] = $RF; 
+//echo$RF;
+  
+      $ConsGeo=mysqli_query($connect,"SELECT Id_acc, Nombre, Tipo, ST_AsGeoJSON(objeto_geo) as objeto FROM accidente_geografico WHERE Id_acc = $RF");
       foreach($ConsGeo as $CG){
-        $json[$c]=[
+        $Accid[$i]=[
           'id' =>$CG['Id_acc'],
-          'objeto'=>$CG['objeto']
-        ];
-        $c=$c+1;
-
-        
-      }*/
+          'objeto'=>$CG['objeto'],
+          'tipo'=>$CG['Tipo'],
+          'nombre'=>$CG['Nombre'],
+        ];        
+      }
     }
+    $i++;
   }
+  
 }
 
 
@@ -551,18 +567,50 @@ if ($Humedal){
   ";
   echo "Resultados:
   ";*/
+  // PONE EN UN ARRAY TODOS LOS RESULTADOS DE HUMEDALES COINCIDENTES
   $resultadoFinal = mysqli_query($connect,$ConsultH);
-
+  $i=0;
   foreach($resultadoFinal as $ResFi){
     foreach($ResFi as $RF){
+      //$Hume[$i] = $RF;
+      //echo "SELECT Id_acc, objeto_geo as objeto FROM accidente_geografico WHERE Id_acc = $RF";
+      $IdObje= mysqli_query($connect,"SELECT Id_acc, ST_AsGeoJSON(objeto_geo) as objeto FROM accidente_geografico WHERE Id_acc = $RF");
+      foreach ($IdObje as $IdOb){
+        $Hume[$i] =[
+          'id'=>$IdOb['Id_acc'],
+          'objeto'=>$IdOb['objeto'],
+        ];
+        /*
+        echo "===============";
+        echo $IdOb['Id_acc'];
+        echo $IdOb['objeto'];
+        echo "===============";*/
+      }
+     
       //echo "Id_acc: ",$RF, "
-  //";
+//";
     }
+    $i++;
   }
+  //echo $Hume;
+  //echo json_encode($Hume);
 }
+$datas =[
+  'Interes'=>$PuntInt,
+  'Accidente' =>$Accid,
+  'Humedal'=>$Hume,
+];
 
 
+echo json_encode($datas);
 
+
+//echo "PuntInt:". $PuntInt."
+//";
+//echo "Accid:". $Accid."
+//";
+//echo "Hume:". $Hume."
+//";
 
 
 /*

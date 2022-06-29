@@ -67,6 +67,8 @@ $(function(){
 
     $('#Filtrador').on('click',function(){
         $('#FiltroDeHumedales').css({'visibility':'visible'});
+        limpiarMapaDefault(); //Ejecuta la funcion de limpiar el mapa por defecto
+        limpiarMapaBackup(); //Ejecuta la funcion de limpiar el mapa con el backup de los marcadores
         $('#tools_op').hide();
         VisibleTool = false;
       })
@@ -111,6 +113,43 @@ $(function(){
         $('#CheckFlora').prop("checked", false);
         DisCheckODF('CheckFlora', 'FiltroFlora', '#divFlora');
         
+        $.ajax({
+            url:   'php/cons_lug_interes.php', //Archivo PHP con los datos
+            type:  'GET',
+            success:  function (response) { //Funcion que se ejecuta si la solicitud sucede con exito
+              console.log(response);
+              var lg = JSON.parse(response);
+              
+              for(var key=0; key < lg.length; key++) { //para cada columna
+                var single = lg[key];
+                console.log(single.type);
+          if(single.type=="POINT"){
+            obj = L.geoJSON(JSON.parse(single.objeto), {
+              id:single.id,
+            }).bindPopup('<p>'+ single.nombre + '('+single.tipo+')'+ '</p>');
+            marker.push(obj);
+            //obj.on('mouseover', onClick3);
+          
+            obj.on('click', onClick2);
+            myMap.addLayer(obj);
+          }else{
+               obj = L.geoJSON(JSON.parse(single.objeto), {
+                  id:single.id,
+                  style: estilo_monumentos(single.tipo),
+                  onEachFeature: onEachFeature
+                }).bindPopup('<p>'+ single.nombre + '('+single.tipo+')'+ '</p>');
+                marker.push(obj);
+                //obj.on('mouseover', onClick3);
+          
+                obj.on('click', onClick2);
+                myMap.addLayer(obj);
+                }
+          
+              };
+              markerBackup = []; //Define como vacio al Array del backup marcadores 
+              markerBackup = marker; //Guarda el los marcadores en el backup
+          
+            }});
     })
 
     $.ajax({
@@ -546,36 +585,64 @@ function ObtenerDatosFiltro(){
     console.log(postData);  
     limpiarMapaDefault(); //Ejecuta la funcion de limpiar el mapa por defecto
     limpiarMapaBackup(); //Ejecuta la funcion de limpiar el mapa con el backup de los marcadores
+    //add_geo();
     $.post('php/ConsulFiltro.php', postData, (response) => {
-        console.log(response);
-        
-/*
+        info = JSON.parse(response);
+
+        info['Interes'].forEach(element => {
+            console.log(element);
+        });
+        info['Humedal'].forEach(element => {
+            console.log(element);
+        });
+        info['Accidente'].forEach(element => {
+            console.log(element);
+            //console.log(element['Id_acc']);
+            //console.log(element['objeto']);
+        });
+
         if(!response.error) {
-            console.log("1");
-         
-            //if (task.objeto!="null") {
-                let tasks = JSON.parse(response);
-                console.log("2");
-            console.log(tasks);
-            
             let template = '';
-            tasks.forEach(task => {
-             var obj = L.geoJSON(JSON.parse(task.objeto), {
-               id:task.id,
-             }).bindPopup('<p>'+ task.id + '</p>');
+            info['Interes'].forEach(info => {
+                var obj = L.geoJSON(JSON.parse(info.objeto), {
+                  id:info.id,
+                }).bindPopup('<p>'+ info.id + '</p>');
+   
+                marker.push(obj);
+                obj.on('click', onClick2);
+                myMap.addLayer(obj);
+   
+                template += `<a href="#" class="task-item ${info.id}"></a>`
+            });
+            info['Accidente'].forEach(info => {
+                var obj = L.geoJSON(JSON.parse(info.objeto), {
+                  id:info.id,
+                  style: estilo_monumentos(info.tipo),
+                  onEachFeature: onEachFeature,
+                }).bindPopup('<p>'+ info.nombre+'('+info.tipo+')'  + '</p>');
+   
+                marker.push(obj);
+                obj.on('click', onClick2);
+                myMap.addLayer(obj);
+   
+                template += `<a href="#" class="task-item ${info.id}"></a>`
+            });
+            info['Humedal'].forEach(info => {
+             var obj = L.geoJSON(JSON.parse(info.objeto), {
+               id:info.id,
+             }).bindPopup('<p>'+ info.id + '</p>');
 
              marker.push(obj);
              obj.on('click', onClick2);
              myMap.addLayer(obj);
 
-             template += `
-              <a href="#" class="task-item ${task.id}"></a>
-            ` });
+             template += `<a href="#" class="task-item ${info.id}"></a>`
+            });
+            
 
          $('#task-result').show();
          $('#task-result').html(template);
-            //}
-            
-
-}*/});
+           
+        }
+    });
 }

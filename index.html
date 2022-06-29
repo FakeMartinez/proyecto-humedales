@@ -45,9 +45,6 @@
         <button class="dropdown-item" id="Filtrador">Filtrar los humedales</button>
         <button class="dropdown-item" id="ButEarthEngine" onclick="AbrirPestañaEarthEngine();">Abrir earthengine</button>
         <button class="dropdown-item" id="ButEarthEngine" onclick="AbrirVentana();">Abrir ventana earthengine</button>
-        <a class="dropdown-item" href="#">Something else here</a>
-        <div class="dropdown-divider"></div>
-        <a class="dropdown-item" href="#">Separated link</a>
       </div>
 
           
@@ -70,7 +67,7 @@
  <div class="info leaflet-control" id="task-result" style="display:block; float:right; position: absolute; left: 989px"></div>
 </div>
     <!------------------------Cuadro de Info------------------------------------->
-    <div id="info" class="contenedor" style="height: 600px;   overflow : auto">
+    <div id="info" class="contenedor" style="height: 90vh; overflow : auto; width: 25%;">
       <div class="card mb-3" style= "float: right; ">
         <div class="close" style="cursor:pointer;" id="closeBtn">x</div>
    
@@ -85,9 +82,11 @@
             <button type="button" class="btn btn-info">Opciones</button>
             <div class="btn-group" role="group">
               <button id="btnDropHum" type="button" class="btn btn-info dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true"></button>
-              <div class="dropdown-menu" id="dropmenu_hum" aria-labelledby="btnDropHum">
-                <a class="dropdown-item" id="modif_hum" href="#" >Modificar</a>
-                <a class="dropdown-item" id="delete_hum" href="#">Eliminar</a>
+              <div class="dropdown-menu" id="dropmenu_hum" aria-labelledby="btnDropHum" style="left: -145px;">
+                <a class="dropdown-item" id="modif_hum" href="#" >Modificar Accidente</a>
+                <a class="dropdown-item" id="agre_rel" href="#" >Agregar Relevamiento</a>
+                <a class="dropdown-item" id="modif_rel" href="#" >Modificar Relevamiento</a>
+                <!--<a class="dropdown-item" id="delete_hum" href="#">Eliminar</a>-->
               </div>
             </div>
           </div>
@@ -1122,9 +1121,9 @@
 <!-- Presiones --><button type="button" class="btn btn-success btn-block" id="btn_mpresiones" style="width: 200px;">Presiones</button>
 <!-- Personas --><button type="button" class="btn btn-success btn-block" id="btn_mpersonas" style="width: 200px;">Personas</button>
               </div>
-              <div id="ContTable" style="width: 69vmax; height: 385px; visibility: hidden; overflow: auto;" class="TablaMod"> 
+              <div id="ContTable" style="width: 69vmax; height: 385px; visibility: hidden; overflow: auto; " class="TablaMod"> 
                 <!--<table id="myTable" class="table table-dark">-->
-                <table id="myTable">
+                <table id="myTable" >
                 </table>
               </div>
             </div>

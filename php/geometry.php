@@ -2,6 +2,19 @@
 
   include('conexion.php');
 
+ 
+if (isset($_POST['objet'])){
+  $Objeto = $_POST['objet'];
+  //echo $Objeto;
+  $consulObjet = "SELECT Tipo FROM accidente_geografico WHERE Id_acc = $Objeto";
+  $ObjtRes = mysqli_query($connect, $consulObjet);
+  foreach ($ObjtRes as $ObjRe){
+    foreach ($ObjRe as $ObjR){
+      $Obj = $ObjR;
+    }
+  }
+  echo $Obj;
+}else{
   $add_coors = $_POST['coors'];
   $add_type = $_POST['type'];
   $add_nom = $_POST['nom'];
@@ -9,6 +22,9 @@
   /*foreach($add_coors as $key){
     $add = $add." ".$key." "; 
   }*/
+
+
+
   foreach($add_coors as $key){
     //$ult = $key[0];
     foreach($key as $k){
@@ -89,4 +105,7 @@ if($add_type =='Point'){
 
 }
 
+}
+
+  
 ?>

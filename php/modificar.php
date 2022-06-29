@@ -649,7 +649,7 @@ if (isset($_POST['accidente'])){
    $resulta = mysqli_query($connect, $Consulta);
    $cosa = "
       <table>
-         <tr style='height:40px'>
+         <tr style='height:40px; background: #3e3e3e; color:white;'>
             <td style='width:50px; min-width: 50px;'></td> 
             <td style='visibility: hidden;max-width: 1px; overflow-x: hidden;'>ID</td> 
             <td style='width:225px; min-width: 225px;'>Nombre</td>
@@ -663,7 +663,21 @@ if (isset($_POST['accidente'])){
    $C= 0;
    $F= 0;
    foreach($resulta as $Fil){
-      $cosa = $cosa."<tr id='tr$F' style='height: 80px;'>";
+      switch ($F){
+         case 0:
+            $cosa = $cosa."<tr id='tr$F' style='height: 80px; background: #d5d5d5; color:black'>";
+            break;
+         case 1:    
+            $cosa = $cosa."<tr id='tr$F' style='height: 80px; background: #eeeeee;color:black'>";
+            break;
+         default:
+            if (($F % 2) == 0) {
+               $cosa = $cosa."<tr id='tr$F' style='height: 80px; background: #d5d5d5;color:black'>";
+            } else {
+               $cosa = $cosa."<tr id='tr$F' style='height: 80px; background: #eeeeee;color:black'>";
+            }
+         break;
+      }
       $cosa = $cosa."<td style='width:25px; min-width: 25px;'><button id='Macc$F' onclick='ModifData($F, IDAcc$F, tr$F);' type='button' class='btn btn-warning' style='background: orange; height: 30px; width: 30px; padding: 0px; border-radius: 5px; border: 1px solid #9d6500;'><i class='fa-solid fa-pen'></i></button></td>";
       $suport = '';
       $suportPres = '';
@@ -756,60 +770,76 @@ if (isset($_POST['complejo'])){
    $resulta = mysqli_query($connect, $Consulta);
    $cosa = "
       <table>
-         <tr style='height:40px'>
+         <tr style='height:40px; background: #3e3e3e; color:white;'>
             <td style='width:50px; min-width: 50px;'></td> 
             <td style='visibility: hidden; max-width: 1px; overflow-x: hidden;'>ID</td> 
-            <td style='width:300px; min-width: 300px;'>Nombre</td>
+            <td style='width:350px; min-width: 300px;'>Nombre</td>
             <td style='width:300px; min-width: 300px;'>Propietario/s</td>
          </tr>";
    $C= 0;
    $F= 0;
    foreach($resulta as $Fil){
-      $cosa = $cosa."<tr id='tr$F' style='height:40px'>";
-      $cosa = $cosa."<td style='width:25px; min-width: 25px;'><button id='Mcom$F' onclick='ModifData($F, IDCom$F, tr$F);' type='button' class='btn btn-warning' style='background: orange; height: 30px; width: 30px; padding: 0px; border-radius: 5px; border: 1px solid #9d6500;'><i class='fa-solid fa-pen'></button></td>";
-      foreach($Fil as $Col){
-         if ($C == 0){//ID
-            $cosa = $cosa."<td id='IDCom$F' style='visibility: visible; color: transparent; max-width: 1px; overflow-x: hidden;'>$Col</td>";
-         }else
-         {
-            if ($C == 1){ //Nombre
-               $cosa = $cosa."<td style='width:70px; min-width: 70px;'>$Col</td>";
-
-               $IdComp = mysqli_query($connect, "SELECT Id_complejo FROM complejo WHERE Nombre_complejo='$Col'");
-
-               foreach($IdComp as $IdCom){
-                  foreach($IdCom as $IC){
-                     $IdProp = mysqli_query($connect,"SELECT Id_persona FROM propietario WHERE Id_complejo='$IC'");
-                  }
+      foreach($resulta as $Fil){
+         switch ($F){
+            case 0:
+               $cosa = $cosa."<tr id='tr$F' style='height: 80px; background: #d5d5d5; color:black'>";
+               break;
+            case 1:    
+               $cosa = $cosa."<tr id='tr$F' style='height: 80px; background: #eeeeee;color:black'>";
+               break;
+            default:
+               if (($F % 2) == 0) {
+                  $cosa = $cosa."<tr id='tr$F' style='height: 80px; background: #d5d5d5;color:black'>";
+               } else {
+                  $cosa = $cosa."<tr id='tr$F' style='height: 80px; background: #eeeeee;color:black'>";
                }
-              
-               $cosa = $cosa."<td id='IDPropCom$F' style='width:70px; min-width: 70px;'>";
-
-               foreach($IdProp as $IPr){
-                  foreach($IPr as $PR){
-                     $NomProp = mysqli_query($connect,"SELECT Nombre_persona FROM persona WHERE Id_persona='$PR'");
-                     foreach($NomProp as $NPr){
-                        foreach($NPr as $NP){
-                           $cosa = $cosa."<a>► $NP</a><br>";
-                        }
-                     }
-                     
-                  }
-               }
-               $cosa = $cosa."</td>";
+            break;
+         }
+         $cosa = $cosa."<td style='width:25px; min-width: 25px;'><button id='Mcom$F' onclick='ModifData($F, IDCom$F, tr$F);' type='button' class='btn btn-warning' style='background: orange; height: 30px; width: 30px; padding: 0px; border-radius: 5px; border: 1px solid #9d6500;'><i class='fa-solid fa-pen'></button></td>";
+         foreach($Fil as $Col){
+            if ($C == 0){//ID
+               $cosa = $cosa."<td id='IDCom$F' style='visibility: visible; color: transparent; max-width: 1px; overflow-x: hidden;'>$Col</td>";
             }else
             {
-               //$cosa = $cosa."<td style='width:300px; min-width: 300px;'><input value='$Col' style='width:275px; min-width: 275px;'></input></td>";
+               if ($C == 1){ //Nombre
+                  $cosa = $cosa."<td style='width:350pxpx; min-width: 350px;'>$Col</td>";
+
+                  $IdComp = mysqli_query($connect, "SELECT Id_complejo FROM complejo WHERE Nombre_complejo='$Col'");
+
+                  foreach($IdComp as $IdCom){
+                     foreach($IdCom as $IC){
+                        $IdProp = mysqli_query($connect,"SELECT Id_persona FROM propietario WHERE Id_complejo='$IC'");
+                     }
+                  }
+               
+                  $cosa = $cosa."<td id='IDPropCom$F' style='width:300px; min-width: 300px;'>";
+
+                  foreach($IdProp as $IPr){
+                     foreach($IPr as $PR){
+                        $NomProp = mysqli_query($connect,"SELECT Nombre_persona FROM persona WHERE Id_persona='$PR'");
+                        foreach($NomProp as $NPr){
+                           foreach($NPr as $NP){
+                              $cosa = $cosa."<a>► $NP</a><br>";
+                           }
+                        }
+                        
+                     }
+                  }
+                  $cosa = $cosa."</td>";
+               }else
+               {
+                  //$cosa = $cosa."<td style='width:300px; min-width: 300px;'><input value='$Col' style='width:275px; min-width: 275px;'></input></td>";
+               }
             }
+            $C++;
          }
-         $C++;
+         $cosa = $cosa."</tr>";
+         $C=0;
+         $F=$F+1;
       }
-      $cosa = $cosa."</tr>";
-      $C=0;
-      $F=$F+1;
+      $cosa = $cosa."</table>";
+      echo $cosa;
    }
-   $cosa = $cosa."</table>";
-   echo $cosa;
 }else
 {}
 
@@ -820,7 +850,7 @@ if (isset($_POST['cuenca'])){
    $resulta = mysqli_query($connect, $Consulta);
    $cosa = "
       <table>
-         <tr style='height:40px'>
+         <tr style='height:40px; background: #3e3e3e; color:white;'>
             <td style='width:50px; min-width: 50px;'></td> 
             <td style='visibility: hidden; max-width: 1px; overflow-x: hidden;'>ID</td> 
             <td style='width:300px; min-width: 300px;'>Nombre</td>
@@ -830,7 +860,22 @@ if (isset($_POST['cuenca'])){
    $C= 0;
    $F= 0;
    foreach($resulta as $Fil){
-      $cosa = $cosa."<tr id='tr$F' style='height:40px'>";
+      foreach($resulta as $Fil){
+         switch ($F){
+            case 0:
+               $cosa = $cosa."<tr id='tr$F' style='height: 80px; background: #d5d5d5; color:black'>";
+               break;
+            case 1:    
+               $cosa = $cosa."<tr id='tr$F' style='height: 80px; background: #eeeeee;color:black'>";
+               break;
+            default:
+               if (($F % 2) == 0) {
+                  $cosa = $cosa."<tr id='tr$F' style='height: 80px; background: #d5d5d5;color:black'>";
+               } else {
+                  $cosa = $cosa."<tr id='tr$F' style='height: 80px; background: #eeeeee;color:black'>";
+               }
+            break;
+         }
       $cosa = $cosa."<td style='width:25px; min-width: 25px;'><button id='Mcue$F' onclick='ModifData($F, IDCue$F, tr$F);' type='button'class='btn btn-warning' style='background: orange; height: 30px; width: 30px; padding: 0px; border-radius: 5px; border: 1px solid #9d6500;'><i class='fa-solid fa-pen'></button></td>";
 
       foreach($Fil as $Col){
@@ -859,6 +904,7 @@ if (isset($_POST['cuenca'])){
    }
    $cosa = $cosa."</table>";
    echo $cosa;
+   }
 }else
 {}
 
@@ -869,7 +915,7 @@ if (isset($_POST['relevamiento'])){
    $resulta = mysqli_query($connect, $Consulta);
    $cosa = "
       <table>
-         <tr style='height:40px'>
+         <tr style='height:40px; background: #3e3e3e; color:white;'>
             <td style='width:50px; min-width: 50px;'></td> 
             <td style='visibility: hidden;max-width: 1px; overflow-x: hidden;'>ID</td> <!---->
             <td style='width:300px; min-width: 300px;'>Accidente geográfico</td>  <!--id-->
@@ -898,7 +944,22 @@ if (isset($_POST['relevamiento'])){
    $C= 0;
    $F= 0;
    foreach($resulta as $Fil){
-      $cosa = $cosa."<tr id='tr$F' style='height:80px'>";
+      foreach($resulta as $Fil){
+         switch ($F){
+            case 0:
+               $cosa = $cosa."<tr id='tr$F' style='height: 80px; background: #d5d5d5; color:black'>";
+               break;
+            case 1:    
+               $cosa = $cosa."<tr id='tr$F' style='height: 80px; background: #eeeeee;color:black'>";
+               break;
+            default:
+               if (($F % 2) == 0) {
+                  $cosa = $cosa."<tr id='tr$F' style='height: 80px; background: #d5d5d5;color:black'>";
+               } else {
+                  $cosa = $cosa."<tr id='tr$F' style='height: 80px; background: #eeeeee;color:black'>";
+               }
+            break;
+         }
       $cosa = $cosa."<td style='width:25px; min-width: 25px;'><button id='Mrele$F' onclick='ModifData($F, IDRel$F, tr$F);' type='button' class='btn btn-warning' style='background: orange; height: 30px; width: 30px; padding: 0px; border-radius: 5px; border: 1px solid #9d6500;'><i class='fa-solid fa-pen'></button></td>";
       $suportNomRel ="<td>";
       $suportObserv ="";
@@ -1043,6 +1104,7 @@ if (isset($_POST['relevamiento'])){
    }
    $cosa = $cosa."</table>";
    echo $cosa;
+}  
 }else
 {}
 
@@ -1053,7 +1115,7 @@ if (isset($_POST['fauna'])){
    $resulta = mysqli_query($connect, $Consulta);
    $cosa = "
       <table>
-         <tr style='height:40px'>
+      <tr style='height:40px; background: #3e3e3e; color:white;'>
             <td style='width:50px; min-width: 50px;'></td> 
             <td style='visibility: hidden;max-width: 1px; overflow-x: hidden;'>ID</td> 
             <td style='width:300px; min-width: 300px;'>Nombre Coloquial</td>
@@ -1064,35 +1126,51 @@ if (isset($_POST['fauna'])){
    $C= 0;
    $F= 0;
    foreach($resulta as $Fil){
-      $cosa = $cosa."<tr id='tr$F' style='height:80px'>";
-      $cosa = $cosa."<td style='width:25px; min-width: 25px;'><button id='Mfau$F' onclick='ModifData($F, IDFau$F, tr$F);' type='button' class='btn btn-warning' style='background: orange; height: 30px; width: 30px; padding: 0px; border-radius: 5px; border: 1px solid #9d6500;'><i class='fa-solid fa-pen'></button></td>";
+      foreach($resulta as $Fil){
+         switch ($F){
+            case 0:
+               $cosa = $cosa."<tr id='tr$F' style='height: 80px; background: #d5d5d5; color:black'>";
+               break;
+            case 1:    
+               $cosa = $cosa."<tr id='tr$F' style='height: 80px; background: #eeeeee;color:black'>";
+               break;
+            default:
+               if (($F % 2) == 0) {
+                  $cosa = $cosa."<tr id='tr$F' style='height: 80px; background: #d5d5d5;color:black'>";
+               } else {
+                  $cosa = $cosa."<tr id='tr$F' style='height: 80px; background: #eeeeee;color:black'>";
+               }
+            break;
+         }
+         $cosa = $cosa."<td style='width:25px; min-width: 25px;'><button id='Mfau$F' onclick='ModifData($F, IDFau$F, tr$F);' type='button' class='btn btn-warning' style='background: orange; height: 30px; width: 30px; padding: 0px; border-radius: 5px; border: 1px solid #9d6500;'><i class='fa-solid fa-pen'></button></td>";
 
-      foreach($Fil as $Col){
-         if ($C == 0){//ID
-            $cosa = $cosa."<td id='IDFau$F' style='visibility: visible; color: transparent; max-width: 1px; overflow-x: hidden;'>$Col</td>";
-         }else
-         {
-            if ($C == 1){ //Nombre coloquial
-               $cosa = $cosa."<td style='width:70px; min-width: 70px;'>$Col</td>";
+         foreach($Fil as $Col){
+            if ($C == 0){//ID
+               $cosa = $cosa."<td id='IDFau$F' style='visibility: visible; color: transparent; max-width: 1px; overflow-x: hidden;'>$Col</td>";
             }else
             {
-               if ($C == 2){ //Nombre científico
+               if ($C == 1){ //Nombre coloquial
                   $cosa = $cosa."<td style='width:70px; min-width: 70px;'>$Col</td>";
-               }else{
-                  if ($C == 3){ //Descripcion
-                     $cosa = $cosa."<td style='height: inherit; overflow: auto; width:425px; min-width: 425px;'><div style='height: inherit;'>$Col</div></td>";
+               }else
+               {
+                  if ($C == 2){ //Nombre científico
+                     $cosa = $cosa."<td style='width:70px; min-width: 70px;'>$Col</td>";
+                  }else{
+                     if ($C == 3){ //Descripcion
+                        $cosa = $cosa."<td style='height: inherit; overflow: auto; width:425px; min-width: 425px;'><div style='height: inherit;'>$Col</div></td>";
+                     }
                   }
                }
             }
+            $C++;
          }
-         $C++;
+         $cosa = $cosa."</tr>";
+         $C=0;
+         $F=$F+1;
       }
-      $cosa = $cosa."</tr>";
-      $C=0;
-      $F=$F+1;
+      $cosa = $cosa."</table>";
+      echo $cosa;
    }
-   $cosa = $cosa."</table>";
-   echo $cosa;
 }else
 {}
 
@@ -1103,7 +1181,7 @@ if (isset($_POST['flora'])){
    $resulta = mysqli_query($connect, $Consulta);
    $cosa = "
       <table>
-         <tr style='height:40px'>
+         <tr style='height:40px; background: #3e3e3e; color:white;'>
             <td style='width:50px; min-width: 50px;'></td> 
             <td style='visibility: hidden;max-width: 1px; overflow-x: hidden;'>ID</td> 
             <td style='width:300px; min-width: 300px;'>Nombre Coloquial</td>
@@ -1114,35 +1192,51 @@ if (isset($_POST['flora'])){
    $C= 0;
    $F= 0;
    foreach($resulta as $Fil){
-      $cosa = $cosa."<tr id='tr$F' style='height:80px'>";
-      $cosa = $cosa."<td style='width:25px; min-width: 25px;'><button id='Mflo$F' onclick='ModifData($F, IDFlo$F, tr$F);' type='button' class='btn btn-warning' style='background: orange; height: 30px; width: 30px; padding: 0px; border-radius: 5px; border: 1px solid #9d6500;'><i class='fa-solid fa-pen'></button></td>";
+      foreach($resulta as $Fil){
+         switch ($F){
+            case 0:
+               $cosa = $cosa."<tr id='tr$F' style='height: 80px; background: #d5d5d5; color:black'>";
+               break;
+            case 1:    
+               $cosa = $cosa."<tr id='tr$F' style='height: 80px; background: #eeeeee;color:black'>";
+               break;
+            default:
+               if (($F % 2) == 0) {
+                  $cosa = $cosa."<tr id='tr$F' style='height: 80px; background: #d5d5d5;color:black'>";
+               } else {
+                  $cosa = $cosa."<tr id='tr$F' style='height: 80px; background: #eeeeee;color:black'>";
+               }
+            break;
+         }
+         $cosa = $cosa."<td style='width:25px; min-width: 25px;'><button id='Mflo$F' onclick='ModifData($F, IDFlo$F, tr$F);' type='button' class='btn btn-warning' style='background: orange; height: 30px; width: 30px; padding: 0px; border-radius: 5px; border: 1px solid #9d6500;'><i class='fa-solid fa-pen'></button></td>";
 
-      foreach($Fil as $Col){
-         if ($C == 0){//ID
-            $cosa = $cosa."<td id='IDFlo$F'style='visibility: visible; color: transparent; max-width: 1px; overflow-x: hidden;'>$Col</td>";
-         }else
-         {
-            if ($C == 1){ //Nombre coloquial
-               $cosa = $cosa."<td style='width:70px; min-width: 70px;'>$Col</td>";
+         foreach($Fil as $Col){
+            if ($C == 0){//ID
+               $cosa = $cosa."<td id='IDFlo$F'style='visibility: visible; color: transparent; max-width: 1px; overflow-x: hidden;'>$Col</td>";
             }else
             {
-               if ($C == 2){ //Nombre científico
+               if ($C == 1){ //Nombre coloquial
                   $cosa = $cosa."<td style='width:70px; min-width: 70px;'>$Col</td>";
-               }else{
-                  if ($C == 3){ //Descripcion
-                     $cosa = $cosa."<td style='height: inherit; overflow: auto; width:425px; min-width: 425px;'><div style='height: inherit;'>$Col</div></td>";
+               }else
+               {
+                  if ($C == 2){ //Nombre científico
+                     $cosa = $cosa."<td style='width:70px; min-width: 70px;'>$Col</td>";
+                  }else{
+                     if ($C == 3){ //Descripcion
+                        $cosa = $cosa."<td style='height: inherit; overflow: auto; width:425px; min-width: 425px;'><div style='height: inherit;'>$Col</div></td>";
+                     }
                   }
                }
             }
+            $C++;
          }
-         $C++;
+         $cosa = $cosa."</tr>";
+         $C=0;
+         $F=$F+1;
       }
-      $cosa = $cosa."</tr>";
-      $C=0;
-      $F=$F+1;
+      $cosa = $cosa."</table>";
+      echo $cosa;
    }
-   $cosa = $cosa."</table>";
-   echo $cosa;
 }else
 {}
 
@@ -1153,7 +1247,7 @@ if (isset($_POST['presion'])){
    $resulta = mysqli_query($connect, $Consulta);
    $cosa = "
       <table>
-         <tr style='height:40px'>
+         <tr style='height:40px; background: #3e3e3e; color:white;'>
             <td style='width:50px; min-width: 50px;'></td> 
             <td style='visibility: hidden;max-width: 1px; overflow-x: hidden;'>ID</td> 
             <td style='width:300px; min-width: 300px;'>Tipo</td>
@@ -1162,31 +1256,47 @@ if (isset($_POST['presion'])){
    $C= 0;
    $F= 0;
    foreach($resulta as $Fil){
-      $cosa = $cosa."<tr id='tr$F' style='height:80px'>";
-      $cosa = $cosa."<td style='width:25px; min-width: 25px;'><button id='Mpre$F' onclick='ModifData($F, IDPre$F, tr$F);' class='btn btn-warning' style='background: orange; height: 30px; width: 30px; padding: 0px; border-radius: 5px; border: 1px solid #9d6500;' type='button'><i class='fa-solid fa-pen'></button></td>";
+      foreach($resulta as $Fil){
+         switch ($F){
+            case 0:
+               $cosa = $cosa."<tr id='tr$F' style='height: 80px; background: #d5d5d5; color:black'>";
+               break;
+            case 1:    
+               $cosa = $cosa."<tr id='tr$F' style='height: 80px; background: #eeeeee;color:black'>";
+               break;
+            default:
+               if (($F % 2) == 0) {
+                  $cosa = $cosa."<tr id='tr$F' style='height: 80px; background: #d5d5d5;color:black'>";
+               } else {
+                  $cosa = $cosa."<tr id='tr$F' style='height: 80px; background: #eeeeee;color:black'>";
+               }
+            break;
+         }
+         $cosa = $cosa."<td style='width:25px; min-width: 25px;'><button id='Mpre$F' onclick='ModifData($F, IDPre$F, tr$F);' class='btn btn-warning' style='background: orange; height: 30px; width: 30px; padding: 0px; border-radius: 5px; border: 1px solid #9d6500;' type='button'><i class='fa-solid fa-pen'></button></td>";
 
-      foreach($Fil as $Col){
-         if ($C == 0){//ID
-            $cosa = $cosa."<td id='IDPre$F' style='visibility: visible; color: transparent; max-width: 1px; overflow-x: hidden;'>$Col</td>";
-         }else
-         {
-            if ($C == 1){ //Tipo (o nombre)
-               $cosa = $cosa."<td style='width:70px; min-width: 70px;'>$Col</td>";
+         foreach($Fil as $Col){
+            if ($C == 0){//ID
+               $cosa = $cosa."<td id='IDPre$F' style='visibility: visible; color: transparent; max-width: 1px; overflow-x: hidden;'>$Col</td>";
             }else
             {
-               if ($C == 2){ //Observaciones
-                  $cosa = $cosa."<td style='height: inherit; overflow: auto; width:425px; min-width: 425px;'><div style='height: inherit;'>$Col</div></td>";
+               if ($C == 1){ //Tipo (o nombre)
+                  $cosa = $cosa."<td style='width:70px; min-width: 70px;'>$Col</td>";
+               }else
+               {
+                  if ($C == 2){ //Observaciones
+                     $cosa = $cosa."<td style='height: inherit; overflow: auto; width:425px; min-width: 425px;'><div style='height: inherit;'>$Col</div></td>";
+                  }
                }
             }
+            $C++;
          }
-         $C++;
+         $cosa = $cosa."</tr>";
+         $C=0;
+         $F=$F+1;
       }
-      $cosa = $cosa."</tr>";
-      $C=0;
-      $F=$F+1;
+      $cosa = $cosa."</table>";
+      echo $cosa;
    }
-   $cosa = $cosa."</table>";
-   echo $cosa;
 }else
 {}
 
@@ -1197,7 +1307,7 @@ if (isset($_POST['persona'])){
    $resulta = mysqli_query($connect, $Consulta);
    $cosa = "
       <table>
-         <tr style='height:40px'>
+         <tr style='height:40px; background: #3e3e3e; color:white;'>
             <td style='width:50px; min-width: 50px;'></td> 
             <td style='width:70px; min-width: 70px;'>DNI/CUIT/CUIL</td> 
             <td style='width:300px; min-width: 300px;'>Nombre</td>
@@ -1209,7 +1319,22 @@ if (isset($_POST['persona'])){
    $C= 0;
    $F= 0;
    foreach($resulta as $Fil){
-      $cosa = $cosa."<tr id='tr$F' style='height:80px'>";
+      foreach($resulta as $Fil){
+         switch ($F){
+            case 0:
+               $cosa = $cosa."<tr id='tr$F' style='height: 80px; background: #d5d5d5; color:black'>";
+               break;
+            case 1:    
+               $cosa = $cosa."<tr id='tr$F' style='height: 80px; background: #eeeeee;color:black'>";
+               break;
+            default:
+               if (($F % 2) == 0) {
+                  $cosa = $cosa."<tr id='tr$F' style='height: 80px; background: #d5d5d5;color:black'>";
+               } else {
+                  $cosa = $cosa."<tr id='tr$F' style='height: 80px; background: #eeeeee;color:black'>";
+               }
+            break;
+         }
       $cosa = $cosa."<td style='width:25px; min-width: 25px;'><button id='Mper$F' class='btn btn-warning' style='background: orange; height: 30px; width: 30px; padding: 0px; border-radius: 5px; border: 1px solid #9d6500;' onclick='ModifData($F, IDPer$F, tr$F);' type='button'><i class='fa-solid fa-pen'></button></td>";
       $suport='<td>';
       $EsProp = false;
@@ -1306,6 +1431,11 @@ if (isset($_POST['persona'])){
    }
    $cosa = $cosa."</table>";
    echo $cosa;
+
+
+
+   
+   }
 }else
 {}
 

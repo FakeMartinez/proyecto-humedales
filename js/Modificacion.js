@@ -681,8 +681,17 @@ function ModifData(Fil, Id, trs){
             "<input type='text' id='InpModNombre' class='form-control' style='background: #e2e2e2; color:black; width: 50%; height: 25px;' value='"+IDn+"'><br><br><br>" + 
         "</div>"+
         "<div style=' height: 50px; font-size: 20px; margin-bottom: 20px;'>"+
-            "<a style='font-weight: bold; color: grey; font-size: 20px; height: 25px;'>Tipo de Accidente Geográfico: </a>" +
-            "<input type='text' id='InpModTipo' class='form-control' style='background: #e2e2e2; color:black; width: 50%; height: 25px;' value='"+IDt+"'><br><br><br>" +
+            "<a style='font-weight: bold; color: grey;'>Tipo de Accidente Geográfico: </a>" +
+            "<select id='InpModTipo' class='form-select' style='background: #e2e2e2; color:black; width: 50%; min-width: 230px; padding: 0px; padding-left: 24px;'>" +
+                "<option>Humedal</option>"+
+                "<option>Lago</option>"+
+                "<option>Pantano</option>"+
+                "<option>Río</option>"+
+                "<option>Arroyo</option>"+
+                "<option>Cascada</option>"+
+                "<option>Laguna</option>"+
+                "<option>Manantial</option>"+
+            "</select><br><br><br>"+
         "</div>"+
         "<div style=' height: 50px; font-size: 20px; margin-bottom: 20px;'>"+
             "<a style='font-weight: bold; color: grey;'>Cuenca del Accidente Geográfico: <button id='Mper$F' class='btn btn-success' onclick='MostrarFormulario("+1+");' type='button' style=' height: 25px; width: 25px; padding: 0px; font-size: 15px; color: #343a40; border-radius: 25px;'><i class='fa-solid fa-pen'></i></button></a>" +
@@ -777,19 +786,46 @@ function ModifData(Fil, Id, trs){
         });        
       }
   
+      switch (IDt)
+      {
+        case "Humedal":
+          document.getElementById('InpModTipo').options.item(0).selected = 'selected';
+          break;
+        case "Lago":
+          document.getElementById('InpModTipo').options.item(1).selected = 'selected';
+          break;
+        case "Pantano":
+          document.getElementById('InpModTipo').options.item(2).selected = 'selected';
+          break;
+        case "Río":
+          document.getElementById('InpModTipo').options.item(3).selected = 'selected';
+          break;
+        case "Arroyo":
+          document.getElementById('InpModTipo').options.item(4).selected = 'selected';
+          break;
+        case "Cascada":
+          document.getElementById('InpModTipo').options.item(5).selected = 'selected';
+          break;
+        case "Laguna":
+          document.getElementById('InpModTipo').options.item(6).selected = 'selected';
+          break;
+        case "Manantial":
+          document.getElementById('InpModTipo').options.item(7).selected = 'selected';
+          break;
+      }
+
       
       if (contpCu ==-10){
         tempCuen = "<option>... Seleccione una cuenca ...</option>"+ tempCuen;
         contpCu=0;
       }
-
-        $('#SelModCuen').html(tempCuen);
-        document.getElementById('SelModCuen').options.item(contpCu).selected = 'selected';
+      $('#SelModCuen').html(tempCuen);
+      document.getElementById('SelModCuen').options.item(contpCu).selected = 'selected';
      
-        if (contpCo ==-10){
-          tempComp = "<option>... Seleccione un complejo ...</option>"+ tempComp;
-          contpCo=0;
-        }
+      if (contpCo ==-10){
+        tempComp = "<option>... Seleccione un complejo ...</option>"+ tempComp;
+        contpCo=0;
+      }
       $('#SelModComp').html(tempComp);
       document.getElementById('SelModComp').options.item(contpCo).selected = 'selected';
   
@@ -2401,6 +2437,187 @@ function ConfirmarAlerta(Data){
         });
       });
     break;
+    case 9:
+      var Presiones = new Array();
+      for (i=0; i<CantPres; i++){
+        Presiones.push($('#SelModPres'+i+' option:selected').text());
+      };
+     // console.log("entra4");
+      //console.log(Presiones);
+      
+      const postData9 = {
+        IdAccidente:$('#TitModId').text(),
+        NombreAccidente: $('#InpModNombre').val(),
+        TipoAccidente: $('#InpModTipo').val(),
+        CuencaAccidente: $('#SelModCuen').val(),
+        ComplejaAccidente: $('#SelModComp').val(),
+        PresionAccidente: Presiones,
+        DescripcionAccidente: $('#TextModDesc').val(),
+        ModiAcc : true,
+      };
+
+      console.log(postData9);
+
+      $.post('php/modificar.php', postData9, (response) => {
+        console.log(response);
+
+        console.log("oculta info");
+        $('#info').hide();
+        console.log("ejecuta php");
+        console.log("data es = "+ $('#TitModId').text());
+        $.ajax({
+          url:   'php/busq_sel.php', 
+          type:  'GET',
+          data:{Id_acc:$('#TitModId').text()},
+          success:  function (response) 
+          { 
+            console.log("php exitoso");
+            console.log("=_=_=_=_=_=_=_=_=_=_=_=_=_=");
+            console.log(response);
+            if(response=="[]")
+            {
+              console.log('Sin Relevamiento')
+            } 
+            else
+            {
+              var data = JSON.parse(response);
+              Info = data;
+              capa(data);
+              $('#info').show();
+              $('#myMap').css({'width': '75%'});
+              $('#myMap').css({'min-width': '75%'});
+            };
+          }
+        });
+        CerrarAlerta();
+        deletesHTML("formModifData");
+
+        var postData9_2= {
+          accidente:true,
+        }
+        
+        $('#ContTable').css({'visibility':'visible'});
+        
+        $.post('php/modificar.php', postData9_2, (response) => {
+          console.log(response);  
+          $("#myTable").html(response);
+        });
+      });
+      break;
+    case 10:
+        var Relev = new Array();
+        var Faun = new Array();
+        var Flor = new Array();
+        var count = 0;
+       
+        for (i=0; i<CantReles; i++){
+          Relev.push($('#SelModRele'+i+' option:selected').text());
+        };
+        for (i=0; i<CantFau; i++){
+          Faun.push($('#SelModFau'+i+' option:selected').text());
+        };
+        for (i=0; i<CantFlo; i++){
+          Flor.push($('#SelModFlo'+i+' option:selected').text());
+        };
+  
+  
+        for (i=0; i<3; i++){
+          console.log(document.getElementById('agua_op'+i));
+          if (document.getElementById('agua_op'+i).checked){
+            CaliAgua=document.getElementById('agua_op'+i).value;
+          }
+          if (document.getElementById('Veg_op'+i).checked){
+            DivVeg=document.getElementById('Veg_op'+i).value;
+          }
+          if (document.getElementById('RegHid_op'+i).checked){
+            RegHid=document.getElementById('RegHid_op'+i).value;
+          }
+        };
+       
+        for (i=0; i<2; i++){
+          if (document.getElementById('Fuente_op'+i).checked){
+            Fue=document.getElementById('Fuente_op'+i).value;
+          }
+          if (document.getElementById('TiemPer_op'+i).checked){
+            TiemPer=document.getElementById('TiemPer_op'+i).value;
+          }
+        };
+        
+      
+        const postData10 = {
+          IdRel:$('#TitModId').text(),
+          FechaRel: $('#InpModFecha').val(),
+          ConductividadRel: $('#InpModConductividad').val(),
+          AnchoRel: $('#InpModAncho').val(),
+          LargoRel: $('#InpModLargo').val(),
+          SuperficieRel: $('#InpModSuper').val(),
+          OxigenoDisueltoRel: $('#InpModOxigDis').val(),
+          TurvidesAguaRel: $('#InpModTurbAgua').val(),
+          PHRel: $('#InpModPH').val(),
+          ColorAguaRel: $('#InpModColor').val(),
+          TemperaturaAguaRel: $('#InpModTempAg').val(),
+          ObservacionRel: $('#TextModObser').val(),
+          
+          CalidadAgua: CaliAgua,
+          DiversidadVegetal: DivVeg,
+          RegimenHidro: RegHid,
+          TiempoPermanencia: TiemPer,
+          Fuente: Fue,
+          
+          Relevadores:Relev,
+          Fauna:Faun,
+          Flora:Flor,
+  
+          ModiRele: true,
+        };
+  
+        console.log(postData10);
+  
+        $.post('php/modificar.php', postData10, (response) => {
+          console.log(response);
+          console.log("_____________________________________");
+          console.log("=====================================");
+          console.log("Info['Id_acc']: "+Info['Id_acc']);
+          console.log("=====================================");
+          console.log("_____________________________________");
+          $.ajax({
+            url:   'php/busq_sel.php', 
+            type:  'GET',
+            data:{Id_acc: IdAccMod_Rel_o_acc,},
+            success:  function (response) 
+            { 
+              console.log(response);
+              if(response=="[]")
+              {
+                console.log('Sin Relevamiento')
+              } 
+              else
+              {
+                var data = JSON.parse(response);
+                Info = data;
+                capa(data);
+                $('#info').show();
+                $('#myMap').css({'width': '75%'});
+                $('#myMap').css({'min-width': '75%'});
+              };
+            }
+          });
+
+          CerrarAlerta();
+          deletesHTML("formModifData");
+  
+          var postData10_2= {
+            relevamiento:true,
+          }
+        
+          $('#ContTable').css({'visibility':'visible'});
+        
+          $.post('php/modificar.php', postData10_2, (response) => {
+            console.log(response);  
+            $("#myTable").html(response);
+          });
+        });
+        break;
   }
   
 }
