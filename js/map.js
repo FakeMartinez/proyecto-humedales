@@ -580,6 +580,15 @@ function tabla(id){
 		//popup.setContent('Descripción: '+ e.target.options.properties).openOn(myMap);
 	};
 
+  function onClickF(e) {
+    var i = this.options;
+    console.log(e.target.options);
+    tabla(e.target.options.id);
+    //$('#info').css({'height:':'40vh'});
+    $('#FiltroDeHumedales').css({'height':'50%', 'top':'', 'bottom':'0px', 'left':'5px', 'right':''});
+		//popup.setContent('Descripción: '+ e.target.options.properties).openOn(myMap);
+	};
+
   function onClick3(e) {
     var i = this.options;
     var layer = e.target;
@@ -603,10 +612,10 @@ function tabla(id){
 var info;  //Variable para la capa de control
   // Funcion de capa flotante donde se muestra la info al darle click sobre un marcador
 function capa(data){ //obtiene como parametro la informacion
-
+/*
   if (info != undefined) { // se valida si existe informacion en la capa, si es borra la capa
       info.remove(myMap); // esta linea quita la capa flotante
-  }
+  }*/
 
   info = L.control({position: 'bottomright'}); //Creacion de la capa de informacion
 

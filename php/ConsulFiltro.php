@@ -369,11 +369,13 @@ if ($Interes){
       //$PuntInt[$i] = $RF;
       //echo "Id_acc:", $RF, "
   //";
-      $ConsGeo=mysqli_query($connect,"SELECT Id_acc, ST_AsGeoJSON(objeto_geo) as objeto FROM accidente_geografico WHERE Id_acc = $RF");
+      $ConsGeo=mysqli_query($connect,"SELECT Id_acc, Nombre, Tipo, ST_AsGeoJSON(objeto_geo) as objeto FROM accidente_geografico WHERE Id_acc = $RF");
       foreach($ConsGeo as $CG){
         $PuntInt[$i]=[
           'id' =>$CG['Id_acc'],
           'objeto'=>$CG['objeto'],
+          'tipo'=>$CG['Tipo'],
+          'nombre'=>$CG['Nombre'],
         ];        
       }
     }
@@ -484,6 +486,7 @@ WHERE AC.Tipo <> 'Punto de Interés'
           'objeto'=>$CG['objeto'],
           'tipo'=>$CG['Tipo'],
           'nombre'=>$CG['Nombre'],
+
         ];        
       }
     }
@@ -547,14 +550,16 @@ if ($Humedal){
 "SELECT R2.Id_acc 
   from relevamiento as R1 RIGHT outer join (SELECT Id_acc 
                                       from accidente_geografico 
-                                      where Tipo='humedal') as R2 on R1.Id_acc=R2.Id_acc 
+                                      where Tipo='Humedal') as R2 on R1.Id_acc=R2.Id_acc 
   WHERE not exists (select * from relevamiento as R2 where R1.Id_acc = R2.Id_acc and R1.Fecha < R2.Fecha)";
           
         }
       }
     }
   }
- /* echo "
+  $ConsultH = "SELECT accidente_geografico.Id_acc FROM accidente_geografico inner join (". $ConsultH.") as accrel on accidente_geografico.Id_acc= accrel.Id_acc WHERE accidente_geografico.Tipo='Humedal'";
+ //echo ($ConsultH);
+  /* echo "
   ========================================
   ";
   echo "Humedal";
@@ -574,11 +579,13 @@ if ($Humedal){
     foreach($ResFi as $RF){
       //$Hume[$i] = $RF;
       //echo "SELECT Id_acc, objeto_geo as objeto FROM accidente_geografico WHERE Id_acc = $RF";
-      $IdObje= mysqli_query($connect,"SELECT Id_acc, ST_AsGeoJSON(objeto_geo) as objeto FROM accidente_geografico WHERE Id_acc = $RF");
+      $IdObje= mysqli_query($connect,"SELECT Id_acc, Nombre, Tipo, ST_AsGeoJSON(objeto_geo) as objeto FROM accidente_geografico WHERE Id_acc = $RF");
       foreach ($IdObje as $IdOb){
         $Hume[$i] =[
           'id'=>$IdOb['Id_acc'],
           'objeto'=>$IdOb['objeto'],
+          'tipo'=>$IdOb['Tipo'],
+          'nombre'=>$IdOb['Nombre'],
         ];
         /*
         echo "===============";
