@@ -342,34 +342,66 @@ $(function(){
     e.preventDefault();    
     deletesHTML('TexErrorIncompleto');
     CambiarClass($('#sel_miembro.form-select.0'), "form-select is-invalid", "form-select"); 
-    var postData = {     
-      nom: $('#nombre').val(),  
-
-      fecha: $('#fecha_rel').val(),
-      ancho:$('#ancho').val(),
-      largo:$('#largo').val(),
-      conductividad:$('#Conductividad').val(),
-      pH:$('#pH').val(),
-      o2disuelto:$('#O2disuelto').val(),
-      turbidez:$('#Turbidez').val(),
-      color:$('#Color').val(),
-      temperatura:$('#Temperatura').val(),
-      obs:$('#obs').val(),
-      fuente:$('input:radio[name=optionsFuente]:checked').val(),
-      tiempo:$('input:radio[name=optionsTiempo]:checked').val(),
-      diversidad_vegetal:$('input:radio[name=optionsDV]:checked').val(),
-      regimen_hidrologico:$('input:radio[name=optionsReg]:checked').val(),
-      calidad_agua:$('input:radio[name=optionsAgua]:checked').val(),
-
-      //Dir : DireccionesHU.slice(),
-      cont_pre: x_pre,
-
-      cont_fau: x_fau,
-      cont_flo: x_flo,
-      cont_pers: x_pers
-      //
-      //
+    if (!newRel){
+      var postData = {     
+        nom: $('#nombre').val(),  
+  
+        fecha: $('#fecha_rel').val(),
+        ancho:$('#ancho').val(),
+        largo:$('#largo').val(),
+        conductividad:$('#Conductividad').val(),
+        pH:$('#pH').val(),
+        o2disuelto:$('#O2disuelto').val(),
+        turbidez:$('#Turbidez').val(),
+        color:$('#Color').val(),
+        temperatura:$('#Temperatura').val(),
+        obs:$('#obs').val(),
+        fuente:$('input:radio[name=optionsFuente]:checked').val(),
+        tiempo:$('input:radio[name=optionsTiempo]:checked').val(),
+        diversidad_vegetal:$('input:radio[name=optionsDV]:checked').val(),
+        regimen_hidrologico:$('input:radio[name=optionsReg]:checked').val(),
+        calidad_agua:$('input:radio[name=optionsAgua]:checked').val(),
+  
+        //Dir : DireccionesHU.slice(),
+        cont_pre: x_pre,
+  
+        cont_fau: x_fau,
+        cont_flo: x_flo,
+        cont_pers: x_pers
+        //
+        //
+      }
+    }else{
+      var postData = {     
+        nom: NomAcc,  
+  
+        fecha: $('#fecha_rel').val(),
+        ancho:$('#ancho').val(),
+        largo:$('#largo').val(),
+        conductividad:$('#Conductividad').val(),
+        pH:$('#pH').val(),
+        o2disuelto:$('#O2disuelto').val(),
+        turbidez:$('#Turbidez').val(),
+        color:$('#Color').val(),
+        temperatura:$('#Temperatura').val(),
+        obs:$('#obs').val(),
+        fuente:$('input:radio[name=optionsFuente]:checked').val(),
+        tiempo:$('input:radio[name=optionsTiempo]:checked').val(),
+        diversidad_vegetal:$('input:radio[name=optionsDV]:checked').val(),
+        regimen_hidrologico:$('input:radio[name=optionsReg]:checked').val(),
+        calidad_agua:$('input:radio[name=optionsAgua]:checked').val(),
+  
+        //Dir : DireccionesHU.slice(),
+        cont_pre: x_pre,
+  
+        cont_fau: x_fau,
+        cont_flo: x_flo,
+        cont_pers: x_pers
+        //
+        //
+      }
     }
+    
     var suportpre = x_pre;
     while(suportpre>=0){
       console.log('sel_presion.form-select '.concat(suportpre.toString()));

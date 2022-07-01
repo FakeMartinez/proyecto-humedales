@@ -2,6 +2,8 @@ var VisibleTool = false;
 
 var Info;
 var IdAccMod_Rel_o_acc;
+var NomAcc;
+var newRel = false;
 //---Capas de fondo para el mapa-------------------
 
 var g_hum = L.layerGroup(); //grupo de capas de los humedales
@@ -259,9 +261,9 @@ function resetHighlight(e) {
   const objeto = {
     objet: e.target.defaultOptions.id,
   };
-  console.log (objeto.objet);
+  //console.log (objeto.objet);
   $.post('php/geometry.php', objeto, (response) => {
-    console.log(response);
+    //console.log(response);
     switch (response){
       case "Humedal":
         e.target.setStyle({
@@ -808,8 +810,10 @@ $("#list_img").append(
 
 }
 $('#modif_hum.dropdown-item').on('click',function(){modif(Info,1)});
-$('#agre_rel.dropdown-item').on('click',function(){console.log("hola")});
+$('#agre_rel.dropdown-item').on('click',function(){NewRel()});
 $('#modif_rel.dropdown-item').on('click',function(){modif(Info,2)});
+
+
 //$('#delete_hum.dropdown-item').on('click',function(){del(Info)}); 
 
 //Funcion para consultar por caracteristicas del humedal
@@ -1123,6 +1127,13 @@ if (tipMod == 2){
   
   //ModifData()
 };
+
+function NewRel(){
+  NomAcc = $('#h_name').text();
+  //console.log("Nombre: "+NomAcc);
+  newRel = true;
+  $('#form_add2').show();
+}
 
 ////////////////////      
 function del(data){
