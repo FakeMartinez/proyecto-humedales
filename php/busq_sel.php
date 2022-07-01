@@ -27,76 +27,77 @@ FROM relevamiento JOIN accidente_geografico ON relevamiento.Id_acc=accidente_geo
                   LEFT JOIN imagen ON imagen.Id_rel=relevamiento.Id_rel 
                   LEFT JOIN fotográfica as f ON f.Id_imagen=imagen.Id_imagen 
 WHERE accidente_geografico.Id_acc = $id";
-/*
-"SELECT RelAcc.*, -- Referente al relevamiento
-        RelAcc.Nombre, RelAcc.Tipo, RelAcc.Descripcion, -- Referente al accidente
-        AccCom.Nombre_complejo,
-        AccCue.Nombre_cuenca,
-        AccPres.Id_presiones, AccPres.Tipo_presiones,
-        RelFau.Id_fauna, RelFau.Nombre_coloquial, RelFau.Nombre_científico, RelFau.Descripción as DFauna, RelFau.PATH as Img_fauna,
-        RelFlo.Id_flora, RelFlo.Nombre_científico as nomCienFlora, RelFlo.Descripcion as DFlora, RelFlo.PATH as Img_flora, RelFlo.Nombre_coloquial as nomCoqFlora,
-        RelImg.Id_imagen, RelImg.PATH 
-FROM (SELECT relevamiento.*, accidente_geografico.Nombre, accidente_geografico.Tipo, accidente_geografico.Descripcion
-      FROM relevamiento inner JOIN accidente_geografico 
-                          ON relevamiento.Id_acc = accidente_geografico.Id_acc
-      ) as RelAcc,
-		 (SELECT accidente_geografico.Id_acc, complejo.Nombre_complejo 
-      FROM accidente_geografico LEFT JOIN complejo 
-                                  ON complejo.Id_complejo = accidente_geografico.Id_complejo
-      ) as AccCom,
-     (SELECT accidente_geografico.Id_acc, cuenca.Nombre_cuenca
-      FROM accidente_geografico LEFT JOIN cuenca 
-                                  ON cuenca.Id_cuenca = accidente_geografico.Id_cuenca
-      ) as AccCue,
-     (SELECT presion.Id_presiones, presion.Tipo_presiones, presion.Id_acc
-      FROM accidente_geografico LEFT JOIN (SELECT Id_acc, presiones.Id_presiones, Tipo_presiones 
-                                        FROM presiones inner join contiene_presiones 
-                                                        ON presiones.Id_presiones = contiene_presiones.Id_presiones
-                                        ) as presion 
-                                  ON presion.Id_acc = accidente_geografico.Id_acc
-      ) as AccPres,
-    -- Devuelve todas las faunas asignadas a este relevamiento junto con las imagenes respectivas a cada fauna
-     (SELECT relevamiento.Id_rel, FaunaIMG.Id_fauna, FaunaIMG.Nombre_coloquial, FaunaIMG.Nombre_científico, FaunaIMG.Descripción, FaunaIMG.PATH
-      FROM relevamiento LEFT join (SELECT contiene_fauna.Id_rel, faunas.Id_fauna, Nombre_coloquial, Nombre_científico, Descripción, PATH 
-                                FROM (SELECT fauna.*, fotosFauna.PATH  -- Proporciona TODAS las faunas con sus respectivas imagenes, si no tiene imagen, entonces le asigna null a la imagen, pero la fauna la devuelve
-                                      FROM fauna LEFT JOIN (SELECT fotográfica.Id_fotografia, fotográfica.Id_fauna, imagen.PATH 
-                                                            FROM imagen inner join fotográfica 
-                                                                          ON imagen.Id_imagen=fotográfica.Id_imagen
-                                                            ) as fotosFauna 
-                                                  on fauna.Id_fauna = fotosFauna.Id_fauna
-                                      ) as faunas 
-                                      inner join contiene_fauna 
-                                        on faunas.Id_fauna=contiene_fauna.Id_fauna
-                                ) as FaunaIMG 
-                        ON FaunaIMG.Id_rel=relevamiento.Id_rel
-      ) as RelFau,
-    -- Devuelve todas las floras asignadas a este relevamiento junto con las imagenes respectivas a cada flora                           
-     (SELECT relevamiento.Id_rel, FloraIMG.Id_flora, FloraIMG.Nombre_coloquial, FloraIMG.Nombre_científico, FloraIMG.Descripcion, FloraIMG.PATH
-      FROM relevamiento LEFT join (SELECT contiene_flora.Id_rel, floras.Id_flora, Nombre_coloquial, Nombre_científico, Descripcion, PATH 
-                                    FROM (SELECT flora.*, fotosFlora.PATH  -- Proporciona TODAS las floras con sus respectivas imagenes, si no tiene imagen, entonces le asigna null a la imagen, pero la flora la devuelve
-                                          FROM flora LEFT JOIN (SELECT fotográfica.Id_fotografia, fotográfica.Id_flora, imagen.PATH 
-                                                                FROM imagen inner join fotográfica 
-                                                                              ON imagen.Id_imagen=fotográfica.Id_imagen
-                                                                ) as fotosFlora 
-                                                      ON flora.Id_flora = fotosFlora.Id_flora
-                                          ) as floras 
-                                          inner join contiene_flora ON floras.Id_flora=contiene_flora.Id_flora
-                                    ) as FloraIMG 
-                          ON FloraIMG.Id_rel=relevamiento.Id_rel 
-      ) as RelFlo,
-     (SELECT relevamiento.Id_rel, imagen.Id_imagen, imagen.PATH 
-      FROM relevamiento LEFT JOIN imagen 
-                          ON imagen.Id_rel=relevamiento.Id_rel 
-      ) as RelImg
-WHERE RelAcc = 281 
-      and RelAcc.Id_rel = RelFau.Id_rel 
-      and RelAcc.Id_rel = RelFlo.Id_rel 
-      and RelAcc.Id_rel = RelImg.Id_rel 
-      and RelAcc.Id_acc = AccCom.Id_acc
-      and RelAcc.Id_acc = AccCue.Id_acc
-      and RelAcc.Id_acc = AccPres.Id_acc;
-"
 
+
+/*
+  "SELECT RelAcc.*, -- Referente al relevamiento
+          RelAcc.Nombre, RelAcc.Tipo, RelAcc.Descripcion, -- Referente al accidente
+          AccCom.Nombre_complejo,
+          AccCue.Nombre_cuenca,
+          AccPres.Id_presiones, AccPres.Tipo_presiones,
+          RelFau.Id_fauna, RelFau.Nombre_coloquial, RelFau.Nombre_científico, RelFau.Descripción as DFauna, RelFau.PATH as Img_fauna,
+          RelFlo.Id_flora, RelFlo.Nombre_científico as nomCienFlora, RelFlo.Descripcion as DFlora, RelFlo.PATH as Img_flora, RelFlo.Nombre_coloquial as nomCoqFlora,
+          RelImg.Id_imagen, RelImg.PATH 
+  FROM (SELECT relevamiento.*, accidente_geografico.Nombre, accidente_geografico.Tipo, accidente_geografico.Descripcion
+        FROM relevamiento inner JOIN accidente_geografico 
+                            ON relevamiento.Id_acc = accidente_geografico.Id_acc
+        ) as RelAcc,
+      (SELECT accidente_geografico.Id_acc, complejo.Nombre_complejo 
+        FROM accidente_geografico LEFT JOIN complejo 
+                                    ON complejo.Id_complejo = accidente_geografico.Id_complejo
+        ) as AccCom,
+      (SELECT accidente_geografico.Id_acc, cuenca.Nombre_cuenca
+        FROM accidente_geografico LEFT JOIN cuenca 
+                                    ON cuenca.Id_cuenca = accidente_geografico.Id_cuenca
+        ) as AccCue,
+      (SELECT presion.Id_presiones, presion.Tipo_presiones, presion.Id_acc
+        FROM accidente_geografico LEFT JOIN (SELECT Id_acc, presiones.Id_presiones, Tipo_presiones 
+                                          FROM presiones inner join contiene_presiones 
+                                                          ON presiones.Id_presiones = contiene_presiones.Id_presiones
+                                          ) as presion 
+                                    ON presion.Id_acc = accidente_geografico.Id_acc
+        ) as AccPres,
+      -- Devuelve todas las faunas asignadas a este relevamiento junto con las imagenes respectivas a cada fauna
+      (SELECT relevamiento.Id_rel, FaunaIMG.Id_fauna, FaunaIMG.Nombre_coloquial, FaunaIMG.Nombre_científico, FaunaIMG.Descripción, FaunaIMG.PATH
+        FROM relevamiento LEFT join (SELECT contiene_fauna.Id_rel, faunas.Id_fauna, Nombre_coloquial, Nombre_científico, Descripción, PATH 
+                                  FROM (SELECT fauna.*, fotosFauna.PATH  -- Proporciona TODAS las faunas con sus respectivas imagenes, si no tiene imagen, entonces le asigna null a la imagen, pero la fauna la devuelve
+                                        FROM fauna LEFT JOIN (SELECT fotográfica.Id_fotografia, fotográfica.Id_fauna, imagen.PATH 
+                                                              FROM imagen inner join fotográfica 
+                                                                            ON imagen.Id_imagen=fotográfica.Id_imagen
+                                                              ) as fotosFauna 
+                                                    on fauna.Id_fauna = fotosFauna.Id_fauna
+                                        ) as faunas 
+                                        inner join contiene_fauna 
+                                          on faunas.Id_fauna=contiene_fauna.Id_fauna
+                                  ) as FaunaIMG 
+                          ON FaunaIMG.Id_rel=relevamiento.Id_rel
+        ) as RelFau,
+      -- Devuelve todas las floras asignadas a este relevamiento junto con las imagenes respectivas a cada flora                           
+      (SELECT relevamiento.Id_rel, FloraIMG.Id_flora, FloraIMG.Nombre_coloquial, FloraIMG.Nombre_científico, FloraIMG.Descripcion, FloraIMG.PATH
+        FROM relevamiento LEFT join (SELECT contiene_flora.Id_rel, floras.Id_flora, Nombre_coloquial, Nombre_científico, Descripcion, PATH 
+                                      FROM (SELECT flora.*, fotosFlora.PATH  -- Proporciona TODAS las floras con sus respectivas imagenes, si no tiene imagen, entonces le asigna null a la imagen, pero la flora la devuelve
+                                            FROM flora LEFT JOIN (SELECT fotográfica.Id_fotografia, fotográfica.Id_flora, imagen.PATH 
+                                                                  FROM imagen inner join fotográfica 
+                                                                                ON imagen.Id_imagen=fotográfica.Id_imagen
+                                                                  ) as fotosFlora 
+                                                        ON flora.Id_flora = fotosFlora.Id_flora
+                                            ) as floras 
+                                            inner join contiene_flora ON floras.Id_flora=contiene_flora.Id_flora
+                                      ) as FloraIMG 
+                            ON FloraIMG.Id_rel=relevamiento.Id_rel 
+        ) as RelFlo,
+      (SELECT relevamiento.Id_rel, imagen.Id_imagen, imagen.PATH 
+        FROM relevamiento LEFT JOIN imagen 
+                            ON imagen.Id_rel=relevamiento.Id_rel 
+        ) as RelImg
+  WHERE RelAcc = 281 
+        and RelAcc.Id_rel = RelFau.Id_rel 
+        and RelAcc.Id_rel = RelFlo.Id_rel 
+        and RelAcc.Id_rel = RelImg.Id_rel 
+        and RelAcc.Id_acc = AccCom.Id_acc
+        and RelAcc.Id_acc = AccCue.Id_acc
+        and RelAcc.Id_acc = AccPres.Id_acc;
+  "
 */
 
 
@@ -109,17 +110,25 @@ $query = mysqli_query($connect,$query);
 $json = array();
 $ant = array();
 $c = -1;
+//echo $id;
+//echo "_______________1________________";
 foreach ($query as $row){
   $idacc = $row['Id_acc'];
   $idrel = $row['Id_rel'];
   $query2 = mysqli_query($connect,"SELECT * FROM accidente_geografico WHERE Id_acc = $idacc");
   foreach ($query2 as $row2){  
     $idacc = $row2['Id_acc'];
+    //echo
     $nomacc = $row2['Nombre'];
+    //echo
     $tipacc = $row2['Tipo'];
+    //echo
     $desacc = $row2['Descripcion'];
+    //echo
     $idcom = $row2['Id_complejo'];
+    //echo "row2['Id_complejo']:".$row2['Id_complejo'];
     $idcuen = $row2['Id_cuenca'];
+    //echo
   }
   
   /*echo "idacc: $idacc
@@ -131,19 +140,25 @@ foreach ($query as $row){
   ";*/
   //echo "2";
   //echo "SELECT Nombre_complejo FROM complejo WHERE Id_complejo = $idcom";
-  $nomcomplejo = mysqli_query($connect,"SELECT Nombre_complejo FROM complejo WHERE Id_complejo = $idcom");
-  //echo "2.1";
-  foreach($nomcomplejo as $NomCom){
-    //echo "2.2";
-    $NComplej = $NomCom['Nombre_complejo'];
-    //echo "2.3";
-  }
+  //echo "_______________2________________";
+  //echo"SELECT Nombre_complejo FROM complejo WHERE Id_complejo = $idcom";
+  if (!$idcom==''){
+    $nomcomplejo = mysqli_query($connect,"SELECT Nombre_complejo FROM complejo WHERE Id_complejo = $idcom");
+    //echo "2.1";
+    foreach($nomcomplejo as $NomCom){
+      //echo "2.2";
+      $NComplej = $NomCom['Nombre_complejo'];
+      //echo "2.3";
+    }
   //echo "3";
+  }
+  //echo "_______________3_______________";
   $nomcuenca = mysqli_query($connect,"SELECT Nombre_cuenca FROM cuenca WHERE Id_cuenca = $idcuen");
   foreach($nomcuenca as $NomCue){
     $NCuenca = $NomCue['Nombre_cuenca'];
   }
   //echo "4";
+  //echo "_______________4_______________ ";
     if($row['Id_rel'] != $ant['Id_rel']){
         $c=$c+1;
         $json[$c]=[
@@ -190,7 +205,7 @@ foreach ($query as $row){
     
     };
     //echo "5";
-
+    //echo "_______________5_______________";
     $query3 = mysqli_query($connect,"SELECT Nombre_persona 
                                     FROM persona inner join (SELECT Id_Persona 
                                                               FROM miembro inner join (SELECT Id_miembro 
@@ -249,7 +264,7 @@ foreach ($query as $row){
     );
     $x2=$x2+1;
   };
-
+  //echo "_______________6________________";
   /////////////////////////////////////
   $ad3=true;
   foreach ($json[$c]['flora'] as $i){
@@ -287,6 +302,23 @@ foreach ($query as $row){
   };
 /////////////////////////////////////
 };
+//echo $json['id_rel'];
+if (json_encode($json) == "[]"){
+  $qs = "SELECT Nombre, Tipo FROM accidente_geografico WHERE Id_acc = $id";
+  $res = mysqli_query($connect,$qs);
+  foreach ($res as $r){
+    $json=[
+      'id_acc'=>$id,
+      'nombre'=>$r['Nombre'],
+      'tipo'=>$r['Tipo'],
+      'cond'=>true,
+    ];
+  }
+}
+
 echo json_encode($json);
+
+
+
 //echo $json;
 ?>

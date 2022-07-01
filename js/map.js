@@ -482,9 +482,40 @@ function tabla(id){
       data:{Id_acc:id},
       success:  function (response) { //Funcion que se ejecuta si la solicitud sucede con exito
         console.log(response);
+        var data = JSON.parse(response);
+          Info = data;
         
+        if(data['cond']){
+          console.log('Sin Relevamiento');
+          //console.log(data['id_acc']);
+          append= '<div id="mensPrimerRel" class="modal" style="z-index:1000000000; top: 25vh;">'+
+          '<div class="modal-dialog" role="document">'+
+            '<div class="modal-content">'+
+              '<div class="modal-header" style="/*border: 0px;*/">'+
+                '<h5 class="modal-title">Sin relevamiento</h5>'+
+                '<button id="CloseMensPrimerRel" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="deletesHTML(`mensPrimerRel`)">'+
+                  '<span aria-hidden="true"></span>'+
+                '</button>'+
+              '</div>'+
+              '<div class="modal-body">'+
+                '<div style="border-bottom:1px solid grey; margin-bottom:25px;">'+
+                  '<a>Nombre: '+data['nombre']+'</a>'+
+                  '<p style="margin-bottom:10px;">Tipo: '+data['tipo']+'</p>'+
+                '</div>'+
+                '<p>Este accidente geografico no tiene un relevamiento hecho.</p>'+
+                '<p>¿Desea crearle un relevamiento?</p>'+
+              '</div>'+
+              '<div class="modal-footer" style="border: 0px;">'+
+                '<button type="button" class="btn btn-primary" onclick="NewRel(`'+data['nombre']+'`);deletesHTML(`mensPrimerRel`);">Si</button>'+
+                '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="deletesHTML(`mensPrimerRel`)">No</button>'+
+              '</div>'+
+            '</div>'+
+          '</div>'+
+        '</div>';
+        $('#contenido_principal').append(append);
+        $('#mensPrimerRel').show();
         
-        if(response=="[]"){console.log('Sin Relevamiento')}
+        }
         else{
           var data = JSON.parse(response);
           Info = data;
@@ -616,77 +647,169 @@ function capa(data){ //obtiene como parametro la informacion
       if(i['id_rel']==rel){
         for (const key in i) {
           if(key=="presion"){
-            i['presion'].forEach(function(e){presiones = presiones + ' ' + e['tipo_presion']});
+            i['presion'].forEach(function(e){
+              if (e['tipo_presion']==null){
+
+              }else{
+                presiones = presiones + ' ' + e['tipo_presion'];
+              }
+              
+            });
           }
           if(key=="persona"){
             i['persona'].forEach(function(e){persona = persona + ' ' + e['nombre_persona']});
           }
+
+          appendfauna = "";
           if(key=="fauna"){
-            $('#data_list').append('<div class="accordion" id="seccionFauna">'+
-    '<div class="accordion-item" id="headFauna">'+
-    '<h2 class="accordion-header">'+
-      '<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">'+
-        'Fauna'+
-      '</button>'+
-    '</h2></div>');
+            $('#data_list').append(
+              '<div class="accordion" id="seccionFauna">'+
+                '<div class="accordion-item" id="headFauna">'+
+                  '<h2 class="accordion-header">'+
+                    '<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">'+
+                      'Fauna'+
+                    '</button>'+
+                  '</h2>'+
+                '</div>');
 
             i['fauna'].forEach(function(e){
-              appendfauna = '<div class="accordion-body" style="border-top: 1px solid #adadad; border-bottom: 1px solid #adadad;">'+
-              '<div class="card-body"><h5 class="card-title">'+e['Nombre_coloquial']+'</h5>'+
-                '<h6 class="card-subtitle text-muted">'+e['Nombre_cientifico']+'</h6></div>';
-                if (e['img_fauna'] == null){
-                  appendfauna = appendfauna + "<a>sin imagen</a>";
-                }else{
-                  appendfauna = appendfauna + '<img src=images/'+e['img_fauna']+ ' width="100" height="100">';
-                }
-                appendfauna = appendfauna +  '<div class="card-body"><p class="card-text" id="styleADD" style="font-size: 14px">'+e['Descripcion']+'</p></div></div>';
-              $('#headFauna').append(appendfauna);
+              if (e['Nombre_coloquial']==null){
+                appendfauna = appendfauna + 
+                '<div class="accordion-body" style="border-top: 1px solid #adadad; border-bottom: 1px solid #adadad;">'+
+                  '<div class="card-body">'+
+                    '<h5 class="card-title">sin Fauna'+
+                    '</h5>'+'</div>'+
+                  '</div>';
+                //$('#headFauna').append(appendfauna);
+              }else{
+                appendfauna = appendfauna +
+                '<div class="accordion-body" style="border-top: 1px solid #adadad; border-bottom: 1px solid #adadad;">'+
+                  '<div class="card-body">'+
+                    '<h5 class="card-title">'+
+                      e['Nombre_coloquial']+
+                    '</h5>'+
+                    '<h6 class="card-subtitle text-muted">'+
+                      e['Nombre_cientifico']+
+                    '</h6>'+
+                  '</div>';
+
+                  if (e['img_fauna'] == null){
+                    appendfauna = appendfauna + 
+                      "<div style=' background: grey; width: 120px; height: 120px; font-size: 20px; text-align: center; padding-top: 35px; border: 4px solid #bdbdbd; color: #3b3b3b;'>"+
+                        "Sin Imagen"+
+                      "</div>";
+                  }else{
+                    appendfauna = appendfauna + '<img src=images/'+e['img_fauna']+ ' width="100" height="100">';
+                  }
+                  appendfauna = appendfauna +
+                  '<div class="card-body">'+
+                    '<p class="card-text" id="styleADD" style="font-size: 14px">'+
+                      e['Descripcion']+
+                    '</p>'+
+                  '</div>'+'</div>'+
+                '</div>';
+                //$('#headFauna').append(appendfauna);
+              }
             });
+            $('#headFauna').append(appendfauna);
           }
-
+          appendflora ="";
           if(key=="flora"){
-
-            $('#data_list').append('<div class="accordion" id="seccionFlora">'+
-            '<div class="accordion-item">'+
-            '<h2 class="accordion-header" id="headFlora">'+
-              '<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">'+
-                'Flora'+
-              '</button>'+
-            '</h2></div>');
-
+            $('#data_list').append(
+              '<div class="accordion" id="seccionFlora">'+
+                '<div class="accordion-item" id="headFlora">'+
+                  '<h2 class="accordion-header">'+
+                    '<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">'+
+                      'Flora'+
+                    '</button>'+
+                  '</h2>'+
+                '</div>');
+               
             i['flora'].forEach(function(e){
-              appendflora = '<div class="accordion-body">'+
-              '<div class="card-body"><h5 class="card-title">'+e['Nombre_coloquial']+'</h5>'+
-                '<h6 class="card-subtitle text-muted">'+e['Nombre_cientifico']+'</h6></div>';
-                if (e['img_flora'] == null){
-                  appendflora = appendflora + "<a>sin imagen</a>";
-                }else{
-                  appendflora = appendflora + '<img src=images/'+e['img_flora']+ ' width="100" height="100">';
-                }
-                appendflora = appendflora + '<div class="card-body"> <p class="card-text" id="styleADD" style="font-size: 14px">'+e['Descripcion']+'</p> </div> </div>'
-              //floras = floras + ' ' + e['Nombre_coloquial']
-              $('#headFlora').append(appendflora);
+              if (e['Nombre_coloquial']==null){
+                appendflora = appendflora + 
+                '<div class="accordion-body" style="border-top: 1px solid #adadad; border-bottom: 1px solid #adadad;">'+
+                  '<div class="card-body">'+
+                    '<h5 class="card-title">sin flora'+
+                    '</h5>'+'</div>'+
+                  '</div>';
+                //$('#headFlora').append(appendflora);
+              }else{
+                appendflora = appendflora +
+                '<div class="accordion-body" style="border-top: 1px solid #adadad; border-bottom: 1px solid #adadad;">'+
+                  '<div class="card-body">'+
+                    '<h5 class="card-title">'+
+                      e['Nombre_coloquial']+
+                    '</h5>'+
+                    '<h6 class="card-subtitle text-muted">'
+                      +e['Nombre_cientifico']+
+                    '</h6>'+
+                  '</div>';
+  
+                  if (e['img_flora'] == null){
+                    appendflora = appendflora + 
+                    "<div style=' background: grey; width: 120px; height: 120px; font-size: 20px; text-align: center; padding-top: 35px; border: 4px solid #bdbdbd; color: #3b3b3b;'>"+
+                      "Sin Imagen"+
+                    "</div>";
+                  }else{
+                    appendflora = appendflora + '<img src=images/'+e['img_flora']+ ' width="100" height="100">';
+                  }
+                  appendflora = appendflora + 
+                  '<div class="card-body">'+ 
+                    '<p class="card-text" id="styleADD" style="font-size: 14px">'+
+                      e['Descripcion']+
+                    '</p>'+
+                  '</div>'+'</div>'+
+                '</div>';
+                //floras = floras + ' ' + e['Nombre_coloquial']
+                //$('#headFlora').append(appendflora);
+              }
+             
             });
+            $('#headFlora').append(appendflora);
             
           }
 
           if(key=="img"){
 
             $('#data_list').append('<div class="accordion" id="seccionImg">'+
-            '<div class="accordion-item">'+
-            '<h2 class="accordion-header" id="headImg">'+
-              '<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">'+
-                'Imagenes'+
-              '</button>'+
-            '</h2></div>');
+            '<div class="accordion-item" id="headImg">'+
+              '<h2 class="accordion-header">'+
+                '<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">'+
+                  'Imagenes'+
+                '</button>'+
+              '</h2>'+
+            '</div>');
 
             i['img'].forEach(function(e){
+              appendimg = 
+              '<div class="accordion-body">'+
+                '<div class="card-body">'+
+                  '<h5 class="card-title"></h5>'+
+                  '<h6 class="card-subtitle text-muted"></h6>'+
+                '</div>';
+              if (e['img_rel'] == null){
+                appendimg = appendimg + 
+                "<div style=' background: grey; width: 120px; height: 120px; font-size: 20px; text-align: center; padding-top: 35px; border: 4px solid #bdbdbd; color: #3b3b3b;'>"+
+                  "Sin Imagen"+
+                "</div>";
+              }else{
+                appendimg = appendimg + '<img src='+e['img_rel']+ ' width="100" height="100">';
+              }
+              appendimg = appendimg + 
+                '<div class="card-body">'+
+                  '<p class="card-text" id="styleADD" style="font-size: 14px">';
+                  if (e['Descripcion'] == null){
+                    //appendimg = appendimg + "sin descripción";
+                  }else{
+                    appendimg = appendimg + e['Descripcion'];
+                  };
+              appendimg = appendimg +
+                  '</p>'+
+                '</div>'+
+              '</div>';
               //floras = floras + ' ' + e['Nombre_coloquial']
-              $('#headImg').append('<div class="accordion-body">'+
-              '<div class="card-body"><h5 class="card-title"></h5>'+
-                '<h6 class="card-subtitle text-muted"></h6></div>'+
-                  '<img src='+e['img_rel']+ ' width="100" height="100">'+
-              '<div class="card-body"> <p class="card-text" id="styleADD" style="font-size: 14px">'+e['Descripcion']+'</p> </div> </div>');
+              $('#headImg').append(appendimg);
             });
             
           }
@@ -810,7 +933,7 @@ $("#list_img").append(
 
 }
 $('#modif_hum.dropdown-item').on('click',function(){modif(Info,1)});
-$('#agre_rel.dropdown-item').on('click',function(){NewRel()});
+$('#agre_rel.dropdown-item').on('click',function(){NewRel($('#h_name').text())});
 $('#modif_rel.dropdown-item').on('click',function(){modif(Info,2)});
 
 
@@ -1128,8 +1251,8 @@ if (tipMod == 2){
   //ModifData()
 };
 
-function NewRel(){
-  NomAcc = $('#h_name').text();
+function NewRel(Nombre){
+  NomAcc = Nombre;
   //console.log("Nombre: "+NomAcc);
   newRel = true;
   $('#form_add2').show();

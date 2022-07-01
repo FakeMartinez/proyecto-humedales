@@ -241,7 +241,8 @@ $(function(){
     CambiarClass($('#Dire_Prop'), "form-control is-invalid", "form-control");
     $('#form_propietario_add').hide();
   })
-
+  
+  
 
   //////////////////////Formulario Alta Acc////////////////////////
   $(document).on('click','#btn_brel', function(){
