@@ -71,15 +71,19 @@ if ($Acc || $Humedal){
   
   //____________________________________________
   // Para seleccionar complejo
-  if ($Complejo){
+  if ($Complejo && !$Cuenca){
     /*if ($Cuenca)
     { $ConsultB= $ConsultB." and"; }*/
     //echo"complejo con algo";
     $IDComplejo = rec($connect,"SELECT Id_complejo FROM complejo WHERE Nombre_complejo='$Complejo'");
     //echo "Complejo: ", $IDComplejo, " ||| ";
     $ConsultB = $ConsultB." and Id_complejo=$IDComplejo";
+    $ConsultAc = "SELECT * FROM accidente_geografico WHERE Id_complejo=$IDComplejo";
+  }else{
+    $IDComplejo = rec($connect,"SELECT Id_complejo FROM complejo WHERE Nombre_complejo='$Complejo'");
+    //echo "Complejo: ", $IDComplejo, " ||| ";
+    $ConsultB = $ConsultB." and Id_complejo=$IDComplejo";
     $ConsultAc = $ConsultAc." and Id_complejo=$IDComplejo";
-    
   }
 
   //Consultas relacionadas a presiones
@@ -473,7 +477,13 @@ WHERE AC.Tipo <> 'Punto de Interés'
   // PONE EN UN ARRAY TODOS LOS RESULTADOS DE ACCIDENTES COINCIDENTES
   $resultadoFinal = mysqli_query($connect,$ConsultAcc);
   $i = 0;
-  //echo $ConsultAcc;
+  /*echo "
+  ========================================
+  ";
+  echo $ConsultAcc;
+  echo "
+  ========================================
+  ";*/
   foreach($resultadoFinal as $ResFi){
     foreach($ResFi as $RF){
       //$Accid[$i] = $RF; 

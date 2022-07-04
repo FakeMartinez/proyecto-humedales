@@ -343,7 +343,7 @@ function resetHighlight(e) {
             color: 'orange',  // COlor de la linea
           weight: 2,  // Anchura de la linea
           dashArray: '',
-          fillOpacity: 0.1 //Opacidad del fondo
+          fillOpacity: 0.2 //Opacidad del fondo
         });
         break;      
     }

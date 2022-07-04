@@ -36,7 +36,7 @@
       </button>
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <button type="button" class="btn btn-success" id="btn_add" style="height: 5vh; font-size: 1.5vh; width: 20vh; padding: 0px; margin: 0.1vh;">Accidente geografico</button>
+      <!--<button type="button" class="btn btn-success" id="btn_add" style="height: 5vh; font-size: 1.5vh; width: 20vh; padding: 0px; margin: 0.1vh;">Accidente geografico</button>-->
       <button type="button" class="btn btn-warning" id="btn_img_xy" style="height: 5vh; font-size: 1.5vh; width: 20vh; padding: 0px; margin: 0.1vh;">Obtener Coordenadas</button>
       <button type="button" class="btn btn-warning" id="btn_modif" style="height: 5vh; font-size: 1.5vh; width: 15vh; padding: 0px; margin: 0.1vh;">Modificar</button>
       <a class="nav-link dropdown-toggle" id="tools" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" style="color: #d3d3d3; padding: 0px; margin-left: 3vh; letter-spacing: 0.1vh;">Herramientas</a>
@@ -323,6 +323,7 @@
                   <!--<input type="text" id="tipo" name="tipo" placeholder="Tipo de accidente geografico" class="form-control"> -->
                   <select class="form-select" id="tipo">
                     <option>... Seleccione Tipo ...</option>
+                    <option>Punto de Interés</option>
                     <option>Humedal</option>
                     <option>Lago</option>
                     <option>Pantano</option>
@@ -393,7 +394,7 @@
 <!---------------Formulario Alta relevamiento--------------------------->
   <div class="modal" role="document" id="form_add2" style="background: rgba(0,0,0,0.8);">
     <div class="modal-dialog modal-lg">
-      <div class="modal-content" id="form_modal">
+      <div class="modal-content" id="form_modal" style="background: #d3ffbc;">
         <div class="modal-header">
           <h5 class="modal-title" id="t_form">Relevamiento</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close_btn_add2">

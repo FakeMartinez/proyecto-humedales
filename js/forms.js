@@ -28,6 +28,48 @@ function CambiarClass(Objeto, ClassActual, ClassNueva){
   $(Objeto).addClass(ClassNueva);   //agrega el nuevo class al elemento HTML
 };
 
+function RefrescarMapa(){
+  //console.log("Entra al refrescar");
+  limpiarMapaDefault();
+  limpiarMapaBackup();
+  $.ajax({
+    url:   'php/cons_lug_interes.php', //Archivo PHP con los datos
+    type:  'GET',
+    success:  function (response) { //Funcion que se ejecuta si la solicitud sucede con exito
+      console.log(response);
+      var lg = JSON.parse(response);
+      
+      for(var key=0; key < lg.length; key++) { //para cada columna
+        var single = lg[key];
+        console.log(single.type);
+        if(single.type=="POINT"){
+            obj = L.geoJSON(JSON.parse(single.objeto), {
+                id:single.id,
+                }).bindPopup('<p>'+ single.nombre + '('+single.tipo+')'+ '</p>');
+            marker.push(obj);
+            //obj.on('mouseover', onClick3);
+  
+            obj.on('click', onClick2);
+            myMap.addLayer(obj);
+        }else{
+            obj = L.geoJSON(JSON.parse(single.objeto), {
+                id:single.id,
+                style: estilo_monumentos(single.tipo),
+                onEachFeature: onEachFeature
+                }).bindPopup('<p>'+ single.nombre + '('+single.tipo+')'+ '</p>');
+            marker.push(obj);
+            //obj.on('mouseover', onClick3);
+        
+            obj.on('click', onClick2);
+            myMap.addLayer(obj);
+        }
+  
+      };
+      markerBackup = []; //Define como vacio al Array del backup marcadores 
+      markerBackup = marker; //Guarda el los marcadores en el backup
+  
+    }});
+}
 
 function CloseMensImag (){
   $("#MensErrorImag").remove();
@@ -112,11 +154,16 @@ $(function(){
     $('#descripcion').val('');
     $('#form_add').hide();
     //$('#form_add2').hide();
+    console.log("Antes del refrescar");
+    RefrescarMapa();
+    
+    
   });
   $('#close_btn_add2').on('click', function(){
     //$('#form_add').hide();
 
     $('#form_add2').hide();
+    RefrescarMapa();
   });
   
   //Añadir Cuenca
@@ -328,11 +375,12 @@ $(function(){
             CambiarClass($('#nombre'), "form-control", "form-control is-invalid");
             $('#ContNomAcc').append("<div id='TexErrorIncompleto' style='color: red'>Ya existe un accidente geográfico con este nombre</div>"); //Crea el mensaje de advertencia si ya existe el nombre ingresado
           }
+          
+          RefrescarMapa();
         });
       }
       else
       { 
-
         //console.log ("No entra a la carga del accidente");
         validacion(postData)}        
       }
@@ -501,7 +549,7 @@ $(function(){
           }
           $('#btn_miembro_dhum').remove();
           console.log(" despues de establecer a 0, x_pers "+ x_pers);
-
+          RefrescarMapa();
         });
       }else{
         CambiarClass($('#sel_miembro.form-select.0'), "form-select", "form-select is-invalid"); //Si el campo está vacío, cambia la clase del input de "form-control" a "form control is-invalid"
