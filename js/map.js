@@ -484,7 +484,7 @@ function tabla(id){
         console.log(response);
         var data = JSON.parse(response);
           Info = data;
-        
+        console.log(Info);
         if(data['cond']){
           console.log('Sin Relevamiento');
           //console.log(data['id_acc']);
@@ -621,6 +621,7 @@ function capa(data){ //obtiene como parametro la informacion
 
   info.onAdd = function (myMap) {
       this._div = L.DomUtil.create('div', 'info'); //Crea un 'div' con la clase 'info'
+      //this._div.css({'visibility':'hidden'});
       this.update(data); //Ejecuta la funcion update con el parametro data
       return this._div; //Devuele un 'div'
   };
@@ -629,7 +630,11 @@ function capa(data){ //obtiene como parametro la informacion
   info.update = function (data) {
    
     var cont = data[0].id;
-    this._div.innerHTML = cont;
+    //this._div.innerHTML = cont;
+    //this._div.remove();
+    //this._div.hide();
+    // document.getElementsByClassName("info").style.visibility = "hidden";
+    
     $("#rele").html("");
     $("#rele").html("<p>Relevamiento</p>");
     $("#rele").append('<select class="form-select" id="sel_frel"></select>');
@@ -654,6 +659,8 @@ function capa(data){ //obtiene como parametro la informacion
     
     data.forEach(function(i){
       if(i['id_rel']==rel){
+        Info = i;
+        console.log(Info);
         for (const key in i) {
           if(key=="presion"){
             i['presion'].forEach(function(e){
@@ -827,7 +834,7 @@ function capa(data){ //obtiene como parametro la informacion
 
 
           if(i[key]!=='' && i[key]!==null && key!=='fecha' && key!=='id_acc' && key !=='id_rel' && key !=='presion' && key !=='fauna' && key !=='flora' && key !=='img' && key !=='persona'){
-            console.log(key);
+            //console.log(key);
             $('#h_name').html(i['nombre']);
             $('#data_list').append('<li class="list-group-item">'+key+': '+i[key]+'</li>');
           }
@@ -1153,7 +1160,8 @@ $('#search').keydown(function() {
 //////////////////////////////////////////////
 function modif(data,tipMod){
   ent = 0;
-  /*$('#form_add').show();
+  /*
+  $('#form_add').show();
   $('#t_form.modal-title').html('Modificar Humedal');
   $('#form_modal').css({'background':'#AEFED1'});
 
@@ -1190,67 +1198,69 @@ function modif(data,tipMod){
   });*/
   
 if (tipMod == 1){
-  data.forEach(element => {
-    // console.log("id_acc:"+ element['id_acc']);
-     IdAcc = element['id_acc'];
-     IdAccMod_Rel_o_acc = element['id_acc'];
+  console.log(data);
+  //data.forEach(element => {
+    //console.log("id_acc:"+ element['id_acc']);
+     IdAcc = data['id_acc'];
+     IdAccMod_Rel_o_acc = data['id_acc'];
  
      //console.log("nombre:"+ element['nombre']);
-     Nombre = element['nombre'];
+     Nombre = data['nombre'];
  
      //console.log("Cuenca:"+ element['Cuenca']);
-     Cuenca = element['Cuenca'];
+     Cuenca = data['Cuenca'];
  
      //console.log("Complejo:"+ element['Complejo']);
-     Complejo = element['Complejo'];
+     Complejo = data['Complejo'];
  
      //console.log("Tipoacc:"+ element['Tipoacc']);
-     Tipo = element['Tipoacc'];
+     Tipo = data['Tipoacc'];
  
      //console.log("Descripcion:"+ element['Descripcion']);
-     Descr = element['Descripcion'];
+     Descr = data['Descripcion'];
  
      //console.log("presion:"+ element['presion']);
-     Pres = element['presion'];
+     Pres = data['presion'];
      
-   });
+   //});
    console.log("ent:"+ ent);
    if (ent==0){
      ModifAccInf(IdAcc,Nombre,Cuenca,Complejo,Tipo,Descr,Pres);
    }
 }
 if (tipMod == 2){
-  data.forEach(element => {
+  //console.log(data);
+ // data.forEach(element => {
     // console.log("id_acc:"+ element['id_acc']);
-    IdRel= element['id_rel'];
-    IdAccMod_Rel_o_acc = element['id_acc'];
+    IdRel= data['id_rel'];
+    IdAccMod_Rel_o_acc = data['id_acc'];
 
     //console.log("nombre:"+ element['nombre']);
-    NombreAcc = element['nombre'];
-    FechRel = element['fecha'];
-    Conduc = element['conductividad'];
-    Ancho = element['ancho'];
-    Largo = element['largo'];
-    Superf = element['superficie'];
-    O2d = element['02_disuelto'];
-    Turb = element['turbidez'];
-    Ph = element['pH'];
-    Color = element['color'];
-    Temp = element['temp_agua'];
+    NombreAcc = data['nombre'];
+    FechRel = data['fecha'];
+    Conduc = data['conductividad'];
+    Ancho = data['ancho'];
+    Largo = data['largo'];
+    Superf = data['superficie'];
+    O2d = data['02_disuelto'];
+    Turb = data['turbidez'];
+    Ph = data['pH'];
+    Color = data['color'];
+    Temp = data['temp_agua'];
     
-    CalAgua = element['calidad_agua'];
-    DiverVeg = element['diversidad_vegetal'];
-    RegHidro = element['regimen_hidrologico'];
-    Tiempo = element['tiempo'];
-    Fuente = element['fuente'];
+    CalAgua = data['calidad_agua'];
+    DiverVeg = data['diversidad_vegetal'];
+    RegHidro = data['regimen_hidrologico'];
+    Tiempo = data['tiempo'];
+    Fuente = data['fuente'];
     
-    Person = element['persona'];
-    Fauna = element['fauna'];
-    Flora = element['flora'];
+    Person = data['persona'];
+    Fauna = data['fauna'];
+    Flora = data['flora'];
 
-    Obser = element['observaciones'];
+    Obser = data['observaciones'];
     
-   });
+  // });
    console.log("ent:"+ ent);
    if (ent==0){
      ModifRelInf(IdRel,NombreAcc,FechRel,Conduc,Ancho,Largo,Superf,O2d,Turb,Ph,Color,Temp,CalAgua,DiverVeg,RegHidro,Tiempo,Fuente,Person,Fauna,Flora,Obser);

@@ -2048,6 +2048,9 @@ $.post('php/modificar.php', postData, (response) => {
 
   switch (IDt)
   {
+    case "Punto de Interés":
+      document.getElementById('InpModTipo').options.item(0).selected = 'selected';
+      break;
     case "Humedal":
       document.getElementById('InpModTipo').options.item(0).selected = 'selected';
       break;
@@ -2264,18 +2267,24 @@ function ModifRelInf(IdRel,NombreAcc,FechRel,Conduc,Ancho,Largo,
       IDFlo = new Array();
       j= 0; //Relevadores-personas
       Person.forEach(element => {
-        IDRels[j] = element['nombre_persona'];
-        j++;
+        if (element['nombre_persona']!=null){
+          IDRels[j] = element['nombre_persona'];
+          j++;
+        }
       });
       j= 0; //Fauna
       Fauna.forEach(element => {
-        IDFau[j] = element['Nombre_coloquial'];
-        j++;
+        if(element['Nombre_coloquial']!=null){
+          IDFau[j] = element['Nombre_coloquial'];
+          j++;
+        }
       });
       j= 0; //Flora
       Flora.forEach(element => {
-        IDFlo[j] = element['Nombre_coloquial'];
-        j++;
+        if(element['Nombre_coloquial']!=null){
+          IDFlo[j] = element['Nombre_coloquial'];
+          j++;
+        }
       });   
       console.log("=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=");
       console.log("IDr: "+ IDr);
@@ -2298,7 +2307,9 @@ function ModifRelInf(IdRel,NombreAcc,FechRel,Conduc,Ancho,Largo,
       console.log("IDObs: "+ IDObs);
       console.log("IDRels: "+ IDRels);
       console.log("IDFau: "+ IDFau);
+      console.log("IDFau.length: "+ IDFau.length);
       console.log("IDFlo: "+ IDFlo);
+      console.log("IDFlo.length: "+ IDFlo.length);
       console.log("=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=");
 
 // ______________ SE CREAN TODOS LSO CAMPOS DE DATOS QUE SE PERMITIRAN MODIFICAR SOBRE ESTE OBJETO A MODIFICAR _____________________

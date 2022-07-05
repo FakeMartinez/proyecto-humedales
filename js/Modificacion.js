@@ -2487,10 +2487,12 @@ function ConfirmarAlerta(Data){
               $('#myMap').css({'width': '75%'});
               $('#myMap').css({'min-width': '75%'});
             };
+            CerrarAlerta();
+            deletesHTML("formModifData");
+            RefrescarMapa();
           }
         });
-        CerrarAlerta();
-        deletesHTML("formModifData");
+       
 
         var postData9_2= {
           accidente:true,
@@ -2600,12 +2602,13 @@ function ConfirmarAlerta(Data){
                 $('#myMap').css({'width': '75%'});
                 $('#myMap').css({'min-width': '75%'});
               };
+              CerrarAlerta();
+              deletesHTML("formModifData");
+              RefrescarMapa();
             }
           });
 
-          CerrarAlerta();
-          deletesHTML("formModifData");
-  
+
           var postData10_2= {
             relevamiento:true,
           }
