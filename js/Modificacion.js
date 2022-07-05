@@ -2622,5 +2622,5 @@ function ConfirmarAlerta(Data){
         });
         break;
   }
-  
+  RefrescarMapa();
 }

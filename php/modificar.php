@@ -85,6 +85,7 @@ if (isset($_POST['ModiAcc'])){
    $PresAcc=$_POST['PresionAccidente'];
    $DescAcc=$_POST['DescripcionAccidente'];
      
+ 
    $ResIDCuen=mysqli_query($connect,"SELECT Id_cuenca FROM cuenca WHERE Nombre_cuenca='$CuenAcc'");
    $ResIDComp=mysqli_query($connect,"SELECT Id_complejo FROM complejo WHERE Nombre_complejo='$CompAcc'");
 
@@ -99,10 +100,17 @@ if (isset($_POST['ModiAcc'])){
       }
    }
 
-   $ConsulUpdate = "UPDATE accidente_geografico SET Nombre='$NomAcc', Tipo='$TipoAcc', Id_cuenca='$IDCuen', Id_complejo='$IDComp', Descripcion='$DescAcc' WHERE Id_acc = $IdAcc";
+   if ($IDComp == ''){
+      $ConsulUpdate = "UPDATE accidente_geografico SET Nombre='$NomAcc', Tipo='$TipoAcc', Id_cuenca='$IDCuen', Id_complejo=null, Descripcion='$DescAcc' WHERE Id_acc = $IdAcc";
+   }else{
+      $ConsulUpdate = "UPDATE accidente_geografico SET Nombre='$NomAcc', Tipo='$TipoAcc', Id_cuenca='$IDCuen', Id_complejo='$IDComp', Descripcion='$DescAcc' WHERE Id_acc = $IdAcc";
+   }
 
-   mysqli_query($connect, $ConsulUpdate);
+
    
+  
+   mysqli_query($connect, $ConsulUpdate);
+
    //Consulta para obtener todas las IDs de las relaciones de presiones y cuencas pertenecientes a esta cuenca
    $Contiene_presiones = mysqli_query($connect,"SELECT Id_presiones FROM contiene_presiones WHERE Id_acc=$IdAcc");
 

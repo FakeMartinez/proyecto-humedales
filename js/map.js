@@ -629,7 +629,7 @@ function capa(data){ //obtiene como parametro la informacion
   // Funcion update para mostrar los datos en el info   
   info.update = function (data) {
    
-    var cont = data[0].id;
+    //var cont = data[0].id;
     //this._div.innerHTML = cont;
     //this._div.remove();
     //this._div.hide();
@@ -850,6 +850,8 @@ function capa(data){ //obtiene como parametro la informacion
 
   $('#closeBtn').on('click', function(){
     $('#info').hide();
+    console.log(info);
+    info.remove(myMap);
     $('#myMap').css({'width': '100%'});
   });
 
