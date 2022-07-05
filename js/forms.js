@@ -243,11 +243,17 @@ $(function(){
     $('#form_miembro_add').hide();
   });
     
-  //Añadir modif
+  //Cerrar Modificacion
   $('#close_btn_modif').on('click', function(){
     $('#ContTable').css({'visibility':'hidden'});
     $('#form_modif').hide();
   });
+  $('#bCloseVentMod').on('click', function(){
+    $('#ContTable').css({'visibility':'hidden'});
+    $('#form_modif').hide();
+  });
+
+  
 
    //agregar imagen fauna
    $('#btn_imagen_add').on('click', function(){
@@ -2627,6 +2633,8 @@ function ModifRelInf(IdRel,NombreAcc,FechRel,Conduc,Ancho,Largo,
       "<a style='font-weight: bold; color: grey; font-size: 20px;'>Observaciones: </a><br>" +
       "<textarea id='TextModObser' class='form-control' style='background: #e2e2e2; color:black; width: 400px; height: 200px; min-height: 100px; max-height: 225px;''>"+IDObs+"</textarea><br><br><br>"+
   "</div>";
+  console.log("ahora CantFau:"+CantFau);
+  console.log("ahora CantFlo:"+CantFlo);
   console.log("ahora CantReles:"+CantReles);
   $("#dataModif").html(data);
  

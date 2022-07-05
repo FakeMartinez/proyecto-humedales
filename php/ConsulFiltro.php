@@ -61,31 +61,40 @@ $TipAcc = $_POST['OBTipAcc'];
 //Para seleccionar cuenca
 if ($Acc || $Humedal){
   if ($Cuenca){
+    //echo "entra 1";
     //echo "cuenca con algo";
     $IDCuenca = rec($connect,"SELECT Id_cuenca FROM cuenca WHERE Nombre_cuenca='$Cuenca'");
     //echo "Cuenca: ", $IDCuenca, " ||| ";
     $ConsultB = " and Id_cuenca=$IDCuenca";
     $ConsultAc = "SELECT * FROM accidente_geografico WHERE Id_cuenca=$IDCuenca";
     //echo $ConsultB;
+    //echo "entra 2";
   }
   
   //____________________________________________
   // Para seleccionar complejo
-  if ($Complejo && !$Cuenca){
-    /*if ($Cuenca)
-    { $ConsultB= $ConsultB." and"; }*/
-    //echo"complejo con algo";
-    $IDComplejo = rec($connect,"SELECT Id_complejo FROM complejo WHERE Nombre_complejo='$Complejo'");
-    //echo "Complejo: ", $IDComplejo, " ||| ";
-    $ConsultB = $ConsultB." and Id_complejo=$IDComplejo";
-    $ConsultAc = "SELECT * FROM accidente_geografico WHERE Id_complejo=$IDComplejo";
+  if (!$Complejo){
+//echo "no hay complejo";
   }else{
-    $IDComplejo = rec($connect,"SELECT Id_complejo FROM complejo WHERE Nombre_complejo='$Complejo'");
-    //echo "Complejo: ", $IDComplejo, " ||| ";
-    $ConsultB = $ConsultB." and Id_complejo=$IDComplejo";
-    $ConsultAc = $ConsultAc." and Id_complejo=$IDComplejo";
+    if ($Complejo && !$Cuenca){
+    
+      /*if ($Cuenca)
+      { $ConsultB= $ConsultB." and"; }*/
+      //echo"complejo con algo";
+      $IDComplejo = rec($connect,"SELECT Id_complejo FROM complejo WHERE Nombre_complejo='$Complejo'");
+      //echo "Complejo: ", $IDComplejo, " ||| ";
+      $ConsultB = $ConsultB." and Id_complejo=$IDComplejo";
+      $ConsultAc = "SELECT * FROM accidente_geografico WHERE Id_complejo=$IDComplejo";
+    }else{
+      $IDComplejo = rec($connect,"SELECT Id_complejo FROM complejo WHERE Nombre_complejo='$Complejo'");
+      //echo "Complejo: ", $IDComplejo, " ||| ";
+      $ConsultB = $ConsultB." and Id_complejo=$IDComplejo";
+      $ConsultAc = $ConsultAc." and Id_complejo=$IDComplejo";
+    }
   }
+  
 
+  
   //Consultas relacionadas a presiones
 
   $Ip = 0;
@@ -208,7 +217,10 @@ if ($Cuenca || $Complejo || $Fuente || $CalidadAgua || $DivVegetal || $RegiHidro
   $ConsultA = $ConsultA.$ConsultB;
   //echo $ConsultA;
   //Se realiza la consulta
+  //echo "entra 1";
+  //echo $ConsultA;
   $ResultB= mysqli_query($connect, $ConsultA);
+  //echo "entra 2";
   /*echo "    
   ====================================
   ";*/
@@ -475,7 +487,9 @@ WHERE AC.Tipo <> 'Punto de Interés'
   echo "Resultados:
   ";*/
   // PONE EN UN ARRAY TODOS LOS RESULTADOS DE ACCIDENTES COINCIDENTES
+  //echo "llega 2";
   $resultadoFinal = mysqli_query($connect,$ConsultAcc);
+  //echo $ConsultAcc;
   $i = 0;
   /*echo "
   ========================================

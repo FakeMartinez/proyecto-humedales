@@ -303,26 +303,61 @@ if (isset($_POST['ModiRele'])){
      
 
    //UPDATE Tabla Relevamiento
-   $ConsulUpdate = "UPDATE relevamiento 
-                           SET Fecha = '$FechaRel',
-                               Conductividad = $ConducRel, 
-                               Ancho = $AnchoRel, 
-                               O2_disuelto = $OxDisRel, 
-                               Calidad_de_H2O = '$CaliAgua',
-                               Diversidad_vegetal = '$DivVeg', 
-                               Regimen_hidrológico = '$RegHid',
-                               Turbidez = '$TurAguaRel',
-                               Largo = $LargoRel,
-                               pH = $PHRel,
-                               Color = '$ColAgRel',
-                               Fuente = '$Fuente',
-                               Tiempo = '$TiemPerm',
-                               Superficie = $SuperRel,
-                               Temperatura_H2O = $TempAgRel,
-                               Observaciones = '$ObsRel'
-                           WHERE Id_rel = $IdRel";
+   $ConsulUpdate = 
+      "UPDATE relevamiento 
+         SET ";
+   if ($FechaRel !=''){
+      $ConsulUpdate = $ConsulUpdate."Fecha = '$FechaRel'";
+   }
+   if ($ConducRel !=''){
+      $ConsulUpdate = $ConsulUpdate.", Conductividad = $ConducRel";
+   }
+   if ($AnchoRel !=''){
+      $ConsulUpdate != $ConsulUpdate.", Ancho = $AnchoRel";
+   }
+   if ($OxDisRel !=''){
+      $ConsulUpdate = $ConsulUpdate.", O2_disuelto = $OxDisRel";
+   }
+   if ($CaliAgua !=''){
+      $ConsulUpdate = $ConsulUpdate.", Calidad_de_H2O = '$CaliAgua'";
+   }
+   if ($DivVeg !=''){
+      $ConsulUpdate = $ConsulUpdate.", Diversidad_vegetal = '$DivVeg'";
+   }
+   if ($RegHid !=''){
+      $ConsulUpdate = $ConsulUpdate.", Regimen_hidrológico = '$RegHid'";
+   }
+   if ($TurAguaRel !=''){
+      $ConsulUpdate = $ConsulUpdate.", Turbidez = '$TurAguaRel'";
+   }
+   if ($LargoRel !=''){
+      $ConsulUpdate = $ConsulUpdate.", Largo = $LargoRel";
+   }
+   if ($PHRel !=''){
+      $ConsulUpdate = $ConsulUpdate.", pH = $PHRel";
+   }
+   if ($ColAgRel !=''){
+      $ConsulUpdate = $ConsulUpdate.", Color = '$ColAgRel'";
+   }
+   if ($Fuente !=''){
+      $ConsulUpdate = $ConsulUpdate.", Fuente = '$Fuente'";
+   }
+   if ($TiemPerm !=''){
+      $ConsulUpdate = $ConsulUpdate.", Tiempo = '$TiemPerm'";
+   }
+   if ($SuperRel !=''){
+      $ConsulUpdate = $ConsulUpdate.", Superficie = $SuperRel";
+   }
+   if ($TempAgRel !=''){
+      $ConsulUpdate = $ConsulUpdate.", Temperatura_H2O = $TempAgRel";
+   }
+   if ($ObsRel !=''){
+      $ConsulUpdate = $ConsulUpdate.", Observaciones = '$ObsRel'";
+   }
+   $ConsulUpdate = $ConsulUpdate." WHERE Id_rel = $IdRel";
 
 
+echo $ConsulUpdate;
    mysqli_query($connect, $ConsulUpdate);
    // DELETE e INSERT de la tabla investiga
    //Consulta para obtener todas las IDs de los miembros en las relaciones investiga pertenecientes a este relevamiento
